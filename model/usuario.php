@@ -10,11 +10,10 @@ class usuario extends app
 	public $email;
 	public $data_nascimento;
 	public $data_registro;
-	public $senha; 
-	public $app;
+	public $senha;
 
 	public function login($email,$senha){
-		$conn = $app->getDB->mysqli_connection;		
+		$conn = $this->getDB->mysqli_connection;		
 		$query = sprintf("SELECT usuarioID, nome, email FROM usuarios WHERE email = '%s' AND senha = '%s'", $email, $senha);	
 
 		if (!$result = $conn->query($query)) {
