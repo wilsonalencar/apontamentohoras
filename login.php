@@ -14,5 +14,5 @@ if (!empty($_POST['login']) && !empty($_POST['senha'])) {
 header('LOCATION:view/index.php');
 }
 
-include_once('view/frm_login.php');
+require_once('view/frm_login.php');
 ?>

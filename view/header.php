@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gestão</title> 
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="assets/materialize/css/materialize.min.css" media="screen,projection" />
-    <link href="http://dev.apontamentohoras/view/assets/css/bootstrap.css" rel="stylesheet" />
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
-    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+	<link rel="stylesheet" href="<?php echo $dominio; ?>view/assets/materialize/css/materialize.min.css" media="screen,projection" />
+    <link href="<?php echo $dominio; ?>view/assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="<?php echo $dominio; ?>view/assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="<?php echo $dominio; ?>view/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
+    <link href="<?php echo $dominio; ?>view/assets/css/custom-styles.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" href="assets/js/Lightweight-Chart/cssCharts.css"> 
+    <link rel="stylesheet" href="<?php echo $dominio; ?>view/assets/js/Lightweight-Chart/cssCharts.css"> 
 </head>
 
 <body>
@@ -231,22 +231,22 @@
                         <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros básicos<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="../controller_clientes.php" >Cadastro de Clientes</a>
+                                <a href="../clientes.php" >Cadastro de Clientes</a>
                             </li>
                             <li>
-                                <a href="../controller_projetos.php" >Cadastro de Projetos</a>
+                                <a href="../projetos.php" >Cadastro de Projetos</a>
                             </li>
                             <li>
-                                <a href="../controller_pilares.php" >Cadastro de Pilares</a>
+                                <a href="../pilares.php" >Cadastro de Pilares</a>
                             </li>
                             <li>
-                                <a href="../controller_contratacao.php" >Tipo de contratação</a>
+                                <a href="../contratacao.php" >Tipo de contratação</a>
                             </li>
                             <li>
-                                <a  href="../controller_perfilprof.php" >Cadastro de perfil profissional</a>
+                                <a  href="../perfilprof.php" >Cadastro de perfil profissional</a>
                             </li>
                             <li>
-                                <a href="../controller_responsabilidade.php" >Cadastro de responsabilidade</a>
+                                <a href="../responsabilidade.php" >Cadastro de responsabilidade</a>
                             </li>
                         </ul>
                     </li>

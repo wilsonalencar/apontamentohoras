@@ -14,7 +14,6 @@ class usuario extends app
 	public $app;
 
 	public function login($email,$senha){
-		$app = new app;
 		$conn = $app->getDB->mysqli_connection;		
 		$query = sprintf("SELECT usuarioID, nome, email FROM usuarios WHERE email = '%s' AND senha = '%s'", $email, $senha);	
 
@@ -23,10 +22,12 @@ class usuario extends app
 		}
 
 		if (!empty($row = mysqli_fetch_row($result))){
-			$app->DoSession($row[0],$row[1],$row[2]);
+			$_SESSION['usuarioID'] 	= $id;
+ 			$_SESSION['nome'] 	   	= $nome;
+ 			$_SESSION['email'] 		= $email;			
 		}
 
-		if (!empty($app->_SESSION['usuarioID'])) {
+		if (!empty($_SESSION['logado'])) {
 			return true;
 		}
 	}
