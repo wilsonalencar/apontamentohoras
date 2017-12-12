@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('database.php');
 global $_SERVER;
 /**
@@ -8,14 +9,16 @@ class app
 {
 	public $_SESSION;
 	public $getDB;
-	public $PATH = '/var/www/html/unionit/apontamentohoras/view/assets/';
+	public $PATH = '/var/www/html/unionit/apontamentohoras';
+	public $dominio = 'http://dev.apontamentohoras/';
+	
  	public function __construct(){
  		$this->getDB = new dba;
  	}
 
  	public function DoSession($id,$nome,$email){
  		if (!isset($this->_SESSION)) {
- 			session_start();
+ 			
  			$this->_SESSION['usuarioID'] 	= $id;
  			$this->_SESSION['nome'] 	   	= $nome;
  			$this->_SESSION['email'] 		= $email;

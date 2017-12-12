@@ -3,7 +3,7 @@ require_once('app.php');
 /**
 * Lucas Barbosa de Alencar
 */
-class usuario
+class usuario extends app
 {
 	public $id;
 	public $nome;

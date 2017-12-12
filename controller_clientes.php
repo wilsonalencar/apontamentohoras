@@ -1,5 +1,7 @@
 <?php
-//require_once('model/usuario.php');
-header('LOCATION:view/clientes/frm_clientes.php');
-//include_once('view/empty.php');
+require_once('model/cliente.php');
+//$cliente = new cliente;
+//$dominio = $cliente->dominio;
+
+include_once('view/clientes/frm_clientes.php');
 ?>

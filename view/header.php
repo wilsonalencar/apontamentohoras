@@ -6,7 +6,7 @@
     <title>Gestão</title> 
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="assets/materialize/css/materialize.min.css" media="screen,projection" />
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="http://dev.apontamentohoras/view/assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <link href="assets/css/custom-styles.css" rel="stylesheet" />
