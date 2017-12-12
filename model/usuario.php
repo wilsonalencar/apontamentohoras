@@ -22,9 +22,10 @@ class usuario extends app
 		}
 
 		if (!empty($row = mysqli_fetch_row($result))){
-			$_SESSION['usuarioID'] 	= $id;
- 			$_SESSION['nome'] 	   	= $nome;
- 			$_SESSION['email'] 		= $email;			
+			$_SESSION['usuarioID'] 	= $row[0];
+ 			$_SESSION['nome'] 	   	= $row[1];
+ 			$_SESSION['email'] 		= $row[3];
+ 			$_SESSION['logado'] 	= 1;			
 		}
 
 		if (!empty($_SESSION['logado'])) {
