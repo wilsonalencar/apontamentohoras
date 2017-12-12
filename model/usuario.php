@@ -11,19 +11,24 @@ class usuario
 	public $data_nascimento;
 	public $data_registro;
 	public $senha; 
+	public $app;
 
 	public function login($email,$senha){
-		if (empty($email) or empty($senha)) {
-		 	echo "Por favor, insira o email E senha";
-		 	return false;
-		}	
-		$query = sprintf("SELECT * FROM usuarios WHERE email = '%s' AND senha = '%s'", $email, $senha);
-		return false;
-		$queryResult = $mysqli_connection->query($query);
-		if (!$queryResult) {
-			echo "Login inválido";
-		 	return false;
-		}	
+		$app = new app;
+		$conn = $app->getDB->mysqli_connection;		
+		$query = sprintf("SELECT usuarioID, nome, email FROM usuarios WHERE email = '%s' AND senha = '%s'", $email, $senha);	
+
+		if (!$result = $conn->query($query)) {
+			return false;	
+		}
+
+		if (!empty($row = mysqli_fetch_row($result))){
+			$app->DoSession($row[0],$row[1],$row[2]);
+		}
+
+		if (!empty($app->_SESSION['usuarioID'])) {
+			return true;
+		}
 	}
 }
 

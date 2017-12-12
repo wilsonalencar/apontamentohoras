@@ -6,14 +6,13 @@ if (!empty($_POST['login']) && !empty($_POST['senha'])) {
 	$login = $_POST['login'];
 	$senha = md5($_POST['senha']);
 
-	if ($usuario->login($login, $senha)) {
+	if (!$usuario->login($login, $senha)) {
 		echo "usuario ou senha invalidos";
-		exit;
+		return false;
 	}
-
+	
 header('LOCATION:view/index.php');
 }
 
-echo "Insira o Login e Senha";
 include_once('view/frm_login.php');
 ?>
