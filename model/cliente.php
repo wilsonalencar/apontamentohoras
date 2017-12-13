@@ -6,8 +6,8 @@ require_once('app.php');
 class cliente extends app
 {
 	public function doInsert(){
-		
-		$conn = $app->getDB->mysqli_connection;		
+		//echo "ola";exit;
+		$conn = $this->getDB->mysqli_connection;		
 	}
 }
 
