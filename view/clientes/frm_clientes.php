@@ -1,197 +1,192 @@
 ﻿<?php
 	require_once(app::path.'view/header.php');
 ?>
-
-        <div id="page-wrapper" >
+    
+    <div id="page-wrapper" >
 		  <div class="header"> 
-                        <h1 class="page-header">
-                             Form Inputs Page
-                        </h1>
-						<ol class="breadcrumb">
-					  <li><a href="#">Home</a></li>
-					  <li><a href="#">Forms</a></li>
-					  <li class="active">Data</li>
+            <h1 class="page-header">
+                 Clientes
+            </h1>
+					<ol class="breadcrumb">
+					  <li><a href="#">Cadastros Básicos</a></li>
+					  <li><a href="#">Clientes</a></li>
+					  <li class="active">Cadastro de Clientes</li>
 					</ol> 
 									
-		</div>
+		  </div>
 		
-            <div id="page-inner"> 
-			 <div class="row">
-			 <div class="col-lg-12">
-			 <div class="card">
-                        <div class="card-action">
-                            Basic Form Elements
-                        </div>
-                        <div class="card-content">
-    <form class="col s12">
-      <div class="row">
-        <div class="input-field col s6">
-          <input placeholder="Placeholder" id="first_name" type="text" class="validate">
-          <label for="first_name">First Name</label>
-        </div>
-        <div class="input-field col s6">
-          <input id="last_name" type="text" class="validate">
-          <label for="last_name">Last Name</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input disabled value="I am not editable" id="disabled" type="text" class="validate">
-          <label for="disabled">Disabled</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="password" type="password" class="validate">
-          <label for="password">Password</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input id="email" type="email" class="validate">
-          <label for="email">Email</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col s12">
-          This is an inline input field:
-          <div class="input-field inline">
-            <input id="email" type="email" class="validate">
-            <label for="email" data-error="wrong" data-success="right">Email</label>
-          </div>
-        </div>
-      </div>
-    </form>
-	<div class="clearBoth"></div>
-  </div>
-    </div>
- </div>	
-	 </div>		
-              <div class="row">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-action">
-                            Basic Form Elements
-                        </div>
-                        <div class="card-content">
-                         	<form class="col s12">
-								  <div class="row">
-									<div class="input-field col s6">
-									  <i class="material-icons prefix">account_circle</i>
-									  <input id="icon_prefix" type="text" class="validate">
-									  <label for="icon_prefix">First Name</label>
-									</div>
-									<div class="input-field col s6">
-									  <i class="material-icons prefix">phone</i>
-									  <input id="icon_telephone" type="tel" class="validate">
-									  <label for="icon_telephone">Telephone</label>
-									</div>
-								  </div>
-								</form>
-								
-								<form class="col s12">
-								  <div class="row">
-									<div class="input-field col s12">
-									  <input id="email" type="email" class="validate">
-									  <label for="email" data-error="wrong" data-success="right">Email</label>
-									</div>
-								  </div>
-								</form>
-								
-								  <form class="col s12">
-							  <div class="row">
-								<div class="input-field col s12">
-								  <textarea id="textarea1" class="materialize-textarea"></textarea>
-								  <label for="textarea1">Textarea</label>
-								</div>
-							  </div>
-							</form>
-							  </form>
- 
-   <!-- Switch -->
-  <div class="switch">
-    <label>
-      Off
-      <input type="checkbox">
-      <span class="lever"></span>
-      On
-    </label>
-  </div>
+         <div id="page-inner"> 
+    		 <div class="row">
+    		 <div class="col-lg-12">
+    		 <div class="card">
+                <div class="card-action">
+                    Cadastro de clientes
+                </div>
+                <div class="card-content">
+                     <?php
+                      if (!empty($msg)) { 
 
-  <!-- Disabled Switch -->
-  <div class="switch">
-    <label>
-      Off
-      <input disabled type="checkbox">
-      <span class="lever"></span>
-      On
-    </label>
-  </div>
-							<div class="clearBoth"></div>
-							</div>
-							</div>
-							</div>
-							 <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-action">
-                            Basic Form Elements
-                        </div>
-                        <div class="card-content">
-						
-								  <form action="#">
-    <p>
-      <input name="group1" type="radio" id="test1" />
-      <label for="test1">Red</label>
-    </p>
-    <p>
-      <input name="group1" type="radio" id="test2" />
-      <label for="test2">Yellow</label>
-    </p>
-    <p>
-      <input class="with-gap" name="group1" type="radio" id="test3"  />
-      <label for="test3">Green</label>
-    </p>
-      <p>
-        <input name="group1" type="radio" id="test4" disabled="disabled" />
-        <label for="test4">Brown</label>
-    </p>
-  </form>
-         <form action="#">
-    <p>
-      <input type="checkbox" id="test5" />
-      <label for="test5">Red</label>
-    </p>
-    <p>
-      <input type="checkbox" id="test6" checked="checked" />
-      <label for="test6">Yellow</label>
-    </p>
-    <p>
-      <input type="checkbox" class="filled-in" id="filled-in-box" checked="checked" />
-      <label for="filled-in-box">Filled in</label>
-    </p>
-    <p>
-      <input type="checkbox" id="indeterminate-checkbox" />
-      <label for="indeterminate-checkbox">Indeterminate Style</label>
-    </p>
-    <p>
-      <input type="checkbox" id="test7" checked="checked" disabled="disabled" />
-      <label for="test7">Green</label>
-    </p>
-      <p>
-        <input type="checkbox" id="test8" disabled="disabled" />
-        <label for="test8">Brown</label>
-    </p>
+                        if ($success) {
+                            echo "<div class='alert alert-success'>
+                                    <strong>Sucesso !</strong> $msg
+                                  </div>";
+                          }
 
-        
+                          if (!$success) {
+                            echo "<div class='alert alert-danger'>
+                                    <strong>ERRO !</strong> $msg
+                                  </div>";
+
+                          }                           
+                        }
+                     ?>
+
+                    <form class="col s12" action="clientes.php" method="post" name="cad_cliente">
+                      <div class="row">
+                        <div class="input-field col s3">
+                        <i class="material-icons prefix">list</i>
+                          <input id="codigo" type="text" name="codigo" class="validate">
+                          <label for="codigo">Código</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s6">
+                        <i class="material-icons prefix">perm_identity</i>
+                          <input type="text" id="nome" name="nome" class="validate">
+                          <label for="nome">Nome</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s3">
+                        <i class="material-icons prefix">navigation</i>
+                          <input type="text" id="cnpj" name="cnpj" class="validate">
+                          <label for="cnpj">CNPJ</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s6">
+                        <i class="material-icons prefix">navigation</i>
+                          <input type="text" id="endereco" name="endereco" class="validate">
+                          <label for="endereco">Endereço</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s6">
+                        <i class="material-icons prefix">navigation</i>
+                          <input type="text" id="complemento" name="complemento" class="validate">
+                          <label for="complemento">Complemento</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s3">
+                            <select id="cod_municipio" name="cod_municipio" class="form-control input-sm">
+                              <option value="" disabled selected>Cidade</option>
+                              <option value="SP">São Paulo</option>
+                              <option value="RJ">Rio de Janeiro</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s3">
+                          <i class="material-icons prefix">navigation</i>
+                          <input type="text" id="cep" name="cep" class="validate">
+                          <label for="cep">CEP</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s3">  
+                        <i class="material-icons prefix">phone</i>
+                          <input type="text" id="telefone" name="telefone" class="validate">
+                          <label for="telefone">Telefone</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s6">
+                        <i class="material-icons prefix">mail</i>
+                          <input type="text" id="email" name="email" class="validate">
+                          <label for="email">Email</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s6">
+                        <i class="material-icons prefix">account_circle</i>
+                          <input type="text" id="contato" name="contato" class="validate">
+                          <label for="contato">Contato</label>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s3">
+                          <select id="status" name="status" class="form-control input-sm">
+                            <option value="" disabled selected>Status (Ativo)</option>
+                            <option value="A">Ativo</option>
+                            <option value="I">Inativo</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                      <div class="input-field col s1">
+                        </div>
+                        <input type="hidden" id="id" name="id" value="6">
+                        <input type="hidden" id="action" name="action" value="1">
+                        <div class="input-field col s2">
+                            <input type="submit" name="Voltar" value="Voltar" class="waves-effect waves-light btn">
+                        </div>
+                        <div class="input-field col s1">
+                            <input type="submit" name="salvar" value="salvar" class="waves-effect waves-light btn">
+                        </div>
+                      </div>
+                    </form>
+
+                	<div class="clearBoth"></div>
+                  </div>
+                  </div>
+                  </div>
             </div>
-           
-        </div>
-        <!-- /.row (nested) -->
-    </div>
-    <!-- /.panel-body -->
-</div> 
+      </div>
 
 	
 <?php
 	require_once(app::path.'/view/footer.php');
 ?>
+
+<script>
+var id = <?= $cliente->id; ?>;
+if (id > 0) {
+   getDataCliente(id);
+}
+
+function getDataCliente(id)
+{
+   $.ajax({
+        url : 'clientes.php',
+        type: 'post',
+        dataType: 'JSON',
+        data:
+        {
+            'action':2,
+            'id':id
+        },
+        success: function(d)
+        {
+            if (!d.success) {
+               alert(d.msg);
+               return false;
+            }
+
+            $("#id").val(d.data.id);
+            $("#codigo").val(d.data.codigo);
+            $("#complemento").val(d.data.complemento);
+            $("#contato").val(d.data.contato);
+            $("#email").val(d.data.email);
+            $("#endereco").val(d.data.endereco);
+            $("#status").val(d.data.status);
+            $("#nome").val(d.data.nome);
+            $("#telefone").val(d.data.telefone);
+            $("#cod_municipio").val(d.data.cod_municipio);
+            $("#cnpj").val(d.data.cnpj);
+            $("#cep").val(d.data.cep);
+        }
+    });
+}
+</script>

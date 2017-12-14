@@ -5,10 +5,133 @@ require_once('app.php');
 */
 class cliente extends app
 {
-	public function insert(){
-		//echo "ola";exit;
+	public $id;
+	public $codigo;
+	public $nome;
+	public $cnpj;
+	public $endereco;
+	public $complemento;
+	public $cod_municipio;
+	public $cep;
+	public $telefone;
+	public $email;
+	public $contato;
+	public $status;
+	public $array;
+	public $msg;
+
+	private function checkCodigo()
+	{
 		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT codigo FROM clientes WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do código do cliente";
+			return false;	
+		}
+		
+		if (!empty($row = mysqli_fetch_row($result))){
+			$this->msg = "Codigo do cliente já está sendo utilizado";
+			return false;			
+		}
+		return true;
 	}
+
+	private function check()
+	{
+		if (empty($this->codigo)) {
+			$this->msg = 'Informar codigo.';
+			return false;
+		}
+
+		if (!$this->checkCodigo()) {
+			return false;
+		}
+
+		if (empty($this->nome)) {
+			$this->msg = 'Informar o Nome.';
+			return false;
+		}
+		if (empty($this->cnpj)) {
+			$this->msg = 'Informar o CNPJ.';
+			return false;
+		}
+		if (empty($this->endereco)) {
+			$this->msg = 'Informar o endereço.';
+			return false;
+		}
+		if (empty($this->cod_municipio)) {
+			$this->msg = 'Informar a cidade.';
+			return false;
+		}
+		if (empty($this->cep)) {
+			$this->msg = 'Informar o CEP';
+			return false;
+		}
+		return true;
+	}
+
+	public function save()
+	{
+		 if (!$this->check()) {
+		 	return false;
+		 }
+
+		if ($this->id > 0) {
+			return $this->update();
+		}
+
+		return $this->insert();
+	}
+
+	public function insert()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf(" INSERT INTO clientes (codigo, nome, cnpj, endereco, complemento, cod_municipio, cep, telefone, email, contato, status, usuario)
+		VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d)", 
+			$this->codigo, $this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID']);	
+
+		if (!$exe = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+
+		$this->msg = "Registros inseridos com sucesso!";
+		return true;
+	}
+
+	public function update()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf(" UPDATE clientes SET codigo = '%s', nome = '%s', cnpj = '%s', endereco = '%s', complemento = '%s', cod_municipio = '%s', cep = '%s', telefone = '%s', email= '%s', contato= '%s', status ='%s', usuario = %d WHERE id = %d", 
+			$this->codigo, $this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID'], $this->id);	
+	
+		if (!$exe = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+
+		$this->msg = "Registros atualizados com sucesso!";
+		return true;
+	}
+
+	public function get($id)
+	{
+		if (!$id) {
+			return false;
+		}
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT id, codigo, nome, cnpj, endereco, complemento, cod_municipio, cep, telefone, email, contato, status, usuario FROM clientes WHERE id =  %d ", $id);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento do cliente";	
+			return false;	
+		}
+		$this->array = $result->fetch_array(MYSQLI_ASSOC);
+		$this->msg = 'Registro carregado com sucesso';
+		return true;
+	}
+
 }
 
 ?>

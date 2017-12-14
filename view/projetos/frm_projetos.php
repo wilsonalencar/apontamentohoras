@@ -1,5 +1,5 @@
 ﻿<?php
-require_once('../header.php')
+	require_once(app::path.'view/header.php');
 ?>
 <div id="page-wrapper">
 <div class="header"> 
@@ -29,5 +29,5 @@ require_once('../header.php')
 	 </div>
 						
 <?php
-require_once('../footer.php')
+	require_once(app::path.'view/header.php');
 ?>
