@@ -30,8 +30,25 @@ class cliente extends app
 			return false;	
 		}
 		
-		if (!empty($row = mysqli_fetch_row($result))){
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
 			$this->msg = "Codigo do cliente já está sendo utilizado";
+			return false;			
+		}
+		return true;
+	}
+
+	private function checkCNPJ()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT cnpj FROM clientes WHERE cnpj = '%s' AND id <> %d", $this->cnpj, $this->id);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do cnpj do cliente.";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "CNPJ já está sendo utilizado por outro cliente.";
 			return false;			
 		}
 		return true;
@@ -41,10 +58,6 @@ class cliente extends app
 	{
 		if (empty($this->codigo)) {
 			$this->msg = 'Informar codigo.';
-			return false;
-		}
-
-		if (!$this->checkCodigo()) {
 			return false;
 		}
 
@@ -68,6 +81,20 @@ class cliente extends app
 			$this->msg = 'Informar o CEP';
 			return false;
 		}
+
+		if (!$this->validaCNPJ($this->cnpj)) {
+			$this->msg = 'Favor inserir o CNPJ corretamente.';
+			return false;
+		}
+
+		if (!$this->checkCNPJ()) {
+			return false;
+		}
+
+		if (!$this->checkCodigo()) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -91,7 +118,7 @@ class cliente extends app
 		VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d)", 
 			$this->codigo, $this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID']);	
 
-		if (!$exe = $conn->query($query)) {
+		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
@@ -106,7 +133,7 @@ class cliente extends app
 		$query = sprintf(" UPDATE clientes SET codigo = '%s', nome = '%s', cnpj = '%s', endereco = '%s', complemento = '%s', cod_municipio = '%s', cep = '%s', telefone = '%s', email= '%s', contato= '%s', status ='%s', usuario = %d WHERE id = %d", 
 			$this->codigo, $this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
-		if (!$exe = $conn->query($query)) {
+		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
@@ -131,6 +158,25 @@ class cliente extends app
 		$this->msg = 'Registro carregado com sucesso';
 		return true;
 	}
+
+	public function deleta($id)
+	{
+		if (!$id) {
+			return false;
+		}
+		
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("DELETE FROM clientes WHERE id = %d ", $id);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro na exclusão do cliente";	
+			return false;	
+		}
+
+		$this->msg = 'Registro excluido com sucesso';
+		return true;	
+	}
+
 
 }
 

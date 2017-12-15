@@ -1,11 +1,14 @@
 <?php
 require_once('model/cliente.php');
+require_once('model/municipio.php');
 
 define('SAVE', 1);
 define('GET', 2);
 
 $cliente = new cliente;
-$cliente->id 			= $cliente->getRequest('id', 6);
+$municipio = new municipio;
+
+$cliente->id 			= $cliente->getRequest('id', 0);
 $cliente->codigo 		= $cliente->getRequest('codigo', '');
 $cliente->nome 			= $cliente->getRequest('nome', '');
 $cliente->cnpj 			= $cliente->getRequest('cnpj', '');
@@ -32,7 +35,8 @@ if ($action == GET) {
 }
 
 if ($action == 3) {
-	//delete
+	$success = $cliente->deleta($cliente->get($cliente->getRequest('id')));
+	$msg = $cliente->msg;
 }
 
 if ($action == 4) {

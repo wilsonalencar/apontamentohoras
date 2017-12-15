@@ -1,17 +1,22 @@
 <?php
 require_once('model/usuario.php');
+
 $usuario = new usuario;
+$usuario->email = $usuario->getRequest('login', '');
+$usuario->senha = md5($usuario->getRequest('senha', ''));
 
-if (!empty($_POST['login']) && !empty($_POST['senha'])) {
-	$login = $_POST['login'];
-	$senha = md5($_POST['senha']);
+$msg = '';
 
-	if (!$usuario->login($login, $senha)) {
-		echo "usuario ou senha invalidos";
-		return false;
-	}
+if (!empty($_POST)) {
+	$success = $usuario->login();
+	$msg = $usuario->msg;
 	
-header('LOCATION:view/index.php');
+	if ($success) {	
+		header('LOCATION:view/index.php');
+	}	
+
+	$msg = $usuario->msg;
+	header('LOCATION:login.php');
 }
 
 require_once('view/frm_login.php');
