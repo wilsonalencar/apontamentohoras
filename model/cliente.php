@@ -130,7 +130,7 @@ class cliente extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE clientes SET nome = '%s', cnpj = '%s', endereco = '%s', complemento = '%s', cod_municipio = '%s', cep = '%s', telefone = '%s', email= '%s', contato= '%s', status ='%s', usuario = %d WHERE id = %d", 
+		$query = sprintf(" UPDATE clientes SET nome = '%s', cnpj = '%s', endereco = '%s', complemento = '%s', cod_municipio = '%s', cep = '%s', telefone = '%s', email= '%s', contato= '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
 			$this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
 		if (!$conn->query($query)) {

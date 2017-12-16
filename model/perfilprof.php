@@ -3,7 +3,7 @@ require_once('app.php');
 /**
 * Lucas Barbosa de Alencar
 */
-class pilar extends app
+class perfilprof extends app
 {
 	public $id;
 	public $codigo;
@@ -15,15 +15,15 @@ class pilar extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT codigo FROM pilares WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
-
+		$query = sprintf("SELECT codigo FROM perfilprof WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
+		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro durante a verificação do código do pilar";
+			$this->msg = "Ocorreu um erro durante a verificação do código do Perfil Profissional";
 			return false;	
 		}
 		
 		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
-			$this->msg = "Codigo do pilar já está sendo utilizado";
+			$this->msg = "Codigo do Perfil Profissional já está sendo utilizado";
 			return false;			
 		}
 		return true;
@@ -32,12 +32,12 @@ class pilar extends app
 	private function check()
 	{
 		if (empty($this->codigo)) {
-			$this->msg = "Insira o código do pilar.";
+			$this->msg = "Insira o código do Perfil Profissional.";
 			return false;
 		}
 
 		if (empty($this->nome)) {
-			$this->msg = "Insira o nome do pilar.";
+			$this->msg = "Insira o nome do perfil Profissional.";
 			return false;
 		}
 
@@ -63,7 +63,7 @@ class pilar extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO pilares (codigo, nome, status, usuario)
+		$query = sprintf(" INSERT INTO perfilprof (codigo, nome, status, usuario)
 		VALUES ('%s','%s','%s',%d)", 
 			$this->codigo, $this->nome, $this->status, $_SESSION['usuarioID']);	
 
@@ -78,7 +78,7 @@ class pilar extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE pilares SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
+		$query = sprintf(" UPDATE perfilprof SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
 			$this->nome, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
 		if (!$conn->query($query)) {
@@ -95,11 +95,10 @@ class pilar extends app
 		if (!$id) {
 			return false;
 		}
-		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM pilares WHERE id =  %d ", $id);
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM perfilprof WHERE id =  %d ", $id);
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento do pilar";	
+			$this->msg = "Ocorreu um erro no carregamento do Perfil Profissional";	
 			return false;	
 		}
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
@@ -114,10 +113,10 @@ class pilar extends app
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("DELETE FROM pilares WHERE id = %d ", $id);
+		$query = sprintf("DELETE FROM perfilprof WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do pilar";	
+			$this->msg = "Ocorreu um erro na exclusão do perfil Profissional";	
 			return false;	
 		}
 

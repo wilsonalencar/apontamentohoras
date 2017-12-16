@@ -1,8 +1,8 @@
-
+<?php if (!empty($_SESSION['logado'])) { ?>
             </div>
         </div>
     </div>
-
+<?php } ?>
     <script src="<?php echo app::dominio; ?>view/assets/js/jquery-1.10.2.js"></script>
     <script src="<?php echo app::dominio; ?>view/assets/js/bootstrap.min.js"></script>
 	<script src="<?php echo app::dominio; ?>view/assets/materialize/js/materialize.min.js"></script>

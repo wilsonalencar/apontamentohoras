@@ -12,7 +12,14 @@ class app
 	public $getDB;
 
  	public function __construct(){
+ 		$this->validLogin();
  		$this->getDB = new dba;
+ 	}
+ 	private function validLogin()
+ 	{
+ 		if (empty($_SESSION) && $_SERVER['SCRIPT_NAME'] != '/login.php') {
+ 			header('LOCATION:login.php');
+ 		}
  	}
 
  	public function getRequest($variable, $default_value = '') 

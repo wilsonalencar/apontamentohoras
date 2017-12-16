@@ -78,7 +78,7 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET nome = '%s', status ='%s', usuario = %d WHERE id = %d", 
+		$query = sprintf(" UPDATE projetos SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
 			$this->nome, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
 		if (!$conn->query($query)) {
