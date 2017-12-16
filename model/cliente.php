@@ -130,8 +130,8 @@ class cliente extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE clientes SET codigo = '%s', nome = '%s', cnpj = '%s', endereco = '%s', complemento = '%s', cod_municipio = '%s', cep = '%s', telefone = '%s', email= '%s', contato= '%s', status ='%s', usuario = %d WHERE id = %d", 
-			$this->codigo, $this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID'], $this->id);	
+		$query = sprintf(" UPDATE clientes SET nome = '%s', cnpj = '%s', endereco = '%s', complemento = '%s', cod_municipio = '%s', cep = '%s', telefone = '%s', email= '%s', contato= '%s', status ='%s', usuario = %d WHERE id = %d", 
+			$this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";

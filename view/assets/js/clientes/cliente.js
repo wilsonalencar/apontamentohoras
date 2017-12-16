@@ -24,6 +24,7 @@ function getDataCliente(id)
 
             $("#id").val(d.data.id);
             $("#codigo").val(d.data.codigo);
+            $("#codigo").attr("readonly", "true");
             $("#complemento").val(d.data.complemento);
             $("#contato").val(d.data.contato);
             $("#email").val(d.data.email);

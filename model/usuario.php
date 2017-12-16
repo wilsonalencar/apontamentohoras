@@ -39,9 +39,9 @@ class usuario extends app
 		}
 
 		if (!empty($row = $result->fetch_array(MYSQLI_ASSOC))){
-			$_SESSION['usuarioID'] 	= $row[0];
- 			$_SESSION['nome'] 	   	= $row[1];
- 			$_SESSION['email'] 		= $row[3];
+			$_SESSION['usuarioID'] 	= $row['usuarioID'];
+ 			$_SESSION['nome'] 	   	= $row['nome'];
+ 			$_SESSION['email'] 		= $row['email'];
  			$_SESSION['logado'] 	= 1;	
  			return true;		
 		}
