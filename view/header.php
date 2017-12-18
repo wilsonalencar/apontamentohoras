@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<?php echo app::dominio; ?>view/assets/js/Lightweight-Chart/cssCharts.css"> 
 </head>
 
-<?php if (!empty($_SESSION['logado'])) { ?>
+<?php if (!empty($_SESSION['logado']) && $_SERVER['SCRIPT_NAME'] != '/login.php') { ?>
     <body>
         <div id="wrapper">
             <nav class="navbar navbar-default top-navbar" role="navigation">
@@ -26,7 +26,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.php"><i class="large material-icons">track_changes</i> <strong>Projetos</strong></a>
+                    <a class="navbar-brand waves-effect waves-dark" href="index.php"><i class="large material-icons">track_changes</i> <strong>Apontamento </strong></a>
     				
     		<div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
                 </div>
@@ -35,7 +35,7 @@
     				<li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown4"><i class="fa fa-envelope fa-fw"></i> <i class="material-icons right">arrow_drop_down</i></a></li>				
     				<li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown3"><i class="fa fa-tasks fa-fw"></i> <i class="material-icons right">arrow_drop_down</i></a></li>
     				<li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown2"><i class="fa fa-bell fa-fw"></i> <i class="material-icons right">arrow_drop_down</i></a></li>
-    				  <li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b>John Doe</b> <i class="material-icons right">arrow_drop_down</i></a></li>
+    				  <li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
                 </ul>
             </nav>
     		<!-- Dropdown Structure -->
@@ -44,7 +44,7 @@
         </li>
         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
         </li> 
-        <li><a href="../login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        <li><a href="<?php echo app::dominio; ?>login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
     </ul>
     <ul id="dropdown2" class="dropdown-content w250">
@@ -212,7 +212,7 @@
                         <li>
                             <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
                         </li>
-                        <li>
+                        <!-- <li>
                             <a href="ui-elements.php" class="waves-effect waves-dark"><i class="fa fa-desktop"></i> UI Elements</a>
                         </li>
     					<li>
@@ -224,36 +224,99 @@
                         
                         <li>
                             <a href="table.php" class="waves-effect waves-dark"><i class="fa fa-table"></i> Responsive Tables</a>
-                        </li>
+                        </li> -->
                         <li>
-                            <a href="form.php" class="waves-effect waves-dark"><i class="fa fa-edit"></i> Forms </a>
+                            <a href="#" class="waves-effect waves-dark"><i class="fa fa-user"></i> Usuários<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                 <li>
+                                    <a href="<?php echo app::dominio; ?>usuarios.php" >Cadastro de Usuários</a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li>
                             <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros básicos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="<?php echo app::dominio; ?>clientes.php" >Cadastro de Clientes</a>
+                                    <a href="#">Clientes<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo app::dominio; ?>clientes.php" >Cadastro de Clientes</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Buscar Cliente</a>
+                                        </li>
+                                    </ul>
                                 </li>
+
                                 <li>
-                                    <a href="<?php echo app::dominio; ?>projetos.php" >Cadastro de Projetos</a>
+                                    <a href="#">Projetos<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo app::dominio; ?>projetos.php" >Cadastro de Projetos</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Buscar Projetos</a>
+                                        </li>
+
+                                    </ul>
                                 </li>
+
                                 <li>
-                                    <a href="<?php echo app::dominio; ?>pilares.php" >Cadastro de Pilares</a>
+                                    <a href="#">Pilares<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo app::dominio; ?>pilares.php" >Cadastro de Pilares</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Buscas Pilares</a>
+                                        </li>
+
+                                    </ul>
                                 </li>
+
                                 <li>
-                                    <a href="<?php echo app::dominio; ?>contratacoes.php" >Tipo de contratação</a>
+                                    <a href="#">Contratações<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                           <a href="<?php echo app::dominio; ?>contratacoes.php" >Tipo de contratação</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Buscar Contratações</a>
+                                        </li>
+
+                                    </ul>
                                 </li>
+
                                 <li>
-                                    <a  href="<?php echo app::dominio; ?>perfil_prof.php" >Cadastro de perfil profissional</a>
+                                    <a href="#">Perfil Profissional<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                             <a href="<?php echo app::dominio; ?>perfil_prof.php" >Cadastro de perfil profissional</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Buscar Perfis Profissionais</a>
+                                        </li>
+
+                                    </ul>
                                 </li>
+
                                 <li>
-                                    <a href="<?php echo app::dominio; ?>responsabilidades.php" >Cadastro de responsabilidade</a>
+                                    <a href="#">Responsabilidades<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="<?php echo app::dominio; ?>responsabilidades.php" >Cadastro de responsabilidade</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Busca de Responsabilidades</a>
+                                        </li>
+
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
 
-                        <li>
+                        <!-- <li>
                             <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
@@ -282,7 +345,7 @@
                         </li>
                         <li>
                             <a href="empty.php" class="waves-effect waves-dark"><i class="fa fa-fw fa-file"></i> Empty Page</a>
-                        </li>
+                        </li> -->
                     </ul>
 
                 </div>

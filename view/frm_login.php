@@ -3,18 +3,23 @@
 ?>
 
 <body>
-	<?php
-	if (!empty($msg)) {
-		if (!$success) {
-			echo $msg;
-		}
-	}
-	?>
-	<div id="page-inner"> 
+ 
+	<div id="page-inner">
     	<div class="row">
-    		<div class="col-lg-3">
-    			<div class="card">
-    				<div class="card-content">
+    		<div class="col-lg-4">
+			</div>
+    		<div class="col-lg-4">
+    			<div class="card" >
+    				<div class="card-content" >
+    				<?php	
+						if (!empty($msg)) { 
+						  if (!$success) {
+						    echo "<div class='alert alert-danger'>
+						            <strong>ERRO !</strong> $msg
+						          </div>";
+						  }                           
+						}
+						?>
 						<form action="login.php" name="login" method="post">	
 							<div class="row">
 				                <div class="col s11">
@@ -30,12 +35,14 @@
 				            </div>
 				            <div class="row">
 								<div class="col s1">
-					               <input type="submit" name="login" value="Logar" id="submit" class="waves-effect waves-light btn">
+					               <input type="submit" name="btn" value="Logar" id="submit" class="waves-effect waves-light btn">
 								</div>
 							</div>
 						</form>
 					</div>
 				</div>
+			</div>
+			<div class="col-lg-4">
 			</div>
 		</div>
 	</div>

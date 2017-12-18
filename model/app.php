@@ -21,6 +21,10 @@ class app
  			header('LOCATION:login.php');
  		}
  	}
+ 	
+ 	public function deslogar(){
+ 		session_destroy();
+ 	}
 
  	public function getRequest($variable, $default_value = '') 
  	{
