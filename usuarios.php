@@ -5,7 +5,7 @@ define('SAVE', 1);
 define('GET', 2);
 
 $usuario = new usuario;
-$usuario->usuarioID			= $usuario->getRequest('usuarioID', 1);
+$usuario->usuarioID			= $usuario->getRequest('usuarioID', 0);
 $usuario->nome 				= $usuario->getRequest('nome', '');
 $usuario->email 			= $usuario->getRequest('email', '');
 $usuario->data_nascimento	= $usuario->getRequest('data_nascimento', '');

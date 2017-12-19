@@ -26,7 +26,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.php"><i class="large material-icons">track_changes</i> <strong>Apontamento </strong></a>
+                    <a class="navbar-brand waves-effect waves-dark" href="index.php"><img src="<?php echo app::path?>view/assets/img/bravo-icon.png"></a>
     				
     		<div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
                 </div>
@@ -231,6 +231,9 @@
                                  <li>
                                     <a href="<?php echo app::dominio; ?>usuarios.php" >Cadastro de Usuários</a>
                                 </li>
+                                <li>
+                                    <a href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consulta de Usuários</a>
+                                </li>
                             </ul>
                         </li>
 
@@ -244,7 +247,7 @@
                                             <a href="<?php echo app::dominio; ?>clientes.php" >Cadastro de Clientes</a>
                                         </li>
                                         <li>
-                                            <a href="#">Buscar Cliente</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_clientes.php" >Buscar Cliente</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -256,7 +259,7 @@
                                             <a href="<?php echo app::dominio; ?>projetos.php" >Cadastro de Projetos</a>
                                         </li>
                                         <li>
-                                            <a href="#">Buscar Projetos</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_projetos.php" >Buscar Projetos</a>
                                         </li>
 
                                     </ul>
@@ -269,7 +272,7 @@
                                             <a href="<?php echo app::dominio; ?>pilares.php" >Cadastro de Pilares</a>
                                         </li>
                                         <li>
-                                            <a href="#">Buscas Pilares</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_pilares.php" >Buscar Pilares</a>
                                         </li>
 
                                     </ul>
@@ -282,7 +285,7 @@
                                            <a href="<?php echo app::dominio; ?>contratacoes.php" >Tipo de contratação</a>
                                         </li>
                                         <li>
-                                            <a href="#">Buscar Contratações</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_contratacoes.php" >Buscar Contratações</a>
                                         </li>
 
                                     </ul>
@@ -295,7 +298,7 @@
                                              <a href="<?php echo app::dominio; ?>perfil_prof.php" >Cadastro de perfil profissional</a>
                                         </li>
                                         <li>
-                                            <a href="#">Buscar Perfis Profissionais</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_perfil_prof.php" >Buscar Perfis Profissionais</a>
                                         </li>
 
                                     </ul>
@@ -308,47 +311,14 @@
                                             <a href="<?php echo app::dominio; ?>responsabilidades.php" >Cadastro de responsabilidade</a>
                                         </li>
                                         <li>
-                                            <a href="#">Busca de Responsabilidades</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_responsabilidades.php" >Busca de Responsabilidades</a>
                                         </li>
 
                                     </ul>
                                 </li>
                             </ul>
                         </li>
-
-                        <!-- <li>
-                            <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Link</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Link</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Link<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Link</a>
-                                        </li>
-
-                                    </ul>
-
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="empty.php" class="waves-effect waves-dark"><i class="fa fa-fw fa-file"></i> Empty Page</a>
-                        </li> -->
                     </ul>
-
                 </div>
-
             </nav>
 <?php   } ?>

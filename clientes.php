@@ -39,9 +39,5 @@ if ($action == 3) {
 	$msg = $cliente->msg;
 }
 
-if ($action == 4) {
-	//list
-}
-
 require_once('view/clientes/frm_clientes.php');
 ?>

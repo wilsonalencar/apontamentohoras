@@ -10,6 +10,9 @@
 	<script src="<?php echo app::dominio; ?>view/assets/js/easypiechart.js"></script>
 	<script src="<?php echo app::dominio; ?>view/assets/js/easypiechart-data.js"></script>
 	<script src="<?php echo app::dominio; ?>view/assets/js/Lightweight-Chart/jquery.chart.js"></script>
+    <!-- DATA TABLE SCRIPTS -->
+    <script src="<?php echo app::dominio; ?>view/assets/js/dataTables/jquery.dataTables.js"></script>
+    <script src="<?php echo app::dominio; ?>view/assets/js/dataTables/dataTables.bootstrap.js"></script>
     <script src="<?php echo app::dominio; ?>view/assets/js/custom-scripts.js"></script> 
     <script src="<?php echo app::dominio; ?>view/assets/js/function.js"></script>
 </body>

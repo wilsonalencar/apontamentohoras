@@ -106,6 +106,29 @@ class contratacao extends app
 		return true;
 	}
 
+	public function lista()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM projetos");
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$row['status'] = $this->formatStatus($row['status']);
+			$this->array[] = $row;
+		}
+	}
+
+	private function formatStatus($status)
+	{
+		if ($status == 'A') {
+			return "Ativo";
+		}
+		return "Inativo";
+	}
+	
 	public function deleta($id)
 	{
 		if (!$id) {

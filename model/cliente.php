@@ -159,6 +159,38 @@ class cliente extends app
 		return true;
 	}
 
+	public function lista()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT 
+			A.id, 
+			A.codigo, 
+			A.nome, 
+			A.cnpj, 
+			B.nome as cidade, 
+			B.uf, 
+			A.email, 
+			A.status FROM clientes A
+			INNER JOIN municipios B ON A.cod_municipio = B.codigo");
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento do cliente";	
+			return false;	
+		}
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$row['status'] = $this->formatStatus($row['status']);
+			$this->array[] = $row;
+		}
+	}
+
+	private function formatStatus($status)
+	{
+		if ($status == 'A') {
+			return "Ativo";
+		}
+		return "Inativo";
+	}
+
 	public function deleta($id)
 	{
 		if (!$id) {

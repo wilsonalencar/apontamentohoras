@@ -150,6 +150,20 @@ class usuario extends app
 		return true;
 	}
 
+	public function lista()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT usuarioID,nome,email,data_nascimento FROM usuarios");
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos usuarios";	
+			return false;	
+		}
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+    		$row['data_nascimento'] = date('d-m-Y', strtotime($row['data_nascimento']));
+			$this->array[] = $row;
+		}
+	}
 	public function deleta($id)
 	{
 		if (!$id) {
