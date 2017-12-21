@@ -109,10 +109,10 @@ class contratacao extends app
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM projetos");
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM contratacoes");
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			$this->msg = "Ocorreu um erro no carregamento das contratações";	
 			return false;	
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {

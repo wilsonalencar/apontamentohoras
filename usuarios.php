@@ -3,6 +3,7 @@ require_once('model/usuario.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $usuario = new usuario;
 $usuario->usuarioID			= $usuario->getRequest('usuarioID', 0);
@@ -20,17 +21,13 @@ if ($action == SAVE) {
 }
 
 if ($action == GET) {
-	echo json_encode(array('success'=>$usuario->get($usuario->getRequest('usuarioID')), 'msg'=>$usuario->msg, 'data'=>$usuario->array));
+	echo json_encode(array('success'=>$usuario->get($usuario->usuarioID), 'msg'=>$usuario->msg, 'data'=>$usuario->array));
 	exit;
 }
 
-if ($action == 3) {
-	$success = $usuario->deleta($usuario->get($usuario->getRequest('usuarioID')));
+if ($action == DEL) {
+	$success = $usuario->deleta($usuario->usuarioID);
 	$msg = $usuario->msg;
-}
-
-if ($action == 4) {
-	//list
 }
 
 require_once('view/usuarios/frm_usuarios.php');

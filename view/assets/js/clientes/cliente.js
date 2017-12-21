@@ -4,6 +4,7 @@ if (id > 0) {
    getDataCliente(id);
 }
 
+
 function getDataCliente(id)
 {
    $.ajax({
@@ -21,7 +22,7 @@ function getDataCliente(id)
                alert(d.msg);
                return false;
             }
-
+            
             $("#id").val(d.data.id);
             $("#codigo").val(d.data.codigo);
             $("#codigo").attr("readonly", "true");

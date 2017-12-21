@@ -3,6 +3,7 @@ require_once('model/contratacao.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $contratacao = new contratacao;
 $contratacao->id 			= $contratacao->getRequest('id', 0);
@@ -24,14 +25,11 @@ if ($action == GET) {
 	exit;
 }
 
-if ($action == 3) {
-	$success = $contratacao->deleta($contratacao->get($contratacao->getRequest('id')));
+if ($action == DEL) {
+	$success = $contratacao->deleta($contratacao->id);
 	$msg = $contratacao->msg;
 }
 
-if ($action == 4) {
-	//list
-}
 
 require_once('view/contratacao/frm_contratacao.php');
 ?>

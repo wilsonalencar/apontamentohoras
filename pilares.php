@@ -3,6 +3,7 @@ require_once('model/pilar.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $pilar = new pilar;
 $pilar->id 			= $pilar->getRequest('id', 0);
@@ -24,14 +25,11 @@ if ($action == GET) {
 	exit;
 }
 
-if ($action == 3) {
-	$success = $pilar->deleta($pilar->get($pilar->getRequest('id')));
+if ($action == DEL) {
+	$success = $pilar->deleta($pilar->id);
 	$msg = $pilar->msg;
 }
 
-if ($action == 4) {
-	//list
-}
 
 require_once('view/pilares/frm_pilares.php');
 ?>

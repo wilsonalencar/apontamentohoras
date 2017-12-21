@@ -3,6 +3,7 @@ require_once('model/projeto.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $projeto = new projeto;
 $projeto->id 			= $projeto->getRequest('id', 0);
@@ -24,14 +25,11 @@ if ($action == GET) {
 	exit;
 }
 
-if ($action == 3) {
-	$success = $projeto->deleta($projeto->get($projeto->getRequest('id')));
+if ($action == DEL) {
+	$success = $projeto->deleta($projeto->id);
 	$msg = $projeto->msg;
 }
 
-if ($action == 4) {
-	//list
-}
 
 require_once('view/projetos/frm_projetos.php');
 ?>

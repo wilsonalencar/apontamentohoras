@@ -3,6 +3,7 @@ require_once('model/responsabilidade.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $responsabilidades = new responsabilidade;
 $responsabilidades->id 			= $responsabilidades->getRequest('id', 0);
@@ -24,13 +25,9 @@ if ($action == GET) {
 	exit;
 }
 
-if ($action == 3) {
-	$success = $responsabilidades->deleta($responsabilidades->get($responsabilidades->getRequest('id')));
+if ($action == DEL) {
+	$success = $responsabilidades->deleta($responsabilidades->id);
 	$msg = $responsabilidades->msg;
-}
-
-if ($action == 4) {
-	//list
 }
 
 require_once('view/responsabilidades/frm_responsabilidades.php');

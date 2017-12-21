@@ -204,7 +204,6 @@ class cliente extends app
 			$this->msg = "Ocorreu um erro na exclusão do cliente";	
 			return false;	
 		}
-
 		$this->msg = 'Registro excluido com sucesso';
 		return true;	
 	}

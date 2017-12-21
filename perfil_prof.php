@@ -3,6 +3,7 @@ require_once('model/perfilprof.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $perfilprof = new perfilprof;
 $perfilprof->id 			= $perfilprof->getRequest('id', 0);
@@ -24,14 +25,11 @@ if ($action == GET) {
 	exit;
 }
 
-if ($action == 3) {
-	$success = $perfilprof->deleta($perfilprof->get($perfilprof->getRequest('id')));
+if ($action == DEL) {
+	$success = $perfilprof->deleta($perfilprof->id);
 	$msg = $perfilprof->msg;
 }
 
-if ($action == 4) {
-	//list
-}
 
 require_once('view/perfil_profissional/frm_perfilprof.php');
 ?>

@@ -4,6 +4,7 @@ require_once('model/municipio.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('DEL', 3);
 
 $cliente = new cliente;
 $municipio = new municipio;
@@ -34,8 +35,8 @@ if ($action == GET) {
 	exit;
 }
 
-if ($action == 3) {
-	$success = $cliente->deleta($cliente->get($cliente->getRequest('id')));
+if ($action == DEL) {
+	$success = $cliente->deleta($cliente->id);
 	$msg = $cliente->msg;
 }
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"> 
 <head>
@@ -26,7 +25,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.php"><img src="<?php echo app::path?>view/assets/img/bravo-icon.png"></a>
+                    <a class="navbar-brand waves-effect waves-dark" href="index.php">Bravo</a>
     				
     		<div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
                 </div>
@@ -204,27 +203,13 @@
                                 </a>
                             </li>
     </ul>  
-    	   <!--/. NAV TOP  -->
             <nav class="navbar-default navbar-side" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="main-menu">
 
                         <li>
-                            <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a>
+                            <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Index</a>
                         </li>
-                        <!-- <li>
-                            <a href="ui-elements.php" class="waves-effect waves-dark"><i class="fa fa-desktop"></i> UI Elements</a>
-                        </li>
-    					<li>
-                            <a href="chart.php" class="waves-effect waves-dark"><i class="fa fa-bar-chart-o"></i> Charts</a>
-                        </li>
-                        <li>
-                            <a href="tab-panel.php" class="waves-effect waves-dark"><i class="fa fa-qrcode"></i> Tabs & Panels</a>
-                        </li>
-                        
-                        <li>
-                            <a href="table.php" class="waves-effect waves-dark"><i class="fa fa-table"></i> Responsive Tables</a>
-                        </li> -->
                         <li>
                             <a href="#" class="waves-effect waves-dark"><i class="fa fa-user"></i> Usuários<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">

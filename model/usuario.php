@@ -139,7 +139,7 @@ class usuario extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT usuarioID,nome,email,data_nascimento,senha FROM usuarios WHERE usuarioID =  %d ", 1);
+		$query = sprintf("SELECT usuarioID,nome,email,data_nascimento,senha FROM usuarios WHERE usuarioID =  %d ", $this->usuarioID);
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do usuário";	
 			return false;	

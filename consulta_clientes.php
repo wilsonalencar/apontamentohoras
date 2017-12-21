@@ -28,31 +28,39 @@
                         </div>
                         <div class="card-content">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Nome</th>
-                                            <th>Cidade</th>
-                                            <th>UF</th>
-                                            <th>Status</th>
-                                            <th>Alterar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach($cliente->array as $row){ ?>
-                                            <tr class="odd gradeX">
-                                                <td><?php echo $row['codigo']; ?></td>
-                                                <td><?php echo $row['nome']; ?></td>
-                                                <td><?php echo $row['cidade']; ?></td>
-                                                <td><?php echo $row['uf']; ?></td>
-                                                <td><?php echo $row['status']; ?></td>
-                                                <td>E/D</td>
+                                <form action="clientes.php" method="post" id="clientes_edit">
+                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Nome</th>
+                                                <th>Cidade</th>
+                                                <th>UF</th>
+                                                <th>Status</th>
+                                                <th>Alterar</th>
                                             </tr>
-                                        <?php } ?>
-
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        <?php
+                                        if (!empty($cliente->array)) {
+                                            foreach($cliente->array as $row){ ?>
+                                                <tr class="odd gradeX">
+                                                    <td><?php echo $row['codigo']; ?></td>
+                                                    <td><?php echo $row['nome']; ?></td>
+                                                    <td><?php echo $row['cidade']; ?></td>
+                                                    <td><?php echo $row['uf']; ?></td>
+                                                    <td><?php echo $row['status']; ?></td>
+                                                    <td>
+                                                    <i onclick="edita(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">mode_edit</i>
+                                                    <i onclick="exclui(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                    </td>
+                                                </tr>
+                                            <?php } }?>
+                                       </tbody>
+                                    </table>
+                                <input type="hidden" value="0" name="id" id="id">
+                                <input type="hidden" value="0" name="action" id="action">
+                                </form>
                             </div>  
                         </div>
                     </div>
@@ -60,7 +68,28 @@
     require_once(app::path.'view/footer.php');
 ?>
 <script>
-$(document).ready(function () {
+
+$(document).ready(function (){
     $('#dataTables-example').dataTable();
 });
+
+function edita(id) {
+    if (id > 0) {
+        document.getElementById('id').value = id;
+        document.getElementById('clientes_edit').submit();
+    }
+}
+
+function exclui(id) {
+    var r = confirm("Certeza que quer excluir este registro?");
+    if (r != true) {
+        return false;
+    } 
+    if (id > 0) {
+        document.getElementById('id').value = id;
+        document.getElementById('action').value = "3";
+        document.getElementById('clientes_edit').submit();
+    }   
+}
+
 </script>
