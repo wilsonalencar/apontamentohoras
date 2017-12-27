@@ -20,7 +20,13 @@
 						  }                           
 						}
 						?>
-						<form action="login.php" name="login" method="post">	
+						<form action="login.php" name="login" method="post">
+						<div class="row">
+							<div class="col s3"></div>
+								<div class="col s4">
+									<img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">	
+								</div>
+						</div>
 							<div class="row">
 				                <div class="col s11">
 				                <label for="login">Login</label>

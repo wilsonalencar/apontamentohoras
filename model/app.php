@@ -1,16 +1,14 @@
 <?php
 session_start();
 require_once('database.php');
+require_once('config.php');
 
 /**
 * Lucas Alencar
 */
-class app
+class app extends config
 {
-	const  dominio = 'http://dev.apontamentohoras/';
-	const  path    = '/var/www/html/unionit/apontamentohoras/';
 	public $getDB;
-
  	public function __construct(){
  		$this->validLogin();
  		$this->getDB = new dba;

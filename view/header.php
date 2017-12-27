@@ -25,7 +25,10 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.php">Bravo</a>
+                    <a class="navbar-brand waves-effect waves-dark" href="index.php">
+                        <img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">
+                    </a>
+
     				
     		<div id="sideNav" href=""><i class="material-icons dp48">toc</i></div>
                 </div>
@@ -206,7 +209,6 @@
             <nav class="navbar-default navbar-side" role="navigation">
                 <div class="sidebar-collapse">
                     <ul class="nav" id="main-menu">
-
                         <li>
                             <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Index</a>
                         </li>
