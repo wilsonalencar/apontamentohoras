@@ -72,7 +72,7 @@
                         <input type="hidden" id="id" name="id" value="<?php echo $pilar->id; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
-                            <input type="submit" name="Voltar" value="Voltar" class="waves-effect waves-light btn">
+                            <input type="reset" name="Limpar" value="Limpar" class="waves-effect waves-light btn">
                         </div>
                         <div class="input-field col s1">
                             <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">

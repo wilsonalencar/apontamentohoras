@@ -11,6 +11,8 @@ if (!empty($_POST)) {
 	$success = $usuario->login();
 	$msg = $usuario->msg;
 
+	
+	
 	if ($success) {	
 		header('LOCATION:/');
 		exit();

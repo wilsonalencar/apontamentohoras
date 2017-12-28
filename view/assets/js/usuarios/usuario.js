@@ -24,8 +24,11 @@ function getDataUsuario(id)
             $("#usuarioID").val(d.data.usuarioID);
             $("#nome").val(d.data.nome);
             $("#email").val(d.data.email);
-            $("#data_nascimento").val(d.data.data_nascimento);
+            $("#id_perfilusuario").val(d.data.id_perfilusuario);
+            $("#id_responsabilidade").val(d.data.id_responsabilidade);
+            $("#status").val(d.data.status);
             $("#senha").val(d.data.senha);
+            $("#senha").attr('disabled', 'true');
         }
     });
 }
@@ -45,9 +48,15 @@ $( document ).ready(function() {
         return false;
     }
 
-    if ($("#data_nascimento").val() == '') {
-        alert('Informar a data de nascimento do usuário');
-        $("#data_nascimento").focus();
+    if ($("#id_responsabilidade").val() == '') {
+        alert('Informar a responsabilidade do Usuario');
+        $("#id_responsabilidade").focus();
+        return false;
+    }
+
+    if ($("#id_perfilusuario").val() == '') {
+        alert('Informar o perfil do Usuario');
+        $("#id_perfilusuario").focus();
         return false;
     }
 

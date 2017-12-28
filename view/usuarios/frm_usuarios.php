@@ -53,16 +53,53 @@
                           <input type="text" id="email" name="email" class="validate" maxlength="255">
                         </div>
                       </div>
+                      
                       <div class="row">
-                        <div class="col s6">
-                        <label for="data_nascimento">Data de Nascimento</label>
-                          <input type="date" id="data_nascimento" name="data_nascimento" class="validate" maxlength="10">
+                        <div class="col s3">
+                            <label for="id_perfilusuario">Perfil</label>
+                            <select id="id_perfilusuario" name="id_perfilusuario" class="form-control input-sm">
+                              <option value="" disabled selected>Perfil</option>
+                              <?php $usuario->montaSelect($row['id']); ?>
+                            </select>
                         </div>
                       </div>
+
                       <div class="row">
-                        <div class="col s6">
+                        <div class="col s3">
+                            <label for="id_responsabilidade">Responsabilidade</label>
+                            <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
+                              <option value="">Responsabilidades</option>
+                                <?php $responsabilidade->montaSelect($row['id']); ?>
+                            </select>
+                        </div>
+                      </div>
+                      
+                      <div class="row">
+                        <div class="col s3">
                         <label for="senha">Senha</label>
                           <input type="password" id="senha" name="senha" class="validate" maxlength="255">
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <label for="senha">Resetar Senha</label><br>
+                          <p>
+                            <input class="with-gap" name="reset_senha" value="S" checked type="radio" id="test3"  />
+                            <label for="test3">Sim </label>
+                          
+                            <input class="with-gap" name="reset_senha" value="N" type="radio" id="test2" />
+                            <label for="test2">Não </label>
+                          </p>
+                      </div>
+
+                      <div class="row">
+                        <div class="col s3">
+                        <label for="Status">Status</label>
+                          <select id="status" name="status" class="form-control input-sm">
+                            <option value="" disabled selected>Status (Ativo)</option>
+                            <option value="A">Ativo</option>
+                            <option value="I">Inativo</option>
+                          </select>
                         </div>
                       </div>
 
@@ -73,7 +110,7 @@
                         <input type="hidden" id="usuarioID" name="usuarioID" value="<?php echo $usuario->usuarioID; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
-                            <input type="submit" name="Voltar" value="Voltar" class="waves-effect waves-light btn">
+                            <input type="reset" name="Limpar" value="Limpar" class="waves-effect waves-light btn">
                         </div>
                         <div class="input-field col s1">
                             <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">

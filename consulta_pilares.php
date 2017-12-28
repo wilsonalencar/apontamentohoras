@@ -27,6 +27,23 @@
                              Busca de Pilares
                         </div>
                         <div class="card-content">
+                        <?php
+                              if (!empty($msg)) { 
+
+                                if ($success) {
+                                    echo "<div class='alert alert-success'>
+                                            <strong>Sucesso !</strong> $msg
+                                          </div>";
+                                  }
+
+                                  if (!$success) {
+                                    echo "<div class='alert alert-danger'>
+                                            <strong>ERRO !</strong> $msg
+                                          </div>";
+
+                                  }                           
+                                }
+                             ?> 
                             <div class="table-responsive">
                                 <form action="pilares.php" method="post" id="pilar_edit">
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">

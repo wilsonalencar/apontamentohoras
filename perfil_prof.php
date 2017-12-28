@@ -28,6 +28,8 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $perfilprof->deleta($perfilprof->id);
 	$msg = $perfilprof->msg;
+	require_once('consulta_perfil_prof.php');
+	exit;
 }
 
 

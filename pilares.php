@@ -28,6 +28,8 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $pilar->deleta($pilar->id);
 	$msg = $pilar->msg;
+	require_once('consulta_pilares.php');
+	exit;
 }
 
 

@@ -1,16 +1,25 @@
 <?php
 session_start();
 require_once('database.php');
+require_once('funcionalidadeConst.php');
 
 /**
 * Lucas Alencar
 */
 class app extends config
-{
+{	
+	const STATUS_SISTEMA_ATIVO = 'A';
+	const STATUS_SISTEMA_INATIVO = 'I';
+
 	public $getDB;
  	public function __construct(){
  		$this->validLogin();
  		$this->getDB = new dba;
+
+ 		if (!$this->validAccess()) {
+ 			header('LOCATION:index.php');
+ 			//redireciona
+ 		}
  	}
  	private function validLogin()
  	{
@@ -39,6 +48,25 @@ class app extends config
 	       return $_REQUEST[$variable];
 
 	   return $default_value;
+	}
+
+	public function checkAccess($perfil, $funcionalidadeID)
+	{	
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT count(1) as acesso FROM permissaoacesso where (select count(1) FROM funcionalidades where id = %d AND status = '%s') > 0 AND id_perfilusuario = %d and id_funcionalidade = %d", 
+			$funcionalidadeID, $this::STATUS_SISTEMA_ATIVO ,$perfil, $funcionalidadeID);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do perfil";
+			return false;	
+		}		
+		
+		$return = $result->fetch_array(MYSQLI_ASSOC);
+		if ( (int) $return['acesso'] > 0) {
+			return true;	
+		}
+
+		return false;
 	}
 
 	public function validaCNPJ($cnpj)
@@ -131,6 +159,44 @@ class app extends config
 	
 		return $isCnpjValid;			
 	}
+
+	private function validAccess()
+	{	
+		$file = $_SERVER['SCRIPT_NAME'];
+		$funcConst = new funcionalidadeConst;
+		
+		if (($file == '/consulta_clientes.php' || $file == '/clientes.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cliente)) {
+			return false;
+		}
+
+		if (($file == '/consulta_contratacoes.php' || $file == '/contratacoes.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_contratacoes)) {
+			return false;
+		}
+
+		if (($file == '/consulta_perfil_prof.php' || $file == '/perfil_prof.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_perfilprofissional)) {
+			return false;
+		}
+
+		if (($file == '/consulta_pilares.php' || $file == '/pilares.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_pilares)) {
+			return false;
+		}
+
+		if (($file == '/consulta_projetos.php' || $file == '/projetos.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)) {
+			return false;
+		}
+
+		if (($file == '/consulta_responsabilidades.php' || $file == '/responsabilidades.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_responsabilidade)) {
+			return false;
+		}
+
+		if (($file == '/consulta_usuarios.php' || $file == '/usuarios.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_usuario)) {
+			return false;
+		}
+		
+		return true;
+	}
 }
 
+$app = new app;
+$funcConst = new funcionalidadeConst;
 ?>

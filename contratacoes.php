@@ -28,6 +28,8 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $contratacao->deleta($contratacao->id);
 	$msg = $contratacao->msg;
+	require_once('consulta_contratacoes.php');
+	exit;
 }
 
 

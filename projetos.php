@@ -28,6 +28,8 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $projeto->deleta($projeto->id);
 	$msg = $projeto->msg;
+	require_once('consulta_projetos.php');
+	exit;
 }
 
 

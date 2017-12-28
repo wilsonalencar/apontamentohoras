@@ -212,33 +212,26 @@
                         <li>
                             <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Index</a>
                         </li>
+                        
                         <li>
-                            <a href="#" class="waves-effect waves-dark"><i class="fa fa-user"></i> Usuários<span class="fa arrow"></span></a>
+                            <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cadastrobasico)){ ?>
+                                <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros básicos<span class="fa arrow"></span></a>
+                            <?php } ?>
                             <ul class="nav nav-second-level">
-                                 <li>
-                                    <a href="<?php echo app::dominio; ?>usuarios.php" >Cadastro de Usuários</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consulta de Usuários</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li>
-                            <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros básicos<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Clientes<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="<?php echo app::dominio; ?>clientes.php" >Cadastro de Clientes</a>
-                                        </li>
-                                        <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_clientes.php" >Buscar Cliente</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cliente)){ ?>
+                                    <li>
+                                        <a href="#">Clientes<span class="fa arrow"></span></a>
+                                        <ul class="nav nav-third-level">
+                                            <li>
+                                                <a href="<?php echo app::dominio; ?>clientes.php" >Cadastro de Clientes</a>
+                                            </li>
+                                            <li>
+                                                <a href="<?php echo app::dominio; ?>consulta_clientes.php" >Buscar Cliente</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                <?php } ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
                                 <li>
                                     <a href="#">Projetos<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
@@ -251,7 +244,8 @@
 
                                     </ul>
                                 </li>
-
+                                <?php } ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_pilares)){ ?>
                                 <li>
                                     <a href="#">Pilares<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
@@ -264,7 +258,8 @@
 
                                     </ul>
                                 </li>
-
+                                <?php } ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_contratacoes)){ ?>
                                 <li>
                                     <a href="#">Contratações<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
@@ -277,7 +272,8 @@
 
                                     </ul>
                                 </li>
-
+                                 <?php } ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_perfilprofissional)){ ?>
                                 <li>
                                     <a href="#">Perfil Profissional<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
@@ -290,7 +286,8 @@
 
                                     </ul>
                                 </li>
-
+                                 <?php } ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_responsabilidade)){ ?>
                                 <li>
                                     <a href="#">Responsabilidades<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
@@ -303,6 +300,20 @@
 
                                     </ul>
                                 </li>
+                                 <?php } ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_usuario)){ ?>
+                                <li>
+                                    <a href="#" class="waves-effect waves-dark"> Usuários<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                         <li>
+                                            <a href="<?php echo app::dominio; ?>usuarios.php" >Cadastro de Usuários</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consulta de Usuários</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                 <?php } ?>
                             </ul>
                         </li>
                     </ul>

@@ -26,6 +26,23 @@
                              Busca de Usuários
                         </div>
                         <div class="card-content">
+                            <?php
+                              if (!empty($msg)) { 
+
+                                if ($success) {
+                                    echo "<div class='alert alert-success'>
+                                            <strong>Sucesso !</strong> $msg
+                                          </div>";
+                                  }
+
+                                  if (!$success) {
+                                    echo "<div class='alert alert-danger'>
+                                            <strong>ERRO !</strong> $msg
+                                          </div>";
+
+                                  }                           
+                                }
+                             ?> 
                             <div class="table-responsive">
                             <form action="usuarios.php" method="post" id="usuarios_edit">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
@@ -33,7 +50,7 @@
                                         <tr>
                                             <th>Nome</th>
                                             <th>Email</th>
-                                            <th>Data de Nascimento</th>
+                                            <th>Perfil</th>
                                             <th>Alterar</th>
                                         </tr>
                                     </thead>
@@ -44,7 +61,7 @@
                                             <tr class="odd gradeX">
                                                 <td><?php echo $row['nome']; ?></td>
                                                 <td><?php echo $row['email']; ?></td>
-                                                <td><?php echo $row['data_nascimento']; ?></td>
+                                                <td><?php echo $row['id_perfilusuario']; ?></td>
                                                 <td>
                                                     <i onclick="edita(this.id)" id="<?php echo $row['usuarioID']; ?>" class="material-icons">mode_edit</i>
                                                     <i onclick="exclui(this.id)" id="<?php echo $row['usuarioID']; ?>" class="material-icons">delete</i>

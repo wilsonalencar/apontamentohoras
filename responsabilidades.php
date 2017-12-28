@@ -28,6 +28,8 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $responsabilidades->deleta($responsabilidades->id);
 	$msg = $responsabilidades->msg;
+	require_once('consulta_responsabilidades.php');
+	exit;
 }
 
 require_once('view/responsabilidades/frm_responsabilidades.php');
