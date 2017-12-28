@@ -84,10 +84,10 @@
                       <div class="row">
                         <label for="senha">Resetar Senha</label><br>
                           <p>
-                            <input class="with-gap" name="reset_senha" value="S" checked type="radio" id="test3"  />
+                            <input class="with-gap" name="reset_senha" value="S" type="radio" id="test3"  />
                             <label for="test3">Sim </label>
                           
-                            <input class="with-gap" name="reset_senha" value="N" type="radio" id="test2" />
+                            <input class="with-gap" name="reset_senha" value="N" checked type="radio" id="test2" />
                             <label for="test2">Não </label>
                           </p>
                       </div>

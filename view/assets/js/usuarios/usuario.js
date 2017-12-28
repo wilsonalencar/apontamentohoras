@@ -27,8 +27,6 @@ function getDataUsuario(id)
             $("#id_perfilusuario").val(d.data.id_perfilusuario);
             $("#id_responsabilidade").val(d.data.id_responsabilidade);
             $("#status").val(d.data.status);
-            $("#senha").val(d.data.senha);
-            $("#senha").attr('disabled', 'true');
         }
     });
 }
