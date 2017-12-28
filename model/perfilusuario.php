@@ -7,7 +7,7 @@ class perfilusuario extends app
 	public function montaSelect($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT id,nome FROM perfilusuario ORDER BY nome";
+		$query = sprintf("SELECT id,nome FROM perfilusuario WHERE status = '%s' ORDER BY nome", $this::STATUS_SISTEMA_ATIVO);
 
 		if($result = $conn->query($query))
 		{

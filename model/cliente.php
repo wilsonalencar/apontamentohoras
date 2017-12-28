@@ -185,7 +185,7 @@ class cliente extends app
 
 	private function formatStatus($status)
 	{
-		if ($status == 'A') {
+		if ($status == $this::STATUS_SISTEMA_ATIVO) {
 			return "Ativo";
 		}
 		return "Inativo";

@@ -10,6 +10,8 @@ class app extends config
 {	
 	const STATUS_SISTEMA_ATIVO = 'A';
 	const STATUS_SISTEMA_INATIVO = 'I';
+	const RESET_TRUE = 'S';
+	const RESET_FALSE = 'N';
 
 	public $getDB;
  	public function __construct(){
@@ -164,7 +166,14 @@ class app extends config
 	{	
 		$file = $_SERVER['SCRIPT_NAME'];
 		$funcConst = new funcionalidadeConst;
-		
+		if ((!empty($_SESSION)) && $_SESSION['reset_senha'] == $this::RESET_TRUE && $file <> '/reset_senha.php') {
+			header('LOCATION:reset_senha.php');
+		}
+
+		if ((!empty($_SESSION)) && $file == '/reset_senha.php' && $_SESSION['reset_senha'] == $this::RESET_FALSE) {
+			return false;
+		}
+
 		if (($file == '/consulta_clientes.php' || $file == '/clientes.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cliente)) {
 			return false;
 		}

@@ -1,4 +1,3 @@
-
 var id = $("#usuarioID").val();
 if (id > 0) {
    getDataUsuario(id);

@@ -13,6 +13,7 @@ class usuario extends app
 	public $reset_senha;
 	public $status;
 	public $senha;
+	public $senha2;
 	public $msg;
 
 	private function check(){
@@ -45,6 +46,26 @@ class usuario extends app
 		return true;
 	}
 
+	private function checkReset(){
+			
+		if (empty($this->senha)) {
+			$this->msg = "Favor inserir a senha do usuário.";
+			return false;
+		}
+
+		if (empty($this->senha2)) {
+			$this->msg = "Favor inserir a senha para confirmação.";
+			return false;	
+		}
+
+		if ($this->senha != $this->senha2) {
+			$this->msg = "As senhas não são identicas, favor verificar.";
+			return false;	
+		}
+		
+		return true;
+	}
+
 
 	private function checkLogin(){
 		
@@ -70,7 +91,7 @@ class usuario extends app
 		}
 
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario FROM usuarios WHERE email = '%s' AND senha = '%s' AND status = '%s'", 
+		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario, reset_senha FROM usuarios WHERE email = '%s' AND senha = '%s' AND status = '%s'", 
 			$this->email, $this->senha, $this::STATUS_SISTEMA_ATIVO);	
 
 		if (!$result = $conn->query($query)) {
@@ -82,6 +103,7 @@ class usuario extends app
  			$_SESSION['nome'] 	   			= $row['nome'];
  			$_SESSION['email'] 				= $row['email'];
  			$_SESSION['id_perfilusuario'] 	= $row['id_perfilusuario'];
+ 			$_SESSION['reset_senha'] 		= $row['reset_senha'];
  			$_SESSION['logado'] 			= 1;	
  			
  			return true;		
@@ -99,7 +121,6 @@ class usuario extends app
 		if ($this->usuarioID > 0) {
 			return $this->update();
 		}
-
 		return $this->insert();
 	}
 
@@ -119,6 +140,25 @@ class usuario extends app
 			return false;	
 		}
 		$this->msg = "Registro inserido com sucesso!";
+		return true;
+	}
+
+	public function reset()
+	{
+		if (!$this->checkReset()) {
+			return false;
+		}
+
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf(" UPDATE usuarios SET senha = '%s', data_alteracao = NOW(), reset_senha = '%s' WHERE usuarioID = %d", 
+			$this->senha, $this::RESET_FALSE, $_SESSION['usuarioID']);	
+	
+		if (!$conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		$_SESSION['reset_senha'] = $this::RESET_FALSE;
+		header('LOCATION:index.php');
 		return true;
 	}
 
@@ -144,7 +184,7 @@ class usuario extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT nome, email, id_perfilusuario, id_responsabilidade, senha, reset_senha FROM usuarios WHERE usuarioID =  %d ", $this->usuarioID);
+		$query = sprintf("SELECT nome, email, id_perfilusuario, id_responsabilidade, senha, reset_senha, status FROM usuarios WHERE usuarioID =  %d ", $this->usuarioID);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do usuário";	

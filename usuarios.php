@@ -1,7 +1,7 @@
 <?php
 require_once('model/usuario.php');
 require_once('model/responsabilidade.php');
-require_once('model/ṕerfilusuario.php');
+require_once('model/perfilusuario.php');
 
 define('SAVE', 1);
 define('GET', 2);
@@ -23,12 +23,23 @@ $msg = '';
 $action 						= $usuario->getRequest('action', 0);
 
 if ($action == SAVE) {
+	echo "<pre>";
+	print_r($usuario->usuarioID);
+	echo "</pre>";
+	echo "<hr />";
+	echo "<pre>";
+	print_r($_POST);
+	echo "</pre>";
+	echo "<hr />";
+	echo "<pre>";
+	print_r($usuario);
+	echo "</pre>";exit;
 	$success = $usuario->save();
 	$msg     = $usuario->msg; 
 }
 
 if ($action == GET) {
-	echo json_encode(array('success'=>$usuario->get($usuario->usuarioID), 'msg'=>$usuario->msg, 'data'=>$usuario->array));
+	echo json_encode(array('success'=>$usuario->get($usuario->getRequest('usuarioID')), 'msg'=>$usuario->msg, 'data'=>$usuario->array));
 	exit;
 }
 

@@ -57,8 +57,9 @@
                       <div class="row">
                         <div class="col s3">
                         <label for="Status">Status</label>
-                            <option value="<?php echo $responsabilidade::STATUS_SISTEMA_ATIVO ?>">Ativo</option>
-                            <option value="<?php echo $responsabilidade::STATUS_SISTEMA_INATIVO ?>">Inativo</option>
+                          <select id="status" name="status" class="form-control input-sm">
+                            <option value="<?php echo $responsabilidades::STATUS_SISTEMA_ATIVO ?>">Ativo</option>
+                            <option value="<?php echo $responsabilidades::STATUS_SISTEMA_INATIVO ?>">Inativo</option>
                           </select>
                         </div>
                       </div>
@@ -69,7 +70,7 @@
                         <input type="hidden" id="id" name="id" value="<?php echo $responsabilidades->id; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
-                            <input type="reset" name="Limpar" value="Limpar" class="waves-effect waves-light btn">
+                            <a href="<?php echo app::dominio ?>consulta_responsabilidades.php"  class="waves-effect waves-light btn">Voltar</a>
                         </div>
                         <div class="input-field col s1">
                             <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">

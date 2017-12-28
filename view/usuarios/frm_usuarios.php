@@ -38,7 +38,7 @@
 
                           }                           
                         }
-                     ?> 
+                     ?>
 
                     <form class="col s12" action="usuarios.php" method="post" name="cad_usuarios">
                       <div class="row">
@@ -109,7 +109,7 @@
                         <input type="hidden" id="usuarioID" name="usuarioID" value="<?php echo $usuario->usuarioID; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
-                            <input type="reset" name="Limpar" value="Limpar" class="waves-effect waves-light btn">
+                            <a href="<?php echo app::dominio; ?>consulta_usuarios.php"  class="waves-effect waves-light btn">Voltar</a>
                         </div>
                         <div class="input-field col s1">
                             <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">

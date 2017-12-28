@@ -63,7 +63,7 @@ class responsabilidade extends app
 	public function montaSelect($selected=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT id,nome FROM responsabilidades ORDER BY nome";
+		$query = sprintf("SELECT id,nome FROM responsabilidades WHERE status = '%s' ORDER BY nome", $this::STATUS_SISTEMA_ATIVO);
 
 		if($result = $conn->query($query))
 		{
@@ -136,7 +136,7 @@ class responsabilidade extends app
 
 	private function formatStatus($status)
 	{
-		if ($status == 'A') {
+		if ($status == $this::STATUS_SISTEMA_ATIVO) {
 			return "Ativo";
 		}
 		return "Inativo";

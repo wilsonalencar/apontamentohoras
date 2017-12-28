@@ -1,7 +1,7 @@
 ﻿<?php
 	require_once(app::path.'view/header.php');
 ?>
-    
+      
     <div id="page-wrapper" >
 		  <div class="header"> 
             <h1 class="page-header">
@@ -12,10 +12,9 @@
 					  <li><a href="#">Pilares</a></li>
 					  <li class="active">Cadastro de Pilares</li>
 					</ol> 
-									
 		  </div>
 		
-         <div id="page-inner"> 
+         <div id="page-inner">
     		 <div class="row">
     		 <div class="col-lg-12">
     		 <div class="card">
@@ -24,7 +23,7 @@
                 </div>
                 <div class="card-content">
 				    
-				    <?php
+				            <?php
                       if (!empty($msg)) { 
 
                         if ($success) {
@@ -71,7 +70,7 @@
                         <input type="hidden" id="id" name="id" value="<?php echo $pilar->id; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
-                            <input type="reset" name="Limpar" value="Limpar" class="waves-effect waves-light btn">
+                            <a href="<?php echo app::dominio; ?>consulta_pilares.php"  class="waves-effect waves-light btn">Voltar</a>
                         </div>
                         <div class="input-field col s1">
                             <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">

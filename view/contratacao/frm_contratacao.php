@@ -71,7 +71,7 @@
                         <input type="hidden" id="id" name="id" value="<?php echo $contratacao->id; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
-                            <input type="reset" name="Limpar" value="Limpar" class="waves-effect waves-light btn">
+                            <a href="<?php echo app::dominio; ?>consulta_contratacoes.php"  class="waves-effect waves-light btn">Voltar</a>
                         </div>
                         <div class="input-field col s1">
                             <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">
