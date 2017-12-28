@@ -15,7 +15,7 @@ class perfilprof extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT codigo FROM perfilprof WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
+		$query = sprintf("SELECT codigo FROM perfilprofissional WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro durante a verificação do código do Perfil Profissional";
@@ -63,7 +63,7 @@ class perfilprof extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO perfilprof (codigo, nome, status, usuario)
+		$query = sprintf(" INSERT INTO perfilprofissional (codigo, nome, status, usuario)
 		VALUES ('%s','%s','%s',%d)", 
 			$this->codigo, $this->nome, $this->status, $_SESSION['usuarioID']);	
 
@@ -78,7 +78,7 @@ class perfilprof extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE perfilprof SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
+		$query = sprintf(" UPDATE perfilprofissional SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
 			$this->nome, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
 		if (!$conn->query($query)) {
@@ -96,7 +96,7 @@ class perfilprof extends app
 			return false;
 		}
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM perfilprof WHERE id =  %d ", $id);
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM perfilprofissional WHERE id =  %d ", $id);
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do Perfil Profissional";	
 			return false;	
@@ -109,7 +109,7 @@ class perfilprof extends app
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM perfilprof");
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM perfilprofissional");
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos perfis";	
@@ -136,7 +136,7 @@ class perfilprof extends app
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("DELETE FROM perfilprof WHERE id = %d ", $id);
+		$query = sprintf("DELETE FROM perfilprofissional WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro na exclusão do perfil Profissional";	

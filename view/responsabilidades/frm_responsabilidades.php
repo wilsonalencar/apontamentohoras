@@ -57,9 +57,8 @@
                       <div class="row">
                         <div class="col s3">
                         <label for="Status">Status</label>
-                          <select id="status" name="status" class="form-control input-sm">
-                            <option value="A">Ativo</option>
-                            <option value="I">Inativo</option>
+                            <option value="<?php echo $responsabilidade::STATUS_SISTEMA_ATIVO ?>">Ativo</option>
+                            <option value="<?php echo $responsabilidade::STATUS_SISTEMA_INATIVO ?>">Inativo</option>
                           </select>
                         </div>
                       </div>

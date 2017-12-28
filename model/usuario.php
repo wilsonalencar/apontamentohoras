@@ -15,9 +15,6 @@ class usuario extends app
 	public $senha;
 	public $msg;
 
-	const STATUS_ATIVO = 'A';
-	const STATUS_INATIVO = 'I';
-
 	private function check(){
 		
 		if (empty($this->email)) {
@@ -74,7 +71,7 @@ class usuario extends app
 
 		$conn = $this->getDB->mysqli_connection;		
 		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario FROM usuarios WHERE email = '%s' AND senha = '%s' AND status = '%s'", 
-			$this->email, $this->senha, $this::STATUS_ATIVO);	
+			$this->email, $this->senha, $this::STATUS_SISTEMA_ATIVO);	
 
 		if (!$result = $conn->query($query)) {
 			return false;	
@@ -157,19 +154,6 @@ class usuario extends app
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
 		$this->msg = 'Registro carregado com sucesso';
 		return true;
-	}
-
-	public function montaSelect($selected=0)
-	{
-		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT id,nome FROM perfilusuario ORDER BY nome";
-
-		if($result = $conn->query($query))
-		{
-			while($row = $result->fetch_array(MYSQLI_ASSOC))
-			echo utf8_encode(sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
-			$row['id'], $row['nome']));
-		}
 	}
 
 	public function lista()

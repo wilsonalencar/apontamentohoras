@@ -1,6 +1,7 @@
 <?php
 require_once('model/usuario.php');
 require_once('model/responsabilidade.php');
+require_once('model/ṕerfilusuario.php');
 
 define('SAVE', 1);
 define('GET', 2);
@@ -8,6 +9,7 @@ define('DEL', 3);
 
 $usuario = new usuario;
 $responsabilidade = new responsabilidade;
+$perfilusuario = new perfilusuario;
 $usuario->usuarioID				= $usuario->getRequest('usuarioID', 0);
 $usuario->nome 					= $usuario->getRequest('nome', '');
 $usuario->email 				= $usuario->getRequest('email', '');
