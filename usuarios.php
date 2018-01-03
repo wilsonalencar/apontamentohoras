@@ -19,21 +19,15 @@ $usuario->reset_senha		  	= $usuario->getRequest('reset_senha', 0);
 $usuario->status		  		= $usuario->getRequest('status', 'A');
 $usuario->senha 				= md5($usuario->getRequest('senha', ''));
 
+if ($usuario->reset_senha == funcionalidadeConst::RESET_TRUE) {
+	$usuario->senha 				= $usuario->getRequest('senha', '');
+}
+
 $msg = '';
 $action 						= $usuario->getRequest('action', 0);
 
 if ($action == SAVE) {
-	echo "<pre>";
-	print_r($usuario->usuarioID);
-	echo "</pre>";
-	echo "<hr />";
-	echo "<pre>";
-	print_r($_POST);
-	echo "</pre>";
-	echo "<hr />";
-	echo "<pre>";
-	print_r($usuario);
-	echo "</pre>";exit;
+	
 	$success = $usuario->save();
 	$msg     = $usuario->msg; 
 }

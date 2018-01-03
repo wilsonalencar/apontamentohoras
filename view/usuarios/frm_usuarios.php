@@ -58,13 +58,11 @@
                         <div class="col s3">
                             <label for="id_perfilusuario">Perfil</label>
                             <select id="id_perfilusuario" name="id_perfilusuario" class="form-control input-sm">
-                              <option value="" disabled selected>Perfil</option>
+                              <option value="">Perfil</option>
                               <?php $perfilusuario->montaSelect($row['id']); ?>
                             </select>
                         </div>
-                      </div>
 
-                      <div class="row">
                         <div class="col s3">
                             <label for="id_responsabilidade">Responsabilidade</label>
                             <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
@@ -74,14 +72,7 @@
                         </div>
                       </div>
                       
-                      <div class="row">
-                        <div class="col s3">
-                        <label for="senha">Senha</label>
-                          <input type="password" id="senha" name="senha" class="validate" maxlength="255">
-                        </div>
-                      </div>
-
-                      <div class="row">
+                      <div class="row" id="divResetSenha" style="display: none">
                         <label for="senha">Resetar Senha</label><br>
                           <p>
                             <input class="with-gap" name="reset_senha" value="S" type="radio" id="test3"  />
@@ -107,6 +98,7 @@
                       <div class="input-field col s1">
                         </div>
                         <input type="hidden" id="usuarioID" name="usuarioID" value="<?php echo $usuario->usuarioID; ?>">
+                        <input type="hidden" id="senha" name="senha" value="">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s2">
                             <a href="<?php echo app::dominio; ?>consulta_usuarios.php"  class="waves-effect waves-light btn">Voltar</a>

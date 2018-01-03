@@ -10,8 +10,6 @@ class app extends config
 {	
 	const STATUS_SISTEMA_ATIVO = 'A';
 	const STATUS_SISTEMA_INATIVO = 'I';
-	const RESET_TRUE = 'S';
-	const RESET_FALSE = 'N';
 
 	public $getDB;
  	public function __construct(){
@@ -69,6 +67,49 @@ class app extends config
 		}
 
 		return false;
+	}
+
+	public function validaCPF( $cpf = false ) 
+	{
+  
+	    if ( ! function_exists('calc_digitos_posicoes') ) {
+	        function calc_digitos_posicoes( $digitos, $posicoes = 10, $soma_digitos = 0 ) {
+	            for ( $i = 0; $i < strlen( $digitos ); $i++  ) {
+	                $soma_digitos = $soma_digitos + ( $digitos[$i] * $posicoes );
+	                $posicoes--;
+	            }
+	     
+	            $soma_digitos = $soma_digitos % 11;
+	     
+	            if ( $soma_digitos < 2 ) {
+	                $soma_digitos = 0;
+	            } else {
+	                $soma_digitos = 11 - $soma_digitos;
+	            }
+	            $cpf = $digitos . $soma_digitos;
+	            
+	            return $cpf;
+	        }
+	    }
+	    
+	    if ( ! $cpf ) {
+	        return false;
+	    }
+	 
+	    $cpf = preg_replace( '/[^0-9]/is', '', $cpf );
+	 
+	    if ( strlen( $cpf ) != 11 ) {
+	        return false;
+	    }   
+	    $digitos = substr($cpf, 0, 9);
+	    $novo_cpf = calc_digitos_posicoes( $digitos );
+	    $novo_cpf = calc_digitos_posicoes( $novo_cpf, 11 );
+	    
+	    if ( $novo_cpf === $cpf ) {
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
 
 	public function validaCNPJ($cnpj)
@@ -166,11 +207,11 @@ class app extends config
 	{	
 		$file = $_SERVER['SCRIPT_NAME'];
 		$funcConst = new funcionalidadeConst;
-		if ((!empty($_SESSION)) && $_SESSION['reset_senha'] == $this::RESET_TRUE && $file <> '/reset_senha.php') {
+		if ((!empty($_SESSION)) && $_SESSION['reset_senha'] == $funcConst::RESET_TRUE && $file <> '/reset_senha.php') {
 			header('LOCATION:reset_senha.php');
 		}
 
-		if ((!empty($_SESSION)) && $file == '/reset_senha.php' && $_SESSION['reset_senha'] == $this::RESET_FALSE) {
+		if ((!empty($_SESSION)) && $file == '/reset_senha.php' && $_SESSION['reset_senha'] == $funcConst::RESET_FALSE) {
 			return false;
 		}
 
@@ -199,6 +240,10 @@ class app extends config
 		}
 
 		if (($file == '/consulta_usuarios.php' || $file == '/usuarios.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_usuario)) {
+			return false;
+		}
+
+		if (($file == '/consulta_funcionarios.php' || $file == '/funcionarios.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_usuario)) {
 			return false;
 		}
 		

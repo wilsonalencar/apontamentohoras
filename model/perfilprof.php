@@ -48,6 +48,19 @@ class perfilprof extends app
 		return true;
 	}
 
+	public function montaSelect($selected=0)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT id,nome FROM perfilprofissional WHERE status = '%s' ORDER BY nome", $this::STATUS_SISTEMA_ATIVO);
+
+		if($result = $conn->query($query))
+		{
+			while($row = $result->fetch_array(MYSQLI_ASSOC))
+			echo utf8_encode(sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
+			$row['id'], $row['nome']));
+		}
+	}
+
 	public function save()
 	{
 		if (!$this->check()) {

@@ -23,6 +23,10 @@ class usuario extends app
 			return false;
 		}
 		
+		if (!$this->checkExiste()) {
+			return false;
+		}
+
 		if (empty($this->senha)) {
 			$this->msg = "Favor inserir a senha do usuário.";
 			return false;
@@ -46,6 +50,23 @@ class usuario extends app
 		return true;
 	}
 
+	private function checkExiste()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT email FROM usuarios WHERE email = '%s' AND usuarioID <> %d", $this->email, $this->usuarioID);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do email";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Email já está sendo utilizado por outro usuário.";
+			return false;			
+		}
+		return true;
+	}
+
 	private function checkReset(){
 			
 		if (empty($this->senha)) {
@@ -65,7 +86,6 @@ class usuario extends app
 		
 		return true;
 	}
-
 
 	private function checkLogin(){
 		
@@ -133,7 +153,7 @@ class usuario extends app
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" INSERT INTO usuarios (nome, email, id_perfilusuario, id_responsabilidade, senha, reset_senha, usuario, status)
 		VALUES ('%s','%s', %d, %d, '%s', '%s', '%s', '%s')", 
-			$this->nome, $this->email,$this->id_perfilusuario, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'], $this->status);
+			$this->nome, $this->email,$this->id_perfilusuario, $this->id_responsabilidade,md5(funcionalidadeConst::SENHA_PADRAO), funcionalidadeConst::RESET_TRUE, $_SESSION['email'], $this->status);
 
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -151,13 +171,13 @@ class usuario extends app
 
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" UPDATE usuarios SET senha = '%s', data_alteracao = NOW(), reset_senha = '%s' WHERE usuarioID = %d", 
-			$this->senha, $this::RESET_FALSE, $_SESSION['usuarioID']);	
+			$this->senha, funcionalidadeConst::RESET_FALSE, $_SESSION['usuarioID']);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
-		$_SESSION['reset_senha'] = $this::RESET_FALSE;
+		$_SESSION['reset_senha'] = funcionalidadeConst::RESET_FALSE;
 		header('LOCATION:index.php');
 		return true;
 	}
@@ -168,9 +188,15 @@ class usuario extends app
 			return false;
 		}
 
+		if ($this->reset_senha == funcionalidadeConst::RESET_TRUE) {
+			$this->senha = md5(funcionalidadeConst::SENHA_PADRAO);
+		}
+
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" UPDATE usuarios SET nome = '%s', email ='%s', id_perfilusuario = %d, id_responsabilidade = %d, senha = '%s', reset_senha = '%s' , usuario = '%s', data_alteracao = NOW(), status = '%s' WHERE usuarioID = %d", 
 			$this->nome , $this->email, $this->id_perfilusuario, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'],$this->status, $this->usuarioID);	
+
+
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -184,7 +210,7 @@ class usuario extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT nome, email, id_perfilusuario, id_responsabilidade, senha, reset_senha, status FROM usuarios WHERE usuarioID =  %d ", $this->usuarioID);
+		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario, id_responsabilidade, senha, reset_senha, status FROM usuarios WHERE usuarioID =  %d ", $this->usuarioID);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do usuário";	

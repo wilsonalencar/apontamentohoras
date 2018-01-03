@@ -314,6 +314,20 @@
                                     </ul>
                                 </li>
                                  <?php } ?>
+
+                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_funcionario)){ ?>
+                                <li>
+                                    <a href="#" class="waves-effect waves-dark"> Funcionários<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                         <li>
+                                            <a href="<?php echo app::dominio; ?>funcionarios.php" >Cadastro de Funcionários</a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo app::dominio; ?>consulta_funcionarios.php" >Consulta de Funcionários</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                 <?php } ?>
                             </ul>
                         </li>
                     </ul>

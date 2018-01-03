@@ -20,12 +20,14 @@ function getDataUsuario(id)
                alert(d.msg);
                return false;
             }
+            $("#divResetSenha").show();
             $("#usuarioID").val(d.data.usuarioID);
             $("#nome").val(d.data.nome);
             $("#email").val(d.data.email);
             $("#id_perfilusuario").val(d.data.id_perfilusuario);
             $("#id_responsabilidade").val(d.data.id_responsabilidade);
             $("#status").val(d.data.status);
+            $("#senha").val(d.data.senha);
         }
     });
 }
@@ -44,6 +46,11 @@ $( document ).ready(function() {
         $("#email").focus();
         return false;
     }
+    if ($("#id_perfilusuario").val() == '') {
+        alert('Informar o perfil do Usuario');
+        $("#id_perfilusuario").focus();
+        return false;
+    }
 
     if ($("#id_responsabilidade").val() == '') {
         alert('Informar a responsabilidade do Usuario');
@@ -51,17 +58,7 @@ $( document ).ready(function() {
         return false;
     }
 
-    if ($("#id_perfilusuario").val() == '') {
-        alert('Informar o perfil do Usuario');
-        $("#id_perfilusuario").focus();
-        return false;
-    }
 
-    if ($("#senha").val() == '') {
-        alert('Informar a senha do usuário');
-        $("#senha").focus();
-        return false;
-    }
     return true;
   });
 
