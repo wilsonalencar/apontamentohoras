@@ -22,13 +22,13 @@ class usuario extends app
 			$this->msg = "Favor informar o email do usuário.";
 			return false;
 		}
-		
-		if (!$this->checkExiste()) {
+			
+		if (!$this->validaEmail($this->email)) {
+			$this->msg = "Favor informar um email válido.";
 			return false;
 		}
 
-		if (empty($this->senha)) {
-			$this->msg = "Favor inserir a senha do usuário.";
+		if (!$this->checkExiste()) {
 			return false;
 		}
 
@@ -145,11 +145,7 @@ class usuario extends app
 	}
 
 	public function insert()
-	{
-		if (!$this->check()) {
-			return false;
-		}
-		
+	{	
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" INSERT INTO usuarios (nome, email, id_perfilusuario, id_responsabilidade, senha, reset_senha, usuario, status)
 		VALUES ('%s','%s', %d, %d, '%s', '%s', '%s', '%s')", 
@@ -184,10 +180,6 @@ class usuario extends app
 
 	public function update()
 	{
-		if (!$this->check()) {
-			return false;
-		}
-
 		if ($this->reset_senha == funcionalidadeConst::RESET_TRUE) {
 			$this->senha = md5(funcionalidadeConst::SENHA_PADRAO);
 		}

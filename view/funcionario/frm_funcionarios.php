@@ -57,7 +57,7 @@
 
                         <div class="col s4">
                         <label for="data_nascimento">Data de nascimento</label>
-                          <input type="date" id="data_nascimento" name="data_nascimento" class="validate" maxlength="20">
+                          <input type="date" id="data_nascimento" name="data_nascimento" class="validate" maxlength="8">
                         </div>
 
 
@@ -110,7 +110,7 @@
 
                         <div class="col s2">
                         <label for="valor_taxa">Valor Taxa</label>
-                          <input type="text" id="taxa" name="taxa" onkeypress="moeda(this)" class="validate" maxlength="255">
+                          <input type="text" id="valor_taxa" name="valor_taxa" onkeypress="moeda(this)" placeholder="R$" class="validate" maxlength="255">
                         </div>
                       </div>
 

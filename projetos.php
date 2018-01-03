@@ -32,6 +32,5 @@ if ($action == DEL) {
 	exit;
 }
 
-
 require_once('view/projetos/frm_projetos.php');
 ?>

@@ -19,10 +19,61 @@ class funcionario extends app
 	public $cep;
 	public $telefone;
 	public $email;
+	public $valor_taxa;
 	public $status;
 	public $msg;
 	public $id_responsabilidade;
 
+
+	private function checkRG()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT rg FROM funcionarios WHERE rg = '%s' AND id <> %d", $this->rg, $this->id);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do RG do funcionario.";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "RG do funcionário já está sendo utilizado";
+			return false;			
+		}
+		return true;
+	}
+
+	private function checkCPF()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT cpf FROM funcionarios WHERE cpf = '%s' AND id <> %d", $this->cpf, $this->id);	
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do CPF do funcionário";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "CPF do funcionário já está sendo utilizado";
+			return false;			
+		}
+		return true;
+	}
+
+	private function checkApelido()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT apelido FROM funcionarios WHERE apelido = '%s' AND id <> %d", $this->apelido, $this->id);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do apelido do funcionário";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Apelido do funcionário já está sendo utilizado";
+			return false;			
+		}
+		return true;
+	}
 	private function check(){
 		
 		if (empty($this->nome)) {
@@ -37,6 +88,10 @@ class funcionario extends app
 		
 		if (empty($this->apelido)) {
 			$this->msg = "Favor inserir o apelido do funcionário.";
+			return false;
+		}
+
+		if (!$this->checkApelido()) {
 			return false;
 		}
 
@@ -55,10 +110,24 @@ class funcionario extends app
 			return false;	
 		}
 
+		if (!$this->checkRG()) {
+			return false;
+		}
+
 		if (empty($this->cpf)) {
 			$this->msg = "Favor informar o CPF do funcionário.";
 			return false;	
 		}
+
+		if (!empty($this->email) && !$this->validaEmail($this->email)) {
+			$this->msg = "Favor informar um email válido.";
+			return false;
+		}
+
+		if (!$this->checkCPF()) {
+			return false;
+		}
+
 		if (!$this->validaCPF($this->cpf)) {
 			$this->msg = "CPF é inválido, favor verificar.";
 			return false;
@@ -76,6 +145,11 @@ class funcionario extends app
 
 		if (empty($this->cep)) {
 			$this->msg = "Favor informar o CEP do funcionário.";
+			return false;	
+		}
+
+		if (empty($this->valor_taxa)) {
+			$this->msg = "Favor informar a Taxa do funcionário.";
 			return false;	
 		}
 		
@@ -97,9 +171,10 @@ class funcionario extends app
 	public function insert()
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO funcionarios (nome, apelido, data_nascimento, id_tipocontratacao, id_perfilprofissional,id_responsabilidade, rg , cpf , endereco , complemento ,	cod_municipio, cep, telefone, email , usuario, status)
-		VALUES ('%s','%s', '%s', %d, %d,%d, '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s')", 
-			$this->nome, $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf,$this->endereco,$this->complemento,$this->cod_municipio,$this->cep,$this->telefone,$this->email, $_SESSION['email'], $this->status);
+		$this->valor_taxa = str_replace(',','.',str_replace('.','',$this->valor_taxa));  
+		$query = sprintf(" INSERT INTO funcionarios (nome, apelido, data_nascimento, id_tipocontratacao, id_perfilprofissional,id_responsabilidade, rg , cpf , endereco, valor_taxa , complemento ,	cod_municipio, cep, telefone, email , usuario, status)
+		VALUES ('%s','%s', '%s', %d, %d, %d, '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')", 
+			$this->nome, $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf,$this->endereco, $this->valor_taxa,$this->complemento,$this->cod_municipio,$this->cep,$this->telefone,$this->email, $_SESSION['email'], $this->status);
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -111,13 +186,10 @@ class funcionario extends app
 
 	public function update()
 	{
-		if (!$this->check()) {
-			return false;
-		}
-
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE usuarios SET nome = '%s', email ='%s', id_perfilusuario = %d, id_responsabilidade = %d, senha = '%s', reset_senha = '%s' , usuario = '%s', data_alteracao = NOW(), status = '%s' WHERE usuarioID = %d", 
-			$this->nome , $this->email, $this->id_perfilusuario, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'],$this->status, $this->usuarioID);	
+		$this->valor_taxa = str_replace(',','.',str_replace('.','',$this->valor_taxa));
+		$query = sprintf(" UPDATE funcionarios SET nome = '%s', apelido = '%s', data_nascimento = '%s', id_tipocontratacao = %d, id_perfilprofissional = %d ,id_responsabilidade = %d , rg = '%s' , cpf = '%s' , endereco = '%s', valor_taxa = %d , complemento = '%s' ,	cod_municipio = %d , cep = '%s', telefone = '%s', email = '%s', usuario = '%s', status = '%s', data_alteracao = NOW() WHERE id = %d", 
+			$this->nome , $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf, $this->endereco, $this->valor_taxa, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $_SESSION['email'], $this->status, $this->id);	
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -131,7 +203,7 @@ class funcionario extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT nome, apelido, cpf, rg, data_nascimento, endereco, complemento, cod_municipio, cep, telefone, email, id_tipocontratacao, id_perfilprofissional, id_responsabilidade ,status FROM funcionarios WHERE id =  %d ", $this->id);
+		$query = sprintf("SELECT id, nome, apelido, cpf, rg, data_nascimento, endereco, complemento, cod_municipio, cep, telefone, email, id_tipocontratacao, id_perfilprofissional, id_responsabilidade, valor_taxa ,status FROM funcionarios WHERE id =  %d ", $this->id);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do funcionário";	

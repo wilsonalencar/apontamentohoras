@@ -39,6 +39,8 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $cliente->deleta($cliente->id);
 	$msg = $cliente->msg;
+	require_once('consulta_clientes.php');
+	exit;
 }
 
 require_once('view/clientes/frm_clientes.php');

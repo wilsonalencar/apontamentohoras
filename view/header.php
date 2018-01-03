@@ -264,7 +264,7 @@
                                     <a href="#">Contratações<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                           <a href="<?php echo app::dominio; ?>contratacoes.php" >Cadastro de contratação</a>
+                                           <a href="<?php echo app::dominio; ?>contratacoes.php" >Tipo de Contratação</a>
                                         </li>
                                         <li>
                                             <a href="<?php echo app::dominio; ?>consulta_contratacoes.php" >Buscar Contratações</a>

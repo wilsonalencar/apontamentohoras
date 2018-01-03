@@ -28,10 +28,10 @@ $funcionario->endereco				= $funcionario->getRequest('endereco', '');
 $funcionario->complemento			= $funcionario->getRequest('complemento', '');
 $funcionario->cod_municipio			= $funcionario->getRequest('cod_municipio', '');
 $funcionario->cep  					= $funcionario->getRequest('cep', '');
-$funcionario->valor_taxa  			= $funcionario->getRequest('valor_taxa', '');
+$funcionario->valor_taxa  			= $funcionario->getRequest('valor_taxa', 0.00);
 $funcionario->telefone  			= $funcionario->getRequest('telefone', '');
 $funcionario->email  				= $funcionario->getRequest('email', '');
-$funcionario->status  				= $funcionario->getRequest('status', '');
+$funcionario->status  				= $funcionario->getRequest('status', 'A');
 
 $msg = '';
 $action 							= $funcionario->getRequest('action', 0);

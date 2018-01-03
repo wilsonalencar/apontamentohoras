@@ -82,6 +82,11 @@ class cliente extends app
 			return false;
 		}
 
+		if (!empty($this->email) && !$this->validaEmail($this->email)) {
+			$this->msg = "Favor informar um email válido.";
+			return false;
+		}
+
 		if (!$this->validaCNPJ($this->cnpj)) {
 			$this->msg = 'Favor inserir o CNPJ corretamente.';
 			return false;

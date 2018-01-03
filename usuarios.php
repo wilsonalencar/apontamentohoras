@@ -19,7 +19,7 @@ $usuario->reset_senha		  	= $usuario->getRequest('reset_senha', 0);
 $usuario->status		  		= $usuario->getRequest('status', 'A');
 $usuario->senha 				= md5($usuario->getRequest('senha', ''));
 
-if ($usuario->reset_senha == funcionalidadeConst::RESET_TRUE) {
+if ($usuario->reset_senha == funcionalidadeConst::RESET_FALSE) {
 	$usuario->senha 				= $usuario->getRequest('senha', '');
 }
 

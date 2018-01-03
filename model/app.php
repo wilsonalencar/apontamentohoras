@@ -111,7 +111,15 @@ class app extends config
 	        return false;
 	    }
 	}
-
+	function validaEmail($email) 
+	{
+	    $er = "/^(([0-9a-zA-Z]+[-._+&])*[0-9a-zA-Z]+@([-0-9a-zA-Z]+[.])+[a-zA-Z]{2,6}){0,1}$/";
+	    if (preg_match($er, $email)){
+		return true;
+	    } else {
+		return false;
+	    }
+	}
 	public function validaCNPJ($cnpj)
  	{
 		$j=0;
@@ -207,6 +215,7 @@ class app extends config
 	{	
 		$file = $_SERVER['SCRIPT_NAME'];
 		$funcConst = new funcionalidadeConst;
+		
 		if ((!empty($_SESSION)) && $_SESSION['reset_senha'] == $funcConst::RESET_TRUE && $file <> '/reset_senha.php') {
 			header('LOCATION:reset_senha.php');
 		}

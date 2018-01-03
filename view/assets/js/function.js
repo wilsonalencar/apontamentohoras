@@ -8,14 +8,15 @@ function execmask(){
     v_obj.value=v_fun(v_obj.value)
 }
 
-function moeda(v){ 
-v=v.replace(/\D/g,"") // permite digitar apenas numero 
-v=v.replace(/(\d{1})(\d{17})$/,"$1.$2") // coloca ponto antes dos ultimos digitos 
-v=v.replace(/(\d{1})(\d{13})$/,"$1.$2") // coloca ponto antes dos ultimos 13 digitos 
-v=v.replace(/(\d{1})(\d{10})$/,"$1.$2") // coloca ponto antes dos ultimos 10 digitos 
-v=v.replace(/(\d{1})(\d{7})$/,"$1.$2") // coloca ponto antes dos ultimos 7 digitos 
-v=v.replace(/(\d{1})(\d{1,4})$/,"$1,$2") // coloca virgula antes dos ultimos 4 digitos 
-return v; 
+function moeda(z){ 
+v = z.value;
+v=v.replace(/\D/g,"") // permite digitar apenas numero
+v=v.replace(/(\d{1})(\d{13})$/,"$1.$2") // coloca ponto antes dos ultimos digitos
+v=v.replace(/(\d{1})(\d{10})$/,"$1.$2") // coloca ponto antes dos ultimos 11 digitos
+v=v.replace(/(\d{1})(\d{7})$/,"$1.$2") // coloca ponto antes dos ultimos 8 digitos
+v=v.replace(/(\d{1})(\d{4})$/,"$1.$2") // coloca ponto antes dos ultimos 5 digitos
+v=v.replace(/(\d{1})(\d{1,1})$/,"$1,$2") // coloca virgula antes dos ultimos 2 digitos
+z.value = v;
 }
 
 function val_cpf(v){

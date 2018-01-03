@@ -34,6 +34,7 @@ function getDataFuncionario(id)
             $("#cod_municipio").val(d.data.cod_municipio);
             $("#cep").val(d.data.cep);
             $("#telefone").val(d.data.telefone);
+            $("#valor_taxa").val(d.data.valor_taxa);
             $("#email").val(d.data.email);
             $("#status").val(d.data.status);
         }
@@ -88,6 +89,12 @@ $( document ).ready(function() {
     if ($("#endereco").val() == '') {
         alert('Informar o endereço do funcionário');
         $("#endereco").focus();
+        return false;
+    }
+
+    if ($("#valor_taxa").val() == '') {
+        alert('Informar o valor da taxa do funcionário');
+        $("#valor_taxa").focus();
         return false;
     }
 
