@@ -231,15 +231,15 @@
                                         </ul>
                                     </li>
                                 <?php } ?>
-                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_propostas)){ ?>
                                 <li>
-                                    <a href="#">Projetos<span class="fa arrow"></span></a>
+                                    <a href="#">Propostas<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>projetos.php" >Cadastro de Projetos</a>
+                                            <a href="<?php echo app::dominio; ?>propostas.php" >Cadastro de Propostas</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_projetos.php" >Buscar Projetos</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_propostas.php" >Buscar Propostas</a>
                                         </li>
 
                                     </ul>

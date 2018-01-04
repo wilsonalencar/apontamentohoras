@@ -6,7 +6,7 @@ require_once('app.php');
 class pilar extends app
 {
 	public $id;
-	public $codigo;
+	public $centro_custos;
 	public $nome;
 	public $status;
 	public $msg;
@@ -15,15 +15,15 @@ class pilar extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT codigo FROM pilares WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
+		$query = sprintf("SELECT centro_custos FROM pilares WHERE centro_custos = %d AND id <> %d", $this->centro_custos, $this->id);	
 
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro durante a verificação do código do pilar";
+			$this->msg = "Ocorreu um erro durante a verificação do centro de custos do pilar";
 			return false;	
 		}
 		
 		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
-			$this->msg = "Codigo do pilar já está sendo utilizado";
+			$this->msg = "Centro de custos do pilar já está sendo utilizado";
 			return false;			
 		}
 		return true;
@@ -31,8 +31,8 @@ class pilar extends app
 
 	private function check()
 	{
-		if (empty($this->codigo)) {
-			$this->msg = "Insira o código do pilar.";
+		if (empty($this->centro_custos)) {
+			$this->msg = "Insira o centro de custos do pilar.";
 			return false;
 		}
 
@@ -63,9 +63,9 @@ class pilar extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO pilares (codigo, nome, status, usuario)
+		$query = sprintf(" INSERT INTO pilares (centro_custos, nome, status, usuario)
 		VALUES ('%s','%s','%s',%d)", 
-			$this->codigo, $this->nome, $this->status, $_SESSION['usuarioID']);	
+			$this->centro_custos, $this->nome, $this->status, $_SESSION['usuarioID']);	
 
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -97,7 +97,7 @@ class pilar extends app
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM pilares WHERE id =  %d ", $id);
+		$query = sprintf("SELECT id, centro_custos, nome, status, usuario FROM pilares WHERE id =  %d ", $id);
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do pilar";	
 			return false;	
@@ -110,7 +110,7 @@ class pilar extends app
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM pilares");
+		$query = sprintf("SELECT id, centro_custos, nome, status, usuario FROM pilares");
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos pilares";	

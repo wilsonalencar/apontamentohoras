@@ -44,8 +44,8 @@
                     <form class="col s12" action="pilares.php" method="post" name="cad_pilares">
                       <div class="row">
                         <div class="col s3">
-                        <label for="codigo">Código</label>
-                          <input id="codigo" type="text" name="codigo" maxlength="7" class="validate">
+                        <label for="centro_custos">Centro de Custos</label>
+                          <input id="centro_custos" type="text" name="centro_custos" maxlength="4" class="validate">
                         </div>
                       </div>
                       <div class="row">

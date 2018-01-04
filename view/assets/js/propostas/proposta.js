@@ -1,12 +1,12 @@
 
 var id = $("#id").val();
 if (id > 0) {
-   getDataProjeto(id);
+   getDataProposta(id);
 }
-function getDataProjeto(id)
+function getDataProposta(id)
 {
    $.ajax({
-        url : 'projetos.php',
+        url : 'propostas.php',
         type: 'post',
         dataType: 'JSON',
         data:
@@ -33,19 +33,19 @@ $( document ).ready(function() {
   $( "#submit" ).click(function() {
     
     if ($("#codigo").val() == '') {
-        alert('Informar o código do projeto');
+        alert('Informar o código do proposta');
         $("#codigo").focus();
         return false;
     }
 
     if ($("#nome").val() == '') {
-        alert('Informar o nome do projeto');
+        alert('Informar o nome do proposta');
         $("#nome").focus();
         return false;
     }
 
     if ($("#status").val() == '') {
-        alert('Informar o status do projeto');
+        alert('Informar o status do proposta');
         $("#cnpj").focus();
         return false;
     }

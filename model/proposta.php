@@ -3,7 +3,7 @@ require_once('app.php');
 /**
 * Lucas Barbosa de Alencar
 */
-class projeto extends app
+class proposta extends app
 {
 	public $id;
 	public $codigo;
@@ -15,15 +15,15 @@ class projeto extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT codigo FROM projetos WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
+		$query = sprintf("SELECT codigo FROM propostas WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro durante a verificação do código do projeto";
+			$this->msg = "Ocorreu um erro durante a verificação do código do proposta";
 			return false;	
 		}
 		
 		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
-			$this->msg = "Codigo do projeto já está sendo utilizado";
+			$this->msg = "Codigo do proposta já está sendo utilizado";
 			return false;			
 		}
 		return true;
@@ -32,12 +32,12 @@ class projeto extends app
 	private function check()
 	{
 		if (empty($this->codigo)) {
-			$this->msg = "Insira o código do projeto.";
+			$this->msg = "Insira o código do proposta.";
 			return false;
 		}
 
 		if (empty($this->nome)) {
-			$this->msg = "Insira o nome do projeto.";
+			$this->msg = "Insira o nome do proposta.";
 			return false;
 		}
 
@@ -63,7 +63,7 @@ class projeto extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetos (codigo, nome, status, usuario)
+		$query = sprintf(" INSERT INTO propostas (codigo, nome, status, usuario)
 		VALUES ('%s','%s','%s',%d)", 
 			$this->codigo, $this->nome, $this->status, $_SESSION['usuarioID']);	
 
@@ -78,7 +78,7 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
+		$query = sprintf(" UPDATE propostas SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
 			$this->nome, $this->status, $_SESSION['usuarioID'], $this->id);	
 	
 		if (!$conn->query($query)) {
@@ -96,9 +96,9 @@ class projeto extends app
 			return false;
 		}
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM projetos WHERE id =  %d ", $id);
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM propostas WHERE id =  %d ", $id);
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento do projeto";	
+			$this->msg = "Ocorreu um erro no carregamento do proposta";	
 			return false;	
 		}
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
@@ -109,10 +109,10 @@ class projeto extends app
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM projetos");
+		$query = sprintf("SELECT id, codigo, nome, status, usuario FROM propostas");
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			$this->msg = "Ocorreu um erro no carregamento dos propostas";	
 			return false;	
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -136,10 +136,10 @@ class projeto extends app
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("DELETE FROM projetos WHERE id = %d ", $id);
+		$query = sprintf("DELETE FROM propostas WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do projeto";	
+			$this->msg = "Ocorreu um erro na exclusão do proposta";	
 			return false;	
 		}
 

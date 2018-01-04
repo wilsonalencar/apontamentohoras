@@ -49,7 +49,7 @@
                                     <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                         <thead>
                                             <tr>
-                                                <th>Código</th>
+                                                <th>Centro de Custos</th>
                                                 <th>Nome</th>
                                                 <th>Status</th>
                                                 <th>Alterar</th>
@@ -60,7 +60,7 @@
                                             if (!empty($pilar->array)) {
                                                 foreach($pilar->array as $row){ ?>
                                                 <tr class="odd gradeX">
-                                                    <td><?php echo $row['codigo']; ?></td>
+                                                    <td><?php echo $row['centro_custos']; ?></td>
                                                     <td><?php echo $row['nome']; ?></td>
                                                     <td><?php echo $row['status']; ?></td>
                                                     <td>

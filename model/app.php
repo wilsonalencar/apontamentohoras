@@ -240,7 +240,7 @@ class app extends config
 			return false;
 		}
 
-		if (($file == '/consulta_projetos.php' || $file == '/projetos.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)) {
+		if (($file == '/consulta_propostas.php' || $file == '/propostas.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_propostas)) {
 			return false;
 		}
 

@@ -6,10 +6,10 @@ define('GET', 2);
 define('DEL', 3);
 
 $pilar = new pilar;
-$pilar->id 			= $pilar->getRequest('id', 0);
-$pilar->codigo 		= $pilar->getRequest('codigo', '');
-$pilar->nome 		= $pilar->getRequest('nome', '');
-$pilar->status 		= $pilar->getRequest('status', 'A');
+$pilar->id 				= $pilar->getRequest('id', 0);
+$pilar->centro_custos 	= $pilar->getRequest('centro_custos', '');
+$pilar->nome 			= $pilar->getRequest('nome', '');
+$pilar->status 			= $pilar->getRequest('status', 'A');
 		
 $msg = '';
 $action 				= $pilar->getRequest('action', 0);

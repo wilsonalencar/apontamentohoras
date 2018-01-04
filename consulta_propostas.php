@@ -1,18 +1,18 @@
 <?php
-    require_once('model/projeto.php');
-    $projeto = new projeto;
-    $projeto->lista();
+    require_once('model/proposta.php');
+    $proposta = new proposta;
+    $proposta->lista();
     require_once(app::path.'view/header.php');
 ?>
 <div id="page-wrapper">
 <div class="header"> 
             <h1 class="page-header">
-                Consulta de Projetos.
+                Consulta de Propostas.
             </h1>
             <ol class="breadcrumb">
           <li><a href="#">Cadastros Básicos</a></li>
-          <li><a href="#">Projetos</a></li>
-          <li class="active">Busca de Projetos</li>
+          <li><a href="#">Propostas</a></li>
+          <li class="active">Busca de Propostas</li>
         </ol> 
                         
 </div>
@@ -24,7 +24,7 @@
     <!-- Advanced Tables -->
                     <div class="card">
                         <div class="card-action">
-                             Busca de Projetos
+                             Busca de Propostas
                         </div>
                         <div class="card-content">
                         <?php
@@ -45,7 +45,7 @@
                                 }
                              ?> 
                             <div class="table-responsive">
-                            <form action="projetos.php" method="post" id="projetos_edit">
+                            <form action="propostas.php" method="post" id="propostas_edit">
                                 <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
@@ -57,8 +57,8 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if (!empty($projeto->array)) {
-                                         foreach($projeto->array as $row){ ?>
+                                        if (!empty($proposta->array)) {
+                                         foreach($proposta->array as $row){ ?>
                                             <tr class="odd gradeX">
                                                 <td><?php echo $row['codigo']; ?></td>
                                                 <td><?php echo $row['nome']; ?></td>
@@ -88,7 +88,7 @@ $(document).ready(function () {
 function edita(id) {
     if (id > 0) {
         document.getElementById('id').value = id;
-        document.getElementById('projetos_edit').submit();
+        document.getElementById('propostas_edit').submit();
     }
 }
 
@@ -100,7 +100,7 @@ function exclui(id) {
     if (id > 0) {
         document.getElementById('id').value = id;
         document.getElementById('action').value = "3";
-        document.getElementById('projetos_edit').submit();
+        document.getElementById('propostas_edit').submit();
     }   
 }
 

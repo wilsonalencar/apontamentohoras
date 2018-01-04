@@ -8,7 +8,7 @@ class funcionalidadeConst
 	const RESET_FALSE = 'N';
 	const SENHA_PADRAO = 'ADMIN123';
 	const perfil_cliente	 			= 1;
-	const perfil_projetos 				= 2;
+	const perfil_propostas 				= 2;
 	const perfil_pilares 				= 3;
 	const perfil_contratacoes 			= 4;
 	const perfil_perfilprofissional 	= 5;

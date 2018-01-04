@@ -20,8 +20,8 @@ function getDataPilar(id)
                return false;
             }
             $("#id").val(d.data.id);
-            $("#codigo").val(d.data.codigo);
-            $("#codigo").attr("readonly", "true");
+            $("#centro_custos").val(d.data.centro_custos);
+            $("#centro_custos").attr("readonly", "true");
             $("#status").val(d.data.status);
             $("#nome").val(d.data.nome);
         }
@@ -31,9 +31,9 @@ function getDataPilar(id)
 $( document ).ready(function() {
   $( "#submit" ).click(function() {
     
-    if ($("#codigo").val() == '') {
+    if ($("#centro_custos").val() == '') {
         alert('Informar o código do pilar');
-        $("#codigo").focus();
+        $("#centro_custos").focus();
         return false;
     }
 
