@@ -16,4 +16,8 @@ class funcionalidadeConst
 	const perfil_usuario 				= 7;
 	const perfil_cadastrobasico 		= 8;
 	const perfil_funcionario	 		= 9;
+	const perfil_projetos		 		= 10;
+	const perfil_apontamento		 	= 11;
+	const perfil_aprovacao			 	= 12;
+	const perfil_relatorios			 	= 13;
 }

@@ -245,6 +245,56 @@
                                     </ul>
                                 </li>
                                 <?php } ?>
+
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
+                                <li>
+                                    <a href="#">Apontamento</a>
+                                </li>
+                                <?php } ?>
+
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
+                                <li>
+                                    <a href="#">Aprovação</a>
+                                </li>
+                                <?php } ?>
+
+
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios)){ ?>
+                                <li>
+                                    <a href="#">Relatórios<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#" >Horas por recurso</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" >Horas por projeto</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" >Horas por pilar</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
+                                <li>
+                                    <a href="#">Projetos<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level">
+                                        <li>
+                                            <a href="#" >Adicionar</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" >Consulta</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" >Liberar Apontamento</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <?php } ?>
+
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_pilares)){ ?>
                                 <li>
                                     <a href="#">Pilares<span class="fa arrow"></span></a>
