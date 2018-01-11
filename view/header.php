@@ -34,18 +34,11 @@
                 </div>
 
                 <ul class="nav navbar-top-links navbar-right"> 
-    				<li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown4"><i class="fa fa-envelope fa-fw"></i> <i class="material-icons right">arrow_drop_down</i></a></li>				
-    				<li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown3"><i class="fa fa-tasks fa-fw"></i> <i class="material-icons right">arrow_drop_down</i></a></li>
-    				<li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown2"><i class="fa fa-bell fa-fw"></i> <i class="material-icons right">arrow_drop_down</i></a></li>
     				  <li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
                 </ul>
             </nav>
     		<!-- Dropdown Structure -->
     <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#"><i class="fa fa-user fa-fw"></i> My Profile</a>
-        </li>
-        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-        </li> 
         <li><a href="<?php echo app::dominio; ?>login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
     </ul>
@@ -210,7 +203,7 @@
                 <div class="sidebar-collapse">
                     <ul class="nav" id="main-menu">
                         <li>
-                            <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Index</a>
+                            <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Home</a>
                         </li>
                         
                         <li>
@@ -223,10 +216,10 @@
                                         <a href="#">Clientes<span class="fa arrow"></span></a>
                                         <ul class="nav nav-third-level">
                                             <li>
-                                                <a href="<?php echo app::dominio; ?>clientes.php" >Cadastro de Clientes</a>
+                                                <a href="<?php echo app::dominio; ?>clientes.php" >Adicionar</a>
                                             </li>
                                             <li>
-                                                <a href="<?php echo app::dominio; ?>consulta_clientes.php" >Buscar Cliente</a>
+                                                <a href="<?php echo app::dominio; ?>consulta_clientes.php" >Consultar</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -236,10 +229,10 @@
                                     <a href="#">Propostas<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>propostas.php" >Cadastro de Propostas</a>
+                                            <a href="<?php echo app::dominio; ?>propostas.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_propostas.php" >Buscar Propostas</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_propostas.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -300,10 +293,10 @@
                                     <a href="#">Pilares<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>pilares.php" >Cadastro de Pilares</a>
+                                            <a href="<?php echo app::dominio; ?>pilares.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_pilares.php" >Buscar Pilares</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_pilares.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -314,10 +307,10 @@
                                     <a href="#">Contratações<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                           <a href="<?php echo app::dominio; ?>contratacoes.php" >Tipo de Contratação</a>
+                                           <a href="<?php echo app::dominio; ?>contratacoes.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_contratacoes.php" >Buscar Contratações</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_contratacoes.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -328,10 +321,10 @@
                                     <a href="#">Perfil Profissional<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                             <a href="<?php echo app::dominio; ?>perfil_prof.php" >Cadastro de perfil profissional</a>
+                                             <a href="<?php echo app::dominio; ?>perfil_prof.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_perfil_prof.php" >Buscar Perfis Profissionais</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_perfil_prof.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -342,10 +335,10 @@
                                     <a href="#">Responsabilidades<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>responsabilidades.php" >Cadastro de responsabilidade</a>
+                                            <a href="<?php echo app::dominio; ?>responsabilidades.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_responsabilidades.php" >Busca de Responsabilidades</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_responsabilidades.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -356,10 +349,10 @@
                                     <a href="#" class="waves-effect waves-dark"> Usuários<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                          <li>
-                                            <a href="<?php echo app::dominio; ?>usuarios.php" >Cadastro de Usuários</a>
+                                            <a href="<?php echo app::dominio; ?>usuarios.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consulta de Usuários</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consultar</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -370,10 +363,10 @@
                                     <a href="#" class="waves-effect waves-dark"> Funcionários<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                          <li>
-                                            <a href="<?php echo app::dominio; ?>funcionarios.php" >Cadastro de Funcionários</a>
+                                            <a href="<?php echo app::dominio; ?>funcionarios.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_funcionarios.php" >Consulta de Funcionários</a>
+                                            <a href="<?php echo app::dominio; ?>consulta_funcionarios.php" >Consultar</a>
                                         </li>
                                     </ul>
                                 </li>

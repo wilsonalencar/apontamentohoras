@@ -64,6 +64,7 @@ class projeto extends app
 
 	public function insert()
 	{	
+		echo "inserindo";exit;
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" INSERT INTO projetos (nome, email, id_perfilprojeto, id_responsabilidade, senha, reset_senha, projeto, status)
 		VALUES ('%s','%s', %d, %d, '%s', '%s', '%s', '%s')", 
@@ -79,15 +80,9 @@ class projeto extends app
 
 	public function update()
 	{
-		if ($this->reset_senha == funcionalidadeConst::RESET_TRUE) {
-			$this->senha = md5(funcionalidadeConst::SENHA_PADRAO);
-		}
-
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" UPDATE projetos SET nome = '%s', email ='%s', id_perfilprojeto = %d, id_responsabilidade = %d, senha = '%s', reset_senha = '%s' , projeto = '%s', data_alteracao = NOW(), status = '%s' WHERE projetoID = %d", 
 			$this->nome , $this->email, $this->id_perfilprojeto, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'],$this->status, $this->projetoID);	
-
-
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -144,8 +139,6 @@ class projeto extends app
 		$this->msg = 'Registro excluido com sucesso';
 		return true;	
 	}
-
-
 }
 
 ?>
