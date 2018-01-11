@@ -282,7 +282,7 @@
                                     <a href="#">Projetos<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="#" >Adicionar</a>
+                                            <a href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
                                         </li>
                                         <li>
                                             <a href="#" >Consulta</a>

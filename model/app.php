@@ -232,6 +232,10 @@ class app extends config
 			return false;
 		}
 
+		if (($file == '/projetos.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)) {
+			return false;
+		}
+
 		if (($file == '/consulta_perfil_prof.php' || $file == '/perfil_prof.php') && !$this->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_perfilprofissional)) {
 			return false;
 		}
