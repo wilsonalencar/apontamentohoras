@@ -11,8 +11,12 @@ class projeto extends app
 	public $id_pilar;
 	public $data_inicio;
 	public $data_fim;
+	public $PilarNome;
+	public $ClienteNome;
+	public $Cliente_reembolsa;
 	public $status;
 	public $msg;
+	public $array;
 
 
 	private function check(){
@@ -64,25 +68,26 @@ class projeto extends app
 
 	public function insert()
 	{	
-		echo "inserindo";exit;
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetos (nome, email, id_perfilprojeto, id_responsabilidade, senha, reset_senha, projeto, status)
-		VALUES ('%s','%s', %d, %d, '%s', '%s', '%s', '%s')", 
-			$this->nome, $this->email,$this->id_perfilprojeto, $this->id_responsabilidade,md5(funcionalidadeConst::SENHA_PADRAO), funcionalidadeConst::RESET_TRUE, $_SESSION['email'], $this->status);
+		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, usuario)
+		VALUES (%d, %d, %d, '%s', '%s', %d, '%s', '%s')", 
+			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email']);
 
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
-		$this->msg = "Registro inserido com sucesso!";
+		$this->id = $conn->insert_id;
+
+		$this->msg = "Projeto Criado com sucesso!";
 		return true;
 	}
 
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET nome = '%s', email ='%s', id_perfilprojeto = %d, id_responsabilidade = %d, senha = '%s', reset_senha = '%s' , projeto = '%s', data_alteracao = NOW(), status = '%s' WHERE projetoID = %d", 
-			$this->nome , $this->email, $this->id_perfilprojeto, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'],$this->status, $this->projetoID);	
+		$query = sprintf(" UPDATE projetos SET nome = '%s', email ='%s', id_perfilprojeto = %d, id_responsabilidade = %d, senha = '%s', reset_senha = '%s' , projeto = '%s', data_alteracao = NOW(), status = '%s' WHERE id = %d", 
+			$this->nome , $this->email, $this->id_perfilprojeto, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'],$this->status, $this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -96,22 +101,38 @@ class projeto extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT projetoID, nome, email, id_perfilprojeto, id_responsabilidade, senha, reset_senha, status FROM projetos WHERE projetoID =  %d ", $this->projetoID);
+		$query = sprintf("SELECT 
+						    A.id,
+						    A.id_cliente,
+						    A.id_proposta,
+						    A.id_pilar,
+						    A.Data_inicio,
+						    A.Data_fim,
+						    A.id_status,
+						    A.Cliente_reembolsa,
+						    B.nome AS ClienteNome,
+						    C.nome AS PilarNome
+						FROM
+						    projetos A
+						        INNER JOIN
+						    clientes B ON A.id_cliente = B.id
+						        INNER JOIN
+						    propostas C ON A.id_proposta = C.id
+						WHERE
+						    A.id = %d ", $id);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do usuário";	
 			return false;	
 		}
-
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
-		$this->msg = 'Registro carregado com sucesso';
 		return true;
 	}
 
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT A.projetoID, A.nome, A.email, B.nome as id_perfilprojeto FROM projetos A INNER JOIN perfilprojeto B ON A.id_perfilprojeto = B.id");
+		$query = sprintf("SELECT A.id, A.nome, A.email, B.nome as id_perfilprojeto FROM projetos A INNER JOIN perfilprojeto B ON A.id_perfilprojeto = B.id");
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
@@ -129,7 +150,7 @@ class projeto extends app
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("DELETE FROM projetos WHERE projetoID = %d ", $id);
+		$query = sprintf("DELETE FROM projetos WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro na exclusão do usuaŕio";	

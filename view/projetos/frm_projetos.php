@@ -40,23 +40,36 @@
                            <div class="col-sm-12">
                               <ul class="tabs">
                                   <li class="tab col s3"><a class="active" href="#test1">Dados</a></li>
-                                  <li class="tab col s3"><a href="#test2">Despesas</a></li>
-                                  <li class="tab col s3"><a href="#test4">Fluxo Financeiro</a></li>
+                                  <li class="tab col s3 disabled" id="divDespesas"><a href="#despesa">Despesas</a></li>
+                                  <li class="tab col s3 disabled" id="divFluxoFin"><a href="#fluxoFin">Fluxo Financeiro</a></li>
                               </ul>
                             </div>
                             <div class="clearBoth"><br/></div>
                             
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="projetos.php" method="post" name="cad_projetos">
+
                                       <div class="row">
-                                        <div class="col s9">
+                                        <div class="col s6">
                                             <label for="id_cliente">Cliente</label>
                                             <select id="id_cliente" name="id_cliente" class="form-control input-sm">
                                               <option value="">Cliente</option>
                                               <?php $cliente->montaSelect($row['id']); ?>
                                             </select>
                                         </div>
-                                      </div>    
+                                        <div class="col s1"></div>
+                                         <div class="col s3">
+                                            <label for="Cliente_reembolsa">Cliente reembolsa ? </label><br>
+                                              <p>
+                                                <input class="with-gap" name="Cliente_reembolsa" value="S" type="radio" id="test3"/>
+                                                <label for="test3">Sim </label>
+                                              
+                                                <input class="with-gap" name="Cliente_reembolsa" value="N" checked type="radio" id="test2" />
+                                                <label for="test2">Não </label>
+                                              </p>
+                                        </div>
+                                     </div>    
+
                                       
                                     <div class="row">
                                         <div class="col s5">
@@ -64,7 +77,7 @@
                                             <select id="id_proposta" name="id_proposta" class="form-control input-sm">
                                               <option value="">Proposta</option>
                                                 <?php $proposta->montaSelect($row['id']); ?>
-                                            </select>
+                                            </select>   
                                         </div>
 
                                         <div class="col s2">
@@ -95,7 +108,12 @@
                                     </div>
                                     <br />
 
-                                        <div class="row">
+                                        <div class="row" style="display:block" id="rowFatAnexos">
+                                            <?php
+                                                require_once('model/projetoprevisaofat.php');
+                                                $projetoprevisaofat = new projetoprevisaofat;
+                                                $projetoprevisaofat->lista($projeto->id);
+                                            ?>
                                             <div class="col-md-5">
                                                 <div class="card">
                                                     <div class="table-responsive">
@@ -112,7 +130,7 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
-                                                                        <a href="#" style="color : #fff;">+</a>
+                                                                        <a href="#" data-toggle="modal" data-target="#ModalFaturas" style="color : #fff;">+</a>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -124,13 +142,19 @@
                                                                     <th>Valor S/ Impostos</th>
                                                                     <th></th>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Jan / 2018</td>
-                                                                    <td>R$ 1.000,00</td>
-                                                                    <td>R$ 2.000,00</td>
-                                                                    <td><a href="#">X</a></td>
-                                                                </tr>
+                                                                <?php
+                                                                if (!empty($projetoprevisaofat->array)) {
+                                                                    foreach($projetoprevisaofat->array as $row){ ?>
+                                                                        <tr class="odd gradeX">
+                                                                            <td><?php echo $row['Num_parcela']; ?></td>
+                                                                            <td><?php echo $row['mes_previsao_fat']; ?></td>
+                                                                            <td><?php echo $row['Vlr_parcela_cimp']; ?></td>
+                                                                            <td><?php echo $row['Vlr_parcela_simp']; ?></td>
+                                                                            <td>
+                                                                            <i onclick="excluiFat(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php } }?>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -166,7 +190,7 @@
                                         </div>
 
 
-                                        <div class="row">
+                                        <div class="row" style="display:none" id="rowRecursos">
                                             <div class="col-md-9">
                                                 <div class="card">
                                                     <div class="table-responsive">
@@ -220,7 +244,7 @@
                                         <div class="row">
                                             <div class="input-field col s1">
                                             </div>
-                                            <input type="hidden" id="usuarioID" name="usuarioID" value="<?php echo $projeto->id; ?>">
+                                            <input type="hidden" id="id" name="id" value="<?php echo $projeto->id; ?>">
                                             <input type="hidden" id="action" name="action" value="1">
                                             <div class="col s7"></div>
                                             <div>
@@ -231,15 +255,74 @@
                                 </div>
                                 
 
+                                <div id="ModalFaturas" class="modal fade" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Previsão de Faturamento</h4>
+                                    </div>
 
-                                <div id="test2" class="col s12">
-                                    <p>Lorem ipsum dolor sit am1231et, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                    <form class="col s12" id="projetoprevisaofats" action="projetoprevisaofats.php" method="post" name="projetoprevisaofats">
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col s4">
+                                            <label for="id_projeto">Código do Projeto</label><br />
+                                              <?php echo $projeto->id; ?>
+                                              <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                            </div>
+                                            
+                                            <div class="col s4">
+                                            <label for="nome">Cliente</label><br />
+                                                <?php echo $projeto->id_cliente; ?>
+                                                <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
+                                            </div>
+
+                                            <div class="col s4">
+                                            <label for="proposta">Proposta</label><br />
+                                              <?php echo $projeto->id_proposta; ?>
+                                              <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s6">
+                                            <label for="num_parcela">Parcela</label>
+                                              <input type="text" id="Num_parcela" name="Num_parcela" class="validate" maxlength="3">
+                                            </div>
+
+                                            <div class="col s6">
+                                            <label for="Vlr_parcela_cimp">Valor Com impostos R$</label>
+                                              <input type="text" onkeypress="moeda(this)" id="Vlr_parcela_cimp" name="Vlr_parcela_cimp" class="validate" maxlength="255">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s6">
+                                            <label for="mes_previsao_fat">Mês / Ano</label>
+                                              <input type="text" id="mes_previsao_fat" name="mes_previsao_fat" class="validate" maxlength="7">
+                                            </div>
+
+                                            <div class="col s6">
+                                            <label for="Vlr_parcela_simp">Valor Sem Impostos R$</label>
+                                              <input type="text" onkeypress="moeda(this)" readonly="true" id="Vlr_parcela_simp" name="Vlr_parcela_simp" class="validate" maxlength="255">
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                        <input type="hidden" name="action" value="1">
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <div class="col s1"></div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>    
                                 </div>
 
 
-
-                                <div id="test4" class="col s12">
-                                    <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                                <div id="despesa" class="col s12">
+                                    <p>Formulario despesas.</p>
+                                </div>
+                                
+                                <div id="fluxoFin" class="col s12">
+                                    <p>Formulario Fluxo Financeiro.
                                     </p>
                                 </div>
 
@@ -257,4 +340,27 @@
 <?php
   require_once(app::path.'/view/footer.php');
 ?>
-<script src="<?php echo app::dominio; ?>view/assets/js/usuarios/usuario.js"></script>
+
+<script>
+
+function editaFat(id) {
+    if (id > 0) {
+        document.getElementById('id').value = id;
+        document.getElementById('projetoprevisaofats').submit();
+    }
+}
+
+function excluiFat(id) {
+    var r = confirm("Certeza que quer excluir este registro?");
+    if (r != true) {
+        return false;
+    } 
+    if (id > 0) {
+        document.getElementById('id').value = id;
+        document.getElementById('action').value = "3";
+        document.getElementById('projetoprevisaofats').submit();
+    }   
+}
+
+</script>
+<script src="<?php echo app::dominio; ?>view/assets/js/projetos/projeto.js"></script>

@@ -19,10 +19,10 @@ $projeto->id					= $projeto->getRequest('id', 0);
 $projeto->id_cliente		  	= $projeto->getRequest('id_cliente', 0);
 $projeto->id_proposta  			= $projeto->getRequest('id_proposta', 0);
 $projeto->id_pilar  			= $projeto->getRequest('id_pilar', 0);
+$projeto->Cliente_reembolsa  	= $projeto->getRequest('Cliente_reembolsa', 0);
 $projeto->data_inicio  			= $projeto->getRequest('data_inicio', 0);
 $projeto->data_fim  			= $projeto->getRequest('data_fim', 0);
-$projeto->status		  		= $projeto->getRequest('status', 0);
-
+$projeto->status		  		= $projeto->getRequest('status', 1);
 
 $msg = '';
 $action 						= $projeto->getRequest('action', 0);
@@ -34,7 +34,7 @@ if ($action == SAVE) {
 }
 
 if ($action == GET) {
-	echo json_encode(array('success'=>$projeto->get($projeto->getRequest('projetoID')), 'msg'=>$projeto->msg, 'data'=>$projeto->array));
+	echo json_encode(array('success'=>$projeto->get($projeto->getRequest('id')), 'msg'=>$projeto->msg, 'data'=>$projeto->array));
 	exit;
 }
 

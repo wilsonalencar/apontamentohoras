@@ -7,7 +7,7 @@
 		public function montaSelect($selected=0)
 		{
 			$conn = $this->getDB->mysqli_connection;
-			$query = sprintf("SELECT id,descricao FROM projetostatus WHERE status = '%s' ORDER BY id", $this::STATUS_SISTEMA_ATIVO);
+			$query = sprintf("SELECT id,descricao FROM projetostatus WHERE Situacao = '%s' ORDER BY id", $this::STATUS_SISTEMA_ATIVO);
 
 			if($result = $conn->query($query))
 			{
