@@ -47,7 +47,7 @@
                             <div class="clearBoth"><br/></div>
                             
                                 <div id="test1" class="col s12">
-                                    <form class="col s12" action="projetos.php" method="post" name="cad_projetos">
+                                    <form class="col s12" action="projetos.php" method="post" name="cad_projetos" id="cad_projetos">
 
                                       <div class="row">
                                         <div class="col s6">
@@ -77,7 +77,7 @@
                                             <select id="id_proposta" name="id_proposta" class="form-control input-sm">
                                               <option value="">Proposta</option>
                                                 <?php $proposta->montaSelect($row['id']); ?>
-                                            </select>   
+                                            </select>
                                         </div>
 
                                         <div class="col s2">
@@ -108,7 +108,7 @@
                                     </div>
                                     <br />
 
-                                        <div class="row" style="display:block" id="rowFatAnexos">
+                                        <div class="row" style="display:none" id="rowFatAnexos">
                                             <?php
                                                 require_once('model/projetoprevisaofat.php');
                                                 $projetoprevisaofat = new projetoprevisaofat;
@@ -143,18 +143,18 @@
                                                                     <th></th>
                                                                 </tr>
                                                                 <?php
-                                                                if (!empty($projetoprevisaofat->array)) {
-                                                                    foreach($projetoprevisaofat->array as $row){ ?>
-                                                                        <tr class="odd gradeX">
-                                                                            <td><?php echo $row['Num_parcela']; ?></td>
-                                                                            <td><?php echo $row['mes_previsao_fat']; ?></td>
-                                                                            <td><?php echo $row['Vlr_parcela_cimp']; ?></td>
-                                                                            <td><?php echo $row['Vlr_parcela_simp']; ?></td>
-                                                                            <td>
-                                                                            <i onclick="excluiFat(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
-                                                                            </td>
-                                                                        </tr>
-                                                                    <?php } }?>
+                                                                    if (!empty($projetoprevisaofat->array)) {
+                                                                        foreach($projetoprevisaofat->array as $row){ ?>
+                                                                            <tr class="odd gradeX">
+                                                                                <td><?php echo $row['Num_parcela']; ?></td>
+                                                                                <td><?php echo $row['mes_previsao_fat']; ?></td>
+                                                                                <td>R$ <?php echo $row['Vlr_parcela_cimp']; ?></td>
+                                                                                <td>R$ <?php echo $row['Vlr_parcela_simp']; ?></td>
+                                                                                <td>
+                                                                                    <i onclick="excluiFat(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                                                </td>
+                                                                            </tr>
+                                                                <?php } }?>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -177,7 +177,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>Teste_jpg.pdfaspmaps</td>
+                                                                    <td>Ainda não funciona</td>
                                                                     <td><a href="#">X</a></td>
                                                                 </tr>
                                                             </tbody>
@@ -191,6 +191,11 @@
 
 
                                         <div class="row" style="display:none" id="rowRecursos">
+                                        <?php
+                                        require_once('model/projetorecurso.php');
+                                        $projetorecursos = new projetorecurso;
+                                        $projetorecursos->lista($projeto->id);
+                                        ?>
                                             <div class="col-md-9">
                                                 <div class="card">
                                                     <div class="table-responsive">
@@ -211,7 +216,7 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
-                                                                        <a href="#" style="color : #fff;">+</a>
+                                                                        <a href="#" data-toggle="modal" data-target="#ModalRecursos" style="color : #fff;">+</a>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -225,15 +230,25 @@
                                                                     <th>Horas Realizadas</th>
                                                                     <td></td>
                                                                 </tr>
-                                                                <tr>
-                                                                    <td>Alopatinaikos</td>
-                                                                    <td>Alopatinaikos</td>
-                                                                    <td>Alopatinaikos</td>
-                                                                    <td>Alopatinaikos</td>
-                                                                    <td>Alopatinaikos</td>
-                                                                    <td>Alopatinaikos</td>
-                                                                    <td><a href="#">X</a></td>
-                                                                </tr>
+                                                                <form action="projetorecursos.php" id="form_projetorecursos">   
+                                                                <?php
+                                                                if (!empty($projetorecursos->array)) {
+                                                                foreach($projetorecursos->array as $row){ ?>
+                                                                    <tr class="odd gradeX">
+                                                                        <td><?php echo $row['nomePerfil']; ?></td>
+                                                                        <td><?php echo $row['nomeFuncionario']; ?></td>
+                                                                        <td>R$ <?php echo $row['Vlr_taxa_compra']; ?></td>
+                                                                        <td><?php echo $row['mes_alocacao']; ?></td>
+                                                                        <td><?php echo $row['Qtd_hrs_estimada']; ?></td>
+                                                                        <td>0</td>
+                                                                        <td>
+                                                                        <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php } }?>
+                                                                <input type="hidden" name="idRec" id="idRec" value="0">
+                                                                <input type="hidden" name="action" value="3">
+                                                                </form>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -254,7 +269,7 @@
                                     </form>
                                 </div>
                                 
-
+                                <!-- Modal de Faturas -->
                                 <div id="ModalFaturas" class="modal fade" >
                                     <div class="modal-header">
                                         <h4 class="modal-title">Previsão de Faturamento</h4>
@@ -317,6 +332,80 @@
                                 </div>
 
 
+                                <!-- Modal de Recursos -->
+                                <div id="ModalRecursos" class="modal fade" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Gerenciamento de Recursos</h4>
+                                    </div>
+
+                                    <form class="col s12" id="projetorecursos" action="projetorecursos.php" method="post" name="projetorecursos">
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col s4">
+                                            <label for="id_projeto">Código do Projeto</label><br />
+                                              <?php echo $projeto->id; ?>
+                                              <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                            </div>
+                                            
+                                            <div class="col s4">
+                                            <label for="nome">Cliente</label><br />
+                                                <?php echo $projeto->id_cliente; ?>
+                                                <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
+                                            </div>
+
+                                            <div class="col s4">
+                                            <label for="proposta">Proposta</label><br />
+                                              <?php echo $projeto->id_proposta; ?>
+                                              <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s4">
+                                                <label for="id_perfilprofissional">Perfil Profissional</label>
+                                                <select id="id_perfilprofissional" name="id_perfilprofissional" class="form-control input-sm">
+                                                  <option value="">Selecione</option>
+                                                    <?php $perfilprofissional->montaSelect($row['id']); ?>
+                                                </select> 
+                                            </div>
+                                            <div class="col s1"></div>
+                                            <div class="col s4">
+                                                <label for="id_funcionario">Profissional</label>
+                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                                                  <option value="">Selecione</option>
+                                                    <?php $funcionario->montaSelect($row['id']); ?>
+                                                </select> 
+                                            </div>
+                                          </div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="vlr_taxa_compra">Taxa Compra R$</label>
+                                                  <input type="text" onkeypress="moeda(this)" id="vlr_taxa_compra" name="vlr_taxa_compra" class="validate" maxlength="255">
+                                                </div>
+                                                <div class="col s1"></div>
+                                                <div class="col s4">
+                                                <label for="mes_alocacao">Mês / Ano</label>
+                                                  <input type="text" id="mes_alocacao" name="mes_alocacao" class="validate" maxlength="7">
+                                                </div>
+                                            </div>
+                          
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="qtd_hrs_estimada">Horas realizadas</label>
+                                                  <input type="text" id="qtd_hrs_estimada" name="qtd_hrs_estimada" class="validate" maxlength="7">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <input type="hidden" name="action" value="1">
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <div class="col s1"></div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>    
+                                </div>
+
+
                                 <div id="despesa" class="col s12">
                                     <p>Formulario despesas.</p>
                                 </div>
@@ -343,22 +432,25 @@
 
 <script>
 
-function editaFat(id) {
-    if (id > 0) {
-        document.getElementById('id').value = id;
-        document.getElementById('projetoprevisaofats').submit();
-    }
-}
-
-function excluiFat(id) {
+function excluiFat(idFat) {
     var r = confirm("Certeza que quer excluir este registro?");
     if (r != true) {
         return false;
     } 
-    if (id > 0) {
-        document.getElementById('id').value = id;
-        document.getElementById('action').value = "3";
-        document.getElementById('projetoprevisaofats').submit();
+    if (idFat > 0) {
+        document.getElementById('idFat').value = idFat;
+        document.getElementById('form_projetofaturas').submit();
+    }   
+}
+
+function excluiRec(idRec) {
+    var r = confirm("Certeza que quer excluir este registro?");
+    if (r != true) {
+        return false;
+    } 
+    if (idRec > 0) {
+        document.getElementById('idRec').value = idRec;
+        document.getElementById('form_projetorecursos').submit();
     }   
 }
 

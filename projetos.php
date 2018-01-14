@@ -4,6 +4,8 @@ require_once('model/proposta.php');
 require_once('model/cliente.php');
 require_once('model/pilar.php');
 require_once('model/statusProj.php');
+require_once('model/perfilprof.php');
+require_once('model/funcionario.php');
 
 define('SAVE', 1);
 define('GET', 2);
@@ -14,6 +16,8 @@ $proposta 	= new proposta;
 $cliente 	= new cliente;
 $pilar  	= new pilar;
 $statusProj = new statusProj;
+$perfilprofissional = new perfilprof;
+$funcionario = new funcionario;
 
 $projeto->id					= $projeto->getRequest('id', 0);
 $projeto->id_cliente		  	= $projeto->getRequest('id_cliente', 0);

@@ -78,7 +78,6 @@ class projeto extends app
 			return false;	
 		}
 		$this->id = $conn->insert_id;
-
 		$this->msg = "Projeto Criado com sucesso!";
 		return true;
 	}
@@ -86,8 +85,8 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET nome = '%s', email ='%s', id_perfilprojeto = %d, id_responsabilidade = %d, senha = '%s', reset_senha = '%s' , projeto = '%s', data_alteracao = NOW(), status = '%s' WHERE id = %d", 
-			$this->nome , $this->email, $this->id_perfilprojeto, $this->id_responsabilidade, $this->senha, $this->reset_senha, $_SESSION['email'],$this->status, $this->id);	
+		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= '%s', data_fim= '%s', id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', data_alteracao = NOW() WHERE id = %d", 
+			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
