@@ -172,7 +172,7 @@ class projetorecurso extends app
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("DELETE FROM projetoprevisaofat WHERE id = %d ", $id);
+		$query = sprintf("DELETE FROM projetorecursos WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro na exclusão do recurso";	
