@@ -152,7 +152,7 @@ class proposta extends app
 		$query = sprintf("DELETE FROM propostas WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do proposta";	
+			$this->msg = "A proposta tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

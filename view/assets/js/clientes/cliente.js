@@ -60,6 +60,12 @@ $( document ).ready(function() {
         alert('Informar o cnpj do cliente');
         $("#cnpj").focus();
         return false;
+    } 
+
+    if ($("#cnpj").val().length < 18 ) {
+        alert('Informar o cnpj do cliente corretamente.');
+        $("#cnpj").focus();
+        return false;
     }
 
     if ($("#endereco").val() == '') {

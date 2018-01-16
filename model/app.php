@@ -71,7 +71,6 @@ class app extends config
 
 	public function validaCPF( $cpf = false ) 
 	{
-  
 	    if ( ! function_exists('calc_digitos_posicoes') ) {
 	        function calc_digitos_posicoes( $digitos, $posicoes = 10, $soma_digitos = 0 ) {
 	            for ( $i = 0; $i < strlen( $digitos ); $i++  ) {

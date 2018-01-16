@@ -152,7 +152,7 @@ class contratacao extends app
 		$query = sprintf("DELETE FROM contratacoes WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão da contratação";	
+			$this->msg = "A contratação tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

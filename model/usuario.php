@@ -102,8 +102,6 @@ class usuario extends app
 		return true;
 	}
 
-
-
 	public function login(){
 
 		if (!$this->checkLogin()) {
@@ -113,7 +111,7 @@ class usuario extends app
 		$conn = $this->getDB->mysqli_connection;		
 		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario, reset_senha FROM usuarios WHERE email = '%s' AND senha = '%s' AND status = '%s'", 
 			$this->email, $this->senha, $this::STATUS_SISTEMA_ATIVO);	
-
+		
 		if (!$result = $conn->query($query)) {
 			return false;	
 		}
@@ -237,7 +235,7 @@ class usuario extends app
 		$query = sprintf("DELETE FROM usuarios WHERE usuarioID = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do usuaŕio";	
+			$this->msg = "O usuário tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

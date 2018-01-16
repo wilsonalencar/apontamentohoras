@@ -110,7 +110,7 @@ class projeto extends app
 						    A.id_status,
 						    A.Cliente_reembolsa,
 						    B.nome AS ClienteNome,
-						    C.nome AS PilarNome
+						    C.nome AS PropostaNome
 						FROM
 						    projetos A
 						        INNER JOIN

@@ -153,7 +153,7 @@ class pilar extends app
 		$query = sprintf("DELETE FROM pilares WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do pilar";	
+			$this->msg = "O pilar tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

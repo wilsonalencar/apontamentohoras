@@ -152,7 +152,7 @@ class responsabilidade extends app
 		$query = sprintf("DELETE FROM responsabilidades WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão da responsabilidade";	
+			$this->msg = "A responsabilidade tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

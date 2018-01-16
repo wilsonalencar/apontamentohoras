@@ -54,6 +54,23 @@ class cliente extends app
 		return true;
 	}
 
+	private function checkMail()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT email FROM clientes WHERE email = '%s' AND id <> %d", $this->email, $this->id);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do email do cliente.";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Email já está sendo utilizado por outro cliente.";
+			return false;			
+		}
+		return true;
+	}
+
 	private function check()
 	{
 		if (empty($this->codigo)) {
@@ -96,6 +113,10 @@ class cliente extends app
 			return false;
 		}
 
+		if (!$this->checkMail()) {
+			return false;
+		}
+	
 		if (!$this->checkCodigo()) {
 			return false;
 		}
@@ -219,7 +240,7 @@ class cliente extends app
 		$query = sprintf("DELETE FROM clientes WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do cliente";	
+			$this->msg = "O cliente tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 		$this->msg = 'Registro excluido com sucesso';

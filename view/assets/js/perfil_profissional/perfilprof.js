@@ -45,7 +45,7 @@ $( document ).ready(function() {
 
     if ($("#status").val() == '') {
         alert('Informar o status do perfil profissional');
-        $("#cnpj").focus();
+        $("#status").focus();
         return false;
     }
     return true;

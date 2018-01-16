@@ -152,7 +152,7 @@ class perfilprof extends app
 		$query = sprintf("DELETE FROM perfilprofissional WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do perfil Profissional";	
+			$this->msg = "O Perfil Profissional tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

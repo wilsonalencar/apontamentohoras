@@ -46,7 +46,7 @@ $( document ).ready(function() {
 
     if ($("#status").val() == '') {
         alert('Informar o status da contratação');
-        $("#cnpj").focus();
+        $("#status").focus();
         return false;
     }
     return true;

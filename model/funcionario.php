@@ -262,7 +262,7 @@ class funcionario extends app
 		$query = sprintf("DELETE FROM funcionarios WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do usuaŕio";	
+			$this->msg = "O funcionário tem um vinculo externo, exclusão não permitida.";	
 			return false;	
 		}
 

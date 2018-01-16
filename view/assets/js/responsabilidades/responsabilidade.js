@@ -45,7 +45,7 @@ $( document ).ready(function() {
 
     if ($("#status").val() == '') {
         alert('Informar o status da responsabilidade');
-        $("#cnpj").focus();
+        $("#status").focus();
         return false;
     }
     return true;
