@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestão</title> 
+    <title>Bravo - Gestão de Projetos</title> 
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="<?php echo app::dominio; ?>/view/assets/materialize/css/materialize.min.css" media="screen,projection" />
     <link href="<?php echo app::dominio; ?>view/assets/css/bootstrap.css" rel="stylesheet" />
@@ -11,7 +11,15 @@
     <link href="<?php echo app::dominio; ?>view/assets/js/morris/morris-0.4.3.min.css" rel="stylesheet" />
     <link href="<?php echo app::dominio; ?>view/assets/css/custom-styles.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+
+    
+
     <link rel="stylesheet" href="<?php echo app::dominio; ?>view/assets/js/Lightweight-Chart/cssCharts.css"> 
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/css/TableTools.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css">
 </head>
 
 <?php if (!empty($_SESSION['logado']) && $_SERVER['SCRIPT_NAME'] != '/login.php') { ?>
@@ -34,7 +42,7 @@
                 </div>
 
                 <ul class="nav navbar-top-links navbar-right"> 
-    				  <li><a class="dropdown-button waves-effect waves-dark" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
+    				  <li><a class="dropdown-button waves-effect waves-dark active-menu" href="#!" data-activates="dropdown1"><i class="fa fa-user fa-fw"></i> <b><?php echo $_SESSION['nome']; ?></b> <i class="material-icons right">arrow_drop_down</i></a></li>
                 </ul>
             </nav>
     		<!-- Dropdown Structure -->
@@ -203,12 +211,12 @@
                 <div class="sidebar-collapse">
                     <ul class="nav" id="main-menu">
                         <li>
-                            <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-dashboard"></i> Home</a>
+                            <a class="active-menu waves-effect waves-dark" href="index.php"><i class="fa fa-home"></i> Home</a>
                         </li>
                         
                         <li>
                             <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cadastrobasico)){ ?>
-                                <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros básicos<span class="fa arrow"></span></a>
+                                <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros<span class="fa arrow"></span></a>
                             <?php } ?>
                             <ul class="nav nav-second-level">
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cliente)){ ?>
@@ -216,10 +224,10 @@
                                         <a href="#">Clientes<span class="fa arrow"></span></a>
                                         <ul class="nav nav-third-level">
                                             <li>
-                                                <a href="<?php echo app::dominio; ?>clientes.php" >Adicionar</a>
+                                                <a class="active-menu" href="<?php echo app::dominio; ?>clientes.php" >Adicionar</a>
                                             </li>
                                             <li>
-                                                <a href="<?php echo app::dominio; ?>consulta_clientes.php" >Consultar</a>
+                                                <a class="active-menu" href="<?php echo app::dominio; ?>consulta_clientes.php" >Consultar</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -229,10 +237,10 @@
                                     <a href="#">Propostas<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>propostas.php" >Adicionar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>propostas.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_propostas.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_propostas.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -241,13 +249,13 @@
 
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
                                 <li>
-                                    <a href="#">Apontamento</a>
+                                    <a class="" href="#">Apontamento</a>
                                 </li>
                                 <?php } ?>
 
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
                                 <li>
-                                    <a href="#">Aprovação</a>
+                                    <a class="" href="#">Aprovação</a>
                                 </li>
                                 <?php } ?>
 
@@ -257,13 +265,13 @@
                                     <a href="#">Relatórios<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="#" >Horas por recurso</a>
+                                            <a class="active-menu" href="#" >Horas por recurso</a>
                                         </li>
                                         <li>
-                                            <a href="#" >Horas por projeto</a>
+                                            <a class="active-menu" href="#" >Horas por projeto</a>
                                         </li>
                                         <li>
-                                            <a href="#" >Horas por pilar</a>
+                                            <a class="active-menu" href="#" >Horas por pilar</a>
                                         </li>
 
                                     </ul>
@@ -275,13 +283,13 @@
                                     <a href="#">Projetos<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="#" >Consulta</a>
-                                        </li>
+                                            <a class="active-menu" href="#" >Consulta</a>
+                                        </li> 
                                         <li>
-                                            <a href="#" >Liberar Apontamento</a>
+                                            <a class="active-menu" href="#" >Liberar Apontamento</a>
                                         </li>
 
                                     </ul>
@@ -293,10 +301,10 @@
                                     <a href="#">Pilares<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>pilares.php" >Adicionar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>pilares.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_pilares.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_pilares.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -307,10 +315,10 @@
                                     <a href="#">Contratações<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                           <a href="<?php echo app::dominio; ?>contratacoes.php" >Adicionar</a>
+                                           <a class="active-menu" href="<?php echo app::dominio; ?>contratacoes.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_contratacoes.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_contratacoes.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -321,10 +329,10 @@
                                     <a href="#">Perfil Profissional<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                             <a href="<?php echo app::dominio; ?>perfil_prof.php" >Adicionar</a>
+                                             <a class="active-menu" href="<?php echo app::dominio; ?>perfil_prof.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_perfil_prof.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_perfil_prof.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -335,10 +343,10 @@
                                     <a href="#">Responsabilidades<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>responsabilidades.php" >Adicionar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>responsabilidades.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_responsabilidades.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_responsabilidades.php" >Consultar</a>
                                         </li>
 
                                     </ul>
@@ -349,10 +357,10 @@
                                     <a href="#" class="waves-effect waves-dark"> Usuários<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                          <li>
-                                            <a href="<?php echo app::dominio; ?>usuarios.php" >Adicionar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>usuarios.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_usuarios.php" >Consultar</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -360,13 +368,13 @@
 
                                  <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_funcionario)){ ?>
                                 <li>
-                                    <a href="#" class="waves-effect waves-dark"> Funcionários<span class="fa arrow"></span></a>
+                                    <a href="#" class="waves-effect waves-dark "> Funcionários<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                          <li>
-                                            <a href="<?php echo app::dominio; ?>funcionarios.php" >Adicionar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>funcionarios.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a href="<?php echo app::dominio; ?>consulta_funcionarios.php" >Consultar</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_funcionarios.php" >Consultar</a>
                                         </li>
                                     </ul>
                                 </li>

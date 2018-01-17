@@ -80,9 +80,38 @@
     require_once(app::path.'view/footer.php');
 ?>
 <script>
-$(document).ready(function () {
-    $('#dataTables-example').dataTable();
-});
+$('#dataTables-example').dataTable({
+        language: {                        
+            "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Portuguese-Brasil.json"
+        },
+        dom: '<B>frtip',
+        buttons: [
+             {
+                extend: 'copyHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2]
+                }
+             },
+             {
+                extend: 'excelHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2]
+                }
+             },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2]
+                }
+             },
+             {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2]
+                }
+             },
+         ]
+    });  
 
 function edita(id) {
     if (id > 0) {
