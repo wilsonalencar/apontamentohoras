@@ -62,7 +62,7 @@ class projetoprevisaofat extends app
 		$query = sprintf(" INSERT INTO projetoprevisaofat (id_projeto, Num_parcela, mes_previsao_fat, Vlr_parcela_cimp, Vlr_parcela_simp, usuario)
 		VALUES (%d,%d,'%s',%d, %d, '%s')", 
 			$this->id_projeto, $this->Num_parcela, $this->mes_previsao_fat, $this->Vlr_parcela_cimp, $this->Vlr_parcela_simp, $_SESSION['email']);	
-
+		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	

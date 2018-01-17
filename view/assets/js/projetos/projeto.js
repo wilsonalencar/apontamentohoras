@@ -1,8 +1,8 @@
-
 var id = $("#id").val();
 if (id > 0) {
    getDataProposta(id);
 }
+
 function getDataProposta(id)
 {
    $.ajax({
@@ -22,6 +22,9 @@ function getDataProposta(id)
             }
             $("#id").val(d.data.id);
             $("#id_cliente").val(d.data.id_cliente);
+            $(".cliente").html(d.data.ClienteNome);
+            $(".proposta").html(d.data.PropostaNome);
+            $(".pilar").html(d.data.PilarNome);
             $("#id_proposta").val(d.data.id_proposta);
             $("#id_pilar").val(d.data.id_pilar);
             $("#data_inicio").val(d.data.Data_inicio);

@@ -4,9 +4,10 @@
 */
 class funcionalidadeConst
 {
-	const RESET_TRUE = 'S';
-	const RESET_FALSE = 'N';
-	const SENHA_PADRAO = 'ADMIN123';
+	const RESET_TRUE 	= 'S';
+	const RESET_FALSE 	= 'N';
+	const SENHA_PADRAO 	= 'ADMIN123';
+	const IMPOSTO 		= 0.9185;
 	const perfil_cliente	 			= 1;
 	const perfil_propostas 				= 2;
 	const perfil_pilares 				= 3;

@@ -21,18 +21,15 @@
                 <div class="card-content">
                   <?php
                       if (!empty($msg)) { 
-
                         if ($success) {
                             echo "<div class='alert alert-success'>
                                     <strong>Sucesso !</strong> $msg
                                   </div>";
                           }
-
                           if (!$success) {
                             echo "<div class='alert alert-danger'>
                                     <strong>ERRO !</strong> $msg
                                   </div>";
-
                           }                           
                         }
                      ?>
@@ -44,7 +41,10 @@
                                   <li class="tab col s3 disabled" id="divFluxoFin"><a href="#fluxoFin">Fluxo Financeiro</a></li>
                               </ul>
                             </div>
-                            <div class="clearBoth"><br/></div>
+
+                            <div class="clearBoth">
+                                <br/>
+                            </div>
                             
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="projetos.php" method="post" name="cad_projetos" id="cad_projetos">
@@ -110,8 +110,6 @@
 
                                         <div class="row" style="display:none" id="rowFatAnexos">
                                             <?php
-                                                require_once('model/projetoprevisaofat.php');
-                                                $projetoprevisaofat = new projetoprevisaofat;
                                                 $projetoprevisaofat->lista($projeto->id);
                                             ?>
                                             <div class="col-md-5">
@@ -122,6 +120,8 @@
                                                                 <tr style="background: #c0392b;">
                                                                     <th align="left">
                                                                     <p style="color : #fff;"> Faturas </p>
+                                                                    </th>
+                                                                    <th align="center">
                                                                     </th>
                                                                     <th align="center">
                                                                     </th>
@@ -192,8 +192,6 @@
 
                                         <div class="row" style="display:none" id="rowRecursos">
                                         <?php
-                                        require_once('model/projetorecurso.php');
-                                        $projetorecursos = new projetorecurso;
                                         $projetorecursos->lista($projeto->id);
                                         ?>
                                             <div class="col-md-9">
@@ -230,7 +228,6 @@
                                                                     <th>Horas Realizadas</th>
                                                                     <td></td>
                                                                 </tr>
-                                                                <form action="projetorecursos.php" id="form_projetorecursos">   
                                                                 <?php
                                                                 if (!empty($projetorecursos->array)) {
                                                                 foreach($projetorecursos->array as $row){ ?>
@@ -246,9 +243,6 @@
                                                                         </td>
                                                                     </tr>
                                                                 <?php } }?>
-                                                                <input type="hidden" name="idRec" id="idRec" value="0">
-                                                                <input type="hidden" name="action" value="3">
-                                                                </form>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -286,13 +280,13 @@
                                             
                                             <div class="col s4">
                                             <label for="nome">Cliente</label><br />
-                                                <?php echo $projeto->id_cliente; ?>
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></label>
                                                 <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
                                             </div>
 
                                             <div class="col s4">
                                             <label for="proposta">Proposta</label><br />
-                                              <?php echo $projeto->id_proposta; ?>
+                                            <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
                                               <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
                                             </div>
                                           </div>
@@ -313,11 +307,6 @@
                                             <div class="col s6">
                                             <label for="mes_previsao_fat">Mês / Ano</label>
                                               <input type="text" id="mes_previsao_fat" name="mes_previsao_fat" class="validate" maxlength="7">
-                                            </div>
-
-                                            <div class="col s6">
-                                            <label for="Vlr_parcela_simp">Valor Sem Impostos R$</label>
-                                              <input type="text" onkeypress="moeda(this)" readonly="true" id="Vlr_parcela_simp" name="Vlr_parcela_simp" class="validate" maxlength="255">
                                             </div>
                                           </div>
                                         </div>
@@ -349,13 +338,13 @@
                                             
                                             <div class="col s4">
                                             <label for="nome">Cliente</label><br />
-                                                <?php echo $projeto->id_cliente; ?>
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
                                                 <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
                                             </div>
 
                                             <div class="col s4">
                                             <label for="proposta">Proposta</label><br />
-                                              <?php echo $projeto->id_proposta; ?>
+                                              <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
                                               <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
                                             </div>
                                           </div>
@@ -406,8 +395,183 @@
                                 </div>
 
 
+                                <!-- Modal de despesas -->
+                                <div id="ModalDespesas" class="modal fade" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Gerenciamento de Despesas</h4>
+                                    </div>
+
+                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col s4">
+                                            <label for="id_projeto">Código do Projeto</label><br />
+                                              <?php echo $projeto->id; ?>
+                                              <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                            </div>
+                                            
+                                            <div class="col s4">
+                                            <label for="nome">Cliente</label><br />
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
+                                                <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
+                                            </div>
+
+                                            <div class="col s4">
+                                            <label for="proposta">Proposta</label><br />
+                                              <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
+                                              <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s3">
+                                            <label for="Data_despesa">Data da Despesa</label>
+                                                <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
+                                            </div>
+                                            <div class="col s1"></div>
+                                            <div class="col s2">
+                                                <label for="id_tipodespesa">Tipo da Despesa</label>
+                                                <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
+                                                  <option value="">Selecione</option>
+                                                    <?php $tipodespesa->montaSelect($row['id']); ?>
+                                                </select> 
+                                            </div>
+                                            <div class="col s3">
+                                                <label for="id_funcionario">Profissional</label>
+                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                                                  <option value="">Selecione</option>
+                                                    <?php $funcionario->montaSelect($row['id']); ?>
+                                                </select> 
+                                            </div>
+                                          </div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="Num_doc">Nº Doc</label>
+                                                  <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
+                                                </div>
+                                                <div class="col s1"></div>
+                                                <div class="col s4">
+                                                <label for="Vlr_unit">Valor Unitário R$ :</label>
+                                                  <input type="text" onkeypress="moeda(this)" id="Vlr_unit" name="Vlr_unit" class="validate" maxlength="255">
+                                                </div>
+                                            </div>
+                          
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="Qtd_despesa">Quantidade</label>
+                                                  <input type="text" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
+                                                </div>
+                                                <div class="col s1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <input type="hidden" name="action" value="1">
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <div class="col s1"></div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>    
+                                </div>
+
                                 <div id="despesa" class="col s12">
-                                    <p>Formulario despesas.</p>
+                                    <div class="card-content">
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Código do Projeto : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p><?php echo $projeto->id; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Cliente : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Proposta : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Pilar : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="pilar"><?php echo $projeto->id_pilar; ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                    <?php
+                                        $projetodespesas->lista($projeto->id);
+                                    ?>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr style="background: #c0392b;">
+                                                    <th align="left">
+                                                        <p style="color : #fff;"> Despesas do projeto </p>
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                    </th>
+                                                    <th align="center">
+                                                        <a href="#" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Data</th>
+                                                    <th>Profissional</th>
+                                                    <th>Despesa</th>
+                                                    <th>Num. Doc.</th>
+                                                    <th>Qtd.</th>
+                                                    <th>Vlr. Unit.</th>
+                                                    <th>Vlr. Total</th>
+                                                    <th>Status</th>
+                                                    <td></td>
+                                                </tr>
+                                                <?php
+                                                if (!empty($projetodespesas->array)) {
+                                                foreach($projetodespesas->array as $row){ ?>
+                                                    <tr class="odd gradeX">
+                                                        <td><?php echo $row['Data_despesa']; ?></td>
+                                                        <td><?php echo $row['NomeFuncionario']; ?></td>
+                                                        <td><?php echo $row['NomeDespesa']; ?></td>
+                                                        <td><?php echo $row['Num_doc']; ?></td>
+                                                        <td><?php echo $row['Qtd_despesa']; ?></td>
+                                                        <td><?php echo $row['Vlr_unit']; ?></td>
+                                                        <td><?php echo $row['Vlr_total']; ?></td>
+                                                        <td><?php echo $row['Aprovado']; ?></td>
+                                                        <td>
+                                                        <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                        </td>
+                                                    </tr>
+                                                <?php } }?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 
                                 <div id="fluxoFin" class="col s12">
@@ -423,7 +587,24 @@
                   </div>
                   </div>
             </div>
-      </div>
+        <form action="projetoprevisaofats.php" method="post" id="form_projetofaturas">
+            <input type="hidden" name="idFat" id="idFat">
+            <input type="hidden" name="action" id="action" value="3">
+            <input type="hidden" name="id_projeto" id="id_projeto" value="<?php echo $projeto->id; ?>">
+        </form>
+
+        <form action="projetorecursos.php" method="post" id="form_projetorecursos">
+            <input type="hidden" name="idRec" id="idRec">
+            <input type="hidden" name="action" id="action" value="3">
+            <input type="hidden" name="id_projeto" id="id_projeto" value="<?php echo $projeto->id; ?>">
+        </form>
+
+        <form action="projetodespesas.php" method="post" id="form_projetodespesas">
+            <input type="hidden" name="idDesp" id="idDesp">
+            <input type="hidden" name="action" id="action" value="3">
+            <input type="hidden" name="id_projeto" id="id_projeto" value="<?php echo $projeto->id; ?>">
+        </form>
+    </div>
 
   
 <?php
@@ -451,6 +632,17 @@ function excluiRec(idRec) {
     if (idRec > 0) {
         document.getElementById('idRec').value = idRec;
         document.getElementById('form_projetorecursos').submit();
+    }   
+}
+
+function excluiDesp(idDesp) {
+    var r = confirm("Certeza que quer excluir este registro?");
+    if (r != true) {
+        return false;
+    } 
+    if (idDesp > 0) {
+        document.getElementById('idDesp').value = idDesp;
+        document.getElementById('form_projetodespesas').submit();
     }   
 }
 

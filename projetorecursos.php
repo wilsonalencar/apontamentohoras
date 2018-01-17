@@ -10,7 +10,7 @@ $projetorecurso 	= new projetorecurso;
 $perfilprofissional = new perfilprof;
 
 
-$projetorecurso->id						= $projetorecurso->getRequest('id', 0);
+$projetorecurso->id						= $projetorecurso->getRequest('idRec', 0);
 $projetorecurso->id_projeto  			= $projetorecurso->getRequest('id_projeto', 0);
 $projetorecurso->id_perfilprofissional 	= $projetorecurso->getRequest('id_perfilprofissional', 0);
 $projetorecurso->id_funcionario			= $projetorecurso->getRequest('id_funcionario', 0);
@@ -24,7 +24,7 @@ $action 						= $projetorecurso->getRequest('action', 0);
 if ($action == SAVE) {
 	$success = $projetorecurso->save();
 	$msg     = $projetorecurso->msg; 
-	header('LOCATION:projetos.php?id='.$projetorecurso->id_projeto.'');
+	header('LOCATION:projetos.php?id='.$projetorecurso->id_projeto.'&success='.$success.'&msg='.$msg.'');
 }
 
 if ($action == GET) {
@@ -33,9 +33,9 @@ if ($action == GET) {
 }
 
 if ($action == DEL) {
-	echo "caiu no del recursos";exit;
 	$success = $projetorecurso->deleta($projetorecurso->id);
 	$msg = $projetorecurso->msg;
+	header('LOCATION:projetos.php?id='.$projetorecurso->id_projeto.'&success='.$success.'&msg='.$msg.'');
 }
 
 require_once('view/projetos/frm_projetos.php');

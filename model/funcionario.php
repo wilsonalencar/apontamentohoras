@@ -224,6 +224,7 @@ class funcionario extends app
 		}
 
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
+		$this->array['valor_taxa'] = str_replace('.',',',str_replace(',','',$this->array['valor_taxa']));
 		$this->msg = 'Registro carregado com sucesso';
 		return true;
 	}

@@ -110,13 +110,16 @@ class projeto extends app
 						    A.id_status,
 						    A.Cliente_reembolsa,
 						    B.nome AS ClienteNome,
-						    C.nome AS PropostaNome
+						    C.nome AS PropostaNome,
+						    D.nome AS PilarNome
 						FROM
 						    projetos A
 						        INNER JOIN
 						    clientes B ON A.id_cliente = B.id
 						        INNER JOIN
 						    propostas C ON A.id_proposta = C.id
+						    	INNER JOIN 
+						    pilares D ON A.id_pilar = D.id
 						WHERE
 						    A.id = %d ", $id);
 
