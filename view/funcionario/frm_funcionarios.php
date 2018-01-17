@@ -41,7 +41,7 @@
                         }
                      ?> 
 
-                    <form class="col s12" action="funcionarios.php" method="post" name="cad_funcionarios">
+                    <form class="col s12" action="funcionarios.php" method="post" name="cad_funcionarios" enctype="multipart/form-data">
                       <div class="row">
                         <div class="col s8">
                         <label for="nome">Nome</label>
@@ -156,6 +156,14 @@
                             <option value="<?php echo $funcionario::STATUS_SISTEMA_ATIVO ?>">Ativo</option>
                             <option value="<?php echo $funcionario::STATUS_SISTEMA_INATIVO ?>">Inativo</option>
                           </select>
+                        </div>
+                        
+                      </div>
+
+                      <div class="row">                        
+                        <div class="col s3">
+                        <label for="Status">Currículo</label>
+                          <input type="file" id="curriculo" name="curriculo" class="validate">
                         </div>
                         
                       </div>
