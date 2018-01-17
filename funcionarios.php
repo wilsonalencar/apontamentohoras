@@ -1,5 +1,6 @@
 <?php
 require_once('model/funcionario.php');
+require_once('model/anexo.php');
 require_once('model/contratacao.php');
 require_once('model/perfilprof.php');
 require_once('model/municipio.php');
@@ -9,11 +10,11 @@ define('SAVE', 1);
 define('GET', 2);
 define('DEL', 3);
 
-$contratacao = new contratacao;
-$funcionario = new funcionario;
-$perfilprofissional = new perfilprof;
-$municipio = new municipio;
-$responsabilidade = new responsabilidade;
+$contratacao 			= new contratacao;
+$funcionario 			= new funcionario;
+$perfilprofissional 	= new perfilprof;
+$municipio 				= new municipio;
+$responsabilidade 		= new responsabilidade;
 
 $funcionario->id					= $funcionario->getRequest('id', 0);
 $funcionario->nome 					= $funcionario->getRequest('nome', '');
@@ -37,6 +38,11 @@ $msg = '';
 $action 							= $funcionario->getRequest('action', 0);
 
 if ($action == SAVE) {
+
+	if ($_FILES['curriculo']['size'] > 0) {
+		$funcionario->fileCV = $_FILES['curriculo'];
+	}
+
 	$success = $funcionario->save();
 	$msg     = $funcionario->msg; 
 }

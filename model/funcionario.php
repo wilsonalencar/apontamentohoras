@@ -23,6 +23,8 @@ class funcionario extends app
 	public $status;
 	public $msg;
 	public $id_responsabilidade;
+	public $insertID;
+	public $fileCV = false;
 
 
 	private function checkRG()
@@ -185,6 +187,9 @@ class funcionario extends app
 	{	
 		$conn = $this->getDB->mysqli_connection;
 		$this->valor_taxa = str_replace(',','.',str_replace('.','',$this->valor_taxa));  
+
+		$conn->autocommit(FALSE);
+
 		$query = sprintf(" INSERT INTO funcionarios (nome, apelido, data_nascimento, id_tipocontratacao, id_perfilprofissional,id_responsabilidade, rg , cpf , endereco, valor_taxa , complemento ,	cod_municipio, cep, telefone, email , usuario, status)
 		VALUES ('%s','%s', '%s', %d, %d, %d, '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', '%s', '%s', '%s')", 
 			$this->nome, $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf,$this->endereco, $this->valor_taxa,$this->complemento,$this->cod_municipio,$this->cep,$this->telefone,$this->email, $_SESSION['email'], $this->status);
@@ -193,6 +198,22 @@ class funcionario extends app
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
+
+		if (!empty($this->fileCV)) {
+			
+			$an = new anexo;
+			$an->file = $this->fileCV;
+			$an->path = 'curriculo_funcionario';
+			$an->name = $conn->insert_id;
+
+			if (!$an->insert()) {
+				$this->msg = 'Ocorreu um erro ao atualizar funcionario '. $an->msg;
+				return false;
+			}
+		}
+
+		$conn->commit();
+
 		$this->msg = "Registro inserido com sucesso!";
 		return true;
 	}
@@ -201,6 +222,9 @@ class funcionario extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$this->valor_taxa = str_replace(',','.',str_replace('.','',$this->valor_taxa));
+
+		$conn->autocommit(FALSE);
+
 		$query = sprintf(" UPDATE funcionarios SET nome = '%s', apelido = '%s', data_nascimento = '%s', id_tipocontratacao = %d, id_perfilprofissional = %d ,id_responsabilidade = %d , rg = '%s' , cpf = '%s' , endereco = '%s', valor_taxa = %d , complemento = '%s' ,	cod_municipio = %d , cep = '%s', telefone = '%s', email = '%s', usuario = '%s', status = '%s', data_alteracao = NOW() WHERE id = %d", 
 			$this->nome , $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf, $this->endereco, $this->valor_taxa, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $_SESSION['email'], $this->status, $this->id);	
 		
@@ -208,6 +232,21 @@ class funcionario extends app
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
+
+		if (!empty($this->fileCV)) {
+
+			$an = new anexo;
+			$an->file = $this->fileCV;
+			$an->path = 'curriculo_funcionario';
+			$an->name = $this->id;
+
+			if (!$an->insert()) {
+				$this->msg = 'Ocorreu um erro ao atualizar funcionario '. $an->msg;
+				return false;
+			}
+		}
+		
+		$conn->commit();
 
 		$this->msg = "Registro atualizado com sucesso!";
 		return true;

@@ -87,7 +87,38 @@
 <script>
 
 $(document).ready(function (){
-    $('#dataTables-example').dataTable();
+    $('#dataTables-example').dataTable({
+        language: {                        
+            "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Portuguese-Brasil.json"
+        },
+        dom: '<"centerBtn"B>frtip',
+        buttons: [
+             {
+                extend: 'copyHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2, 3, 4]
+                }
+             },
+             {
+                extend: 'excelHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2, 3, 4]
+                }
+             },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2, 3, 4]
+                }
+             },
+             {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                   columns: [ 0, 1, 2, 3, 4]
+                }
+             },
+         ]
+    });        
 });
 
 function edita(id) {

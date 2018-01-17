@@ -10,9 +10,14 @@
 	<script src="<?php echo app::dominio; ?>view/assets/js/easypiechart.js"></script>
 	<script src="<?php echo app::dominio; ?>view/assets/js/easypiechart-data.js"></script>
 	<script src="<?php echo app::dominio; ?>view/assets/js/Lightweight-Chart/jquery.chart.js"></script>
-    <!-- DATA TABLE SCRIPTS -->
-    <script src="<?php echo app::dominio; ?>view/assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="<?php echo app::dominio; ?>view/assets/js/dataTables/dataTables.bootstrap.js"></script>
+    <!-- DataTables JS -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/datatables-tabletools/2.1.5/js/TableTools.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.20/vfs_fonts.js"></script>
     <script src="<?php echo app::dominio; ?>view/assets/js/custom-scripts.js"></script> 
     <script src="<?php echo app::dominio; ?>view/assets/js/function.js"></script>
 </body>
