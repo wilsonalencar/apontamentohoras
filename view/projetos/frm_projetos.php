@@ -380,7 +380,7 @@
                           
                                             <div class="row">
                                                 <div class="col s4">
-                                                <label for="qtd_hrs_estimada">Horas realizadas</label>
+                                                <label for="qtd_hrs_estimada">Horas Estimadas</label>
                                                   <input type="text" id="qtd_hrs_estimada" name="qtd_hrs_estimada" class="validate" maxlength="7">
                                                 </div>
                                             </div>
@@ -575,13 +575,176 @@
                                 </div>
                                 
                                 <div id="fluxoFin" class="col s12">
-                                    <p>Formulario Fluxo Financeiro.
-                                    </p>
+                                    <div class="card-content">
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Código do Projeto : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p><?php echo $projeto->id; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Cliente : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Proposta : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Pilar : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="pilar"><?php echo $projeto->id_pilar; ?></p>
+                                            </div>
+                                        </div>
+                                        
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr style="background: #c0392b;">
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> MES ATUAL <?php echo $financeiro['1']['mes_atual']; ?> </p>
+                                                        </th>
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> VALORES </p>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE VENDA COM IMPOSTOS</td>
+                                                        <td>R$ <?php echo $financeiro['1']['vlr_parcela_cimp']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE IMPOSTOS</td>
+                                                        <td>R$ <?php echo $financeiro['1']['vlr_parcela_simp']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE VENDA LIQUIDO</td>
+                                                        <td>R$ <?php echo $financeiro['1']['valor_venda_l']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>CUSTO DO PROJETO (CUSTO + DESP. NAO REEMB.)</td>
+                                                        <td>R$ <?php echo $financeiro['1']['custo_projeto']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>MARGEM PROJETO EM PERCENTUAL</td>
+                                                        <td>R$ <?php echo $financeiro['1']['margem_projeto']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>MARGEM PROJETO EM VALORES (VLR VENDA SEM IMPOSTOS - CUSTO PROJ - CF)</td>
+                                                        <td>R$ <?php echo $financeiro['1']['margem_projeto_liquido']; ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div><br /><br /></div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr style="background: #c0392b;">
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> VTD - (ACUMULADOS DOS MESES ATÉ MES ATUAL)  </p>
+                                                        </th>
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> VALORES </p>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE VENDA COM IMPOSTOS</td>
+                                                        <td>R$ <?php echo $financeiro['2']['vlr_parcela_cimp']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE IMPOSTOS</td>
+                                                        <td>R$ <?php echo $financeiro['2']['vlr_parcela_simp']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE VENDA LIQUIDO</td>
+                                                        <td>R$ <?php echo $financeiro['2']['valor_venda_l']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>CUSTO DO PROJETO (CUSTO + DESP. NAO REEMB.)</td>
+                                                        <td>R$ <?php echo $financeiro['2']['custo_projeto']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>MARGEM PROJETO EM PERCENTUAL</td>
+                                                        <td>R$ <?php echo $financeiro['2']['margem_projeto']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>MARGEM PROJETO EM VALORES (VLR VENDA SEM IMPOSTOS - CUSTO PROJ - CF)</td>
+                                                        <td>R$ <?php echo $financeiro['2']['margem_projeto_liquido']; ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div><br /><br /></div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr style="background: #c0392b;">
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> EAC </p>
+                                                        </th>
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> VALORES </p>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE VENDA COM IMPOSTOS</td>
+                                                        <td>R$ <?php echo $financeiro['3']['vlr_parcela_cimp']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE IMPOSTOS</td>
+                                                        <td>R$ <?php echo $financeiro['3']['vlr_parcela_simp']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>VALOR DE VENDA LIQUIDO</td>
+                                                        <td>R$ <?php echo $financeiro['3']['valor_venda_l']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>CUSTO DO PROJETO (CUSTO + DESP. NAO REEMB.)</td>
+                                                        <td>R$ <?php echo $financeiro['3']['custo_projeto'];?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>MARGEM PROJETO EM PERCENTUAL</td>
+                                                        <td>R$ <?php echo $financeiro['3']['margem_projeto']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>MARGEM PROJETO EM VALORES (VLR VENDA SEM IMPOSTOS - CUSTO PROJ - CF)</td>
+                                                        <td>R$ <?php echo $financeiro['3']['margem_projeto_liquido']; ?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+
+                                    </div>
                                 </div>
-
-
-                      </div>
-
+                        </div>
                   <div class="clearBoth"></div>
                   </div>
                   </div>
@@ -612,7 +775,6 @@
 ?>
 
 <script>
-
 function excluiFat(idFat) {
     var r = confirm("Certeza que quer excluir este registro?");
     if (r != true) {
