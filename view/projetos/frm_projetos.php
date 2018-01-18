@@ -380,7 +380,7 @@
                           
                                             <div class="row">
                                                 <div class="col s4">
-                                                <label for="qtd_hrs_estimada">Horas realizadas</label>
+                                                <label for="qtd_hrs_estimada">Horas Estimadas</label>
                                                   <input type="text" id="qtd_hrs_estimada" name="qtd_hrs_estimada" class="validate" maxlength="7">
                                                 </div>
                                             </div>
@@ -775,7 +775,6 @@
 ?>
 
 <script>
-
 function excluiFat(idFat) {
     var r = confirm("Certeza que quer excluir este registro?");
     if (r != true) {
