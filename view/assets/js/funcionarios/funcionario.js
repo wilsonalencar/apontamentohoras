@@ -3,6 +3,17 @@ if (id > 0) {
    getDataFuncionario(id);
 }
 
+
+function excluir_anexo()
+{
+  if (!confirm('Tem certeza que deseja excluir esse anexo?')) {
+    return false;
+  }
+
+   $("#excluir_anexo").val(1);
+   document.getElementById('cad_funcionarios').submit();
+}
+
 function getDataFuncionario(id)
 {
    $.ajax({
@@ -42,7 +53,8 @@ function getDataFuncionario(id)
 }
 
 $( document ).ready(function() {
-  $( "#submit" ).click(function() {
+
+  $( "#btnSubmit" ).click(function() {
     
     if ($("#nome").val() == '') {
         alert('Informar o nome do funcionário');

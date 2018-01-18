@@ -41,7 +41,7 @@
                         }
                      ?> 
 
-                    <form class="col s12" action="funcionarios.php" method="post" name="cad_funcionarios" enctype="multipart/form-data">
+                    <form class="col s12" action="funcionarios.php" method="post" name="cad_funcionarios" id="cad_funcionarios" enctype="multipart/form-data">
                       <div class="row">
                         <div class="col s8">
                         <label for="nome">Nome</label>
@@ -69,7 +69,7 @@
                             <label for="id_tipocontratacao">Tipo de Contratações</label>
                             <select id="id_tipocontratacao" name="id_tipocontratacao" class="form-control input-sm">
                               <option value="">Selecione</option>
-                                <?php $contratacao->montaSelect($row['id']); ?>
+                                <?php $contratacao->montaSelect(); ?>
                             </select>
                         </div>
 
@@ -77,7 +77,7 @@
                             <label for="id_perfilprofissional">Perfil Profissional</label>
                             <select id="id_perfilprofissional" name="id_perfilprofissional" class="form-control input-sm">
                               <option value="">Selecione</option>
-                                <?php $perfilprofissional->montaSelect($row['id']); ?>
+                                <?php $perfilprofissional->montaSelect(); ?>
                             </select> 
                         </div>
 
@@ -85,7 +85,7 @@
                             <label for="id_responsabilidade">Responsabilidade</label>
                             <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
                               <option value="">Selecione</option>
-                                <?php $responsabilidade->montaSelect($row['id']); ?>
+                                <?php $responsabilidade->montaSelect(); ?>
                             </select> 
                         </div>
                       </div>
@@ -162,7 +162,24 @@
 
                       <div class="row">                        
                         <div class="col s3">
-                        <label for="Status">Currículo</label>
+                           <?php 
+                              if (!empty($funcionario->id)) { 
+
+                                 $pasta = app::path.'files/curriculo_funcionario';
+                                 if (is_dir($pasta)) {
+                                    $diretorio = dir($pasta);
+                                    while($arquivo = $diretorio -> read()){
+                                       if ($funcionario->id == preg_replace("/[^0-9]/", "", $arquivo)) {
+                                          echo "<a href='".app::dominio.'files/curriculo_funcionario/'.$arquivo."' target='_blank'>Visualizar Currículo </a>";
+                                          echo "<input type='hidden' name='file' id='file' value='".$pasta.'/'.$arquivo."'>";
+                                          echo "<input type='hidden' name='excluir_anexo' id='excluir_anexo' value='0'>";
+                                          echo " -- <a href='#' onclick='excluir_anexo();'>Excluir </a>";
+                                       }
+                                    }
+                                 }
+                              } 
+                           ?><br>
+                           <label for="Status">Currículo</label>
                           <input type="file" id="curriculo" name="curriculo" class="validate">
                         </div>
                         
@@ -178,7 +195,7 @@
                             <a href="<?php echo app::dominio ?>consulta_funcionarios.php"  class="waves-effect waves-light btn">Voltar</a>
                         </div>
                         <div class="input-field col s1">
-                            <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">
+                            <input type="submit" name="salvar" value="salvar" id="btnSubmit" class="waves-effect waves-light btn">
                         </div>
                       </div>
                     </form>
