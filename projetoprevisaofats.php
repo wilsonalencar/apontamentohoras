@@ -9,7 +9,7 @@ $projetoprevisaofat 	= new projetoprevisaofat;
 $projetoprevisaofat->id					= $projetoprevisaofat->getRequest('idFat', 0);
 $projetoprevisaofat->id_projeto  		= $projetoprevisaofat->getRequest('id_projeto', 0);
 $projetoprevisaofat->Num_parcela	  	= $projetoprevisaofat->getRequest('Num_parcela', 0);
-$projetoprevisaofat->Vlr_parcela_cimp	= $projetoprevisaofat->getRequest('Vlr_parcela_cimp', 0);
+$projetoprevisaofat->Vlr_parcela_cimp	= str_replace(',','.',str_replace('.','',$projetoprevisaofat->getRequest('Vlr_parcela_cimp', 0)));
 $projetoprevisaofat->Vlr_parcela_simp	= $projetoprevisaofat->Vlr_parcela_cimp * funcionalidadeConst::IMPOSTO;
 $projetoprevisaofat->mes_previsao_fat	= $projetoprevisaofat->getRequest('mes_previsao_fat', '');
 

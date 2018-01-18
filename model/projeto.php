@@ -17,6 +17,7 @@ class projeto extends app
 	public $status;
 	public $msg;
 	public $array;
+	public $array_Fin;
 
 
 	private function check(){
@@ -129,6 +130,228 @@ class projeto extends app
 		}
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
 		return true;
+	}
+
+	public function calcFinanceiro($id_projeto)
+	{	
+		//Carrega Primeira tabela
+		//Define Mês atual
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT data_apontamento , Qtd_hrs_real FROM projetohoras WHERE id_projeto = %s ORDER BY data_apontamento DESC", $id_projeto);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_1 = $result->fetch_array(MYSQLI_ASSOC);
+		$mes_pesquisa_r = date( 'Y-m', strtotime( $result_1['data_apontamento']));
+		$mes_atual = date( 'm/Y', strtotime( $result_1['data_apontamento']));
+		$qtd_hrs = $result_1['Qtd_hrs_real'];
+		$this->array_Fin['1']['mes_atual'] = $mes_atual;
+		//Definido mes atual
+		
+
+		//define Valor com e sem imposto
+		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
+						WHERE id_projeto = %d AND mes_previsao_fat = '%s'", $id_projeto, $mes_atual);
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_2 = $result->fetch_array(MYSQLI_ASSOC);
+		$this->array_Fin['1']['vlr_parcela_cimp'] = 0;
+		if (!empty($result_2['vlr_parcela_cimp'])) {
+			$this->array_Fin['1']['vlr_parcela_cimp'] = $result_2['vlr_parcela_cimp'];
+		}
+
+		$this->array_Fin['1']['vlr_parcela_simp'] = 0;
+		if (!empty($result_2['vlr_parcela_simp'])) {
+			$this->array_Fin['1']['vlr_parcela_simp'] = $result_2['vlr_parcela_simp'];
+		}
+
+		$imposto = $this->array_Fin['1']['vlr_parcela_cimp'] - $this->array_Fin['1']['vlr_parcela_simp'];
+		$this->array_Fin['1']['valor_venda_l'] = $this->array_Fin['1']['vlr_parcela_cimp'] - $imposto; 
+		//definido valores com e sem imposto
+
+		//Define Custos do projeto
+		//recursos
+		$query = sprintf("SELECT SUM(Vlr_taxa_compra) as Vlr_taxa_compra FROM projetorecursos WHERE id_projeto = %d AND mes_alocacao = '%s'", $id_projeto, $mes_atual);
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_3 = $result->fetch_array(MYSQLI_ASSOC);
+		$valor_tx_compra = $result_3['Vlr_taxa_compra'];
+		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
+		//Recursos
+
+		$ini = $mes_pesquisa_r.'-01';
+		$fim = $mes_pesquisa_r.'-31';
+		
+		//Despesas do projeto -- Verificar -> Reembolsa ? 
+		$query = sprintf("SELECT SUM(Vlr_total) as Vlr_total FROM projetodespesas 
+						WHERE id_projeto = %d AND Data_despesa between '%s' AND '%s'", $id_projeto, $ini, $fim);
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+
+		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
+		$gasto_despesas = $result_4['Vlr_total'];
+		//Despesas do projeto -- Verificar -> Reembolsa ? 
+
+		$this->array_Fin['1']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
+		//definido custos do projeto
+
+		//Verificar Margem
+		$this->array_Fin['1']['margem_projeto'] = 0;
+		//Verificar Margem
+
+
+		$this->array_Fin['1']['margem_projeto_liquido'] = $this->array_Fin['1']['valor_venda_l'] - $this->array_Fin['1']['custo_projeto'];
+		//Fim da primeira tabela
+
+
+
+		//Carrega Segunda tabela
+
+		//Define Mês atual
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT data_apontamento , Qtd_hrs_real FROM projetohoras WHERE id_projeto = %s ORDER BY data_apontamento ASC", $id_projeto);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_1 = $result->fetch_array(MYSQLI_ASSOC);
+		$mes_pesquisa_d = date( 'Y-m', strtotime( $result_1['data_apontamento']));
+		$qtd_hrs = $result_1['Qtd_hrs_real'];
+		
+
+		//define Valor com e sem imposto
+		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
+						WHERE id_projeto = %d AND mes_previsao_fat = '%s'", $id_projeto, $mes_atual);
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_2 = $result->fetch_array(MYSQLI_ASSOC);
+		$this->array_Fin['2']['vlr_parcela_cimp'] = 0;
+		if (!empty($result_2['vlr_parcela_cimp'])) {
+			$this->array_Fin['2']['vlr_parcela_cimp'] = $result_2['vlr_parcela_cimp'];
+		}
+
+		$this->array_Fin['2']['vlr_parcela_simp'] = 0;
+		if (!empty($result_2['vlr_parcela_simp'])) {
+			$this->array_Fin['2']['vlr_parcela_simp'] = $result_2['vlr_parcela_simp'];
+		}
+
+		$imposto = $this->array_Fin['2']['vlr_parcela_cimp'] - $this->array_Fin['1']['vlr_parcela_simp'];
+		$this->array_Fin['2']['valor_venda_l'] = $this->array_Fin['1']['vlr_parcela_cimp'] - $imposto; 
+		//definido valores com e sem imposto
+
+		//Define Custos do projeto
+
+		//recursos 
+		$query = sprintf("SELECT SUM(Vlr_taxa_compra) as Vlr_taxa_compra FROM projetorecursos WHERE id_projeto = %d", $id_projeto);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_3 = $result->fetch_array(MYSQLI_ASSOC);
+		$valor_tx_compra = $result_3['Vlr_taxa_compra'];
+		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
+		//Recursos 
+
+		$mes_pesquisa_d = ''.$mes_pesquisa_d.'-01';
+		$mes_pesquisa_r = ''.$mes_pesquisa_r.'-31';
+
+		//Despesas do projeto -- Verificar -> reembolsa?
+		$query = sprintf("SELECT SUM(Vlr_total) as Vlr_total FROM projetodespesas 
+						WHERE id_projeto = %d AND Data_despesa between '%s' AND '%s' ", $id_projeto, $mes_pesquisa_d, $mes_pesquisa_r);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
+		$gasto_despesas = $result_4['Vlr_total'];
+		//Despesas do projeto -- Verificar -> reembolsa?
+
+		$this->array_Fin['2']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
+		//definido custos do projeto
+
+		//Verificar Margem
+		$this->array_Fin['2']['margem_projeto'] = 0;
+		//Verificar Margem
+
+
+		$this->array_Fin['2']['margem_projeto_liquido'] = $this->array_Fin['2']['valor_venda_l'] - $this->array_Fin['2']['custo_projeto'];
+		//Fim da Segunda tabela
+
+
+		//Carrega Terceira tabela
+		//define Valor com e sem imposto
+		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
+						WHERE id_projeto = %d", $id_projeto);
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_2 = $result->fetch_array(MYSQLI_ASSOC);
+		$this->array_Fin['3']['vlr_parcela_cimp'] = 0;
+		if (!empty($result_2['vlr_parcela_cimp'])) {
+			$this->array_Fin['3']['vlr_parcela_cimp'] = $result_2['vlr_parcela_cimp'];
+		}
+
+		$this->array_Fin['3']['vlr_parcela_simp'] = 0;
+		if (!empty($result_2['vlr_parcela_simp'])) {
+			$this->array_Fin['3']['vlr_parcela_simp'] = $result_2['vlr_parcela_simp'];
+		}
+
+		$imposto = $this->array_Fin['3']['vlr_parcela_cimp'] - $this->array_Fin['3']['vlr_parcela_simp'];
+		$this->array_Fin['3']['valor_venda_l'] = $this->array_Fin['3']['vlr_parcela_cimp'] - $imposto;
+		//definido valores com e sem imposto
+
+		//Define Custos do projeto
+
+		//recursos
+		$query = sprintf("SELECT SUM(Vlr_taxa_compra) as Vlr_taxa_compra FROM projetorecursos WHERE id_projeto = %d", $id_projeto);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_3 = $result->fetch_array(MYSQLI_ASSOC);
+		$valor_tx_compra = $result_3['Vlr_taxa_compra'];
+		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
+		//Recursos
+
+		//Despesas do projeto -- Verificar -> Reembolsa? 
+		$query = sprintf("SELECT SUM(Vlr_total) as Vlr_total FROM projetodespesas 
+						WHERE id_projeto = %d", $id_projeto);
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
+		$gasto_despesas = $result_4['Vlr_total'];
+		//Despesas do projeto -- Verificar -> Reembolsa
+
+		$this->array_Fin['3']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
+		//definido custos do projeto
+
+		//Verificar Margem
+		$this->array_Fin['3']['margem_projeto'] = 0;
+		//Verificar Margem
+
+
+		$this->array_Fin['3']['margem_projeto_liquido'] = $this->array_Fin['3']['valor_venda_l'] - $this->array_Fin['3']['custo_projeto'];
+		//Fim da terceira tabela
+
+		return $this->array_Fin;
 	}
 
 	public function lista()
