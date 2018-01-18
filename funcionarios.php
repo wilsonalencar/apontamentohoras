@@ -32,19 +32,32 @@ $funcionario->cep  					= $funcionario->getRequest('cep', '');
 $funcionario->valor_taxa  			= $funcionario->getRequest('valor_taxa', 0.00);
 $funcionario->telefone  			= $funcionario->getRequest('telefone', '');
 $funcionario->email  				= $funcionario->getRequest('email', '');
-$funcionario->status  				= $funcionario->getRequest('status', 'A');
+$funcionario->status  				= $funcionario->getRequest('status', 'A');		
+$excluirAnexo 						= $funcionario->getRequest('excluir_anexo');
 
 $msg = '';
 $action 							= $funcionario->getRequest('action', 0);
 
 if ($action == SAVE) {
 
-	if ($_FILES['curriculo']['size'] > 0) {
-		$funcionario->fileCV = $_FILES['curriculo'];
-	}
+	if ((int)$excluirAnexo) {
 
-	$success = $funcionario->save();
-	$msg     = $funcionario->msg; 
+		if (file_exists($_POST['file'])) {
+			unlink($_POST['file']);
+		}
+		
+		$msg = 'Registro excluido com sucesso';
+		$success = true;
+
+	} else {
+
+		if ($_FILES['curriculo']['size'] > 0) {
+			$funcionario->fileCV = $_FILES['curriculo'];
+		}
+
+		$success = $funcionario->save();
+		$msg     = $funcionario->msg; 
+	}
 }
 
 if ($action == GET) {

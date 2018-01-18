@@ -11,7 +11,7 @@ class anexo extends app
 	public $msg;
 
 	private $dir = 'files/';
-	private $types = array('application/pdf', 'application/docx');
+	private $typesCV = array('application/pdf','text/pdf');
 	private $permissionSize = 1024 * 1000;
 
 	public function insert()
@@ -37,8 +37,8 @@ class anexo extends app
 			return false;   
 		}
 		
-		if (!in_array($arqType, $this->types)) {
-      		$this->msg = 'Tipo de arquivo inválido - Informar PDF ou DOC';
+		if (!in_array($arqType, $this->typesCV)) {
+      		$this->msg = 'Tipo de arquivo inválido - Enviar PDF';
       		return false;
 	    }
 
