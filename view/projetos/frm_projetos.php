@@ -54,18 +54,18 @@
                                             <label for="id_cliente">Cliente</label>
                                             <select id="id_cliente" name="id_cliente" class="form-control input-sm">
                                               <option value="">Cliente</option>
-                                              <?php $cliente->montaSelect($row['id']); ?>
+                                              <?php $cliente->montaSelect(); ?>
                                             </select>
                                         </div>
                                         <div class="col s1"></div>
                                          <div class="col s3">
                                             <label for="Cliente_reembolsa">Cliente reembolsa ? </label><br>
                                               <p>
-                                                <input class="with-gap" name="Cliente_reembolsa" value="S" type="radio" id="test3"/>
-                                                <label for="test3">Sim </label>
+                                                <input class="with-gap" name="Cliente_reembolsa" value="S" type="radio" id="cliente_s"/>
+                                                <label for="cliente_s">Sim </label>
                                               
-                                                <input class="with-gap" name="Cliente_reembolsa" value="N" checked type="radio" id="test2" />
-                                                <label for="test2">Não </label>
+                                                <input class="with-gap" name="Cliente_reembolsa" value="N" checked type="radio" id="cliente_n" />
+                                                <label for="cliente_n">Não </label>
                                               </p>
                                         </div>
                                      </div>    
@@ -76,7 +76,7 @@
                                             <label for="id_proposta">Proposta</label>
                                             <select id="id_proposta" name="id_proposta" class="form-control input-sm">
                                               <option value="">Proposta</option>
-                                                <?php $proposta->montaSelect($row['id']); ?>
+                                                <?php $proposta->montaSelect(); ?>
                                             </select>
                                         </div>
 
@@ -95,14 +95,14 @@
                                             <label for="id_pilar">Pilar</label>
                                             <select id="id_pilar" name="id_pilar" class="form-control input-sm">
                                               <option value="">Pilar</option>
-                                                <?php $pilar->montaSelect($row['id']); ?>
+                                                <?php $pilar->montaSelect(); ?>
                                             </select>
                                         </div>    
                                         <div class="col s4">
                                         <label for="Status">Status</label>
                                           <select id="status" name="status" class="form-control input-sm">
                                             <option value="">Status</option>
-                                                <?php $statusProj->montaSelect($row['id']); ?>
+                                                <?php $statusProj->montaSelect(); ?>
                                           </select>
                                         </div>
                                     </div>
@@ -354,7 +354,7 @@
                                                 <label for="id_perfilprofissional">Perfil Profissional</label>
                                                 <select id="id_perfilprofissional" name="id_perfilprofissional" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $perfilprofissional->montaSelect($row['id']); ?>
+                                                    <?php $perfilprofissional->montaSelect(); ?>
                                                 </select> 
                                             </div>
                                             <div class="col s1"></div>
@@ -362,7 +362,7 @@
                                                 <label for="id_funcionario">Profissional</label>
                                                 <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelect($row['id']); ?>
+                                                    <?php $funcionario->montaSelect(); ?>
                                                 </select> 
                                             </div>
                                           </div>
@@ -433,14 +433,14 @@
                                                 <label for="id_tipodespesa">Tipo da Despesa</label>
                                                 <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $tipodespesa->montaSelect($row['id']); ?>
+                                                    <?php $tipodespesa->montaSelect(); ?>
                                                 </select> 
                                             </div>
                                             <div class="col s3">
                                                 <label for="id_funcionario">Profissional</label>
                                                 <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelect($row['id']); ?>
+                                                    <?php $funcionario->montaSelect(); ?>
                                                 </select> 
                                             </div>
                                           </div>
@@ -644,7 +644,7 @@
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>MARGEM PROJETO EM PERCENTUAL</td>
-                                                        <td>R$ <?php echo $financeiro['1']['margem_projeto']; ?></td>
+                                                        <td><?php echo $financeiro['1']['margem_projeto']; ?> %</td>
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>MARGEM PROJETO EM VALORES (VLR VENDA SEM IMPOSTOS - CUSTO PROJ - CF)</td>
@@ -687,7 +687,7 @@
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>MARGEM PROJETO EM PERCENTUAL</td>
-                                                        <td>R$ <?php echo $financeiro['2']['margem_projeto']; ?></td>
+                                                        <td><?php echo $financeiro['2']['margem_projeto']; ?> %</td>
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>MARGEM PROJETO EM VALORES (VLR VENDA SEM IMPOSTOS - CUSTO PROJ - CF)</td>
@@ -730,7 +730,7 @@
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>MARGEM PROJETO EM PERCENTUAL</td>
-                                                        <td>R$ <?php echo $financeiro['3']['margem_projeto']; ?></td>
+                                                        <td><?php echo $financeiro['3']['margem_projeto']; ?> %</td>
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>MARGEM PROJETO EM VALORES (VLR VENDA SEM IMPOSTOS - CUSTO PROJ - CF)</td>

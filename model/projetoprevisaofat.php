@@ -113,6 +113,8 @@ class projetoprevisaofat extends app
 			return false;	
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$row['Vlr_parcela_cimp'] = number_format($row['Vlr_parcela_cimp'], 2, ',', '.');
+			$row['Vlr_parcela_simp'] = number_format($row['Vlr_parcela_simp'], 2, ',', '.');
 			$this->array[] = $row;
 		}
 	}

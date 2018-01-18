@@ -171,6 +171,7 @@ class projeto extends app
 
 		$imposto = $this->array_Fin['1']['vlr_parcela_cimp'] - $this->array_Fin['1']['vlr_parcela_simp'];
 		$this->array_Fin['1']['valor_venda_l'] = $this->array_Fin['1']['vlr_parcela_cimp'] - $imposto; 
+		
 		//definido valores com e sem imposto
 
 		//Define Custos do projeto
@@ -189,9 +190,9 @@ class projeto extends app
 		$ini = $mes_pesquisa_r.'-01';
 		$fim = $mes_pesquisa_r.'-31';
 		
-		//Despesas do projeto -- Verificar -> Reembolsa ? 
-		$query = sprintf("SELECT SUM(Vlr_total) as Vlr_total FROM projetodespesas 
-						WHERE id_projeto = %d AND Data_despesa between '%s' AND '%s'", $id_projeto, $ini, $fim);
+		//Despesas do projeto 
+		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' AND B.Cliente_reembolsa = 'N'", $id_projeto, $ini, $fim);
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
@@ -199,7 +200,7 @@ class projeto extends app
 
 		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
 		$gasto_despesas = $result_4['Vlr_total'];
-		//Despesas do projeto -- Verificar -> Reembolsa ? 
+		//Despesas do projeto
 
 		$this->array_Fin['1']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
 		//definido custos do projeto
@@ -211,7 +212,13 @@ class projeto extends app
 
 		$this->array_Fin['1']['margem_projeto_liquido'] = $this->array_Fin['1']['valor_venda_l'] - $this->array_Fin['1']['custo_projeto'];
 		//Fim da primeira tabela
+		$this->array_Fin['1']['margem_projeto'] = $this->projeto_margem($this->array_Fin['1']['valor_venda_l'], $this->array_Fin['1']['margem_projeto_liquido']);
 
+		$this->array_Fin['1']['vlr_parcela_cimp'] = number_format($this->array_Fin['1']['vlr_parcela_cimp'], 2, ',', '.');
+		$this->array_Fin['1']['vlr_parcela_simp'] = number_format($this->array_Fin['1']['vlr_parcela_simp'], 2, ',', '.');
+		$this->array_Fin['1']['valor_venda_l'] = number_format($this->array_Fin['1']['valor_venda_l'], 2, ',', '.');
+		$this->array_Fin['1']['custo_projeto'] = number_format($this->array_Fin['1']['custo_projeto'], 2, ',', '.');
+		$this->array_Fin['1']['margem_projeto_liquido'] = number_format($this->array_Fin['1']['margem_projeto_liquido'], 2, ',', '.');
 
 
 		//Carrega Segunda tabela
@@ -268,9 +275,8 @@ class projeto extends app
 		$mes_pesquisa_d = ''.$mes_pesquisa_d.'-01';
 		$mes_pesquisa_r = ''.$mes_pesquisa_r.'-31';
 
-		//Despesas do projeto -- Verificar -> reembolsa?
-		$query = sprintf("SELECT SUM(Vlr_total) as Vlr_total FROM projetodespesas 
-						WHERE id_projeto = %d AND Data_despesa between '%s' AND '%s' ", $id_projeto, $mes_pesquisa_d, $mes_pesquisa_r);
+		//Despesas do projeto 
+		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' AND B.Cliente_reembolsa = 'N' ", $id_projeto, $mes_pesquisa_d, $mes_pesquisa_r);
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
@@ -278,7 +284,7 @@ class projeto extends app
 		}
 		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
 		$gasto_despesas = $result_4['Vlr_total'];
-		//Despesas do projeto -- Verificar -> reembolsa?
+		//Despesas do projeto 
 
 		$this->array_Fin['2']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
 		//definido custos do projeto
@@ -289,6 +295,14 @@ class projeto extends app
 
 
 		$this->array_Fin['2']['margem_projeto_liquido'] = $this->array_Fin['2']['valor_venda_l'] - $this->array_Fin['2']['custo_projeto'];
+
+		$this->array_Fin['2']['margem_projeto'] = $this->projeto_margem($this->array_Fin['2']['valor_venda_l'], $this->array_Fin['2']['margem_projeto_liquido']);
+
+		$this->array_Fin['2']['vlr_parcela_cimp'] = number_format($this->array_Fin['2']['vlr_parcela_cimp'], 2, ',', '.');
+		$this->array_Fin['2']['vlr_parcela_simp'] = number_format($this->array_Fin['2']['vlr_parcela_simp'], 2, ',', '.');
+		$this->array_Fin['2']['valor_venda_l'] = number_format($this->array_Fin['2']['valor_venda_l'], 2, ',', '.');
+		$this->array_Fin['2']['custo_projeto'] = number_format($this->array_Fin['2']['custo_projeto'], 2, ',', '.');
+		$this->array_Fin['2']['margem_projeto_liquido'] = number_format($this->array_Fin['2']['margem_projeto_liquido'], 2, ',', '.');
 		//Fim da Segunda tabela
 
 
@@ -329,31 +343,39 @@ class projeto extends app
 		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
 		//Recursos
 
-		//Despesas do projeto -- Verificar -> Reembolsa? 
-		$query = sprintf("SELECT SUM(Vlr_total) as Vlr_total FROM projetodespesas 
-						WHERE id_projeto = %d", $id_projeto);
+		//Despesas do projeto 
+		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B on A.id_projeto = B.id WHERE A.id_projeto = %d AND B.Cliente_reembolsa = 'N' ", $id_projeto);
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
 		}
 		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
 		$gasto_despesas = $result_4['Vlr_total'];
-		//Despesas do projeto -- Verificar -> Reembolsa
+		//Despesas do projeto
 
 		$this->array_Fin['3']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
 		//definido custos do projeto
 
-		//Verificar Margem
-		$this->array_Fin['3']['margem_projeto'] = 0;
-		//Verificar Margem
-
-
 		$this->array_Fin['3']['margem_projeto_liquido'] = $this->array_Fin['3']['valor_venda_l'] - $this->array_Fin['3']['custo_projeto'];
+
+		//Verificar Margem
+
+		$this->array_Fin['3']['margem_projeto'] = $this->projeto_margem($this->array_Fin['3']['valor_venda_l'], $this->array_Fin['3']['margem_projeto_liquido']);
+		//Verificar Margem
+		
+		$this->array_Fin['3']['vlr_parcela_cimp'] = number_format($this->array_Fin['3']['vlr_parcela_cimp'], 2, ',', '.');
+		$this->array_Fin['3']['vlr_parcela_simp'] = number_format($this->array_Fin['3']['vlr_parcela_simp'], 2, ',', '.');
+		$this->array_Fin['3']['valor_venda_l'] = number_format($this->array_Fin['3']['valor_venda_l'], 2, ',', '.');
+		$this->array_Fin['3']['custo_projeto'] = number_format($this->array_Fin['3']['custo_projeto'], 2, ',', '.');
+		$this->array_Fin['3']['margem_projeto_liquido'] = number_format($this->array_Fin['3']['margem_projeto_liquido'], 2, ',', '.');
 		//Fim da terceira tabela
 
 		return $this->array_Fin;
 	}
 
+	private function projeto_margem ( $parcial, $total ) {
+	    return number_format(( $parcial * 100 ) / $total, 2, '.', '');
+	}
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;

@@ -40,12 +40,12 @@ class projetorecurso extends app
 		}
 
 		if (empty($this->Qtd_hrs_estimada)) {
-			$this->msg = "Insira o mês de locação do funcionário.";
+			$this->msg = "Insira a quantia de horas estimada do recurso.";
 			return false;
 		}
 
 		if (empty($this->Vlr_taxa_compra)) {
-			$this->msg = "Insira o mês de locação do funcionário.";
+			$this->msg = "Insira o Valor da taxa de compra do recurso.";
 			return false;
 		}
 
@@ -139,6 +139,7 @@ class projetorecurso extends app
 			return false;	
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$row['Vlr_taxa_compra'] = number_format($row['Vlr_taxa_compra'], 2, ',', '.');
 			$this->array[] = $row;
 		}
 	}

@@ -29,7 +29,11 @@ function getDataProposta(id)
             $("#id_pilar").val(d.data.id_pilar);
             $("#data_inicio").val(d.data.Data_inicio);
             $("#data_fim").val(d.data.Data_fim);
-            $("#Cliente_reembolsa").val(d.data.Cliente_reembolsa);
+            if(d.data.Cliente_reembolsa == 'S'){
+                $("#cliente_s").attr('checked', 'checked');
+            }else {
+                $("cliente_n").attr('checked', 'checked');
+            }   
             $("#status").val(d.data.id_status);
             if (d.data.id != 0) {
                 document.getElementById('rowFatAnexos').style.display = 'block';

@@ -16,9 +16,9 @@ $projetorecurso->id_perfilprofissional 	= $projetorecurso->getRequest('id_perfil
 $projetorecurso->id_funcionario			= $projetorecurso->getRequest('id_funcionario', 0);
 $projetorecurso->mes_alocacao			= $projetorecurso->getRequest('mes_alocacao', 0);
 $projetorecurso->Qtd_hrs_estimada		= $projetorecurso->getRequest('qtd_hrs_estimada', 0);
-$projetorecurso->Vlr_taxa_compra		= $projetorecurso->getRequest('vlr_taxa_compra', 0);
+$projetorecurso->Vlr_taxa_compra		= str_replace(',','.',str_replace('.','',$projetorecurso->getRequest('vlr_taxa_compra', 0)));
 
-$msg = '';
+$msg 							= $projetorecurso->getRequest('msg', '');
 $action 						= $projetorecurso->getRequest('action', 0);
 
 if ($action == SAVE) {

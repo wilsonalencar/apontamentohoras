@@ -106,8 +106,9 @@ class projetodespesa extends app
 			return false;	
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-			$row['Vlr_unit'] = str_replace('.',',',str_replace(',','',$row['Vlr_unit']));
-			$row['Vlr_total'] = str_replace('.',',',str_replace(',','',$row['Vlr_total']));
+			$row['Qtd_despesa'] = number_format($row['Qtd_despesa'], 1, '', '');
+			$row['Vlr_unit'] = number_format($row['Vlr_unit'], 2, ',', '.');
+			$row['Vlr_total'] = number_format($row['Vlr_total'], 2, ',', '.');
 			$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
 			$timestamp = strtotime($row['Data_despesa']);
 			$row['Data_despesa'] = date("d-m-Y", $timestamp);

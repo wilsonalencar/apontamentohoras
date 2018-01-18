@@ -44,6 +44,8 @@ if ($action == SAVE) {
 	
 	$success = $projeto->save();
 	$msg     = $projeto->msg; 
+
+	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

@@ -59,7 +59,7 @@
                             <label for="id_perfilusuario">Perfil</label>
                             <select id="id_perfilusuario" name="id_perfilusuario" class="form-control input-sm">
                               <option value="">Perfil</option>
-                              <?php $perfilusuario->montaSelect($row['id']); ?>
+                              <?php $perfilusuario->montaSelect(); ?>
                             </select>
                         </div>
 
@@ -67,7 +67,7 @@
                             <label for="id_responsabilidade">Responsabilidade</label>
                             <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
                               <option value="">Responsabilidades</option>
-                                <?php $responsabilidade->montaSelect($row['id']); ?>
+                                <?php $responsabilidade->montaSelect(); ?>
                             </select>
                         </div>
                       </div>
