@@ -11,13 +11,16 @@ $responsabilidades->codigo 		= $responsabilidades->getRequest('codigo', '');
 $responsabilidades->nome 		= $responsabilidades->getRequest('nome', '');
 $responsabilidades->status 		= $responsabilidades->getRequest('status', 'A');
 		
-$msg = '';
+$msg 								= $responsabilidades->getRequest('msg', '');	
+$success 							= $responsabilidades->getRequest('success', '');
 $action 				= $responsabilidades->getRequest('action', 0);
 
 
 if ($action == SAVE) {	
 	$success = $responsabilidades->save();
 	$msg     = $responsabilidades->msg; 
+
+	header("LOCATION:responsabilidades.php?id=".$responsabilidades->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

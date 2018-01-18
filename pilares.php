@@ -11,13 +11,16 @@ $pilar->centro_custos 	= $pilar->getRequest('centro_custos', '');
 $pilar->nome 			= $pilar->getRequest('nome', '');
 $pilar->status 			= $pilar->getRequest('status', 'A');
 		
-$msg = '';
+$msg 								= $pilar->getRequest('msg', '');	
+$success 							= $pilar->getRequest('success', '');	
 $action 				= $pilar->getRequest('action', 0);
 
 
 if ($action == SAVE) {	
 	$success = $pilar->save();
 	$msg     = $pilar->msg; 
+
+	header("LOCATION:pilares.php?id=".$pilar->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

@@ -11,13 +11,16 @@ $contratacao->codigo 		= $contratacao->getRequest('codigo', '');
 $contratacao->nome 			= $contratacao->getRequest('nome', '');
 $contratacao->status 		= $contratacao->getRequest('status', 'A');
 		
-$msg = '';
+$msg 								= $contratacao->getRequest('msg', '');	
+$success 							= $contratacao->getRequest('success', '');
 $action 				= $contratacao->getRequest('action', 0);
 
 
 if ($action == SAVE) {	
 	$success = $contratacao->save();
 	$msg     = $contratacao->msg; 
+
+	header("LOCATION:pilares.php?id=".$contratacao->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

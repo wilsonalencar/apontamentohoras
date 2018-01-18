@@ -23,13 +23,16 @@ if ($usuario->reset_senha == funcionalidadeConst::RESET_FALSE) {
 	$usuario->senha 				= $usuario->getRequest('senha', '');
 }
 
-$msg = '';
+$msg 								= $usuario->getRequest('msg', '');	
+$success 							= $usuario->getRequest('success', false);
 $action 						= $usuario->getRequest('action', 0);
 
 if ($action == SAVE) {
 	
 	$success = $usuario->save();
 	$msg     = $usuario->msg; 
+
+	header("LOCATION:usuarios.php?usuarioID=".$usuario->usuarioID."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

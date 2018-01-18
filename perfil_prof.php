@@ -11,13 +11,16 @@ $perfilprof->codigo 		= $perfilprof->getRequest('codigo', '');
 $perfilprof->nome 			= $perfilprof->getRequest('nome', '');
 $perfilprof->status 		= $perfilprof->getRequest('status', 'A');
 		
-$msg = '';
+$msg 								= $perfilprof->getRequest('msg', '');	
+$success 							= $perfilprof->getRequest('success', '');
 $action 					= $perfilprof->getRequest('action', 0);
 
 
 if ($action == SAVE) {	
 	$success = $perfilprof->save();
 	$msg     = $perfilprof->msg; 
+
+	header("LOCATION:perfil_prof.php?id=".$perfilprof->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

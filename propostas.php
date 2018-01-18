@@ -11,13 +11,16 @@ $proposta->codigo 		= $proposta->getRequest('codigo', '');
 $proposta->nome 		= $proposta->getRequest('nome', '');
 $proposta->status 		= $proposta->getRequest('status', 'A');
 		
-$msg = '';
+$msg 								= $proposta->getRequest('msg', '');	
+$success 							= $proposta->getRequest('success', '');	
 $action 				= $proposta->getRequest('action', 0);
 
 
 if ($action == SAVE) {	
 	$success = $proposta->save();
 	$msg     = $proposta->msg; 
+
+	header("LOCATION:propostas.php?id=".$proposta->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

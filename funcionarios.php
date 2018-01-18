@@ -35,7 +35,8 @@ $funcionario->email  				= $funcionario->getRequest('email', '');
 $funcionario->status  				= $funcionario->getRequest('status', 'A');		
 $excluirAnexo 						= $funcionario->getRequest('excluir_anexo');
 
-$msg = '';
+$msg 								= $funcionario->getRequest('msg', '');	
+$success 							= $funcionario->getRequest('success', '');	
 $action 							= $funcionario->getRequest('action', 0);
 
 if ($action == SAVE) {
@@ -58,6 +59,8 @@ if ($action == SAVE) {
 		$success = $funcionario->save();
 		$msg     = $funcionario->msg; 
 	}
+
+	header("LOCATION:funcionarios.php?id=".$funcionario->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {
