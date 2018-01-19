@@ -15,7 +15,7 @@ class responsabilidade extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT codigo FROM responsabilidades WHERE codigo = %d AND id <> %d", $this->codigo, $this->id);	
+		$query = sprintf("SELECT codigo FROM responsabilidades WHERE codigo = '%s' AND id <> %d", $this->codigo, $this->id);	
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro durante a verificação do código da responsabilidade";

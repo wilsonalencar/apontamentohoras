@@ -15,7 +15,7 @@ class pilar extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT centro_custos FROM pilares WHERE centro_custos = %d AND id <> %d", $this->centro_custos, $this->id);	
+		$query = sprintf("SELECT centro_custos FROM pilares WHERE centro_custos = '%s' AND id <> %d", $this->centro_custos, $this->id);	
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro durante a verificação do centro de custos do pilar";
