@@ -286,7 +286,7 @@
                                             <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
                                         </li>
                                         <li>
-                                            <a class="active-menu" href="#" >Consulta</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_projetos.php" >Consulta</a>
                                         </li> 
                                         <li>
                                             <a class="active-menu" href="#" >Liberar Apontamento</a>

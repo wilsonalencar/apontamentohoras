@@ -154,6 +154,7 @@ class projeto extends app
 		//define Valor com e sem imposto
 		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
 						WHERE id_projeto = %d AND mes_previsao_fat = '%s'", $id_projeto, $mes_atual);
+		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
@@ -374,13 +375,40 @@ class projeto extends app
 	}
 
 	private function projeto_margem ( $parcial, $total ) {
-	    return number_format(( $parcial * 100 ) / $total, 2, '.', '');
+		if (!empty($parcial) and !empty($total)) {
+	    	return number_format(( $parcial * 100 ) / $total, 2, '.', '');
+		}
+	return '0.00';
 	}
+
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf("SELECT A.id, A.nome, A.email, B.nome as id_perfilprojeto FROM projetos A INNER JOIN perfilprojeto B ON A.id_perfilprojeto = B.id");
 		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+    		$this->array[] = $row;
+		}
+	}
+
+	public function lista_consulta()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT 
+							    A.id, B.codigo, C.nome, D.descricao
+							FROM
+							    projetos A
+							        INNER JOIN
+							    propostas B ON A.id_proposta = B.id
+									INNER JOIN 
+								clientes C ON A.id_cliente = C.id
+									INNER JOIN 
+								projetostatus D ON A.id_status = D.id");
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
