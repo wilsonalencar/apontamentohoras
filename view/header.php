@@ -289,7 +289,7 @@
                                             <a class="active-menu" href="<?php echo app::dominio; ?>consulta_projetos.php" >Consulta</a>
                                         </li> 
                                         <li>
-                                            <a class="active-menu" href="#" >Liberar Apontamento</a>
+                                            <a class="active-menu" href="<?php echo app::dominio; ?>projetoapontamentos.php" >Liberar Apontamento</a>
                                         </li>
 
                                     </ul>

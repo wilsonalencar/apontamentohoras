@@ -34,7 +34,7 @@ $projeto->Cliente_reembolsa  	= $projeto->getRequest('Cliente_reembolsa', 0);
 $projeto->data_inicio  			= $projeto->getRequest('data_inicio', 0);
 $projeto->data_fim  			= $projeto->getRequest('data_fim', 0);
 $projeto->status		  		= $projeto->getRequest('status', 1);
-$financeiro = $projeto->calcFinanceiro($projeto->getRequest('id'));
+$financeiro 					= $projeto->calcFinanceiro($projeto->getRequest('id'));
 
 $success 	= $projeto->getRequest('success', 0);
 $msg 		= $projeto->getRequest('msg', '');
