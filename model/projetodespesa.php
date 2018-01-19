@@ -111,7 +111,7 @@ class projetodespesa extends app
 			$row['Vlr_total'] = number_format($row['Vlr_total'], 2, ',', '.');
 			$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
 			$timestamp = strtotime($row['Data_despesa']);
-			$row['Data_despesa'] = date("d-m-Y", $timestamp);
+			$row['Data_despesa'] = date("d/m/Y", $timestamp);
 			$this->array[] = $row;
 		}
 	}

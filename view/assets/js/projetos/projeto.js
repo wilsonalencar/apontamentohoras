@@ -77,6 +77,7 @@ $( document ).ready(function() {
         $("#status").focus();
         return false;
     }
+
     return true;
   });
 

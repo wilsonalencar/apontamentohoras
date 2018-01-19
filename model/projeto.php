@@ -167,10 +167,10 @@ class projeto extends app
 
 		$this->array_Fin['1']['vlr_parcela_simp'] = 0;
 		if (!empty($result_2['vlr_parcela_simp'])) {
-			$this->array_Fin['1']['vlr_parcela_simp'] = $result_2['vlr_parcela_simp'];
+			$this->array_Fin['1']['vlr_parcela_simp'] = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
 		}
+		$imposto = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
 
-		$imposto = $this->array_Fin['1']['vlr_parcela_cimp'] - $this->array_Fin['1']['vlr_parcela_simp'];
 		$this->array_Fin['1']['valor_venda_l'] = $this->array_Fin['1']['vlr_parcela_cimp'] - $imposto; 
 		
 		//definido valores com e sem imposto
@@ -252,11 +252,11 @@ class projeto extends app
 
 		$this->array_Fin['2']['vlr_parcela_simp'] = 0;
 		if (!empty($result_2['vlr_parcela_simp'])) {
-			$this->array_Fin['2']['vlr_parcela_simp'] = $result_2['vlr_parcela_simp'];
+			$this->array_Fin['2']['vlr_parcela_simp'] = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
 		}
-
-		$imposto = $this->array_Fin['2']['vlr_parcela_cimp'] - $this->array_Fin['1']['vlr_parcela_simp'];
-		$this->array_Fin['2']['valor_venda_l'] = $this->array_Fin['1']['vlr_parcela_cimp'] - $imposto; 
+		$imposto = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
+		$this->array_Fin['2']['valor_venda_l'] = $this->array_Fin['2']['vlr_parcela_cimp'] - $imposto; 
+		
 		//definido valores com e sem imposto
 
 		//Define Custos do projeto
@@ -323,10 +323,9 @@ class projeto extends app
 
 		$this->array_Fin['3']['vlr_parcela_simp'] = 0;
 		if (!empty($result_2['vlr_parcela_simp'])) {
-			$this->array_Fin['3']['vlr_parcela_simp'] = $result_2['vlr_parcela_simp'];
+			$this->array_Fin['3']['vlr_parcela_simp'] = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
 		}
-
-		$imposto = $this->array_Fin['3']['vlr_parcela_cimp'] - $this->array_Fin['3']['vlr_parcela_simp'];
+		$imposto = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
 		$this->array_Fin['3']['valor_venda_l'] = $this->array_Fin['3']['vlr_parcela_cimp'] - $imposto;
 		//definido valores com e sem imposto
 
@@ -375,8 +374,8 @@ class projeto extends app
 	}
 
 	private function projeto_margem ( $parcial, $total ) {
-		if (!empty($parcial) and !empty($total)) {
-	    	return number_format(( $parcial * 100 ) / $total, 2, '.', '');
+		if (!empty($total) and !empty($parcial)) {
+	    	return number_format(( $total / $parcial) * 100 , 2, '.', '');
 		}
 	return '0.00';
 	}
