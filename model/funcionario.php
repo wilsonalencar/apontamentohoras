@@ -267,6 +267,21 @@ class funcionario extends app
 		return true;
 	}
 
+
+	public function findFuncionario()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT id, nome, email FROM funcionarios WHERE email =  '%s' ", $_SESSION['email']);
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento do funcionário";	
+			return false;	
+		}
+
+		$this->array = $result->fetch_array(MYSQLI_ASSOC);
+		return $this->array;
+	}
+
 	private function formatStatus($status)
 	{
 		if ($status == $this::STATUS_SISTEMA_ATIVO) {

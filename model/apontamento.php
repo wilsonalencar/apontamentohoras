@@ -3,7 +3,7 @@ require_once('app.php');
 /**
 * Lucas Barbosa de Alencar
 */
-class projeto extends app
+class apontamento extends app
 {
 	public $id;
 	public $id_cliente;
@@ -372,57 +372,6 @@ class projeto extends app
 
 		return $this->array_Fin;
 	}
-
-	public function montaSelect($selected=0)
-	{
-		$conn = $this->getDB->mysqli_connection;
-
-		$query = sprintf("SELECT 
-			    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
-			FROM
-			    projetos A
-			        INNER JOIN
-			    clientes B ON A.id_cliente = B.id
-			        INNER JOIN
-			    propostas C ON A.id_proposta = C.id
-			        INNER JOIN
-			    projetostatus D ON A.id_status = D.id
-			        INNER JOIN
-			    projetorecursos E ON A.id = E.id_projeto
-			WHERE
-			    D.id NOT IN (2)
-			        AND E.id_funcionario = (SELECT 
-			            id
-			        FROM
-			            funcionarios
-			        WHERE
-			            email = '%s');
-			", $_SESSION['email']);
-		
-		if ($_SESSION['id_perfilusuario'] == '1') {
-			$query = sprintf("SELECT 
-						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
-						FROM
-						    projetos A
-						        INNER JOIN
-						    clientes B ON A.id_cliente = B.id
-						        INNER JOIN
-						    propostas C ON A.id_proposta = C.id
-						        INNER JOIN
-						    projetostatus D ON A.id_status = D.id
-						WHERE
-						    D.id NOT IN (2);
-						");
-		} 
-
-		if($result = $conn->query($query))
-		{
-			while($row = $result->fetch_array(MYSQLI_ASSOC))
-			echo utf8_encode(sprintf("<option %s value='%d'>%d --  %s --  %s</option>\n", $selected == $row['id_projeto'] ? "selected" : "",
-			$row['id_projeto'], $row['id_projeto'], $row['Cliente'], $row['Proposta']));
-		}
-	}
-
 
 	private function projeto_margem ( $parcial, $total ) {
 		if (!empty($total) and !empty($parcial)) {
