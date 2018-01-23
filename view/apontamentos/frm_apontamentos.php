@@ -5,10 +5,10 @@
     <div id="page-wrapper" >
       <div class="header"> 
             <h1 class="page-header">
-                 Apontamento
+                 Apontamento de horas
             </h1>
           <ol class="breadcrumb">
-            <li><a href="#">Apontamento</a></li>
+            <li><a href="#">Apontamento de horas</a></li>
           </ol> 
                   
       </div>
@@ -49,24 +49,24 @@
                                         <div class="row">
                                             <div class="col s4">
                                                 <label for="id_projeto">Projetos : </label>
-                                                <select id="id_projeto" name="id_projeto" class="form-control input-sm">
+                                                <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control input-sm">
                                                   <option value="">Projetos</option>
-                                                    <?php $projeto->montaSelect(); ?>
+                                                    <?php $projeto->montaSelect($apontamento->id_projeto); ?>
                                                 </select>
                                             </div>    
                                             <div class="col s1"></div>
                                             <div class="col s4">
                                                 <?php if ($_SESSION['id_perfilusuario'] == '1') { ?>
-                                                <label for="id_funcionario">Funcionario: </label> 
-                                                        <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                                                <label for="id_funcionario_busca">Funcionario: </label> 
+                                                        <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
                                                             <option value="">Funcionario</option>
-                                                            <?php $funcionario->montaSelect(); ?>
+                                                            <?php $funcionario->montaSelect($apontamento->id_funcionario); ?>
                                                         </select>
                                                 <?php } else { ?>
                                                         <?php $profissional = $funcionario->findFuncionario(); ?>
                                                         <p><b> Profissional : </b></p>
                                                         <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
-                                                        <input type="hidden" name="id_funcionario" value="<?php echo $profissional['id']; ?>">
+                                                        <input type="hidden" name="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
                                                 <?php }?>
                                             </div>
                                         </div>
@@ -75,7 +75,7 @@
                                     <div  class="col s12">
                                         <div class="table-responsive">
                                         <?php
-                                            $projetodespesas->lista($apontamento->id_projeto);
+                                            $apontamento->lista($apontamento->id_projeto);
                                         ?>
                                             <table class="table table-hover">
                                                 <thead>
@@ -89,7 +89,7 @@
                                                         </th>
                                                         <th></th>
                                                         <th align="center">
-                                                            <a href="#" data-toggle="modal" data-target="#ModalHoras" style="color : #fff;">+</a>
+                                                            <a href="#" data-toggle="modal" id="add_button" data-target="#ModalHoras" style="color : #fff; display: none; ">+</a>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -102,15 +102,17 @@
                                                         <td></td>
                                                     </tr>
                                                     <?php
-                                                    if (!empty($projetodespesas->array)) {
-                                                    foreach($projetodespesas->array as $row){ ?>
+                                                    if (!empty($apontamento->array)) {
+                                                    foreach($apontamento->array as $row){ 
+
+                                                        ?>
                                                         <tr class="odd gradeX">
-                                                            <td><?php echo $row['Data_despesa']; ?></td>
-                                                            <td><?php echo $row['NomeFuncionario']; ?></td>
-                                                            <td><?php echo $row['NomeDespesa']; ?></td>
-                                                            <td><?php echo $row['Num_doc']; ?></td>
+                                                            <td><?php echo $row['Data_apontamento']; ?></td>
+                                                            <td><?php echo $row['Qtd_hrs_real']; ?></td>
+                                                            <td><?php echo $row['observacao']; ?></td>
+                                                            <td><?php echo $row['Aprovado']; ?></td>
                                                             <td>
-                                                            <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                            <i onclick="excluiApot(this.id, <?php echo $row['id_funcionario']; ?>, <?php echo $row['id_projeto']; ?>)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                             </td>
                                                         </tr>
                                                     <?php } }?>
@@ -121,12 +123,7 @@
                                     <div class="row">
                                         <div class="input-field col s1">
                                         </div>
-                                        <input type="hidden" id="id" name="id" value="<?php echo $apontamento->id; ?>">
                                         <input type="hidden" id="action" name="action" value="1">
-                                        <div class="col s5"></div>
-                                        <div>
-                                            <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">
-                                        </div>
                                     </div>
 
                                     </form>
@@ -135,73 +132,54 @@
                                 <!-- Modal de despesas -->
                                 <div id="ModalHoras" class="modal fade" >
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Gerenciamento de Despesas</h4>
+                                        <h4 class="modal-title">Gerenciamento de horas</h4>
                                     </div>
 
-                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+                                    <form class="col s12" id="apontamentos" action="apontamentos.php" method="post" name="cad_apontamentos">
                                         <div class="modal-body">
                                           <div class="row">
                                             <div class="col s4">
                                             <label for="id_projeto">Código do Projeto</label><br />
-                                              <?php echo $projeto->id; ?>
-                                              <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                              <?php echo $apontamento->id_projeto; ?>
+                                              <input type="hidden" name="id_projeto_ap" value="<?php echo $apontamento->id_projeto; ?>">
                                             </div>
-                                            
+                                            <?php
+                                            $apontamento->carregaPendencia($apontamento->id_projeto);
+                                            ?>
                                             <div class="col s4">
                                             <label for="nome">Cliente</label><br />
-                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
-                                                <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
+                                                <p class="cliente"><?php echo $apontamento->cliente; ?></p>
+                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente; ?>">
                                             </div>
 
                                             <div class="col s4">
                                             <label for="proposta">Proposta</label><br />
-                                              <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
-                                              <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+                                              <p class="proposta"><?php echo $apontamento->proposta; ?></p>
+                                              <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
                                             </div>
                                           </div>
 
                                           <div class="row">
                                             <div class="col s3">
-                                            <label for="Data_despesa">Data da Despesa</label>
-                                                <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
+                                            <label for="Data_apontamento">Data Apontamento</label>
+                                                <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
                                             </div>
                                             <div class="col s1"></div>
-                                            <div class="col s2">
-                                                <label for="id_tipodespesa">Tipo da Despesa</label>
-                                                <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
-                                                  <option value="">Selecione</option>
-                                                    <?php $tipodespesa->montaSelect(); ?>
-                                                </select> 
-                                            </div>
-                                            <div class="col s3">
-                                                <label for="id_funcionario">Profissional</label>
-                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
-                                                  <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelect(); ?>
-                                                </select> 
+                                            <div class="col s4">
+                                            <label for="Qtd_hrs_real">Quantidade de horas</label>
+                                              <input type="text" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate" maxlength="7">
                                             </div>
                                           </div>
                                             <div class="row">
-                                                <div class="col s4">
-                                                <label for="Num_doc">Nº Doc</label>
-                                                  <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
-                                                </div>
-                                                <div class="col s1"></div>
-                                                <div class="col s4">
-                                                <label for="Vlr_unit">Valor Unitário R$ :</label>
-                                                  <input type="text" onkeypress="moeda(this)" id="Vlr_unit" name="Vlr_unit" class="validate" maxlength="255">
+                                                <div class="col s8">
+                                                <label for="observacao">Observação</label>
+                                                  <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
                                                 </div>
                                             </div>
                           
-                                            <div class="row">
-                                                <div class="col s4">
-                                                <label for="Qtd_despesa">Quantidade</label>
-                                                  <input type="text" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
-                                                </div>
-                                                <div class="col s1"></div>
-                                            </div>
                                         </div>
                                         <div class="modal-footer">
+                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
                                         <input type="hidden" name="action" value="1">
                                             <button type="submit" class="btn btn-success">Salvar</button>
                                             <div class="col s1"></div>
@@ -213,29 +191,45 @@
 
 
         <div class="clearBoth"></div>
-        <form action="projetodespesas.php" method="post" id="form_projetodespesas">
-            <input type="hidden" name="idDesp" id="idDesp">
+        <form action="apontamentos.php" method="post" id="form_busca">
+            <input type="hidden" name="id_projeto_ap" id="id_projeto_ap">
+            <input type="hidden" name="id_funcionario_ap" id="id_funcionario_ap">
+            <input type="hidden" name="action" value="2">
+        </form>
+        <form action="apontamentos.php" method="post" id="form_apontamentohoras">
+            <input type="hidden" name="funcionar_projeto_concat" id="funcionar_projeto_concat">
+            <input type="hidden" name="id" id="idApont">
             <input type="hidden" name="action" id="action" value="3">
-            <input type="hidden" name="id_projeto" id="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
         </form>
     </div>
 
   
 <?php
-  require_once(app::path.'/view/footer.php');
+require_once(app::path.'/view/footer.php');
 ?>
 
 <script>
 
-function excluiDesp(idDesp) {
+function addParam(){
+    var id_projeto = document.getElementById("id_projeto_busca").value;
+    var id_funcionario = document.getElementById("id_funcionario_busca").value;
+    if (id_projeto > 0) {
+        document.getElementById('id_projeto_ap').value = id_projeto;
+    }
+    if (id_funcionario > 0) {
+        document.getElementById('id_funcionario_ap').value = id_funcionario;
+    }
+    document.getElementById('form_busca').submit();
+}
+function excluiApot(idApont, idFuncionario, idProjeto) {
     var r = confirm("Certeza que quer excluir este registro?");
     if (r != true) {
         return false;
     } 
-    if (idDesp > 0) {
-        document.getElementById('idDesp').value = idDesp;
-        document.getElementById('form_projetodespesas').submit();
+    if (idApont > 0) {    
+        document.getElementById('idApont').value = idApont;
+        document.getElementById('funcionar_projeto_concat').value = idFuncionario+'-'+idProjeto;
+        document.getElementById('form_apontamentohoras').submit();
     }   
 }
-
 </script>

@@ -249,7 +249,7 @@
 
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
                                 <li>
-                                    <a class="" href="#">Apontamento</a>
+                                    <a class="" href="<?php echo app::dominio; ?>apontamentos.php">Apontamento</a>
                                 </li>
                                 <?php } ?>
 

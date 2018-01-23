@@ -6,19 +6,19 @@ require_once('app.php');
 class apontamento extends app
 {
 	public $id;
+	public $id_projeto;
+	public $id_funcionario;
+	public $id_perfilprofissional;
+	public $Data_apontamento;
+	public $Qtd_hrs_real;
+	public $observacao;
+	public $Aprovado;
 	public $id_cliente;
 	public $id_proposta;
-	public $id_pilar;
-	public $data_inicio;
-	public $data_fim;
-	public $PilarNome;
-	public $ClienteNome;
-	public $Cliente_reembolsa;
-	public $status;
+	public $cliente;
+	public $proposta;
 	public $msg;
 	public $array;
-	public $array_Fin;
-
 
 	private function check(){
 		
@@ -32,31 +32,79 @@ class apontamento extends app
 			return false;
 		}
 
-		if (empty($this->id_pilar)) {
-			$this->msg = "Favor informar o pilar.";
+		if (empty($this->id_projeto)) {
+			$this->msg = "Favor informar o projeto.";
 			return false;	
 		}
 
-		if (empty($this->data_inicio)) {
-			$this->msg = "Favor informar a data de início do projeto.";
+		if (empty($this->id_funcionario)) {
+			$this->msg = "Favor informar o funcionário.";
 			return false;	
 		}
 
-		if (empty($this->data_inicio)) {
-			$this->msg = "Favor informar a data final do projeto.";
+		if (empty($this->Data_apontamento)) {
+			$this->msg = "Favor informar a data do apontamento.";
 			return false;	
 		}
 
-		if (empty($this->status)) {
-			$this->msg = "Favor informar o status.";
+		if (empty($this->Qtd_hrs_real)) {
+			$this->msg = "Favor informar a quantidade de horas real.";
 			return false;	
-		}
-		
+		}		
 		return true;
 	}
 
+	public function carregaPendencia($id_projeto)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "	SELECT 
+					    A.id_cliente,
+					    A.id_proposta,
+					    B.nome as PropostaNome,
+					    C.nome as ClienteNome
+					FROM
+					    projetos A
+					INNER JOIN 
+						propostas B on A.id_proposta = B.id
+					INNER JOIN 
+						clientes C on A.id_cliente = C.id 
+					WHERE
+					    A.id = ".$id_projeto."";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento do usuário";	
+			return false;	
+		}
+		$this->array = $result->fetch_array(MYSQLI_ASSOC);
+		$this->id_cliente = $this->array['id_cliente'];
+		$this->id_proposta = $this->array['id_proposta'];
+		$this->cliente = $this->array['ClienteNome'];
+		$this->proposta = $this->array['PropostaNome'];
+
+
+		if ($this->id_perfilprofissional <= 0) {
+			$query = "	SELECT 
+					    id_perfilprofissional
+					FROM
+					    funcionarios
+					WHERE
+					    id = ".$this->id_funcionario."";
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro no carregamento do usuário";	
+				return false;	
+			}
+			$this->array = $result->fetch_array(MYSQLI_ASSOC);
+			$this->id_perfilprofissional = $this->array['id_perfilprofissional'];
+		}
+	}
+
+
 	public function save()
 	{
+		if ($this->id_projeto > 0) {
+			$this->carregaPendencia($this->id_projeto);
+		}
+
 		if (!$this->check()) {
 		 	return false;
 		}
@@ -70,16 +118,15 @@ class apontamento extends app
 	public function insert()
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, usuario)
-		VALUES (%d, %d, %d, '%s', '%s', %d, '%s', '%s')", 
-			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email']);
-
+		$query = sprintf(" INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario)
+		VALUES (%d, %d, %d, '%s', %d, '%s', '%s', '%s')", 
+			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email']);
+		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
-		$this->id = $conn->insert_id;
-		$this->msg = "Projeto Criado com sucesso!";
+		$this->msg = "Apontamento Criado com sucesso!";
 		return true;
 	}
 
@@ -98,299 +145,29 @@ class apontamento extends app
 		return true;
 	}
 
-	public function get($id)
-	{
-		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT 
-						    A.id,
-						    A.id_cliente,
-						    A.id_proposta,
-						    A.id_pilar,
-						    A.Data_inicio,
-						    A.Data_fim,
-						    A.id_status,
-						    A.Cliente_reembolsa,
-						    B.nome AS ClienteNome,
-						    C.nome AS PropostaNome,
-						    D.nome AS PilarNome
-						FROM
-						    projetos A
-						        INNER JOIN
-						    clientes B ON A.id_cliente = B.id
-						        INNER JOIN
-						    propostas C ON A.id_proposta = C.id
-						    	INNER JOIN 
-						    pilares D ON A.id_pilar = D.id
-						WHERE
-						    A.id = %d ", $id);
-
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento do usuário";	
-			return false;	
-		}
-		$this->array = $result->fetch_array(MYSQLI_ASSOC);
-		return true;
-	}
-
-	public function calcFinanceiro($id_projeto)
-	{	
-		//Carrega Primeira tabela
-		//Define Mês atual
-		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT data_apontamento , Qtd_hrs_real FROM projetohoras WHERE id_projeto = %s ORDER BY data_apontamento DESC", $id_projeto);
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_1 = $result->fetch_array(MYSQLI_ASSOC);
-		$mes_pesquisa_r = date( 'Y-m', strtotime( $result_1['data_apontamento']));
-		$mes_atual = date( 'm/Y', strtotime( $result_1['data_apontamento']));
-		$qtd_hrs = $result_1['Qtd_hrs_real'];
-		$this->array_Fin['1']['mes_atual'] = $mes_atual;
-		//Definido mes atual
-		
-
-		//define Valor com e sem imposto
-		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
-						WHERE id_projeto = %d AND mes_previsao_fat = '%s'", $id_projeto, $mes_atual);
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_2 = $result->fetch_array(MYSQLI_ASSOC);
-		$this->array_Fin['1']['vlr_parcela_cimp'] = 0;
-		if (!empty($result_2['vlr_parcela_cimp'])) {
-			$this->array_Fin['1']['vlr_parcela_cimp'] = $result_2['vlr_parcela_cimp'];
-		}
-
-		$this->array_Fin['1']['vlr_parcela_simp'] = 0;
-		if (!empty($result_2['vlr_parcela_simp'])) {
-			$this->array_Fin['1']['vlr_parcela_simp'] = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
-		}
-		$imposto = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
-
-		$this->array_Fin['1']['valor_venda_l'] = $this->array_Fin['1']['vlr_parcela_cimp'] - $imposto; 
-		
-		//definido valores com e sem imposto
-
-		//Define Custos do projeto
-		//recursos
-		$query = sprintf("SELECT SUM(Vlr_taxa_compra) as Vlr_taxa_compra FROM projetorecursos WHERE id_projeto = %d AND mes_alocacao = '%s'", $id_projeto, $mes_atual);
-
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_3 = $result->fetch_array(MYSQLI_ASSOC);
-		$valor_tx_compra = $result_3['Vlr_taxa_compra'];
-		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
-		//Recursos
-
-		$ini = $mes_pesquisa_r.'-01';
-		$fim = $mes_pesquisa_r.'-31';
-		
-		//Despesas do projeto 
-		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' AND B.Cliente_reembolsa = 'N'", $id_projeto, $ini, $fim);
-
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-
-		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
-		$gasto_despesas = $result_4['Vlr_total'];
-		//Despesas do projeto
-
-		$this->array_Fin['1']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
-		//definido custos do projeto
-
-		//Verificar Margem
-		$this->array_Fin['1']['margem_projeto'] = 0;
-		//Verificar Margem
-
-
-		$this->array_Fin['1']['margem_projeto_liquido'] = $this->array_Fin['1']['valor_venda_l'] - $this->array_Fin['1']['custo_projeto'];
-		//Fim da primeira tabela
-		$this->array_Fin['1']['margem_projeto'] = $this->projeto_margem($this->array_Fin['1']['valor_venda_l'], $this->array_Fin['1']['margem_projeto_liquido']);
-
-		$this->array_Fin['1']['vlr_parcela_cimp'] = number_format($this->array_Fin['1']['vlr_parcela_cimp'], 2, ',', '.');
-		$this->array_Fin['1']['vlr_parcela_simp'] = number_format($this->array_Fin['1']['vlr_parcela_simp'], 2, ',', '.');
-		$this->array_Fin['1']['valor_venda_l'] = number_format($this->array_Fin['1']['valor_venda_l'], 2, ',', '.');
-		$this->array_Fin['1']['custo_projeto'] = number_format($this->array_Fin['1']['custo_projeto'], 2, ',', '.');
-		$this->array_Fin['1']['margem_projeto_liquido'] = number_format($this->array_Fin['1']['margem_projeto_liquido'], 2, ',', '.');
-
-
-		//Carrega Segunda tabela
-
-		//Define Mês atual
-		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT data_apontamento , Qtd_hrs_real FROM projetohoras WHERE id_projeto = %s ORDER BY data_apontamento ASC", $id_projeto);
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_1 = $result->fetch_array(MYSQLI_ASSOC);
-		$mes_pesquisa_d = date( 'Y-m', strtotime( $result_1['data_apontamento']));
-		$qtd_hrs = $result_1['Qtd_hrs_real'];
-		
-
-		//define Valor com e sem imposto
-		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
-						WHERE id_projeto = %d AND mes_previsao_fat = '%s'", $id_projeto, $mes_atual);
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_2 = $result->fetch_array(MYSQLI_ASSOC);
-		$this->array_Fin['2']['vlr_parcela_cimp'] = 0;
-		if (!empty($result_2['vlr_parcela_cimp'])) {
-			$this->array_Fin['2']['vlr_parcela_cimp'] = $result_2['vlr_parcela_cimp'];
-		}
-
-		$this->array_Fin['2']['vlr_parcela_simp'] = 0;
-		if (!empty($result_2['vlr_parcela_simp'])) {
-			$this->array_Fin['2']['vlr_parcela_simp'] = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
-		}
-		$imposto = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
-		$this->array_Fin['2']['valor_venda_l'] = $this->array_Fin['2']['vlr_parcela_cimp'] - $imposto; 
-		
-		//definido valores com e sem imposto
-
-		//Define Custos do projeto
-
-		//recursos 
-		$query = sprintf("SELECT SUM(Vlr_taxa_compra) as Vlr_taxa_compra FROM projetorecursos WHERE id_projeto = %d", $id_projeto);
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_3 = $result->fetch_array(MYSQLI_ASSOC);
-		$valor_tx_compra = $result_3['Vlr_taxa_compra'];
-		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
-		//Recursos 
-
-		$mes_pesquisa_d = ''.$mes_pesquisa_d.'-01';
-		$mes_pesquisa_r = ''.$mes_pesquisa_r.'-31';
-
-		//Despesas do projeto 
-		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' AND B.Cliente_reembolsa = 'N' ", $id_projeto, $mes_pesquisa_d, $mes_pesquisa_r);
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
-		$gasto_despesas = $result_4['Vlr_total'];
-		//Despesas do projeto 
-
-		$this->array_Fin['2']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
-		//definido custos do projeto
-
-		//Verificar Margem
-		$this->array_Fin['2']['margem_projeto'] = 0;
-		//Verificar Margem
-
-
-		$this->array_Fin['2']['margem_projeto_liquido'] = $this->array_Fin['2']['valor_venda_l'] - $this->array_Fin['2']['custo_projeto'];
-
-		$this->array_Fin['2']['margem_projeto'] = $this->projeto_margem($this->array_Fin['2']['valor_venda_l'], $this->array_Fin['2']['margem_projeto_liquido']);
-
-		$this->array_Fin['2']['vlr_parcela_cimp'] = number_format($this->array_Fin['2']['vlr_parcela_cimp'], 2, ',', '.');
-		$this->array_Fin['2']['vlr_parcela_simp'] = number_format($this->array_Fin['2']['vlr_parcela_simp'], 2, ',', '.');
-		$this->array_Fin['2']['valor_venda_l'] = number_format($this->array_Fin['2']['valor_venda_l'], 2, ',', '.');
-		$this->array_Fin['2']['custo_projeto'] = number_format($this->array_Fin['2']['custo_projeto'], 2, ',', '.');
-		$this->array_Fin['2']['margem_projeto_liquido'] = number_format($this->array_Fin['2']['margem_projeto_liquido'], 2, ',', '.');
-		//Fim da Segunda tabela
-
-
-		//Carrega Terceira tabela
-		//define Valor com e sem imposto
-		$query = sprintf("SELECT SUM(vlr_parcela_cimp) as vlr_parcela_cimp, SUM(vlr_parcela_simp) as vlr_parcela_simp FROM projetoprevisaofat 
-						WHERE id_projeto = %d", $id_projeto);
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_2 = $result->fetch_array(MYSQLI_ASSOC);
-		$this->array_Fin['3']['vlr_parcela_cimp'] = 0;
-		if (!empty($result_2['vlr_parcela_cimp'])) {
-			$this->array_Fin['3']['vlr_parcela_cimp'] = $result_2['vlr_parcela_cimp'];
-		}
-
-		$this->array_Fin['3']['vlr_parcela_simp'] = 0;
-		if (!empty($result_2['vlr_parcela_simp'])) {
-			$this->array_Fin['3']['vlr_parcela_simp'] = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
-		}
-		$imposto = $result_2['vlr_parcela_cimp'] - $result_2['vlr_parcela_simp'];
-		$this->array_Fin['3']['valor_venda_l'] = $this->array_Fin['3']['vlr_parcela_cimp'] - $imposto;
-		//definido valores com e sem imposto
-
-		//Define Custos do projeto
-
-		//recursos
-		$query = sprintf("SELECT SUM(Vlr_taxa_compra) as Vlr_taxa_compra FROM projetorecursos WHERE id_projeto = %d", $id_projeto);
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_3 = $result->fetch_array(MYSQLI_ASSOC);
-		$valor_tx_compra = $result_3['Vlr_taxa_compra'];
-		$gasto_recursos = $qtd_hrs * $valor_tx_compra;
-		//Recursos
-
-		//Despesas do projeto 
-		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B on A.id_projeto = B.id WHERE A.id_projeto = %d AND B.Cliente_reembolsa = 'N' ", $id_projeto);
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		$result_4 = $result->fetch_array(MYSQLI_ASSOC);
-		$gasto_despesas = $result_4['Vlr_total'];
-		//Despesas do projeto
-
-		$this->array_Fin['3']['custo_projeto'] = $gasto_despesas + $gasto_recursos;
-		//definido custos do projeto
-
-		$this->array_Fin['3']['margem_projeto_liquido'] = $this->array_Fin['3']['valor_venda_l'] - $this->array_Fin['3']['custo_projeto'];
-
-		//Verificar Margem
-
-		$this->array_Fin['3']['margem_projeto'] = $this->projeto_margem($this->array_Fin['3']['valor_venda_l'], $this->array_Fin['3']['margem_projeto_liquido']);
-		//Verificar Margem
-		
-		$this->array_Fin['3']['vlr_parcela_cimp'] = number_format($this->array_Fin['3']['vlr_parcela_cimp'], 2, ',', '.');
-		$this->array_Fin['3']['vlr_parcela_simp'] = number_format($this->array_Fin['3']['vlr_parcela_simp'], 2, ',', '.');
-		$this->array_Fin['3']['valor_venda_l'] = number_format($this->array_Fin['3']['valor_venda_l'], 2, ',', '.');
-		$this->array_Fin['3']['custo_projeto'] = number_format($this->array_Fin['3']['custo_projeto'], 2, ',', '.');
-		$this->array_Fin['3']['margem_projeto_liquido'] = number_format($this->array_Fin['3']['margem_projeto_liquido'], 2, ',', '.');
-		//Fim da terceira tabela
-
-		return $this->array_Fin;
-	}
-
-	private function projeto_margem ( $parcial, $total ) {
-		if (!empty($total) and !empty($parcial)) {
-	    	return number_format(( $total / $parcial) * 100 , 2, '.', '');
-		}
-	return '0.00';
-	}
-
 	public function lista()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT A.id, A.nome, A.email, B.nome as id_perfilprojeto FROM projetos A INNER JOIN perfilprojeto B ON A.id_perfilprojeto = B.id");
-		
-		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
-			return false;	
-		}
-		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-    		$this->array[] = $row;
+		if ($this->id_projeto > 0 or $this->id_funcionario > 0) {
+			$query = "SELECT id, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, id_funcionario, id_projeto FROM projetohoras where 1 ";
+			if ($this->id_projeto > 0) {
+				$query .= " AND id_projeto = ".$this->id_projeto;
+			}
+			
+			if ($this->id_funcionario > 0) {
+				$query .= " AND id_funcionario = ".$this->id_funcionario;
+			}
+
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+				return false;	
+			}
+
+			while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	    		$timestamp = strtotime($row['Data_apontamento']);
+				$row['Data_apontamento'] = date("d/m/Y", $timestamp);
+	    		$this->array[] = $row;
+			}
 		}
 	}
 
@@ -418,16 +195,16 @@ class apontamento extends app
 	}
 
 	public function deleta($id)
-	{
+	{	
 		if (!$id) {
 			return false;
 		}
 		
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("DELETE FROM projetos WHERE id = %d ", $id);
+		$query = sprintf("DELETE FROM projetohoras WHERE id = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro na exclusão do usuaŕio";	
+			$this->msg = "Ocorreu um erro na exclusão do apontamento";	
 			return false;	
 		}
 
