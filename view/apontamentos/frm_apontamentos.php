@@ -89,7 +89,7 @@
                                                         </th>
                                                         <th></th>
                                                         <th align="center">
-                                                            <a href="#" data-toggle="modal" id="add_button" data-target="#ModalHoras" style="color : #fff; display: none; ">+</a>
+                                                            <a href="#" data-toggle="modal" id="add_button" data-target="#ModalHoras" style="color : #fff; display: none;  ">+</a>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -209,6 +209,14 @@ require_once(app::path.'/view/footer.php');
 ?>
 
 <script>
+
+
+$(document).ready(function(){
+    if ($('#id_funcionario_busca').val() > 0 && $('#id_projeto_busca').val() > 0){
+        $("#add_button").css("display", "block");
+    }
+});
+
 
 function addParam(){
     var id_projeto = document.getElementById("id_projeto_busca").value;
