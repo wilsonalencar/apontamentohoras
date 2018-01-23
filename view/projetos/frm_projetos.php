@@ -561,8 +561,8 @@
                                                         <td><?php echo $row['NomeDespesa']; ?></td>
                                                         <td><?php echo $row['Num_doc']; ?></td>
                                                         <td><?php echo $row['Qtd_despesa']; ?></td>
-                                                        <td><?php echo $row['Vlr_unit']; ?></td>
-                                                        <td><?php echo $row['Vlr_total']; ?></td>
+                                                        <td>R$ <?php echo $row['Vlr_unit']; ?></td>
+                                                        <td>R$ <?php echo $row['Vlr_total']; ?></td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td>
                                                         <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>

@@ -16,6 +16,7 @@ class apontamento extends app
 	public $id_cliente;
 	public $id_proposta;
 	public $cliente;
+	public $Cliente_reembolsa;
 	public $proposta;
 	public $msg;
 	public $array;
@@ -61,7 +62,8 @@ class apontamento extends app
 					    A.id_cliente,
 					    A.id_proposta,
 					    B.nome as PropostaNome,
-					    C.nome as ClienteNome
+					    C.nome as ClienteNome,
+						A.Cliente_reembolsa
 					FROM
 					    projetos A
 					INNER JOIN 
@@ -80,6 +82,7 @@ class apontamento extends app
 		$this->id_proposta = $this->array['id_proposta'];
 		$this->cliente = $this->array['ClienteNome'];
 		$this->proposta = $this->array['PropostaNome'];
+		$this->Cliente_reembolsa = $this->array['Cliente_reembolsa'];
 
 
 		if ($this->id_perfilprofissional <= 0) {
@@ -165,10 +168,20 @@ class apontamento extends app
 
 			while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 	    		$timestamp = strtotime($row['Data_apontamento']);
+				$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
 				$row['Data_apontamento'] = date("d/m/Y", $timestamp);
 	    		$this->array[] = $row;
 			}
 		}
+	}
+	private function formatStatus($status)
+	{
+		if ($status == 'S') {
+			return "Aprovado";
+		} elseif ($status == 'R') {
+			return "Rejeitado";
+		} 
+		return "Não Aprovado";
 	}
 
 	public function lista_consulta()

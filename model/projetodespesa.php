@@ -46,8 +46,36 @@ class projetodespesa extends app
 			return false;
 		}
 
+		if (!$this->checkData($this->Data_despesa)) {
+			return false;
+		}
 		return true;
 	}
+
+	public function checkData($data_despesa)
+	{
+	 	$data_despesa = strtotime($data_despesa);
+		$data_despesa = date("m/Y", $data_despesa);
+	 	$data = date('m/Y');
+		if ($data_despesa != $data) {
+			$conn = $this->getDB->mysqli_connection;		
+			$query = sprintf("SELECT libera, periodo_libera FROM liberaapontamento WHERE periodo_libera = '%s'", $data_despesa);
+
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro durante a verificação do código do proposta";
+				return false;	
+			}
+			$data_ver = $result->fetch_array(MYSQLI_ASSOC);
+			if (!empty($data_ver['periodo_libera']) && $data_ver['libera'] == 'S') {
+				return true;
+			} 
+
+			$this->msg = "Desculpe, o período não existe ou está liberado para lançamento de despesa, contate a controller.";
+			return false;
+		}
+		return true;
+	}
+
 
 	public function save()
 	{
@@ -100,6 +128,50 @@ class projetodespesa extends app
 						    tiposdespesas C ON A.id_tipodespesa = C.id
 						WHERE
 						    A.id_projeto = %d", $id_projeto);
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	
+			return false;	
+		}
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$row['Qtd_despesa'] = number_format($row['Qtd_despesa'], 1, '', '');
+			$row['Vlr_unit'] = number_format($row['Vlr_unit'], 2, ',', '.');
+			$row['Vlr_total'] = number_format($row['Vlr_total'], 2, ',', '.');
+			$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
+			$timestamp = strtotime($row['Data_despesa']);
+			$row['Data_despesa'] = date("d/m/Y", $timestamp);
+			$this->array[] = $row;
+		}
+	}
+
+	public function lista_Apont($id_projeto, $id_funcionario)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT 
+						    A.id,
+						    A.id_projeto,
+						    A.id_funcionario,
+						    A.Data_despesa,
+						    A.id_tipodespesa,
+						    A.Num_doc,
+						    A.Qtd_despesa,
+						    A.Vlr_unit,
+						    A.Vlr_total,
+						    A.Aprovado,
+						    B.nome AS NomeFuncionario,
+						    C.descricao AS NomeDespesa
+						FROM
+						    projetodespesas A
+						        INNER JOIN
+						    funcionarios B ON A.id_funcionario = B.id
+						        INNER JOIN
+						    tiposdespesas C ON A.id_tipodespesa = C.id
+						WHERE
+						    A.id_projeto = ".$id_projeto. "" ;
+		
+		if ($id_funcionario > 0) {
+			$query .= " AND A.id_funcionario = ".$id_funcionario."";
+		}
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	

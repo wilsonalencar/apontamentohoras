@@ -4,6 +4,8 @@ require_once('model/projetodespesa.php');
 define('SAVE', 1);
 define('GET', 2);
 define('DEL', 3);
+define('DEL_APONT', 4);
+define('SAVE_APONT', 5);
 
 $projetodespesa 	= new projetodespesa;
 $projetodespesa->id					= $projetodespesa->getRequest('idDesp', 0);
@@ -34,6 +36,18 @@ if ($action == DEL) {
 	$success = $projetodespesa->deleta($projetodespesa->id);
 	$msg = $projetodespesa->msg;
 	header('LOCATION:projetos.php?id='.$projetodespesa->id_projeto.'&success='.$success.'&msg='.$msg.'');
+}
+
+if ($action == DEL_APONT) {
+	$success = $projetodespesa->deleta($projetodespesa->id);
+	$msg = $projetodespesa->msg;
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success);
+}
+
+if ($action == SAVE_APONT) {
+	$success 		= $projetodespesa->save();
+	$msg     		= $projetodespesa->msg; 
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success);
 }
 
 require_once('view/projetos/frm_projetos.php');
