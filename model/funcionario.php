@@ -205,6 +205,7 @@ class funcionario extends app
 			$an->file = $this->fileCV;
 			$an->path = 'curriculo_funcionario';
 			$an->name = $conn->insert_id;
+			$an->typeFile = $an::FILE_CV;
 
 			if (!$an->insert()) {
 				$this->msg = 'Ocorreu um erro ao atualizar funcionario '. $an->msg;
