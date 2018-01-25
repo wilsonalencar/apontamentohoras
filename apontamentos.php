@@ -1,6 +1,5 @@
 <?php
 require_once('model/apontamento.php');
-require_once('model/apontamento.php');
 require_once('model/projeto.php');
 require_once('model/projetodespesa.php');
 require_once('model/funcionario.php');

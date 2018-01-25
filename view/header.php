@@ -255,7 +255,7 @@
 
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
                                 <li>
-                                    <a class="" href="#">Aprovação</a>
+                                    <a class="" href="<?php echo app::dominio; ?>libera_apontamento.php">Aprovação</a>
                                 </li>
                                 <?php } ?>
 

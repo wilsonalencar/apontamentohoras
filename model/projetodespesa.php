@@ -14,13 +14,14 @@ class projetodespesa extends app
 	public $Qtd_despesa;
 	public $Vlr_unit;
 	public $Vlr_total;
+	public $data_busca_ini;
+	public $data_busca_fim;
 	public $Aprovado;
 	public $msg;
 	public $array;
 
 	private function check()
 	{
-	
 		if (empty($this->id_projeto)) {
 			$this->msg = "Insira o projeto.";
 			return false;
@@ -142,6 +143,77 @@ class projetodespesa extends app
 			$row['Data_despesa'] = date("d/m/Y", $timestamp);
 			$this->array[] = $row;
 		}
+	}
+
+	public function lista_aprovacao()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT
+					A.id,
+					A.id_projeto,
+				    D.nome as nomeCliente,
+                    C.codigo as id_proposta,
+                    F.nome as funcionarioNome,
+                    A.Data_despesa,
+                    A.Num_doc,
+                    A.Qtd_despesa,
+                    A.Vlr_unit,
+                    A.Vlr_total,
+				    A.Aprovado as status
+				FROM 
+					projetodespesas A 
+				INNER JOIN 
+					projetos B on A.id_projeto = B.id
+				INNER JOIN 
+					propostas C on B.id_proposta = C.id
+				INNER JOIN
+					clientes D on B.id_cliente = D.id
+				INNER JOIN 
+					funcionarios F on A.id_funcionario = F.id
+				WHERE 
+					A.Aprovado = 'N'
+					";
+
+		if ($this->id_projeto > 0) {
+			$query .= " AND A.id_projeto = ".$this->id_projeto;
+		}
+			
+		if ($this->id_funcionario > 0) {
+			$query .= " AND A.id_funcionario = ".$this->id_funcionario;
+		}
+
+		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
+			$query .= " AND A.Data_despesa BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+		}
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$row['Qtd_despesa'] = number_format($row['Qtd_despesa'], 1, '', '');
+			$row['Vlr_unit'] = number_format($row['Vlr_unit'], 2, ',', '.');
+			$row['Vlr_total'] = number_format($row['Vlr_total'], 2, ',', '.');
+			$timestamp = strtotime($row['Data_despesa']);
+    		$row['Data_despesa'] = date("d/m/Y", $timestamp);
+    		$this->array[] = $row;
+		}
+	}
+
+	public function Aprova($id, $status)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf(" UPDATE projetodespesas SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s' WHERE id = %d", 
+			$status, $_SESSION['email'] ,$id);	
+	
+		if (!$conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+
+		$this->msg = "Despesas atualizadas com sucesso!";
+		return true;
 	}
 
 	public function lista_Apont($id_projeto, $id_funcionario)
