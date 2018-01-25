@@ -171,15 +171,36 @@
                                                                       <p style="color : #fff;"> Anexos </p>
                                                                     </th>
                                                                     <th>
-                                                                        <a href="#" style="color: #fff;">+</a>
+                                                                        <a href="#" data-toggle="modal" data-target="#ModalAnexos" style="color: #fff;">+</a>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>Ainda não funciona</td>
-                                                                    <td><a href="#">X</a></td>
+                                                                    <th>Arquivo</th>
+                                                                    <th></th>
                                                                 </tr>
+                                                                <?php
+                                                                    if (!empty($projeto->id)) {
+
+                                                                        $pasta = app::path.'files/projetos/'.$projeto->id;
+                                                                            if (is_dir($pasta)) {
+
+                                                                                $diretorio = dir($pasta);
+                                                                                 while($arquivo = $diretorio -> read()){ 
+                                                                                    if ($arquivo != '.' && $arquivo != '..') {
+                                                                                    ?>
+                                                                                    <tr class="odd gradeX">
+                                                                                        <td><?php echo "<a href='".app::dominio.'files/projetos/'.$projeto->id.'/'.$arquivo."' target='_blank'>".$arquivo." </a>"; ?></td>
+                                                                                        <td>
+                                                                                            <i onclick="excluir_anexo('<?php echo app::path.'files/projetos/'.$projeto->id.'/'.$arquivo ?>')" id="anexo_file" class="material-icons">delete</i>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                <?php               }
+                                                                                }
+                                                                            } 
+                                                                        }
+                                                                ?>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -394,6 +415,32 @@
                                     </form>    
                                 </div>
 
+                                
+                                <!-- Modal de despesas -->
+                                <div id="ModalAnexos" class="modal fade" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Anexo de Projetos</h4>
+                                    </div>
+
+                                    <form class="col s12" id="anexoprojetos" action="projetos.php" method="post" name="anexoprojetos" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                             <div class="row">
+                                                <div class="col s4">
+                                                    <label for="id_projeto">Código do Projeto</label><br />
+                                                    <input type="file" id="anexo" name="anexo" class="validate">
+                                                    <input type="hidden" name="id" value="<?php echo $projeto->id; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                            
+                                        <div class="modal-footer">
+                                        <input type="hidden" name="action" value="3">
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <div class="col s1"></div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>    
+                                </div>
 
                                 <!-- Modal de despesas -->
                                 <div id="ModalDespesas" class="modal fade" >
@@ -767,6 +814,12 @@
             <input type="hidden" name="action" id="action" value="3">
             <input type="hidden" name="id_projeto" id="id_projeto" value="<?php echo $projeto->id; ?>">
         </form>
+
+        <form action="projetos.php" method="post" id="form_projeto_anexos">
+            <input type="hidden" name="file" id="file">
+            <input type="hidden" name="action" id="action" value="4">
+            <input type="hidden" name="id" id="id" value="<?php echo $projeto->id; ?>">
+        </form>
     </div>
 
   
@@ -775,6 +828,16 @@
 ?>
 
 <script>
+
+function excluir_anexo(file)
+{
+  if (!confirm('Tem certeza que deseja excluir esse anexo?')) {
+    return false;
+  }
+   $("#file").val(file);
+   document.getElementById('form_projeto_anexos').submit();
+}
+
 function excluiFat(idFat) {
     var r = confirm("Certeza que quer excluir este registro?");
     if (r != true) {

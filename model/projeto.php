@@ -18,6 +18,7 @@ class projeto extends app
 	public $msg;
 	public $array;
 	public $array_Fin;
+	public $fileAnexo;
 
 
 	private function check(){
@@ -484,6 +485,28 @@ class projeto extends app
 
 		$this->msg = 'Registro excluido com sucesso';
 		return true;	
+	}
+
+	public function saveAnexo()
+	{
+		if (!$this->id) {
+			$this->msg = 'Informar projeto para anexar arquivo';
+			return false;
+		}
+
+		$an = new anexo;
+		$an->file = $this->fileAnexo;
+		$an->path = 'projetos';
+		$an->typeFile = $an::FILE_PROJETO;
+		$an->nameDir = $this->id;
+
+		if (!$an->insert()) {
+			$this->msg = 'Ocorreu um erro ao atualizar funcionario '. $an->msg;
+			return false;
+		}
+
+		$this->msg = 'Arquivo Anexado com sucesso';
+		return true;
 	}
 }
 

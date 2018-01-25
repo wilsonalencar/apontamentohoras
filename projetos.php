@@ -10,9 +10,12 @@ require_once('model/projetoprevisaofat.php');
 require_once('model/projetorecurso.php');
 require_once('model/projetodespesa.php');
 require_once('model/tipodespesa.php');
+require_once('model/anexo.php');
 
 define('SAVE', 1);
 define('GET', 2);
+define('ANEXAR', 3);
+define('ANEXAR_DELETE', 4);
 
 $projeto 				= new projeto;
 $proposta 				= new proposta;
@@ -39,6 +42,7 @@ $financeiro 					= $projeto->calcFinanceiro($projeto->getRequest('id'));
 $success 	= $projeto->getRequest('success', 0);
 $msg 		= $projeto->getRequest('msg', '');
 $action		= $projeto->getRequest('action', 0);
+$excluirAnexo = $projeto->getRequest('excluir_anexo');
 
 if ($action == SAVE) {
 	
@@ -53,5 +57,35 @@ if ($action == GET) {
 	exit;
 }
 
+if ($action == ANEXAR) {
+	
+	$success = false;
+	$msg = 'Nenhum Arquivo enviado';
+
+	if ($_FILES['anexo']['size'] > 0) {
+		$projeto->fileAnexo = $_FILES['anexo'];
+		$success = $projeto->saveAnexo();
+		$msg     = $projeto->msg;
+	}
+
+	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
+	
+}
+
+if ($action == ANEXAR_DELETE) {
+
+	$success = false;
+	$msg = 'Nenhum Arquivo enviado';
+
+	if (file_exists($_POST['file'])) {
+		unlink($_POST['file']);
+
+		$success = true;
+		$msg = 'Arquivo excluido com sucesso';
+	}
+
+	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
+}
+ 
 require_once('view/projetos/frm_projetos.php');
 ?>
