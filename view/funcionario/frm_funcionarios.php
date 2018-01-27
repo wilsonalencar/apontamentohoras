@@ -45,19 +45,19 @@
                       <div class="row">
                         <div class="col s8">
                         <label for="nome">Nome</label>
-                          <input id="nome" type="text" name="nome" maxlength="255" class="validate">
+                          <input id="nome" type="text" name="nome" maxlength="255" class="validate" value="<?php echo $funcionario->nome; ?>">
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col s4">
                         <label for="apelido">Apelido</label>
-                          <input type="text" id="apelido" name="apelido" class="validate" maxlength="20">
+                          <input type="text" id="apelido" name="apelido" class="validate" maxlength="20" value="<?php echo $funcionario->apelido; ?>">
                         </div>
 
                         <div class="col s4">
                         <label for="data_nascimento">Data de nascimento</label>
-                          <input type="date" id="data_nascimento" name="data_nascimento" class="validate" maxlength="8">
+                          <input type="date" id="data_nascimento" name="data_nascimento" class="validate" maxlength="8" value="<?php echo $funcionario->data_nascimento; ?>">
                         </div>
 
 
@@ -69,7 +69,7 @@
                             <label for="id_tipocontratacao">Tipo de Contratações</label>
                             <select id="id_tipocontratacao" name="id_tipocontratacao" class="form-control input-sm">
                               <option value="">Selecione</option>
-                                <?php $contratacao->montaSelect(); ?>
+                                <?php $contratacao->montaSelect($funcionario->id_tipocontratacao); ?>
                             </select>
                         </div>
 
@@ -77,7 +77,7 @@
                             <label for="id_perfilprofissional">Perfil Profissional</label>
                             <select id="id_perfilprofissional" name="id_perfilprofissional" class="form-control input-sm">
                               <option value="">Selecione</option>
-                                <?php $perfilprofissional->montaSelect(); ?>
+                                <?php $perfilprofissional->montaSelect($funcionario->id_perfilprofissional); ?>
                             </select> 
                         </div>
 
@@ -85,7 +85,7 @@
                             <label for="id_responsabilidade">Responsabilidade</label>
                             <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
                               <option value="">Selecione</option>
-                                <?php $responsabilidade->montaSelect(); ?>
+                                <?php $responsabilidade->montaSelect($funcionario->id_responsabilidade); ?>
                             </select> 
                         </div>
                       </div>
@@ -93,31 +93,31 @@
                       <div class="row">
                         <div class="col s4">
                         <label for="rg">RG</label>
-                          <input type="text" id="rg" name="rg" class="validate" maxlength="12">
+                          <input type="text" id="rg" name="rg" class="validate" maxlength="12" value="<?php echo $funcionario->rg; ?>">
                         </div>
 
                         <div class="col s4">
                         <label for="cpf">CPF</label>
-                          <input type="text" onkeypress="mask(this,val_cpf)" id="cpf" name="cpf" class="validate" maxlength="14">
+                          <input type="text" onkeypress="mask(this,val_cpf)" id="cpf" name="cpf" class="validate" maxlength="14" value="<?php echo $funcionario->cpf; ?>">
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col s6">
                         <label for="endereco">Endereço</label>
-                          <input type="text" id="endereco" name="endereco" class="validate" maxlength="255">
+                          <input type="text" id="endereco" name="endereco" class="validate" maxlength="255" value="<?php echo $funcionario->endereco; ?>">
                         </div>
 
                         <div class="col s2">
                         <label for="valor_taxa">Valor Taxa</label>
-                          <input type="text" id="valor_taxa" name="valor_taxa" onkeypress="moeda(this)" placeholder="R$" class="validate" maxlength="255">
+                          <input type="text" id="valor_taxa" name="valor_taxa" onkeypress="moeda(this)" placeholder="R$" class="validate" maxlength="255" value="<?php echo $funcionario->valor_taxa; ?>">
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col s8">
                         <label for="complemento">Complemento</label>
-                          <input type="text" id="complemento" name="complemento" class="validate" maxlength="255">
+                          <input type="text" id="complemento" name="complemento" class="validate" maxlength="255" value="<?php echo $funcionario->complemento; ?>">
                         </div>
                       </div>
 
@@ -126,7 +126,7 @@
                             <label for="cod_municipio">Municipio</label>
                             <select id="cod_municipio" name="cod_municipio" class="form-control input-sm">
                               <option value="" disabled selected>Cidade</option>
-                              <?php $municipio->montaSelect($row['cod_municipio']); ?>
+                              <?php $municipio->montaSelect($funcionario->cod_municipio); ?>
                             </select>
                         </div>
                       </div>
@@ -134,18 +134,18 @@
                       <div class="row">
                         <div class="col s4">
                         <label for="cep">CEP</label>
-                          <input type="text" id="cep" onkeypress="mask(this,val_cep)" name="cep" class="validate" maxlength="9">
+                          <input type="text" id="cep" onkeypress="mask(this,val_cep)" name="cep" class="validate" maxlength="9" value="<?php echo $funcionario->cep; ?>">
                         </div>
                         <div class="col s4">
                         <label for="telefone">Telefone</label>
-                          <input type="text" onkeypress="mask(this,val_tel)" id="telefone" name="telefone" class="validate" maxlength="255">
+                          <input type="text" onkeypress="mask(this,val_tel)" id="telefone" name="telefone" class="validate" maxlength="255" value="<?php echo $funcionario->telefone; ?>">
                         </div>
                       </div>
 
                       <div class="row">
                         <div class="col s8">
                         <label for="email">Email</label>
-                          <input type="text" id="email" name="email" class="validate" maxlength="255">
+                          <input type="text" id="email" name="email" class="validate" maxlength="255" value="<?php echo $funcionario->email; ?>">
                         </div>
                       </div>
 

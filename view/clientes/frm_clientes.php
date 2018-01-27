@@ -45,31 +45,31 @@
                       <div class="row">
                         <div class="col s3">
                         <label for="codigo">Código</label>
-                          <input id="codigo" type="text" name="codigo" maxlength="7" class="validate">
+                          <input id="codigo" type="text" name="codigo" maxlength="7" class="validate" value="<?php echo $cliente->codigo; ?>">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s6">
                         <label for="nome">Nome</label>
-                          <input type="text" id="nome" name="nome" class="validate" maxlength="255">
+                          <input type="text" id="nome" name="nome" class="validate" maxlength="255" value="<?php echo $cliente->nome; ?>">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s3">
                         <label for="cnpj">CNPJ</label>
-                          <input type="text" id="cnpj" name="cnpj" maxlength="18" onkeypress="mask(this,val_cnpj)" class="validate">
+                          <input type="text" id="cnpj" name="cnpj" value="<?php echo $cliente->cnpj; ?>" maxlength="18" onkeypress="mask(this,val_cnpj)" class="validate">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s6">
                         <label for="endereco">Endereço</label>
-                          <input type="text" id="endereco" name="endereco" class="validate" maxlength="255">
+                          <input type="text" id="endereco" name="endereco" class="validate" maxlength="255" value="<?php echo $cliente->endereco; ?>">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s6">
                           <label for="complemento">Complemento</label>
-                          <input type="text" id="complemento" name="complemento" class="validate" maxlength="255">
+                          <input type="text" id="complemento" name="complemento" class="validate" maxlength="255" value="<?php echo $cliente->complemento; ?>">
                         </div>
                       </div>
 
@@ -78,32 +78,32 @@
                             <label for="cod_municipio">Municipio</label>
                             <select id="cod_municipio" name="cod_municipio" class="form-control input-sm">
                               <option value="" disabled selected>Cidade</option>
-                              <?php $municipio->montaSelect($row['cod_municipio']); ?>
+                              <?php $municipio->montaSelect($cliente->cod_municipio); ?>
                             </select>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s3">
                           <label for="telefone">CEP</label>
-                          <input type="text" id="cep" name="cep" onkeypress="mask(this,val_cep)" maxlength="9" class="validate">
+                          <input type="text" id="cep" name="cep" onkeypress="mask(this,val_cep)" maxlength="9" class="validate" value="<?php echo $cliente->cep; ?>">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s3">  
                         <label for="telefone">Telefone</label>
-                          <input type="text" id="telefone" name="telefone" maxlength="15" onkeypress="mask(this,val_tel)" class="validate">
+                          <input type="text" id="telefone" name="telefone" maxlength="15" value="<?php echo $cliente->telefone; ?>" onkeypress="mask(this,val_tel)" class="validate">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s6">
                         <label for="email">Email</label>
-                          <input type="text" maxlength="255" id="email" name="email" class="validate">
+                          <input type="text" maxlength="255" id="email" name="email" class="validate" value="<?php echo $cliente->email; ?>">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s6">
                         <label for="contato">Contato</label>
-                          <input type="text" id="contato" maxlength="255" name="contato" class="validate">
+                          <input type="text" id="contato" maxlength="255" name="contato" class="validate" value="<?php echo $cliente->contato; ?>">
                         </div>
                       </div>
                       <div class="row">

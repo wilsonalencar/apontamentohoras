@@ -31,8 +31,10 @@ if ($action == SAVE) {
 	
 	$success = $usuario->save();
 	$msg     = $usuario->msg; 
-
-	header("LOCATION:usuarios.php?usuarioID=".$usuario->usuarioID."&msg=".$msg."&success=".$success);
+	
+	if ($success) {
+		header("LOCATION:usuarios.php?usuarioID=".$usuario->usuarioID."&msg=".$msg."&success=".$success);
+	}	
 }
 
 if ($action == GET) {

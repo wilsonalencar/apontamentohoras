@@ -47,7 +47,7 @@ if ($action == SAVE) {
 			unlink($_POST['file']);
 		}
 		
-		$msg = 'Registro excluido com sucesso';
+		$msg = 'Registro atualizado';
 		$success = true;
 
 	} else {
@@ -60,7 +60,9 @@ if ($action == SAVE) {
 		$msg     = $funcionario->msg; 
 	}
 
-	header("LOCATION:funcionarios.php?id=".$funcionario->id."&msg=".$msg."&success=".$success);
+	if ($success) {
+		header("LOCATION:funcionarios.php?id=".$funcionario->id."&msg=".$msg."&success=".$success);
+	}
 }
 
 if ($action == GET) {
