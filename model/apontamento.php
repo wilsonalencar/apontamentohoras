@@ -53,7 +53,11 @@ class apontamento extends app
 		if (empty($this->Qtd_hrs_real)) {
 			$this->msg = "Favor informar a quantidade de horas real.";
 			return false;	
-		}		
+		}
+
+		if (!$this->checkData($this->Data_apontamento)) {
+			return false;
+		}
 		return true;
 	}
 
@@ -109,6 +113,7 @@ class apontamento extends app
 	 	$data_apontamento = strtotime($data_apontamento);
 		$data_apontamento = date("m/Y", $data_apontamento);
 	 	$data = date('m/Y');
+	
 		if ($data_apontamento != $data) {
 			$conn = $this->getDB->mysqli_connection;		
 			$query = sprintf("SELECT libera, periodo_libera FROM liberaapontamento WHERE periodo_libera = '%s'", $data_apontamento);
