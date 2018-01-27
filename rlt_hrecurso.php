@@ -28,7 +28,7 @@
                         </div>
                         <div class="card-content">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" >
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
                                     <thead>
                                         <tr>
                                             <th>Pilar</th>
