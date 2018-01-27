@@ -52,8 +52,8 @@ class funcionario extends app
 		if($result = $conn->query($query))
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
-			echo utf8_encode(sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
-			$row['id'], $row['nome']));
+			echo sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
+			$row['id'], $row['nome']);
 		}
 	}
 

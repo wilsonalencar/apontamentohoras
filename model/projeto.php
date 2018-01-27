@@ -470,8 +470,8 @@ class projeto extends app
 		if($result = $conn->query($query))
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
-			echo utf8_encode(sprintf("<option %s value='%d'>%d --  %s --  %s</option>\n", $selected == $row['id_projeto'] ? "selected" : "",
-			$row['id_projeto'], $row['id_projeto'], $row['Cliente'], $row['Proposta']));
+			echo sprintf("<option %s value='%d'>%d --  %s --  %s</option>\n", $selected == $row['id_projeto'] ? "selected" : "",
+			$row['id_projeto'], $row['id_projeto'], $row['Cliente'], $row['Proposta']);
 		}
 	}
 
