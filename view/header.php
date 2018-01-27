@@ -216,12 +216,12 @@
                         
                         <li>
                             <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cadastrobasico)){ ?>
-                                <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i> Cadastros<span class="fa arrow"></span></a>
+                                <a href="#" class="waves-effect waves-dark active-menu"><i class="fa fa-sitemap"></i> Cadastros<span class="fa arrow"></span></a>
                             <?php } ?>
                             <ul class="nav nav-second-level">
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cliente)){ ?>
                                     <li>
-                                        <a href="#">Clientes<span class="fa arrow"></span></a>
+                                        <a href="#" class="active-menu">Clientes<span class="fa arrow"></span></a>
                                         <ul class="nav nav-third-level">
                                             <li>
                                                 <a class="active-menu" href="<?php echo app::dominio; ?>clientes.php" >Adicionar</a>
@@ -234,7 +234,7 @@
                                 <?php } ?>
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_propostas)){ ?>
                                 <li>
-                                    <a href="#">Propostas<span class="fa arrow"></span></a>
+                                    <a href="#" class="active-menu">Propostas<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
                                             <a class="active-menu" href="<?php echo app::dominio; ?>propostas.php" >Adicionar</a>
@@ -249,7 +249,7 @@
 
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_pilares)){ ?>
                                 <li>
-                                    <a href="#">Pilares<span class="fa arrow"></span></a>
+                                    <a href="#" class="active-menu">Pilares<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
                                             <a class="active-menu" href="<?php echo app::dominio; ?>pilares.php" >Adicionar</a>
@@ -263,7 +263,7 @@
                                 <?php } ?>
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_contratacoes)){ ?>
                                 <li>
-                                    <a href="#">Contratações<span class="fa arrow"></span></a>
+                                    <a href="#" class="active-menu">Contratações<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
                                            <a class="active-menu" href="<?php echo app::dominio; ?>contratacoes.php" >Adicionar</a>
@@ -277,7 +277,7 @@
                                  <?php } ?>
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_perfilprofissional)){ ?>
                                 <li>
-                                    <a href="#">Perfil Profissional<span class="fa arrow"></span></a>
+                                    <a href="#" class="active-menu">Perfil Profissional<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
                                              <a class="active-menu" href="<?php echo app::dominio; ?>perfil_prof.php" >Adicionar</a>
@@ -291,7 +291,7 @@
                                  <?php } ?>
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_responsabilidade)){ ?>
                                 <li>
-                                    <a href="#">Responsabilidades<span class="fa arrow"></span></a>
+                                    <a href="#" class="active-menu">Responsabilidades<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                         <li>
                                             <a class="active-menu" href="<?php echo app::dominio; ?>responsabilidades.php" >Adicionar</a>
@@ -305,7 +305,7 @@
                                  <?php } ?>
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_usuario)){ ?>
                                 <li>
-                                    <a href="#" class="waves-effect waves-dark"> Usuários<span class="fa arrow"></span></a>
+                                    <a href="#" class="waves-effect waves-dark active-menu"> Usuários<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                          <li>
                                             <a class="active-menu" href="<?php echo app::dominio; ?>usuarios.php" >Adicionar</a>
@@ -319,7 +319,7 @@
 
                                  <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_funcionario)){ ?>
                                 <li>
-                                    <a href="#" class="waves-effect waves-dark "> Funcionários<span class="fa arrow"></span></a>
+                                    <a href="#" class="waves-effect waves-dark active-menu"> Funcionários<span class="fa arrow"></span></a>
                                     <ul class="nav nav-third-level">
                                          <li>
                                             <a class="active-menu" href="<?php echo app::dominio; ?>funcionarios.php" >Adicionar</a>
@@ -336,7 +336,7 @@
                         
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
                         <li>
-                            <a href="#">Projetos<span class="fa arrow"></span></a>
+                            <a href="#" class="active-menu">Projetos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
@@ -354,19 +354,19 @@
                         
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
                         <li>
-                            <a class="" href="<?php echo app::dominio; ?>apontamentos.php">Apontamento</a><!-- query_builder -->
+                            <a class="active-menu" href="<?php echo app::dominio; ?>apontamentos.php">Apontamento</a><!-- query_builder -->
                         </li>
                         <?php } ?>
 
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
                         <li>
-                            <a class="" href="<?php echo app::dominio; ?>libera_apontamento.php">Aprovação</a><!-- thumb_up -->
+                            <a class="active-menu" href="<?php echo app::dominio; ?>libera_apontamento.php">Aprovação</a><!-- thumb_up -->
                         </li>
                         <?php } ?>
 
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios)){ ?>
                         <li>
-                            <a href="#">Relatórios<span class="fa arrow"></span></a><!-- reorder -->
+                            <a href="#" class="active-menu">Relatórios<span class="fa arrow"></span></a><!-- reorder -->
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>
