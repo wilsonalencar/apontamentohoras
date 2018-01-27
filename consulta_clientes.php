@@ -64,7 +64,7 @@
                                                 <tr class="odd gradeX">
                                                     <td><?php echo $row['codigo']; ?></td>
                                                     <td><?php echo $row['nome']; ?></td>
-                                                    <td><?php echo $row['cidade']; ?></td>
+                                                    <td><?php echo utf8_encode($row['cidade']); ?></td>
                                                     <td><?php echo $row['uf']; ?></td>
                                                     <td><?php echo $row['status']; ?></td>
                                                     <td>
