@@ -9,6 +9,7 @@ require_once('model/responsabilidade.php');
 define('SAVE', 1);
 define('GET', 2);
 define('DEL', 3);
+define('MONTASELECTAJAX', 4);
 
 $contratacao 			= new contratacao;
 $funcionario 			= new funcionario;
@@ -74,6 +75,11 @@ if ($action == DEL) {
 	$success = $funcionario->deleta($funcionario->id);
 	$msg = $funcionario->msg;
 	require_once('consulta_funcionarios.php');
+	exit;
+}
+
+if ($action == MONTASELECTAJAX) {
+	echo $funcionario->montaSelect(0, 0, $funcionario->id_perfilprofissional);
 	exit;
 }
 
