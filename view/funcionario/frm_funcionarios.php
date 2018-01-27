@@ -93,7 +93,7 @@
                       <div class="row">
                         <div class="col s4">
                         <label for="rg">RG</label>
-                          <input type="text" onkeypress="mask(this,val_rg)" id="rg" name="rg" class="validate" maxlength="12">
+                          <input type="text" id="rg" name="rg" class="validate" maxlength="12">
                         </div>
 
                         <div class="col s4">
