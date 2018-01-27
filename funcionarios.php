@@ -47,7 +47,7 @@ if ($action == SAVE) {
 			unlink($_POST['file']);
 		}
 		
-		$msg = 'Registro excluido com sucesso';
+		$msg = 'Registro atualizado';
 		$success = true;
 
 	} else {

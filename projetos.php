@@ -81,7 +81,7 @@ if ($action == ANEXAR_DELETE) {
 		unlink($_POST['file']);
 
 		$success = true;
-		$msg = 'Arquivo excluido com sucesso';
+		$msg = 'Registro Atualizado';
 	}
 
 	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
