@@ -442,7 +442,7 @@ class projeto extends app
 			        INNER JOIN
 			    projetorecursos E ON A.id = E.id_projeto
 			WHERE
-			    D.id NOT IN (2)
+			    D.id NOT IN (4, 5)
 			        AND E.id_funcionario = (SELECT 
 			            id
 			        FROM
@@ -463,7 +463,7 @@ class projeto extends app
 						        INNER JOIN
 						    projetostatus D ON A.id_status = D.id
 						WHERE
-						    D.id NOT IN (2);
+						    D.id NOT IN (4, 5);
 						");
 		} 
 

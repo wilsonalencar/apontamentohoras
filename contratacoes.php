@@ -20,7 +20,7 @@ if ($action == SAVE) {
 	$success = $contratacao->save();
 	$msg     = $contratacao->msg; 
 
-	header("LOCATION:pilares.php?id=".$contratacao->id."&msg=".$msg."&success=".$success);
+	header("LOCATION:contratacoes.php?id=".$contratacao->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {
