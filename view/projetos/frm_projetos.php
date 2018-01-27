@@ -258,7 +258,7 @@
                                                                         <td>R$ <?php echo $row['Vlr_taxa_compra']; ?></td>
                                                                         <td><?php echo $row['mes_alocacao']; ?></td>
                                                                         <td><?php echo $row['Qtd_hrs_estimada']; ?></td>
-                                                                        <td>0</td>
+                                                                        <td><?php echo $projetorecursos->getHorasReais($row['id_projeto'], $row['id_funcionario'], $row['mes_alocacao']) ?></td>
                                                                         <td>
                                                                         <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                                         </td>
@@ -313,9 +313,9 @@
                                           </div>
 
                                           <div class="row">
-                                            <div class="col s6">
+                                            <div class="col s2">
                                             <label for="num_parcela">Parcela</label>
-                                              <input type="text" id="Num_parcela" name="Num_parcela" class="validate" maxlength="3">
+                                              <input type="text" id="Num_parcela" readonly="true" name="Num_parcela" value="<?php echo $projetoprevisaofat->getParcela($projeto->id); ?>" maxlength="3">
                                             </div>
 
                                             <div class="col s6">
@@ -325,10 +325,14 @@
                                           </div>
 
                                           <div class="row">
-                                            <div class="col s6">
+                                            <div class="col s2">
                                             <label for="mes_previsao_fat">Mês / Ano</label>
                                               <input type="text" id="mes_previsao_fat" name="mes_previsao_fat" class="validate" maxlength="7">
                                             </div>
+                                            <!-- <div class="col s6">
+                                                <label for="Vlr_parcela_cimp">Valor Sem impostos R$</label>
+                                                  <input type="text" onkeypress="moeda(this)" readonly="true" id="Vlr_parcela_simp" name="Vlr_parcela_simp" class="validate" maxlength="255">
+                                            </div> -->
                                           </div>
                                         </div>
 

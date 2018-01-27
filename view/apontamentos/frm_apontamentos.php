@@ -66,7 +66,7 @@
                                                         <?php $profissional = $funcionario->findFuncionario(); ?>
                                                         <p><b> Profissional : </b></p>
                                                         <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
-                                                        <input type="hidden" name="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
+                                                        <input type="hidden" name="id_funcionario_busca" id="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
                                                 <?php }?>
                                             </div>
                                         </div>
@@ -126,6 +126,36 @@
                                     </div>
                                     </form>
                                 </div>  
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 
                                 <!-- Modal de Despesas -->
                                 <div id="despesa" class="col s12">

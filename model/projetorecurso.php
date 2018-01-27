@@ -44,11 +44,37 @@ class projetorecurso extends app
 			return false;
 		}
 
+		if ($this->Qtd_hrs_estimada <= 0) {
+			$this->msg = "Insira a quantia de horas estimada do recurso corretamente.";
+			return false;
+		}
+
 		if (empty($this->Vlr_taxa_compra)) {
 			$this->msg = "Insira o Valor da taxa de compra do recurso.";
 			return false;
 		}
 
+		if (!$this->checkExiste()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private function checkExiste()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT id FROM projetorecursos WHERE id_projeto = %d AND id_funcionario = %d AND mes_alocacao= '%s'", $this->id_projeto, $this->id_funcionario, $this->mes_alocacao);	
+			
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação da disponibilidade do recurso.";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Desculpe, já existe uma estimativa criada para esse funcionario, nesse mesmo mês/ano e projeto.";
+			return false;			
+		}
 		return true;
 	}
 
@@ -144,6 +170,28 @@ class projetorecurso extends app
 		}
 	}
 
+	public function getHorasReais($id_projeto, $id_funcionario, $mes_alocacao){
+		
+		$d1 = strtotime($mes_alocacao);
+		$d1 = date("Y-m-01", $d1);
+
+		$d2 = strtotime($mes_alocacao);
+		$d2 = date("Y-m-31", $d2);
+
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT SUM(Qtd_hrs_real) as Qtd_hrs_real FROM projetohoras WHERE id_projeto = ".$id_projeto." AND id_funcionario =".$id_funcionario." AND data_apontamento BETWEEN ".$d1." AND ".$d2."";
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	
+			return false;	
+		}
+		$hr_real = $result->fetch_array(MYSQLI_ASSOC)['Qtd_hrs_real'];
+		if (empty($hr_real)) {
+			$hr_real = 0;
+		}
+
+		return 'Não está funcionando';
+	}
 
 	public function montaSelect($selected=0)
 	{

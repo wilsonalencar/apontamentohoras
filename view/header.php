@@ -247,55 +247,6 @@
                                 </li>
                                 <?php } ?>
 
-                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
-                                <li>
-                                    <a class="" href="<?php echo app::dominio; ?>apontamentos.php">Apontamento</a>
-                                </li>
-                                <?php } ?>
-
-                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
-                                <li>
-                                    <a class="" href="<?php echo app::dominio; ?>libera_apontamento.php">Aprovação</a>
-                                </li>
-                                <?php } ?>
-
-
-                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios)){ ?>
-                                <li>
-                                    <a href="#">Relatórios<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a class="active-menu" href="#" >Horas por recurso</a>
-                                        </li>
-                                        <li>
-                                            <a class="active-menu" href="#" >Horas por projeto</a>
-                                        </li>
-                                        <li>
-                                            <a class="active-menu" href="#" >Horas por pilar</a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <?php } ?>
-
-                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
-                                <li>
-                                    <a href="#">Projetos<span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
-                                        </li>
-                                        <li>
-                                            <a class="active-menu" href="<?php echo app::dominio; ?>consulta_projetos.php" >Consulta</a>
-                                        </li> 
-                                        <li>
-                                            <a class="active-menu" href="<?php echo app::dominio; ?>projetoapontamentos.php" >Liberar Apontamento</a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-                                <?php } ?>
-
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_pilares)){ ?>
                                 <li>
                                     <a href="#">Pilares<span class="fa arrow"></span></a>
@@ -381,6 +332,55 @@
                                  <?php } ?>
                             </ul>
                         </li>
+
+                        
+                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
+                        <li>
+                            <a href="#">Projetos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
+                                </li>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>consulta_projetos.php" >Consulta</a>
+                                </li> 
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>projetoapontamentos.php" >Liberar Apontamento</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <?php } ?>
+                        
+                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
+                        <li>
+                            <a class="" href="<?php echo app::dominio; ?>apontamentos.php">Apontamento</a><!-- query_builder -->
+                        </li>
+                        <?php } ?>
+
+                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
+                        <li>
+                            <a class="" href="<?php echo app::dominio; ?>libera_apontamento.php">Aprovação</a><!-- thumb_up -->
+                        </li>
+                        <?php } ?>
+
+                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios)){ ?>
+                        <li>
+                            <a href="#">Relatórios<span class="fa arrow"></span></a><!-- reorder -->
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>
+                                </li>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hprojeto.php" >Horas por projetos</a>
+                                </li>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hpilar.php" >Horas por pilares</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <?php } ?>
                     </ul>
                 </div>
             </nav>

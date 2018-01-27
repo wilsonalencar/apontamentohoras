@@ -119,6 +119,64 @@ class pilar extends app
 		$this->msg = 'Registro carregado com sucesso';
 		return true;
 	}
+	private function formatStatusL($status)
+	{
+		if ($status == 'S') {
+			return "APROVADO";
+		} elseif ($status == 'R') {
+			return "REJEITADO";
+		} 
+		return "PENDENTE";
+	}
+
+	public function relatorioFunc(){
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT 
+							A.id as id,
+							A.Qtd_hrs_real as qtd_hrs,
+						    A.observacao as atividade,
+						    A.Aprovado as status,
+						    A.Data_apontamento as data_apont,
+						    C.id_pilar,
+						    B.nome as nomefuncionario,
+						    B.id as id_funcionario,
+						    D.nome as nomepilar,
+						    F.codigo as projeto1,
+						    E.nome as projeto2
+						FROM 
+							projetohoras A
+						INNER JOIN 
+							funcionarios B on A.id_funcionario = B.id
+						INNER JOIN 
+							projetos C on A.id_projeto = C.id
+						INNER JOIN 
+							pilares D on C.id_pilar = D.id
+						INNER JOIN 
+							clientes E on C.id_cliente = E.id
+						INNER JOIN 
+							propostas F on C.id_proposta = F.id
+						WHERE 
+							B.status = 'A'
+						ORDER BY 
+							A.data_apontamento, D.id, A.id");
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		$this->array['valorTotalGeral'] = 0;
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$timestamp = strtotime($row['data_apont']);
+			$row['data_apont'] = date("d/m/Y", $timestamp);
+			$row['status'] = $this->formatStatusL($row['status']);
+			if (empty($this->array['dados'][$row['id_pilar']])) {
+				$this->array['dados'][$row['id_pilar']]['valorTotal'] = 0;	
+			}
+			$this->array['dados'][$row['id_pilar']][] = $row;
+			$this->array['dados'][$row['id_pilar']]['valorTotal'] = $row['qtd_hrs'] + $this->array['dados'][$row['id_pilar']]['valorTotal'] ;	
+			$this->array['valorTotalGeral'] = $row['qtd_hrs'] + $this->array['valorTotalGeral'];
+		}
+	}
 
 	public function lista()
 	{

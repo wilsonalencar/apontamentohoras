@@ -38,16 +38,6 @@ class projeto extends app
 			return false;	
 		}
 
-		if (empty($this->data_inicio)) {
-			$this->msg = "Favor informar a data de início do projeto.";
-			return false;	
-		}
-
-		if (empty($this->data_inicio)) {
-			$this->msg = "Favor informar a data final do projeto.";
-			return false;	
-		}
-
 		if (empty($this->status)) {
 			$this->msg = "Favor informar o status.";
 			return false;	
@@ -71,10 +61,11 @@ class projeto extends app
 	public function insert()
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, usuario)
-		VALUES (%d, %d, %d, '%s', '%s', %d, '%s', '%s')", 
-			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email']);
 
+		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, usuario)
+		VALUES (%d, %d, %d, %s, %s, %d, '%s', '%s')", 
+			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $_SESSION['email']);
+		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
@@ -87,8 +78,8 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= '%s', data_fim= '%s', id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', data_alteracao = NOW() WHERE id = %d", 
-			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id);	
+		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', data_alteracao = NOW() WHERE id = %d", 
+			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -112,7 +103,7 @@ class projeto extends app
 						    A.id_status,
 						    A.Cliente_reembolsa,
 						    B.nome AS ClienteNome,
-						    C.nome AS PropostaNome,
+						    C.codigo AS PropostaNome,
 						    D.nome AS PilarNome
 						FROM
 						    projetos A
@@ -372,6 +363,66 @@ class projeto extends app
 		//Fim da terceira tabela
 
 		return $this->array_Fin;
+	}
+
+
+	private function formatStatusL($status)
+	{
+		if ($status == 'S') {
+			return "APROVADO";
+		} elseif ($status == 'R') {
+			return "REJEITADO";
+		} 
+		return "PENDENTE";
+	}
+
+	public function relatorioFunc(){
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT 
+							A.id as id,
+							A.Qtd_hrs_real as qtd_hrs,
+						    A.observacao as atividade,
+						    A.Aprovado as status,
+						    A.id_projeto,
+						    A.Data_apontamento as data_apont,
+						    B.nome as nomefuncionario,
+						    B.id as id_funcionario,
+						    D.nome as nomepilar,
+						    F.codigo as projeto1,
+						    E.nome as projeto2
+						FROM 
+							projetohoras A
+						INNER JOIN 
+							funcionarios B on A.id_funcionario = B.id
+						INNER JOIN 
+							projetos C on A.id_projeto = C.id
+						INNER JOIN 
+							pilares D on C.id_pilar = D.id
+						INNER JOIN 
+							clientes E on C.id_cliente = E.id
+						INNER JOIN 
+							propostas F on C.id_proposta = F.id
+						WHERE 
+							B.status = 'A'
+						ORDER BY 
+							A.data_apontamento, C.id, A.id");
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		$this->array['valorTotalGeral'] = 0;
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$timestamp = strtotime($row['data_apont']);
+			$row['data_apont'] = date("d/m/Y", $timestamp);
+			$row['status'] = $this->formatStatusL($row['status']);
+			if (empty($this->array['dados'][$row['id_projeto']])) {
+				$this->array['dados'][$row['id_projeto']]['valorTotal'] = 0;	
+			}
+			$this->array['dados'][$row['id_projeto']][] = $row;
+			$this->array['dados'][$row['id_projeto']]['valorTotal'] = $row['qtd_hrs'] + $this->array['dados'][$row['id_projeto']]['valorTotal'] ;	
+			$this->array['valorTotalGeral'] = $row['qtd_hrs'] + $this->array['valorTotalGeral'];
+		}
 	}
 
 	public function montaSelect($selected=0)

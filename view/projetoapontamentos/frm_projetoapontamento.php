@@ -64,7 +64,7 @@
                         <input type="hidden" id="id" name="id" value="<?php echo $projetoapontamento->id; ?>">
                         <input type="hidden" id="action" name="action" value="1">
                         <div class="input-field col s1">
-                            <input type="submit" name="submit" id="submit_form" class="waves-effect waves-light btn">
+                            <input type="submit" name="Salvar" id="submit_form" class="waves-effect waves-light btn">
                         </div>
                       </div>
                     </form>

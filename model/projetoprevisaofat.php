@@ -71,37 +71,27 @@ class projetoprevisaofat extends app
 		return true;
 	}
 
-	// public function update()
-	// {
-	// 	$conn = $this->getDB->mysqli_connection;
-	// 	$query = sprintf(" UPDATE projetoprevisaofat SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
-	// 		$this->nome, $this->status, $_SESSION['usuarioID'], $this->id);	
-	
-	// 	if (!$conn->query($query)) {
-	// 		$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-	// 		return false;	
-	// 	}
 
-	// 	$this->msg = "Registros atualizados com sucesso!";
-	// 	return true;
-	// }
+	public function getParcela($id)
+	{
+		if (!$id) {
+			return false;
+		}
 
-	// #FALTA
-	// public function get($id)
-	// {
-	// 	if (!$id) {
-	// 		return false;
-	// 	}
-	// 	$conn = $this->getDB->mysqli_connection;
-	// 	$query = sprintf("SELECT id, codigo, nome, status, usuario FROM projetoprevisaofat WHERE id =  %d ", $id);
-	// 	if (!$result = $conn->query($query)) {
-	// 		$this->msg = "Ocorreu um erro no carregamento do proposta";	
-	// 		return false;	
-	// 	}
-	// 	$this->array = $result->fetch_array(MYSQLI_ASSOC);
-	// 	$this->msg = 'Registro carregado com sucesso';
-	// 	return true;
-	// }
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT Num_parcela + 1 as parcela FROM projetoprevisaofat WHERE id_projeto =  %d  order by data_cadastro desc", $id);
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento da parcela";	
+			return false;	
+		}
+
+		$parcelaAtual = $result->fetch_array(MYSQLI_ASSOC)['parcela']; 
+		if (empty($parcelaAtual)) {
+			$parcelaAtual = 1;
+		}
+		
+		return $parcelaAtual;
+	}
 
 	public function lista($id_projeto)
 	{

@@ -149,8 +149,7 @@ class apontamento extends app
 		$this->msg = "Registro atualizado com sucesso!";
 		return true;
 	}
-
-
+	
 	public function Aprova($id, $status)
 	{
 		$conn = $this->getDB->mysqli_connection;

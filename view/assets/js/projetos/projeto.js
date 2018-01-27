@@ -59,12 +59,6 @@ $( document ).ready(function() {
         $("#id_proposta").focus();
         return false;
     }
-    
-    if ($("#data_inicio").val() == '') {
-        alert('Informar a data inicial do projeto');
-        $("#data_inicio").focus();
-        return false;
-    }
 
     if ($("#id_pilar").val() == '') {
         alert('Informar qual o pilar.');
