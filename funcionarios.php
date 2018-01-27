@@ -60,7 +60,9 @@ if ($action == SAVE) {
 		$msg     = $funcionario->msg; 
 	}
 
-	header("LOCATION:funcionarios.php?id=".$funcionario->id."&msg=".$msg."&success=".$success);
+	if ($success) {
+		header("LOCATION:funcionarios.php?id=".$funcionario->id."&msg=".$msg."&success=".$success);
+	}
 }
 
 if ($action == GET) {
