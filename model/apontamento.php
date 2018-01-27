@@ -63,7 +63,7 @@ class apontamento extends app
 		$query = "	SELECT 
 					    A.id_cliente,
 					    A.id_proposta,
-					    B.nome as PropostaNome,
+					    B.codigo as PropostaNome,
 					    C.nome as ClienteNome,
 						A.Cliente_reembolsa
 					FROM
@@ -88,7 +88,7 @@ class apontamento extends app
 
 
 		if ($this->id_perfilprofissional <= 0) {
-			$query = "	SELECT 
+			$query = "SELECT 
 					    id_perfilprofissional
 					FROM
 					    funcionarios

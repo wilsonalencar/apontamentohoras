@@ -36,41 +36,38 @@
                            <div class="col-sm-12">
                               <ul class="tabs">
                                   <li class="tab col s3"><a class="active" href="#test1">Horas</a></li>
-                                  <li class="tab col s3 disabled" id="divDespesas"><a href="#despesa">Despesas</a></li>
+                                  <li class="tab col s3" id="divDespesas"><a href="#despesa">Despesas</a></li>
                               </ul>
+                              <br>
+                                  <div class="row">
+                                    <div class="col s4">
+                                        <label for="id_projeto">Projetos : </label>
+                                        <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control input-sm">
+                                          <option value="">Projetos</option>
+                                            <?php $projeto->montaSelect($apontamento->id_projeto); ?>
+                                        </select>
+                                    </div>    
+                                    <div class="col s1"></div>
+                                    <div class="col s4">
+                                        <?php if ($_SESSION['id_perfilusuario'] == '1') { ?>
+                                        <label for="id_funcionario_busca">Funcionario: </label> 
+                                                <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
+                                                    <option value="">Funcionario</option>
+                                                    <?php $funcionario->montaSelect($apontamento->id_funcionario); ?>
+                                                </select>
+                                        <?php } else { ?>
+                                                <?php $profissional = $funcionario->findFuncionario(); ?>
+                                                <p><b> Profissional : </b></p>
+                                                <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
+                                                <input type="hidden" name="id_funcionario_busca" id="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
+                                        <?php }?>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="clearBoth">
-                                <br/>
-                            </div>
                             
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos" id="cad_apontamentos">
-                                        <div class="row">
-                                            <div class="col s4">
-                                                <label for="id_projeto">Projetos : </label>
-                                                <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control input-sm">
-                                                  <option value="">Projetos</option>
-                                                    <?php $projeto->montaSelect($apontamento->id_projeto); ?>
-                                                </select>
-                                            </div>    
-                                            <div class="col s1"></div>
-                                            <div class="col s4">
-                                                <?php if ($_SESSION['id_perfilusuario'] == '1') { ?>
-                                                <label for="id_funcionario_busca">Funcionario: </label> 
-                                                        <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
-                                                            <option value="">Funcionario</option>
-                                                            <?php $funcionario->montaSelect($apontamento->id_funcionario); ?>
-                                                        </select>
-                                                <?php } else { ?>
-                                                        <?php $profissional = $funcionario->findFuncionario(); ?>
-                                                        <p><b> Profissional : </b></p>
-                                                        <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
-                                                        <input type="hidden" name="id_funcionario_busca" id="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
-                                                <?php }?>
-                                            </div>
-                                        </div>
-                                        <br />
                                     <div  class="col s12">
                                         <div class="table-responsive">
                                         <?php
@@ -127,36 +124,6 @@
                                     </form>
                                 </div>  
                                 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                
                                 <!-- Modal de Despesas -->
                                 <div id="despesa" class="col s12">
                                     <div class="card-content">
@@ -171,22 +138,6 @@
                                         <?php
                                             $apontamento->carregaPendencia($apontamento->id_projeto);
                                         ?>
-                                        <div class="row">   
-                                            <div class="col s4">
-                                                <?php if ($_SESSION['id_perfilusuario'] == '1') { ?>
-                                                <b> Funcionario: </b> 
-                                                        <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm" disabled="true">
-                                                            <option value="">Funcionario</option>
-                                                            <?php $funcionario->montaSelect($apontamento->id_funcionario); ?>
-                                                        </select>
-                                                <?php } else { ?>
-                                                        <?php $profissional = $funcionario->findFuncionario(); ?>
-                                                        <p><b> Profissional : </b></p>
-                                                        <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
-                                                        <input type="hidden" name="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
-                                                <?php }?>
-                                            </div>
-                                        </div>
 
                                         <div class="row">
                                             <div class="col s2">
@@ -439,7 +390,6 @@ require_once(app::path.'/view/footer.php');
 $(document).ready(function(){
     if ($('#id_funcionario_busca').val() > 0 && $('#id_projeto_busca').val() > 0){
         $("#add_button").css("display", "block");
-        $("#divDespesas").removeClass("disabled");
     }
 });
 
