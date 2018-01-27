@@ -336,7 +336,7 @@
                         
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_projetos)){ ?>
                         <li>
-                            <a href="#" class="active-menu">Projetos<span class="fa arrow"></span></a>
+                            <a href="#" class="active-menu"><i class="fa fa-file-text"></i> Projetos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
@@ -354,19 +354,19 @@
                         
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_apontamento)){ ?>
                         <li>
-                            <a class="active-menu" href="<?php echo app::dominio; ?>apontamentos.php">Apontamento</a><!-- query_builder -->
+                            <a class="active-menu" href="<?php echo app::dominio; ?>apontamentos.php"><i class="fa fa-calendar"></i> Apontamento</a><!-- query_builder -->
                         </li>
                         <?php } ?>
 
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_aprovacao)){ ?>
                         <li>
-                            <a class="active-menu" href="<?php echo app::dominio; ?>libera_apontamento.php">Aprovação</a><!-- thumb_up -->
+                            <a class="active-menu" href="<?php echo app::dominio; ?>libera_apontamento.php"><i class="fa fa-thumbs-up"></i> Aprovação</a><!-- thumb_up -->
                         </li>
                         <?php } ?>
 
                         <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios)){ ?>
                         <li>
-                            <a href="#" class="active-menu">Relatórios<span class="fa arrow"></span></a><!-- reorder -->
+                            <a href="#" class="active-menu"><i class="fa fa-list"></i> Relatórios<span class="fa arrow"></span></a><!-- reorder -->
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>
