@@ -13,6 +13,8 @@ class projeto extends app
 	public $data_fim;
 	public $PilarNome;
 	public $ClienteNome;
+	public $data_busca_ini;
+	public $data_busca_fim;
 	public $Cliente_reembolsa;
 	public $status;
 	public $msg;
@@ -403,9 +405,16 @@ class projeto extends app
 						INNER JOIN 
 							propostas F on C.id_proposta = F.id
 						WHERE 
-							B.status = 'A'
-						ORDER BY 
-							A.data_apontamento, C.id, A.id");
+							B.status = 'A' 
+						");
+		if ($this->id > 0) {
+			$query .= " AND A.id_projeto = ".$this->id;
+		}
+
+		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
+			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+		}
+		$query .= " ORDER BY A.data_apontamento, C.id, A.id";
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -472,6 +481,56 @@ class projeto extends app
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
 			echo utf8_encode(sprintf("<option %s value='%d'>%d --  %s --  %s</option>\n", $selected == $row['id_projeto'] ? "selected" : "",
 			$row['id_projeto'], $row['id_projeto'], $row['Cliente'], $row['Proposta']));
+		}
+	}
+
+	public function montaSelectB($selected=0)
+	{
+		$conn = $this->getDB->mysqli_connection;
+
+		$query = sprintf("SELECT 
+			    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
+			FROM
+			    projetos A
+			        INNER JOIN
+			    clientes B ON A.id_cliente = B.id
+			        INNER JOIN
+			    propostas C ON A.id_proposta = C.id
+			        INNER JOIN
+			    projetostatus D ON A.id_status = D.id
+			        INNER JOIN
+			    projetorecursos E ON A.id = E.id_projeto
+			WHERE
+			    D.id NOT IN (4, 5)
+			        AND E.id_funcionario = (SELECT 
+			            id
+			        FROM
+			            funcionarios
+			        WHERE
+			            email = '%s');
+			", $_SESSION['email']);
+		
+		if ($_SESSION['id_perfilusuario'] == '1') {
+			$query = sprintf("SELECT 
+						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
+						FROM
+						    projetos A
+						        INNER JOIN
+						    clientes B ON A.id_cliente = B.id
+						        INNER JOIN
+						    propostas C ON A.id_proposta = C.id
+						        INNER JOIN
+						    projetostatus D ON A.id_status = D.id
+						WHERE
+						    D.id NOT IN (4, 5);
+						");
+		} 
+
+		if($result = $conn->query($query))
+		{
+			while($row = $result->fetch_array(MYSQLI_ASSOC))
+			echo utf8_encode(sprintf("<option %s value='%d'>%s --  %s</option>\n", $selected == $row['id_projeto'] ? "selected" : "",
+			$row['id_projeto'], $row['Cliente'], $row['Proposta']));
 		}
 	}
 

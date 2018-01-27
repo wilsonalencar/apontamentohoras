@@ -539,7 +539,7 @@
                                             <div class="col s2">
                                                 <p><b>Cliente : </b></p>
                                             </div>
-                                            <div class="col s2">
+                                            <div class="col s6">
                                                 <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
                                             </div>
                                         </div>
@@ -640,7 +640,7 @@
                                             <div class="col s2">
                                                 <p><b>Cliente : </b></p>
                                             </div>
-                                            <div class="col s2">
+                                            <div class="col s6">
                                                 <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
                                             </div>
                                         </div>

@@ -14,6 +14,8 @@ class funcionario extends app
 	public $rg;
 	public $cpf;
 	public $endereco;
+	public $data_busca_ini;
+	public $data_busca_fim;
 	public $complemento;
 	public $cod_municipio;
 	public $cep;
@@ -255,9 +257,18 @@ class funcionario extends app
 							propostas F on C.id_proposta = F.id
 						WHERE 
 							B.status = 'A'
-						ORDER BY 
-							A.data_apontamento, B.id, A.id");
+						");
+		
+		if ($this->id > 0) {
+			$query .= " AND A.id_funcionario = ".$this->id;
+		}
 
+		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
+			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+		}
+		
+		$query .= " ORDER BY A.data_apontamento, B.id, A.id";
+		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
