@@ -24,11 +24,11 @@
     <!-- Advanced Tables -->
                     <div class="card">
                         <div class="card-action">
-                             Horas por pilares
+                             Selecione um método para geração de relatório.
                         </div>
                         <div class="card-content">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="display: none">
                                     <thead>
                                         <tr>
                                             <th>Pilar</th>
@@ -69,6 +69,15 @@
                                                 <th>Total horas:</th>
                                                 <th><?php echo $dados['valorTotal']; ?></th> 
                                               </tr>
+                                              <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <th></th>
+                                                <th>&nbsp;</th> 
+                                              </tr>
                                             
                                             <?php } ?>
                                             <tr> 
@@ -94,7 +103,9 @@ $('#dataTables-example').dataTable({
         language: {                        
             "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Portuguese-Brasil.json"
         },
-        dom: '<B>frtip',
+        dom: '<B>',
+        "bSort": false,
+        paging: false,
         buttons: [
              {
                 extend: 'excelHtml5',
@@ -112,7 +123,11 @@ $('#dataTables-example').dataTable({
                 extend: 'pdfHtml5',
                 exportOptions: {
                    columns: [ 0, 1, 2, 3, 4, 5, 6]
-                }
+                },
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                title: 'Horas por Pilar',
+                header: 'Horas por Pilar'
              },
          ]
     });  
