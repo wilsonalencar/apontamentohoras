@@ -53,6 +53,9 @@ $projetodespesa->lista_aprovacao();
                       </div>
                     <!-- div de horas -->
                     <div id="horas" class="col s12">
+                    <?php
+                      if (!empty($apontamento->array)) {
+                    ?>
                         <div class="table-responsive col s12">
                             <form class="col s12" action="libera_apontamento.php" method="post" id="libera_apontamento">
                                 <table class="table table-hover">
@@ -68,7 +71,6 @@ $projetodespesa->lista_aprovacao();
                                     </thead>
                                     <tbody>
                                     <?php
-                                    if (!empty($apontamento->array)) {
                                         foreach($apontamento->array as $row){ ?>
                                             <tr class="odd gradeX">
                                                 <td><?php echo $row['id_projeto']; ?> -- <?php echo $row['nomeCliente']; ?> -- <?php echo $row['id_proposta']; ?></td>
@@ -89,7 +91,7 @@ $projetodespesa->lista_aprovacao();
                                                 </p>
                                                 </td>
                                             </tr>
-                                        <?php } }?>
+                                        <?php }?>
                                    </tbody>
                                 </table>
                             <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
@@ -98,11 +100,15 @@ $projetodespesa->lista_aprovacao();
                             <button type="submit" class="btn btn-success" > Salvar</button>
                             </form>
                         </div>  
+                            <?php } ?>
                     </div>
 
 
                     <!-- div de despesas -->
                     <div id="despesa" class="col s12">
+                    <?php
+                    if (!empty($projetodespesa->array)) {
+                    ?>
                         <div class="table-responsive">
                                 <form action="libera_apontamento.php" method="post" id="libera_apontamento">
                                     <table class="table table-hover">
@@ -120,7 +126,6 @@ $projetodespesa->lista_aprovacao();
                                         </thead>
                                         <tbody>
                                         <?php
-                                        if (!empty($projetodespesa->array)) {
                                             foreach($projetodespesa->array as $row){ ?>
                                                 <tr class="odd gradeX">
                                                     <td><?php echo $row['id_projeto']; ?> -- <?php echo $row['nomeCliente']; ?> -- <?php echo $row['id_proposta']; ?></td>
@@ -143,7 +148,7 @@ $projetodespesa->lista_aprovacao();
                                                     </p>
                                                     </td>
                                                 </tr>
-                                            <?php } }?>
+                                            <?php } ?>
                                        </tbody>
                                     </table>
                                 <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
@@ -152,6 +157,7 @@ $projetodespesa->lista_aprovacao();
                                 <button type="submit" class="btn btn-success">Salvar</button>
                                 </form>
                         </div>
+                    <?php } ?>
                     </div>
                 </div>
 
