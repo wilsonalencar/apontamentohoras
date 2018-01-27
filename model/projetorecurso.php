@@ -171,15 +171,13 @@ class projetorecurso extends app
 	}
 
 	public function getHorasReais($id_projeto, $id_funcionario, $mes_alocacao){
+		$data = explode("/", $mes_alocacao);
 		
-		$d1 = strtotime($mes_alocacao);
-		$d1 = date("Y-m-01", $d1);
-
-		$d2 = strtotime($mes_alocacao);
-		$d2 = date("Y-m-31", $d2);
-
+		$d1 = $data[1].'-'.$data[0].'-01';
+		$d2 = $data[1].'-'.$data[0].'-31';
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT SUM(Qtd_hrs_real) as Qtd_hrs_real FROM projetohoras WHERE id_projeto = ".$id_projeto." AND id_funcionario =".$id_funcionario." AND data_apontamento BETWEEN ".$d1." AND ".$d2."";
+		$query = "SELECT SUM(Qtd_hrs_real) as Qtd_hrs_real FROM projetohoras WHERE id_projeto = ".$id_projeto." AND id_funcionario =".$id_funcionario." AND data_apontamento BETWEEN "."'".$d1."'"." AND "."'".$d2."'"."";
+
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	
@@ -190,7 +188,7 @@ class projetorecurso extends app
 			$hr_real = 0;
 		}
 
-		return 'Não está funcionando';
+		return $hr_real;
 	}
 
 	public function montaSelect($selected=0)
