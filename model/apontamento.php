@@ -104,6 +104,31 @@ class apontamento extends app
 	}
 
 
+	public function checkData($data_apontamento)
+	{
+	 	$data_apontamento = strtotime($data_apontamento);
+		$data_apontamento = date("m/Y", $data_apontamento);
+	 	$data = date('m/Y');
+		if ($data_apontamento != $data) {
+			$conn = $this->getDB->mysqli_connection;		
+			$query = sprintf("SELECT libera, periodo_libera FROM liberaapontamento WHERE periodo_libera = '%s'", $data_apontamento);
+
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro durante a verificação do código do proposta";
+				return false;	
+			}
+			$data_ver = $result->fetch_array(MYSQLI_ASSOC);
+			if (!empty($data_ver['periodo_libera']) && $data_ver['libera'] == 'S') {
+				return true;
+			} 
+
+			$this->msg = "Desculpe, o período não existe ou está liberado para lançamento de despesa, contate a controller.";
+			return false;
+		}
+		return true;
+	}
+
+
 	public function save()
 	{
 		if ($this->id_projeto > 0) {

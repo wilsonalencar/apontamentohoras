@@ -46,35 +46,24 @@ class funcionario extends app
 		return true;
 	}
 
-	public function montaSelect($selected=0)
+	public function montaSelect($selected=0, $id_projeto=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id,nome FROM funcionarios WHERE status = '%s'", $this::STATUS_SISTEMA_ATIVO);
-
-		if($result = $conn->query($query))
-		{
-			while($row = $result->fetch_array(MYSQLI_ASSOC))
-			echo sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
-			$row['id'], $row['nome']);
-		}
-	}
-
-	public function montaSelectB($selected=0, $id_projeto)
-	{
-		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT 
+		$query = "SELECT 
 					A.id, A.nome 
 				FROM 
 					funcionarios A
 				INNER JOIN 
 					projetorecursos B on A.id = B.id_funcionario
-				WHERE 
-					A.status = '%s' 
-				AND 
-					B.id_projeto = %d
-				GROUP BY 
-					A.id", $this::STATUS_SISTEMA_ATIVO, $id_projeto);
+				WHERE 1 = 1 ";
 
+				$query .= sprintf(" AND A.status = '%s' ", $this::STATUS_SISTEMA_ATIVO);
+
+				if ($id_projeto > 0) {
+					$query .= sprintf(" AND B.id_projeto = %d", $id_projeto);
+				}
+				 
+		$query .= " GROUP BY A.id";
 		if($result = $conn->query($query))
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))

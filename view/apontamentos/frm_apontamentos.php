@@ -53,7 +53,7 @@
                                         <label for="id_funcionario_busca">Funcionario: </label> 
                                                 <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
                                                     <option value="">Funcionario</option>
-                                                    <?php $funcionario->montaSelectB($apontamento->id_funcionario, $apontamento->id_projeto); ?>
+                                                    <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                                                 </select>
                                         <?php } else { ?>
                                                 <?php $profissional = $funcionario->findFuncionario(); ?>
@@ -263,7 +263,7 @@
                                                 <label for="id_funcionario">Profissional</label>
                                                 <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelectB($apontamento->id_funcionario, $apontamento->id_projeto); ?>
+                                                    <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                                                 </select> 
                                             <?php } else { ?>
                                                     <?php $profissional = $funcionario->findFuncionario(); ?>

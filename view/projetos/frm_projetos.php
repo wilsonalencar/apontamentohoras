@@ -491,7 +491,7 @@
                                                 <label for="id_funcionario">Profissional</label>
                                                 <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelectB(0, $projeto->id); ?>
+                                                    <?php $funcionario->montaSelect(0, $projeto->id); ?>
                                                 </select> 
                                             </div>
                                           </div>
