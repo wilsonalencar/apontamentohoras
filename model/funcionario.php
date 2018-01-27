@@ -59,6 +59,30 @@ class funcionario extends app
 		}
 	}
 
+	public function montaSelectB($selected=0, $id_projeto)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT 
+					A.id, A.nome 
+				FROM 
+					funcionarios A
+				INNER JOIN 
+					projetorecursos B on A.id = B.id_funcionario
+				WHERE 
+					A.status = '%s' 
+				AND 
+					B.id_projeto = %d
+				GROUP BY 
+					A.id", $this::STATUS_SISTEMA_ATIVO, $id_projeto);
+
+		if($result = $conn->query($query))
+		{
+			while($row = $result->fetch_array(MYSQLI_ASSOC))
+			echo sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
+			$row['id'], $row['nome']);
+		}
+	}
+
 	private function checkCPF()
 	{
 		$conn = $this->getDB->mysqli_connection;		

@@ -53,7 +53,7 @@
                                         <label for="id_funcionario_busca">Funcionario: </label> 
                                                 <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
                                                     <option value="">Funcionario</option>
-                                                    <?php $funcionario->montaSelect($apontamento->id_funcionario); ?>
+                                                    <?php $funcionario->montaSelectB($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                                                 </select>
                                         <?php } else { ?>
                                                 <?php $profissional = $funcionario->findFuncionario(); ?>
@@ -249,7 +249,7 @@
                                                 <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
                                             </div>
                                             <div class="col s1"></div>
-                                            <div class="col s2">
+                                            <div class="col s4">
                                                 <label for="id_tipodespesa">Tipo da Despesa</label>
                                                 <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
                                                   <option value="">Selecione</option>
@@ -263,7 +263,7 @@
                                                 <label for="id_funcionario">Profissional</label>
                                                 <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                   <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelect(); ?>
+                                                    <?php $funcionario->montaSelectB($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                                                 </select> 
                                             <?php } else { ?>
                                                     <?php $profissional = $funcionario->findFuncionario(); ?>
