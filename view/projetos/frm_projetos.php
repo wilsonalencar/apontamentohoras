@@ -259,8 +259,10 @@
                                                                         <td><?php echo $row['mes_alocacao']; ?></td>
                                                                         <td><?php echo $row['Qtd_hrs_estimada']; ?></td>
                                                                         <td><?php echo $projetorecursos->getHorasReais($row['id_projeto'], $row['id_funcionario'], $row['mes_alocacao']) ?></td>
-                                                                        <td>
-                                                                        <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                                        <td><?php if ($projetorecursos->getHorasReais($row['id_projeto'], $row['id_funcionario'], $row['mes_alocacao']) > 0) { ?>
+                                                                        <?php } else { ?>
+                                                                            <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                                        <?php } ?>
                                                                         </td>
                                                                     </tr>
                                                                 <?php } }?>
@@ -823,6 +825,7 @@
             <input type="hidden" name="file" id="file">
             <input type="hidden" name="action" id="action" value="4">
             <input type="hidden" name="id" id="id" value="<?php echo $projeto->id; ?>">
+
         </form>
     </div>
 
