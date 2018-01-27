@@ -509,8 +509,16 @@ class projeto extends app
 									INNER JOIN 
 								clientes C ON A.id_cliente = C.id
 									INNER JOIN 
-								projetostatus D ON A.id_status = D.id");
-
+								projetostatus D ON A.id_status = D.id
+									INNER JOIN 
+								projetorecursos F ON A.id = F.id_projeto
+									INNER JOIN 
+								funcionarios E ON F.id_funcionario = E.id
+								");
+		
+		if ($_SESSION['id_perfilusuario'] != '1') {
+			$query .= " AND E.email = "."'".$_SESSION['email']."'";
+		}
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	

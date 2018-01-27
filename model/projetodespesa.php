@@ -173,6 +173,9 @@ class projetodespesa extends app
 				WHERE 
 					A.Aprovado = 'N'
 					";
+		if ($_SESSION['id_perfilusuario'] != '1') {
+			$query .= " AND F.email = "."'".$_SESSION['email']."'";
+		}
 
 		if ($this->id_projeto > 0) {
 			$query .= " AND A.id_projeto = ".$this->id_projeto;
@@ -240,7 +243,6 @@ class projetodespesa extends app
 						    tiposdespesas C ON A.id_tipodespesa = C.id
 						WHERE
 						    A.id_projeto = ".$id_projeto. "" ;
-		
 		if ($id_funcionario > 0) {
 			$query .= " AND A.id_funcionario = ".$id_funcionario."";
 		}

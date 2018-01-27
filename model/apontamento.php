@@ -228,6 +228,10 @@ class apontamento extends app
 					A.Aprovado = 'N'
 					";
 
+		if ($_SESSION['id_perfilusuario'] != '1') {
+			$query .= " AND F.email = "."'".$_SESSION['email']."'";
+		}
+		
 		if ($this->id_projeto > 0) {
 			$query .= " AND A.id_projeto = ".$this->id_projeto;
 		}
