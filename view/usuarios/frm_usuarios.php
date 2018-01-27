@@ -44,13 +44,13 @@
                       <div class="row">
                         <div class="col s6">
                         <label for="nome">Nome</label>
-                          <input type="text" id="nome" name="nome" class="validate" maxlength="255">
+                          <input type="text" id="nome" name="nome" value="<?php echo $usuario->nome; ?>" class="validate" maxlength="255">
                         </div>
                       </div>
                       <div class="row">
                         <div class="col s6">
                         <label for="email">Email</label>
-                          <input type="text" id="email" name="email" class="validate" maxlength="255">
+                          <input type="text" id="email" name="email" value="<?php echo $usuario->email; ?>" class="validate" maxlength="255">
                         </div>
                       </div>
                       
@@ -59,7 +59,7 @@
                             <label for="id_perfilusuario">Perfil</label>
                             <select id="id_perfilusuario" name="id_perfilusuario" class="form-control input-sm">
                               <option value="">Perfil</option>
-                              <?php $perfilusuario->montaSelect(); ?>
+                              <?php $perfilusuario->montaSelect($usuario->id_perfilusuario); ?>
                             </select>
                         </div>
 
@@ -67,7 +67,7 @@
                             <label for="id_responsabilidade">Responsabilidade</label>
                             <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
                               <option value="">Responsabilidades</option>
-                                <?php $responsabilidade->montaSelect(); ?>
+                                <?php $responsabilidade->montaSelect($usuario->id_responsabilidade); ?>
                             </select>
                         </div>
                       </div>
