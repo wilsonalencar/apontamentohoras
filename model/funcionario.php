@@ -53,7 +53,7 @@ class funcionario extends app
 					A.id, A.nome 
 				FROM 
 					funcionarios A
-				INNER JOIN 
+				LEFT JOIN 
 					projetorecursos B on A.id = B.id_funcionario
 				WHERE 1 = 1 ";
 
