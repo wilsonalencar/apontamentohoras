@@ -18,12 +18,12 @@ if ($action == SAVE) {
 	$success = $projetoapontamento->save();
 	$msg     = $projetoapontamento->msg; 
 
-	header("LOCATION:projetoapontamentos.php?id=".$projetoapontamento->id."&msg=".$msg."&success=".$success);
+	header("LOCATION:projetoapontamentos.php?id=".$projetoapontamento->id."&libera=".$projetoapontamento->libera."&periodo_libera=".$projetoapontamento->periodo_libera."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {
-	echo json_encode(array('success'=>$projetoapontamento->get($projetoapontamento->getRequest('id')), 'msg'=>$projetoapontamento->msg, 'data'=>$projetoapontamento->array));
-	exit;
+	$projetoapontamento->loadPeriodo();
+	header("LOCATION:projetoapontamentos.php?id=".$projetoapontamento->id."&libera=".$projetoapontamento->libera."&periodo_libera=".$projetoapontamento->periodo_libera);
 }
 
 require_once('view/projetoapontamentos/frm_projetoapontamento.php');

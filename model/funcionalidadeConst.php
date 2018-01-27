@@ -6,6 +6,8 @@ class funcionalidadeConst
 {
 	const RESET_TRUE 	= 'S';
 	const RESET_FALSE 	= 'N';
+	const LIBERA_TRUE 	= 'S';
+	const LIBERA_FALSE 	= 'N';
 	const SENHA_PADRAO 	= 'ADMIN123';
 	const IMPOSTO 		= 0.9185;
 	const perfil_cliente	 			= 1;

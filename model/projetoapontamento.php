@@ -26,6 +26,23 @@ class projetoapontamento extends app
 		return '0';
 	}
 
+	public function loadPeriodo()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT id,periodo_libera ,libera FROM liberaapontamento WHERE periodo_libera = '%s'", $this->periodo_libera);	
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do código do proposta";
+			return false;	
+		}
+		$resultado = $result->fetch_array(MYSQLI_ASSOC);
+		
+		if (!empty($resultado)) {
+			$this->id 				= $resultado['id'];
+			$this->periodo_libera 	= $resultado['periodo_libera'];
+			$this->libera 			= $resultado['libera'];
+		}
+	}
+
 	private function check()
 	{
 		if (empty($this->periodo_libera)) {
