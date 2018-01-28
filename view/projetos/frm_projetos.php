@@ -518,7 +518,7 @@
                                                 <div class="col s1"></div>
                                                 <div class="col s4">
                                                 <label for="Vlr_unit">Valor Total R$ :</label>
-                                                  <input type="text" readonly="readonly" id="vlr_total_qtd" maxlength="255">
+                                                  <input type="text" readonly="true" id="vlr_total_qtd" maxlength="255">
                                                 </div>
                                             </div>
                                         </div>
