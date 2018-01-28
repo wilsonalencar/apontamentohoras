@@ -387,7 +387,7 @@
                                             <div class="col s1"></div>
                                             <div class="col s4">
                                                 <label for="id_funcionario">Profissional</label>
-                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm funcionario_perfilprofissional">
                                                   <option value="">Selecione</option>
                                                     <?php $funcionario->montaSelect(); ?>
                                                 </select> 
@@ -835,6 +835,21 @@
 ?>
 
 <script>
+
+$( document ).ready(function() {
+    $( "#id_perfilprofissional" ).change(function() {
+
+        $.ajax({
+            url : 'funcionarios.php',
+            type: 'post',
+            dataType: 'HTML',
+            data: {"action": 4, "id_perfilprofissional": $(this).val()},
+            success: function(d){
+                $('.funcionario_perfilprofissional').html(d);
+            }
+        });
+    });
+});
 
 function excluir_anexo(file)
 {

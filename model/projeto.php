@@ -563,21 +563,23 @@ class projeto extends app
 							    A.id, B.codigo, C.nome, D.descricao
 							FROM
 							    projetos A
-							        INNER JOIN
+							        LEFT JOIN
 							    propostas B ON A.id_proposta = B.id
-									INNER JOIN 
+									LEFT JOIN 
 								clientes C ON A.id_cliente = C.id
-									INNER JOIN 
+									LEFT JOIN 
 								projetostatus D ON A.id_status = D.id
-									INNER JOIN 
+									LEFT JOIN 
 								projetorecursos F ON A.id = F.id_projeto
-									INNER JOIN 
+									LEFT JOIN 
 								funcionarios E ON F.id_funcionario = E.id
 								");
 		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= " AND E.email = "."'".$_SESSION['email']."'";
 		}
+
+		$query .= " GROUP BY A.id";
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
