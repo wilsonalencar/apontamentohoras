@@ -271,7 +271,7 @@ class apontamento extends app
 		}
 
 		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
-			$query .= " AND A.Data_despesa BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}
 		
 		if (!$result = $conn->query($query)) {

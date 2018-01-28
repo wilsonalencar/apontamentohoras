@@ -173,7 +173,7 @@ $projetodespesa->lista_aprovacao();
                       <div class="row">
                         <div class="col s4">
                         <label for="id_projeto">Projeto</label><br />
-                          <select id="id_projeto" name="id_projeto" class="form-control input-sm">
+                          <select id="id_projeto" name="id_projeto" class="form-control input-sm id_projeto_class">
                               <option value="">Projetos</option>
                                 <?php $projeto->montaSelect($apontamento->id_projeto); ?>
                             </select>
@@ -181,7 +181,7 @@ $projetodespesa->lista_aprovacao();
                         
                         <div class="col s4">
                         <label for="id_funcionario">Profissional</label><br />
-                        <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                        <select id="id_funcionario" name="id_funcionario" class="form-control input-sm id_funcionario_class">
                             <option value="">Profissional</option>
                                 <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                             </select>
@@ -216,3 +216,18 @@ $projetodespesa->lista_aprovacao();
 <?php
     require_once(app::path.'view/footer.php');
 ?>
+<script>
+  $( document ).ready(function() {
+    $( ".id_projeto_class" ).change(function() {
+        $.ajax({
+            url : "<?php echo app::dominio; ?>funcionarios.php",
+            type: 'post',
+            dataType: 'HTML',
+            data: {"action": 5, "id_projeto": $(this).val()},
+            success: function(d){
+                $('.id_funcionario_class').html(d);
+            }
+        });
+    });
+});
+</script>

@@ -10,6 +10,7 @@ define('SAVE', 1);
 define('GET', 2);
 define('DEL', 3);
 define('MONTASELECTAJAX', 4);
+define('MONTASELECTAJAXFUNCIONARIOPROJETO', 5);
 
 $contratacao 			= new contratacao;
 $funcionario 			= new funcionario;
@@ -25,6 +26,7 @@ $funcionario->rg  					= $funcionario->getRequest('rg', '');
 $funcionario->data_nascimento		= $funcionario->getRequest('data_nascimento', '');
 $funcionario->id_tipocontratacao	= $funcionario->getRequest('id_tipocontratacao', '');
 $funcionario->id_perfilprofissional	= $funcionario->getRequest('id_perfilprofissional', '');
+$funcionario->id_projeto			= $funcionario->getRequest('id_projeto', '');
 $funcionario->id_responsabilidade	= $funcionario->getRequest('id_responsabilidade', '');
 $funcionario->endereco				= $funcionario->getRequest('endereco', '');
 $funcionario->complemento			= $funcionario->getRequest('complemento', '');
@@ -80,6 +82,11 @@ if ($action == DEL) {
 
 if ($action == MONTASELECTAJAX) {
 	echo $funcionario->montaSelect(0, 0, $funcionario->id_perfilprofissional, true);
+	exit;
+}
+
+if ($action == MONTASELECTAJAXFUNCIONARIOPROJETO) {
+	echo $funcionario->montaSelect(0, $funcionario->id_projeto, 0, true);
 	exit;
 }
 
