@@ -484,57 +484,6 @@ class projeto extends app
 		}
 	}
 
-	public function montaSelectB($selected=0)
-	{
-		$conn = $this->getDB->mysqli_connection;
-
-		$query = sprintf("SELECT 
-			    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
-			FROM
-			    projetos A
-			        INNER JOIN
-			    clientes B ON A.id_cliente = B.id
-			        INNER JOIN
-			    propostas C ON A.id_proposta = C.id
-			        INNER JOIN
-			    projetostatus D ON A.id_status = D.id
-			        INNER JOIN
-			    projetorecursos E ON A.id = E.id_projeto
-			WHERE
-			    D.id NOT IN (4, 5)
-			        AND E.id_funcionario = (SELECT 
-			            id
-			        FROM
-			            funcionarios
-			        WHERE
-			            email = '%s');
-			", $_SESSION['email']);
-		
-		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
-			$query = sprintf("SELECT 
-						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
-						FROM
-						    projetos A
-						        INNER JOIN
-						    clientes B ON A.id_cliente = B.id
-						        INNER JOIN
-						    propostas C ON A.id_proposta = C.id
-						        INNER JOIN
-						    projetostatus D ON A.id_status = D.id
-						WHERE
-						    D.id NOT IN (4, 5);
-						");
-		} 
-
-		if($result = $conn->query($query))
-		{
-			while($row = $result->fetch_array(MYSQLI_ASSOC))
-			echo utf8_encode(sprintf("<option %s value='%d'>%s --  %s</option>\n", $selected == $row['id_projeto'] ? "selected" : "",
-			$row['id_projeto'], $row['Cliente'], $row['Proposta']));
-		}
-	}
-
-
 	private function projeto_margem ( $parcial, $total ) {
 		if (!empty($total) and !empty($parcial)) {
 	    	return number_format(( $total / $parcial) * 100 , 2, '.', '');

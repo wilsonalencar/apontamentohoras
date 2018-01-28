@@ -122,6 +122,12 @@ $( document ).ready(function() {
         return false;
     }
 
+    if ($("#email").val() == '') {
+        alert('Informar o EMAIL do funcionário');
+        $("#email").focus();
+        return false;
+    }
+
     return true;
   });
 

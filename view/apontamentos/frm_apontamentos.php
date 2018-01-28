@@ -44,7 +44,7 @@
                                         <label for="id_projeto">Projetos : </label>
                                         <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control input-sm">
                                           <option value="">Projetos</option>
-                                            <?php $projeto->montaSelect($apontamento->id_projeto); ?>
+                                            <?php $projeto->montaSelect($apontamento->id_projeto, $apontamento->id_projeto); ?>
                                         </select>
                                     </div>    
                                     <div class="col s1"></div>

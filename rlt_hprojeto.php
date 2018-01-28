@@ -110,7 +110,7 @@
                         <label for="id_funcionario">Projeto</label><br />
                         <select id="id_funcionario" name="id" class="form-control input-sm">
                             <option value="">Projeto</option>
-                                <?php $projeto->montaSelectB($projeto->id); ?>
+                                <?php $projeto->montaSelect($projeto->id); ?>
                             </select>
                         </div>
                       </div>

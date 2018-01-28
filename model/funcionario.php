@@ -158,8 +158,16 @@ class funcionario extends app
 			return false;	
 		}
 
-		if (!empty($this->email) && !$this->validaEmail($this->email)) {
-			$this->msg = "Favor informar um email válido.";
+		if (empty($this->email)) {
+			$this->msg = "Favor informar um email.";
+			return false;
+		}
+
+		if (!$this->validaEmail($this->email)) {
+			return false;
+		}
+
+		if (!$this->checkExiste()) {
 			return false;
 		}
 
@@ -192,6 +200,23 @@ class funcionario extends app
 			return false;	
 		}
 		
+		return true;
+	}
+
+
+	private function checkExiste()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT id FROM funcionarios WHERE email = '%s' AND id <> %d", $this->email, $this->id);	
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do email do funcionario";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Email do funcionário já está sendo utilizado";
+			return false;			
+		}
 		return true;
 	}
 
