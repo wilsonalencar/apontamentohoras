@@ -94,7 +94,7 @@ class projetodespesa extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" INSERT INTO projetodespesas (id_projeto, id_funcionario, Data_despesa, id_tipodespesa, Num_doc, Qtd_despesa, Vlr_unit, Vlr_total, usuario)
-		VALUES (%d, %d, '%s', %d, '%s', %d, %d, %d, '%s')", 
+		VALUES (%d, %d, '%s', %d, '%s', %d, '%s', '%s', '%s')", 
 			$this->id_projeto, $this->id_funcionario, $this->Data_despesa, $this->id_tipodespesa, $this->Num_doc, $this->Qtd_despesa, $this->Vlr_unit, $this->Vlr_total, $_SESSION['email']);	
 
 		if (!$conn->query($query)) {
@@ -173,6 +173,7 @@ class projetodespesa extends app
 				WHERE 
 					A.Aprovado = 'N'
 					";
+		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= " AND F.email = "."'".$_SESSION['email']."'";
 		}

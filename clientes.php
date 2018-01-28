@@ -23,12 +23,15 @@ $cliente->email 		= $cliente->getRequest('email', '');
 $cliente->contato 		= $cliente->getRequest('contato', '');
 $cliente->status 		= $cliente->getRequest('status', 'A');
 
-$msg = '';
+$msg  					= $cliente->getRequest('msg', '');
+$success  				= $cliente->getRequest('success', 0);
 $action 				= $cliente->getRequest('action', 0);
 
 if ($action == SAVE) {	
 	$success = $cliente->save();
 	$msg     = $cliente->msg; 
+
+	header("LOCATION:clientes.php?id=".$cliente->id."&msg=".$msg."&success=".$success);
 }
 
 if ($action == GET) {

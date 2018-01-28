@@ -183,7 +183,7 @@ $projetodespesa->lista_aprovacao();
                         <label for="id_funcionario">Profissional</label><br />
                         <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                             <option value="">Profissional</option>
-                                <?php $funcionario->montaSelect($apontamento->id_funcionario); ?>
+                                <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                             </select>
                         </div>
                       </div>
