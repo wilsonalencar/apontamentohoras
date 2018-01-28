@@ -331,10 +331,10 @@
                                             <label for="mes_previsao_fat">Mês / Ano</label>
                                               <input type="text" id="mes_previsao_fat" name="mes_previsao_fat" class="validate" maxlength="7">
                                             </div>
-                                            <!-- <div class="col s6">
+                                            <div class="col s6">
                                                 <label for="Vlr_parcela_cimp">Valor Sem impostos R$</label>
-                                                  <input type="text" onkeypress="moeda(this)" readonly="true" id="Vlr_parcela_simp" name="Vlr_parcela_simp" class="validate" maxlength="255">
-                                            </div> -->
+                                                  <input type="text" readonly="true" id="vl_parcela_simp" maxlength="255">
+                                            </div>
                                           </div>
                                         </div>
 
@@ -512,9 +512,14 @@
                                             <div class="row">
                                                 <div class="col s4">
                                                 <label for="Qtd_despesa">Quantidade</label>
-                                                  <input type="text" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
+                                                  <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
                                                 </div>
+
                                                 <div class="col s1"></div>
+                                                <div class="col s4">
+                                                <label for="Vlr_unit">Valor Total R$ :</label>
+                                                  <input type="text" readonly="readonly" id="vlr_total_qtd" maxlength="255">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -859,8 +864,8 @@ $( document ).ready(function() {
         money = money.replace( ',', '.' );
         money = money * 0.9185;
         money = number_format(money, 2, ',', '.');
-        //$("#elemento").val(money);
-        alert(money);
+        $("#vl_parcela_simp").val(money);
+        // alert(money);
     });        
 
     $( "#Qtd_despesa" ).blur(function() {
@@ -869,8 +874,8 @@ $( document ).ready(function() {
         money = money.replace( ',', '.' );
         money = money * document.getElementById('Qtd_despesa').value;
         money = number_format(money, 2, ',', '.');
-        //$("#elemento").val(money);
-        alert(money);
+        $("#vlr_total_qtd").val(money);
+        // alert(money);
 
     });
     

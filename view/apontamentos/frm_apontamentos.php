@@ -288,9 +288,14 @@
                                             <div class="row">
                                                 <div class="col s4">
                                                 <label for="Qtd_despesa">Quantidade</label>
-                                                  <input type="text" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
+                                                  <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
                                                 </div>
                                                 <div class="col s1"></div>
+
+                                                <div class="col s4">
+                                                <label for="Vlr_unit">Valor Total R$ :</label>
+                                                  <input type="text" id="vl_total_qtd" readonly="true" maxlength="255">
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -391,6 +396,14 @@ $(document).ready(function(){
     if ($('#id_funcionario_busca').val() > 0 && $('#id_projeto_busca').val() > 0){
         $("#add_button").css("display", "block");
     }
+
+    $( "#Qtd_despesa" ).blur(function() {
+        var money = document.getElementById('Vlr_unit').value.replace( '.', '' );
+        money = money.replace( ',', '.' );
+        money = money * document.getElementById('Qtd_despesa').value;
+        money = number_format(money, 2, ',', '.');
+        $("#vl_total_qtd").val(money);
+    }); 
 });
 
 
