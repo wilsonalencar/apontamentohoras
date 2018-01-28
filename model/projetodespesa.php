@@ -175,7 +175,7 @@ class projetodespesa extends app
 					";
 		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
-			$query .= " AND F.email = "."'".$_SESSION['email']."'";
+			$query .= sprintf(" AND A.id_projeto IN(Select SPR.id_projeto FROM projetorecursos SPR where SPR.id_funcionario = (select id FROM funcionarios where Email = '%s')) ", $_SESSION['email']);
 		}
 
 		if ($this->id_projeto > 0) {
