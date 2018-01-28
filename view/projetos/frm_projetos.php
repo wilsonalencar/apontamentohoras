@@ -829,6 +829,7 @@
         <form action="projetos.php" method="post" id="form_projeto_anexos">
             <input type="hidden" name="file" id="file">
             <input type="hidden" name="action" id="action" value="4">
+            
             <input type="hidden" name="id" id="id" value="<?php echo $projeto->id; ?>">
 
         </form>
@@ -845,7 +846,7 @@ $( document ).ready(function() {
     $( "#id_perfilprofissional" ).change(function() {
         $("#vlr_taxa_compra").val('');
         $.ajax({
-            url : 'funcionarios.php',
+            url : "<?php echo app::dominio; ?>funcionarios.php",
             type: 'post',
             dataType: 'HTML',
             data: {"action": 4, "id_perfilprofissional": $(this).val()},
