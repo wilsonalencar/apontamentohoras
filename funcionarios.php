@@ -79,7 +79,7 @@ if ($action == DEL) {
 }
 
 if ($action == MONTASELECTAJAX) {
-	echo $funcionario->montaSelect(0, 0, $funcionario->id_perfilprofissional);
+	echo $funcionario->montaSelect(0, 0, $funcionario->id_perfilprofissional, true);
 	exit;
 }
 

@@ -46,11 +46,11 @@ class funcionario extends app
 		return true;
 	}
 
-	public function montaSelect($selected=0, $id_projeto=0, $id_perfilprofissional=0)
+	public function montaSelect($selected=0, $id_projeto=0, $id_perfilprofissional=0, $option=false)
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
-					A.id, A.nome 
+					A.id, A.nome, A.valor_taxa
 				FROM 
 					funcionarios A
 				LEFT JOIN 
@@ -70,10 +70,13 @@ class funcionario extends app
 		$query .= " GROUP BY A.id";
 		if($result = $conn->query($query))
 		{
+			if ($option) {
+				echo "<option value=''>Selecione</option>";
+			}
+
 			while($row = $result->fetch_array(MYSQLI_ASSOC)){
-				
-				echo sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
-				$row['id'], $row['nome']);
+				echo sprintf("<option %s value='%d' valor_taxa = %s>%s</option>\n", $selected == $row['id'] ? "selected" : "",
+				$row['id'], number_format($row['valor_taxa'], 2, ',', '.'), $row['nome']);
 			}
 		}
 	}

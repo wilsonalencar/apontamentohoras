@@ -838,7 +838,7 @@
 
 $( document ).ready(function() {
     $( "#id_perfilprofissional" ).change(function() {
-
+        $("#vlr_taxa_compra").val('');
         $.ajax({
             url : 'funcionarios.php',
             type: 'post',
@@ -849,6 +849,31 @@ $( document ).ready(function() {
             }
         });
     });
+
+    $( "#id_funcionario" ).change(function() {
+        $("#vlr_taxa_compra").val($('option:selected', this).attr('valor_taxa'));
+    });
+
+    $( "#Vlr_parcela_cimp" ).blur(function() {
+        var money = document.getElementById('Vlr_parcela_cimp').value.replace( '.', '' );
+        money = money.replace( ',', '.' );
+        money = money * 0.9185;
+        money = number_format(money, 2, ',', '.');
+        //$("#elemento").val(money);
+        alert(money);
+    });        
+
+    $( "#Qtd_despesa" ).blur(function() {
+
+        var money = document.getElementById('Vlr_unit').value.replace( '.', '' );
+        money = money.replace( ',', '.' );
+        money = money * document.getElementById('Qtd_despesa').value;
+        money = number_format(money, 2, ',', '.');
+        //$("#elemento").val(money);
+        alert(money);
+
+    });
+    
 });
 
 function excluir_anexo(file)
