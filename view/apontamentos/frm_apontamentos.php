@@ -49,7 +49,7 @@
                                     </div>    
                                     <div class="col s1"></div>
                                     <div class="col s4">
-                                        <?php if ($_SESSION['id_perfilusuario'] == '1') { ?>
+                                        <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                         <label for="id_funcionario_busca">Funcionario: </label> 
                                                 <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
                                                     <option value="">Funcionario</option>
@@ -259,7 +259,7 @@
 
 
                                             <div class="col s3">
-                                            <?php if ($_SESSION['id_perfilusuario'] == '1') { ?>
+                                            <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                                 <label for="id_funcionario">Profissional</label>
                                                 <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                   <option value="">Selecione</option>

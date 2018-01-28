@@ -173,7 +173,7 @@ class projetodespesa extends app
 				WHERE 
 					A.Aprovado = 'N'
 					";
-		if ($_SESSION['id_perfilusuario'] != '1') {
+		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= " AND F.email = "."'".$_SESSION['email']."'";
 		}
 

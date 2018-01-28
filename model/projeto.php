@@ -460,7 +460,7 @@ class projeto extends app
 			            email = '%s');
 			", $_SESSION['email']);
 		
-		if ($_SESSION['id_perfilusuario'] == '1') {
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
 			$query = sprintf("SELECT 
 						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
 						FROM
@@ -510,7 +510,7 @@ class projeto extends app
 			            email = '%s');
 			", $_SESSION['email']);
 		
-		if ($_SESSION['id_perfilusuario'] == '1') {
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
 			$query = sprintf("SELECT 
 						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
 						FROM
@@ -575,7 +575,7 @@ class projeto extends app
 								funcionarios E ON F.id_funcionario = E.id
 								");
 		
-		if ($_SESSION['id_perfilusuario'] != '1') {
+		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= " AND E.email = "."'".$_SESSION['email']."'";
 		}
 		if (!$result = $conn->query($query)) {
