@@ -577,7 +577,6 @@ class projeto extends app
 		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= " WHERE E.email = "."'".$_SESSION['email']."'";
-			echo $query;exit;
 		}
 
 		$query .= " GROUP BY A.id";
