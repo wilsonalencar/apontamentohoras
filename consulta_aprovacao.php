@@ -220,10 +220,10 @@ $projetodespesa->lista_aprovacao();
   $( document ).ready(function() {
     $( ".id_projeto_class" ).change(function() {
         $.ajax({
-            url : "<?php echo app::dominio; ?>funcionarios.php",
+            url : "<?php echo app::dominio; ?>libera_apontamento.php",
             type: 'post',
             dataType: 'HTML',
-            data: {"action": 5, "id_projeto": $(this).val()},
+            data: {"action": 4, "id_projeto": $(this).val()},
             success: function(d){
                 $('.id_funcionario_class').html(d);
             }

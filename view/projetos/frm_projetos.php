@@ -846,10 +846,10 @@ $( document ).ready(function() {
     $( "#id_perfilprofissional" ).change(function() {
         $("#vlr_taxa_compra").val('');
         $.ajax({
-            url : "<?php echo app::dominio; ?>funcionarios.php",
+            url : "<?php echo app::dominio; ?>projetos.php",
             type: 'post',
             dataType: 'HTML',
-            data: {"action": 4, "id_perfilprofissional": $(this).val()},
+            data: {"action": 5, "id_perfilprofissional": $(this).val()},
             success: function(d){
                 $('.funcionario_perfilprofissional').html(d);
             }

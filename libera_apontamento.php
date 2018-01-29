@@ -8,6 +8,7 @@ require_once('model/projetodespesa.php');
 define('APROVA_H', 1);
 define('FILTRA', 2);
 define('APROVA_D', 3);
+define('MONTASELECTAJAXFUNCIONARIOS', 4);
 
 
 $apontamento 				= new apontamento;
@@ -53,6 +54,12 @@ if ($action == APROVA_D) {
 
 if ($action == FILTRA) {
 	header("LOCATION:libera_apontamento.php?id_projeto=".$apontamento->id_projeto."&id_funcionario=".$apontamento->id_funcionario."&data_busca_ini=".$projetodespesa->data_busca_ini."&data_busca_fim=".$projetodespesa->data_busca_fim."");
+}
+
+if ($action == MONTASELECTAJAXFUNCIONARIOS) {
+	$funcionario->id_projeto = $funcionario->getRequest('id_projeto', '');
+	echo $funcionario->montaSelect(0, $funcionario->id_projeto, 0, true);
+	exit;
 }
 
 

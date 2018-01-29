@@ -16,6 +16,7 @@ define('SAVE', 1);
 define('GET', 2);
 define('ANEXAR', 3);
 define('ANEXAR_DELETE', 4);
+define('MONTASELECTAJAXFUNCIONARIOS', 5);
 
 $projeto 				= new projeto;
 $proposta 				= new proposta;
@@ -85,6 +86,12 @@ if ($action == ANEXAR_DELETE) {
 	}
 
 	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
+}
+
+if ($action == MONTASELECTAJAXFUNCIONARIOS) {
+	$funcionario->id_perfilprofissional = $funcionario->getRequest('id_perfilprofissional', '');
+	echo $funcionario->montaSelect(0, 0, $funcionario->id_perfilprofissional, true);
+	exit;
 }
  
 require_once('view/projetos/frm_projetos.php');
