@@ -108,7 +108,9 @@
                                                             <td><?php echo $row['observacao']; ?></td>
                                                             <td><?php echo $row['Aprovado']; ?></td>
                                                             <td>
+                                                            <?php if ($row['Aprovado'] != 'Aprovado') { ?>
                                                             <i onclick="excluiApot(this.id, <?php echo $row['id_funcionario']; ?>, <?php echo $row['id_projeto']; ?>)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                            <?php } ?>
                                                             </td>
                                                         </tr>
                                                     <?php } }?>
@@ -206,7 +208,9 @@
                                                         <td>R$<?php echo $row['Vlr_total']; ?></td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td>
-                                                        <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                        <?php if ($row['Aprovado'] != 'Aprovado') { ?>
+                                                            <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                        <?php } ?>
                                                         </td>
                                                     </tr>
                                                 <?php } }?>

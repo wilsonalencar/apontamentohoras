@@ -452,11 +452,11 @@ class projeto extends app
 			WHERE
 			    D.id NOT IN (4, 5)
 			        AND E.id_funcionario = (SELECT 
-			            id
+			            FSR.id
 			        FROM
-			            funcionarios
+			            funcionarios FSR
 			        WHERE
-			            email = '%s')
+			            FSR.email = '%s')
 			        GROUP BY A.id
 					;", $_SESSION['email']);
 		
