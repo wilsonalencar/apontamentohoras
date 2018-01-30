@@ -24,7 +24,7 @@ $action 								= $projetodespesa->getRequest('action', 0);
 if ($action == SAVE) {
 	$success 		= $projetodespesa->save();
 	$msg     		= $projetodespesa->msg; 
-	header('LOCATION:projetos.php?id='.$projetodespesa->id_projeto.'&success='.$success.'&msg='.$msg.'');
+	header('LOCATION:projetos.php?id='.$projetodespesa->id_projeto.'&success='.$success.'&msg='.$msg.'#despesa');
 }
 
 if ($action == GET) {

@@ -101,6 +101,9 @@ class projetodespesa extends app
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
+		$inmail = $this->carregaHoras($conn->insert_id);
+		$this->mailPendente($inmail['email'], $inmail['emailAprovador'], $inmail['nomeFuncionario'], $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
+
 		$this->msg = "Registros inseridos com sucesso!";
 		return true;
 	}
@@ -207,15 +210,28 @@ class projetodespesa extends app
 
 	public function Aprova($id, $status)
 	{
-		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetodespesas SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s' WHERE id = %d", 
-			$status, $_SESSION['email'] ,$id);	
-	
-		if (!$conn->query($query)) {
-			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-			return false;	
-		}
+		if ($status != funcionalidadeConst::PENDENTE) {
+			$conn = $this->getDB->mysqli_connection;
+			$query = sprintf(" UPDATE projetodespesas SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s' WHERE id = %d", 
+				$status, $_SESSION['email'] ,$id);	
 
+			if (!$conn->query($query)) {
+				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+				return false;	
+			}
+			$inmail = $this->carregaHoras($id);		
+			//Fazendo o envio dos emails 
+			if ($status == funcionalidadeConst::APROVADO) {
+				$this->mailAprovar($inmail['email'], 'luciafcastro.lfc@gmail.com', $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta'], $inmail['data'], $inmail['tipodespesa'], $inmail['Vlr_total']);
+			}
+
+			if ($status == funcionalidadeConst::REJEITADO) {
+				$this->mailReprovar($inmail['email'], 'luciafcastro.lfc@gmail.com', $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta'], $inmail['data'], $inmail['tipodespesa'], $inmail['Vlr_total']);
+			}	
+			
+			$this->msg = "Despesas atualizadas com sucesso!";
+			return true;
+		}
 		$this->msg = "Despesas atualizadas com sucesso!";
 		return true;
 	}
@@ -291,6 +307,115 @@ class projetodespesa extends app
 		return true;	
 	}
 
+
+	public function carregaHoras($id)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT 
+				A.id_funcionario,
+				A.id_projeto,
+				A.Data_despesa as data,
+				A.Vlr_total,
+				I.descricao as tipodespesa,
+				C.codigo as codProposta,
+				D.email as email,
+				D.nome as nomeFuncionario,
+				E.nome as nomeCliente,
+			    (
+					SELECT 
+						G.email 
+					FROM 
+						projetorecursos F 
+					INNER JOIN 
+						funcionarios G on F.id_funcionario = G.id 
+					INNER JOIN
+						responsabilidades H on G.id_responsabilidade = H.id
+					WHERE 
+						F.id_projeto = A.id_projeto 
+					AND H.nome = 'APROVADOR'
+				) as emailAprovador
+			FROM 
+				projetodespesas A 
+			INNER JOIN 
+				projetos B on A.id_projeto = B.id 
+			INNER JOIN 
+				propostas C on B.id_proposta = C.id
+			INNER JOIN 
+				funcionarios D on A.id_funcionario = D.id
+			INNER JOIN 
+				clientes E on B.id_cliente = E.id
+			INNER JOIN 
+				tiposdespesas I on A.id_tipodespesa = I.id 
+			WHERE A.id = ".$id.";";
+			
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no envio de emails";	
+			return false;	
+		}
+		$row = $result->fetch_array(MYSQLI_ASSOC);
+		$timestamp = strtotime($row['data']);
+    	$row['data'] = date("d/m/Y", $timestamp);
+		return $row;
+	}
+
+	public function mailAprovar($email, $emailAprovador, $id_projeto, $nomeCliente, $codProposta, $data, $tipodespesa, $Vlr_total)
+	{
+		$email_enviar = $email.",".$emailAprovador;
+		$assunto = "Despesas Aprovadas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
+
+		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
+		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
+		$cabecalho .= "Return-Path: $email_enviar \r\n";
+		$cabecalho .= "From: $email_enviar \r\n";
+		$cabecalho .= "Reply-To: $email_enviar \r\n";
+
+		$mensagem = "<h3>Foram aprovadas as despesas do projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.",conforme abaixo:</h3>";
+		$mensagem .= "<table border='0'><tr><td><b>Data </b></td><td><b>Despesa </b></td><td><b>  Valor Total R$ </b></td></tr>";
+		$mensagem .= "<tr align='center'><td>".$data."</td><td>".$tipodespesa."</td><td>R$".$Vlr_total."</td></tr>";
+		$mensagem .= "</table>";
+		
+		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+	}
+
+	public function mailReprovar($email, $emailAprovador, $id_projeto, $nomeCliente, $codProposta, $data, $tipodespesa, $Vlr_total)
+	{
+		$email_enviar = $email.",".$emailAprovador;
+		$assunto = "Despesas Rejeitadas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
+
+		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
+		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
+		$cabecalho .= "Return-Path: $email_enviar \r\n";
+		$cabecalho .= "From: $email_enviar \r\n";
+		$cabecalho .= "Reply-To: $email_enviar \r\n";
+
+		$mensagem = "<h3>Não foram aprovadas as despesas do projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.",conforme abaixo:</h3>";
+		$mensagem .= "<table border='0'><tr><td><b>Data </b></td><td><b>Despesa </b></td><td><b>  Valor Total R$ </b></td></tr>";
+		$mensagem .= "<tr align='center'><td>".$data."</td><td>".$tipodespesa."</td><td>".$Vlr_total."</td></tr>";
+		$mensagem .= "</table>";
+		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+	}
+
+
+	public function mailPendente($email, $emailAprovador, $nomeFuncionario, $id_projeto, $nomeCliente, $codProposta)
+	{	
+		$email_enviar = $email;
+
+		if (!empty($emailAprovador)) {
+			$email_enviar = ",".$emailAprovador;
+		}
+
+		$assunto = "Aprovação do Reembolso das Despesas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
+
+		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
+		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
+		$cabecalho .= "Return-Path: $email_enviar \r\n";
+		$cabecalho .= "From: $email_enviar \r\n";
+		$cabecalho .= "Reply-To: $email_enviar \r\n";
+
+		$mensagem = "<h3>Existem despesas do profissional : ".$nomeFuncionario." no projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.", pendentes para a aprovação.</h3>";
+		
+		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+	}
 
 }
 

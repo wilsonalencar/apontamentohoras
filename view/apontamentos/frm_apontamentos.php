@@ -93,7 +93,7 @@
                                                     <tr>
                                                         <th>Data</th>
                                                         <th>Qtd. Horas</th>
-                                                        <th>Observação</th>
+                                                        <th>Atividade</th>
                                                         <th>Status</th>
                                                         <td></td>
                                                     </tr>
@@ -351,7 +351,7 @@
                                           </div>
                                             <div class="row">
                                                 <div class="col s8">
-                                                <label for="observacao">Observação</label>
+                                                <label for="observacao">Atividade</label>
                                                   <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
                                                 </div>
                                             </div>
