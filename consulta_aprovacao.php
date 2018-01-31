@@ -8,11 +8,10 @@ $projetodespesa->lista_aprovacao();
 <div id="page-wrapper">
 <div class="header"> 
             <h1 class="page-header">
-                Aprovação de horas
+                Aprovações 
             </h1>
             <ol class="breadcrumb">
-          <li><a href="#">Cadastros Básicos</a></li>
-          <li class="active">Aprovação de horas</li>
+          <li class="active">Aprovações</li>
         </ol> 
                         
 </div>
@@ -21,7 +20,7 @@ $projetodespesa->lista_aprovacao();
       <div class="col-md-12">
             <div class="card">
                 <div class="card-action">
-                     Aprovação de horas   --- <a href="#" data-toggle="modal" data-target="#ModalPesquisa">Filtros</a>
+                     Aprovações   --- <a href="#" data-toggle="modal" data-target="#ModalPesquisa">Filtros</a>
                 </div>
                 <div class="card-content">
                 <?php

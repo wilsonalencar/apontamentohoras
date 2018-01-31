@@ -10,8 +10,7 @@
                 Consulta de projetos.
             </h1>
             <ol class="breadcrumb">
-          <li><a href="#">Cadastros Básicos</a></li>
-          <li><a href="#">projetos</a></li>
+          <li><a href="#">Projetos</a></li>
           <li class="active">Busca de projetos</li>
         </ol> 
                         

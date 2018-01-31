@@ -8,8 +8,7 @@
                  Apontamentos
             </h1>
 					<ol class="breadcrumb">
-					  <li><a href="#">Cadastros Básicos</a></li>
-					  <li><a href="#">Apontamentos</a></li>
+					  <li><a href="#">Projetos</a></li>
 					  <li class="active">Liberar Apontamento</li>
 					</ol> 									
 		  </div>
