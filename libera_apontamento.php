@@ -49,7 +49,7 @@ if ($action == APROVA_D) {
 		}
 	}
 	$msg     = $projetodespesa->msg; 
-	header("LOCATION:libera_apontamento.php?id_projeto=".$projetodespesa->id_projeto."&id_funcionario=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success);
+	header("LOCATION:libera_apontamento.php?id_projeto=".$projetodespesa->id_projeto."&id_funcionario=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success.'#despesa');
 }
 
 if ($action == FILTRA) {

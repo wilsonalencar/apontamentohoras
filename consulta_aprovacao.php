@@ -43,7 +43,7 @@ $projetodespesa->lista_aprovacao();
                      <div class="col-md-12 col-sm-12">
                      <div class="col-sm-12">
                         <ul class="tabs">
-                            <li class="tab col s3"><a class="active" href="#horas">Horas</a></li>
+                            <li class="tab col s3"><a href="#horas">Horas</a></li>
                             <li class="tab col s3"><a href="#despesa">Despesas</a></li>
                         </ul>
                       </div>

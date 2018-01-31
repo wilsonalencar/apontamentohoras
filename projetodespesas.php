@@ -47,7 +47,7 @@ if ($action == DEL_APONT) {
 if ($action == SAVE_APONT) {
 	$success 		= $projetodespesa->save();
 	$msg     		= $projetodespesa->msg; 
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success);
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success.'#despesa');
 }
 
 require_once('view/projetos/frm_projetos.php');

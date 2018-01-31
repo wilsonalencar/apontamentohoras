@@ -35,7 +35,7 @@
                         <div class="col-md-12 col-sm-12">
                            <div class="col-sm-12">
                               <ul class="tabs">
-                                  <li class="tab col s3"><a class="active" href="#test1">Horas</a></li>
+                                  <li class="tab col s3"><a href="#test1">Horas</a></li>
                                   <li class="tab col s3" id="divDespesas"><a href="#despesa">Despesas</a></li>
                               </ul>
                               <br>

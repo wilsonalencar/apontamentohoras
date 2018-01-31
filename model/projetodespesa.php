@@ -47,6 +47,16 @@ class projetodespesa extends app
 			return false;
 		}
 
+		if ($this->Qtd_despesa < 0) {
+			$this->msg = "Favor informar a quantidade da despesa corretamente.";
+			return false;	
+		}
+
+		if ($this->Vlr_unit < 0) {
+			$this->msg = "Favor informar o valor da despesa corretamente.";
+			return false;	
+		}
+
 		if (!$this->checkData($this->Data_despesa)) {
 			return false;
 		}
@@ -138,7 +148,7 @@ class projetodespesa extends app
 			return false;	
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-			$row['Qtd_despesa'] = number_format($row['Qtd_despesa'], 1, '', '');
+			$row['Qtd_despesa'] = number_format($row['Qtd_despesa'], 0, '', '');
 			$row['Vlr_unit'] = number_format($row['Vlr_unit'], 2, ',', '.');
 			$row['Vlr_total'] = number_format($row['Vlr_total'], 2, ',', '.');
 			$row['Aprovado'] = $this->formatStatus($row['Aprovado']);

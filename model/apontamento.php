@@ -54,6 +54,11 @@ class apontamento extends app
 			$this->msg = "Favor informar a quantidade de horas real.";
 			return false;	
 		}
+		
+		if ($this->Qtd_hrs_real < 0) {
+			$this->msg = "Favor informar a quantidade de horas corretamente.";
+			return false;	
+		}
 
 		if (!$this->checkData($this->Data_apontamento)) {
 			return false;
