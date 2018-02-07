@@ -35,13 +35,13 @@ if ($action == GET) {
 if ($action == DEL) {
 	$success = $projetodespesa->deleta($projetodespesa->id);
 	$msg = $projetodespesa->msg;
-	header('LOCATION:projetos.php?id='.$projetodespesa->id_projeto.'&success='.$success.'&msg='.$msg.'');
+	header('LOCATION:projetos.php?id='.$projetodespesa->id_projeto.'&success='.$success.'&msg='.$msg.'#despesa');
 }
 
 if ($action == DEL_APONT) {
 	$success = $projetodespesa->deleta($projetodespesa->id);
 	$msg = $projetodespesa->msg;
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success);
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success.'#despesa');
 }
 
 if ($action == SAVE_APONT) {

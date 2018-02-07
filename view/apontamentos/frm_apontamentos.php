@@ -67,7 +67,7 @@
 
                             
                                 <div id="test1" class="col s12">
-                                    <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos" id="cad_apontamentos">
+                                    <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos">
                                     <div  class="col s12">
                                         <div class="table-responsive">
                                         <?php
@@ -85,7 +85,7 @@
                                                         </th>
                                                         <th></th>
                                                         <th align="center">
-                                                            <a href="#" data-toggle="modal" id="add_button" data-target="#ModalHoras" style="color : #fff; display: none;  ">+</a>
+                                                            <a href="#" data-toggle="modal" id="add_button" onclick="refreshModalApont()" data-target="#ModalHoras" style="color : #fff; display: none;  ">+</a>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -179,7 +179,7 @@
                                                     <th align="center">
                                                     </th>
                                                     <th align="center">
-                                                        <a href="#" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
+                                                        <a href="#" onclick="refreshModalDesp()" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -410,6 +410,13 @@ $(document).ready(function(){
     }); 
 });
 
+function refreshModalApont(){
+    document.getElementById("apontamentos").reset();
+}
+
+function refreshModalDesp(){
+    document.getElementById("projetodespesas").reset();
+}
 
 function addParam(){
     var id_projeto = document.getElementById("id_projeto_busca").value;

@@ -130,7 +130,7 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
-                                                                        <a href="#" data-toggle="modal" data-target="#ModalFaturas" style="color : #fff;">+</a>
+                                                                        <a href="#" onclick="refreshModalFat()" data-toggle="modal" data-target="#ModalFaturas" style="color : #fff;">+</a>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -235,7 +235,7 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
-                                                                        <a href="#" data-toggle="modal" data-target="#ModalRecursos" style="color : #fff;">+</a>
+                                                                        <a href="#" onclick="refreshModalRec()" data-toggle="modal" data-target="#ModalRecursos" style="color : #fff;">+</a>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -594,7 +594,7 @@
                                                     <th align="center">
                                                     </th>
                                                     <th align="center">
-                                                        <a href="#" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
+                                                        <a href="#" onclick="refreshModalDesp()" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -623,7 +623,9 @@
                                                         <td>R$ <?php echo $row['Vlr_total']; ?></td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td>
+                                                        <?php if ($row['Aprovado'] != 'Aprovado') { ?>
                                                         <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                        <?php } ?>
                                                         </td>
                                                     </tr>
                                                 <?php } }?>
@@ -881,6 +883,18 @@ $( document ).ready(function() {
     });
     
 });
+
+function refreshModalRec(){
+    document.getElementById("projetorecursos").reset();
+}
+
+function refreshModalDesp(){
+    document.getElementById("projetodespesas").reset();
+}
+
+function refreshModalFat(){
+    document.getElementById("projetoprevisaofats").reset();
+}
 
 function excluir_anexo(file)
 {
