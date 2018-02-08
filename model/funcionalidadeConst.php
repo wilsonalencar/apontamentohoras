@@ -26,5 +26,6 @@ class funcionalidadeConst
 	const perfil_apontamento		 	= 11;
 	const perfil_aprovacao			 	= 12;
 	const perfil_relatorios			 	= 13;
+	const perfil_cria_apontamentos 		= 14;
 	const ADMIN						 	= 1;
 }

@@ -32,6 +32,7 @@ $tipodespesa			= new tipodespesa;
 
 $projeto->id					= $projeto->getRequest('id', 0);
 $projeto->id_cliente		  	= $projeto->getRequest('id_cliente', 0);
+$projeto->id_gerente			= $projeto->getRequest('id_gerente', 0);
 $projeto->id_proposta  			= $projeto->getRequest('id_proposta', 0);
 $projeto->id_pilar  			= $projeto->getRequest('id_pilar', 0);
 $projeto->Cliente_reembolsa  	= $projeto->getRequest('Cliente_reembolsa', 0);

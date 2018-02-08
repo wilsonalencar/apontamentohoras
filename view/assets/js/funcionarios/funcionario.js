@@ -48,6 +48,7 @@ function getDataFuncionario(id)
             $("#valor_taxa").val(d.data.valor_taxa);
             $("#email").val(d.data.email);
             $("#status").val(d.data.status);
+            $("#emailParticular").val(d.data.emailParticular);
         }
     });
 }

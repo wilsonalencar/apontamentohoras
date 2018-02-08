@@ -45,7 +45,7 @@
                       <div class="row">
                         <div class="col s3">
                         <label for="codigo">Código</label>
-                          <input id="codigo" type="text" name="codigo" maxlength="7" class="validate" value="<?php echo $cliente->codigo; ?>">
+                          <input id="codigo" type="text" name="codigo" maxlength="20" class="validate" value="<?php echo $cliente->codigo; ?>">
                         </div>
                       </div>
                       <div class="row">

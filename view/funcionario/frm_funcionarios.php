@@ -149,6 +149,13 @@
                         </div>
                       </div>
 
+                      <div class="row">
+                        <div class="col s8">
+                        <label for="emailParticular">Email Particular</label>
+                          <input type="text" id="emailParticular" name="emailParticular" class="validate" maxlength="255" value="<?php echo $funcionario->emailParticular; ?>">
+                        </div>
+                      </div>
+
                       <div class="row">                        
                         <div class="col s3">
                         <label for="Status">Status</label>

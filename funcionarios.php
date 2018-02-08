@@ -36,6 +36,8 @@ $funcionario->valor_taxa  			= $funcionario->getRequest('valor_taxa', 0.00);
 $funcionario->telefone  			= $funcionario->getRequest('telefone', '');
 $funcionario->email  				= $funcionario->getRequest('email', '');
 $funcionario->status  				= $funcionario->getRequest('status', 'A');		
+$funcionario->emailParticular 		= $funcionario->getRequest('emailParticular', '');
+
 $excluirAnexo 						= $funcionario->getRequest('excluir_anexo');
 
 $msg 								= $funcionario->getRequest('msg', '');	

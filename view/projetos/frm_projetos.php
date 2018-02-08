@@ -106,6 +106,15 @@
                                           </select>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col s5">
+                                            <label for="id_gerente">Gerente do Projeto</label>
+                                            <select id="id_gerente" name="id_gerente" class="form-control input-sm">
+                                              <option value="">Gerente</option>
+                                              <?php $funcionario->montaSelectGerente(); ?>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <br />
 
                                         <div class="row" style="display:none" id="rowFatAnexos">
@@ -623,7 +632,7 @@
                                                         <td>R$ <?php echo $row['Vlr_total']; ?></td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td>
-                                                        <?php if ($row['Aprovado'] != 'Aprovado') { ?>
+                                                        <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                                         <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                         <?php } ?>
                                                         </td>
@@ -633,7 +642,6 @@
                                         </table>
                                     </div>
                                 </div>
-                                
                                 <div id="fluxoFin" class="col s12">
                                     <div class="card-content">
                                         <div class="row">

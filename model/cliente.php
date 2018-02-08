@@ -112,10 +112,6 @@ class cliente extends app
 		if (!$this->checkCNPJ()) {
 			return false;
 		}
-
-		if (!$this->checkMail()) {
-			return false;
-		}
 	
 		if (!$this->checkCodigo()) {
 			return false;
@@ -154,7 +150,7 @@ class cliente extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" INSERT INTO clientes (codigo, nome, cnpj, endereco, complemento, cod_municipio, cep, telefone, email, contato, status, usuario)
-		VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%d)", 
+		VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',%s,%d)", 
 			$this->codigo, $this->nome, $this->cnpj, $this->endereco, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $this->contato, $this->status, $_SESSION['usuarioID']);	
 
 		if (!$conn->query($query)) {

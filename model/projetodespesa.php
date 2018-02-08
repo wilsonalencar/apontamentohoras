@@ -183,12 +183,14 @@ class projetodespesa extends app
 					clientes D on B.id_cliente = D.id
 				INNER JOIN 
 					funcionarios F on A.id_funcionario = F.id
+				INNER JOIN
+					funcionarios G on B.id_gerente = G.id
 				WHERE 
 					A.Aprovado = 'N'
 					";
 		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
-			$query .= sprintf(" AND A.id_projeto IN(Select SPR.id_projeto FROM projetorecursos SPR where SPR.id_funcionario = (select id FROM funcionarios where Email = '%s')) ", $_SESSION['email']);
+			$query .= sprintf(" AND G.Email = '%s' ", $_SESSION['email']);
 		}
 
 		if ($this->id_projeto > 0) {
@@ -331,19 +333,7 @@ class projetodespesa extends app
 				D.email as email,
 				D.nome as nomeFuncionario,
 				E.nome as nomeCliente,
-			    (
-					SELECT 
-						G.email 
-					FROM 
-						projetorecursos F 
-					INNER JOIN 
-						funcionarios G on F.id_funcionario = G.id 
-					INNER JOIN
-						responsabilidades H on G.id_responsabilidade = H.id
-					WHERE 
-						F.id_projeto = A.id_projeto 
-					AND H.nome = 'APROVADOR'
-				) as emailAprovador
+			    F.email as emailAprovador
 			FROM 
 				projetodespesas A 
 			INNER JOIN 
@@ -356,8 +346,10 @@ class projetodespesa extends app
 				clientes E on B.id_cliente = E.id
 			INNER JOIN 
 				tiposdespesas I on A.id_tipodespesa = I.id 
+			INNER JOIN 
+				funcionarios F on B.id_gerente = F.id
 			WHERE A.id = ".$id.";";
-			
+		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no envio de emails";	
 			return false;	

@@ -21,6 +21,7 @@ class funcionario extends app
 	public $cep;
 	public $telefone;
 	public $email;
+	public $emailParticular;
 	public $valor_taxa;
 	public $status;
 	public $msg;
@@ -44,6 +45,20 @@ class funcionario extends app
 			return false;			
 		}
 		return true;
+	}
+
+
+	public function montaSelectGerente($selected=0)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT A.id, A.nome FROM funcionarios A INNER JOIN responsabilidades B on A.id_responsabilidade = B.id WHERE B.nome = 'APROVADOR' AND A.status = '%s' order by B.nome ASC", $this::STATUS_SISTEMA_ATIVO);
+
+		if($result = $conn->query($query))
+		{
+			while($row = $result->fetch_array(MYSQLI_ASSOC))
+			echo sprintf("<option %s value='%d'>%s</option>\n", $selected == $row['id'] ? "selected" : "",
+			$row['id'], $row['nome']);
+		}
 	}
 
 	public function montaSelect($selected=0, $id_projeto=0, $id_perfilprofissional=0, $option=false)
@@ -171,6 +186,15 @@ class funcionario extends app
 			return false;
 		}
 
+		if (!empty($this->emailParticular) && !$this->validaEmail($this->emailParticular)) {
+			return false;
+		}
+
+		if (!empty($this->emailParticular) && !$this->checkMail()) {
+			$this->msg = 'Email Particular informado já está sendo utilizado';
+			return false;
+		}
+
 		if (!$this->checkCPF()) {
 			return false;
 		}
@@ -220,6 +244,24 @@ class funcionario extends app
 		return true;
 	}
 
+
+
+	private function checkMail()
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT id FROM funcionarios WHERE emailParticular = '%s' AND id <> %d", $this->emailParticular, $this->id);	
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do email do funcionario";
+			return false;	
+		}
+		
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Email pessoal do funcionário já está sendo utilizado";
+			return false;			
+		}
+		return true;
+	}
+
 	public function save()
 	{
 		if (!$this->check()) {
@@ -239,9 +281,9 @@ class funcionario extends app
 
 		$conn->autocommit(FALSE);
 
-		$query = sprintf(" INSERT INTO funcionarios (nome, apelido, data_nascimento, id_tipocontratacao, id_perfilprofissional,id_responsabilidade, rg , cpf , endereco, valor_taxa , complemento ,	cod_municipio, cep, telefone, email , usuario, status)
-		VALUES ('%s','%s', '%s', %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')", 
-			$this->nome, $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf,$this->endereco, $this->valor_taxa,$this->complemento,$this->cod_municipio,$this->cep,$this->telefone,$this->email, $_SESSION['email'], $this->status);
+		$query = sprintf(" INSERT INTO funcionarios (nome, apelido, data_nascimento, id_tipocontratacao, id_perfilprofissional,id_responsabilidade, rg , cpf , endereco, valor_taxa , complemento ,	cod_municipio, cep, telefone, email , emailParticular, usuario, status)
+		VALUES ('%s','%s', '%s', %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s ,'%s', '%s')", 
+			$this->nome, $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf,$this->endereco, $this->valor_taxa,$this->complemento,$this->cod_municipio,$this->cep,$this->telefone,$this->email, $this->quote($this->emailParticular, true, true), $_SESSION['email'], $this->status);
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
@@ -341,8 +383,8 @@ class funcionario extends app
 
 		$conn->autocommit(FALSE);
 
-		$query = sprintf(" UPDATE funcionarios SET nome = '%s', apelido = '%s', data_nascimento = '%s', id_tipocontratacao = %d, id_perfilprofissional = %d ,id_responsabilidade = %d , rg = '%s' , cpf = '%s' , endereco = '%s', valor_taxa = '%s' , complemento = '%s', cod_municipio = %d , cep = '%s', telefone = '%s', email = '%s', usuario = '%s', status = '%s', data_alteracao = NOW() WHERE id = %d", 
-			$this->nome , $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf, $this->endereco, $this->valor_taxa, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $_SESSION['email'], $this->status, $this->id);	
+		$query = sprintf(" UPDATE funcionarios SET nome = '%s', apelido = '%s', data_nascimento = '%s', id_tipocontratacao = %d, id_perfilprofissional = %d ,id_responsabilidade = %d , rg = '%s' , cpf = '%s' , endereco = '%s', valor_taxa = '%s' , complemento = '%s', cod_municipio = %d , cep = '%s', telefone = '%s', email = '%s', usuario = '%s', status = '%s', emailParticular = %s, data_alteracao = NOW() WHERE id = %d", 
+			$this->nome , $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf, $this->endereco, $this->valor_taxa, $this->complemento, $this->cod_municipio, $this->cep, $this->telefone, $this->email, $_SESSION['email'], $this->status, $this->quote($this->emailParticular, true, true) ,$this->id);	
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -370,7 +412,7 @@ class funcionario extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, nome, apelido, cpf, rg, data_nascimento, endereco, complemento, cod_municipio, cep, telefone, email, id_tipocontratacao, id_perfilprofissional, id_responsabilidade, valor_taxa ,status FROM funcionarios WHERE id =  %d ", $this->id);
+		$query = sprintf("SELECT id, nome, apelido, cpf, rg, data_nascimento, endereco, complemento, cod_municipio, cep, telefone, email, id_tipocontratacao, id_perfilprofissional, id_responsabilidade, valor_taxa ,status, emailParticular FROM funcionarios WHERE id =  %d ", $this->id);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do funcionário";	

@@ -254,40 +254,30 @@ class apontamento extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
-				A.id_funcionario,
-				A.id_projeto,
-				A.Data_apontamento as data,
-				A.Qtd_hrs_real as horas,
-				A.observacao as atividade,
-				C.codigo as codProposta,
-				D.email as email,
-				D.nome as nomeFuncionario,
-				E.nome as nomeCliente,
-			    (
-					SELECT 
-						G.email 
-					FROM 
-						projetorecursos F 
-					INNER JOIN 
-						funcionarios G on F.id_funcionario = G.id 
-					INNER JOIN
-						responsabilidades H on G.id_responsabilidade = H.id
-					WHERE 
-						F.id_projeto = A.id_projeto 
-					AND H.nome = 'APROVADOR'
-				) as emailAprovador
-			FROM 
-				projetohoras A 
-			INNER JOIN 
-				projetos B on A.id_projeto = B.id 
-			INNER JOIN 
-				propostas C on B.id_proposta = C.id
-			INNER JOIN 
-				funcionarios D on A.id_funcionario = D.id
-			INNER JOIN 
-				clientes E on B.id_cliente = E.id
-			WHERE A.id = ".$id.";";
-
+				    A.id_funcionario,
+				    A.id_projeto,
+				    A.Data_apontamento AS data,
+				    A.Qtd_hrs_real AS horas,
+				    A.observacao AS atividade,
+				    C.codigo AS codProposta,
+				    D.email AS email,
+				    D.nome AS nomeFuncionario,
+				    E.nome AS nomeCliente,
+				    F.email AS emailAprovador
+				FROM
+				    projetohoras A
+				        INNER JOIN
+				    projetos B ON A.id_projeto = B.id
+				        INNER JOIN
+				    propostas C ON B.id_proposta = C.id
+				        INNER JOIN
+				    funcionarios D ON A.id_funcionario = D.id
+				        INNER JOIN
+				    clientes E ON B.id_cliente = E.id
+						INNER JOIN
+				    funcionarios F ON B.id_gerente = F.id
+				WHERE A.id = ".$id.";";
+				
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no envio de emails";	
 			return false;	
@@ -320,14 +310,16 @@ class apontamento extends app
 					clientes D on B.id_cliente = D.id
 				INNER JOIN 
 					funcionarios F on A.id_funcionario = F.id
+				INNER JOIN
+					funcionarios G on B.id_gerente = G.id
 				WHERE 
 					A.Aprovado = 'N'
 					";
 
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
-			$query .= sprintf(" AND A.id_projeto IN(Select SPR.id_projeto FROM projetorecursos SPR where SPR.id_funcionario = (select id FROM funcionarios where Email = '%s')) ", $_SESSION['email']);
+			$query .= sprintf(" AND G.Email = '%s' ", $_SESSION['email']);
 		}
-		
+
 		if ($this->id_projeto > 0) {
 			$query .= " AND A.id_projeto = ".$this->id_projeto;
 		}

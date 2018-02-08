@@ -8,6 +8,7 @@ class projeto extends app
 	public $id;
 	public $id_cliente;
 	public $id_proposta;
+	public $id_gerente;
 	public $id_pilar;
 	public $data_inicio;
 	public $data_fim;
@@ -44,6 +45,11 @@ class projeto extends app
 			$this->msg = "Favor informar o status.";
 			return false;	
 		}
+
+		if (!$this->id_gerente > 0) {
+			$this->msg = "Favor informar o gerente do projeto.";
+			return false;
+		}
 		
 		return true;
 	}
@@ -64,9 +70,9 @@ class projeto extends app
 	{	
 		$conn = $this->getDB->mysqli_connection;
 
-		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, usuario)
-		VALUES (%d, %d, %d, %s, %s, %d, '%s', '%s')", 
-			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $_SESSION['email']);
+		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, id_gerente, usuario)
+		VALUES (%d, %d, %d, %s, %s, %d, '%s', %d, '%s')", 
+			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $this->id_gerente ,$_SESSION['email']);
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -80,8 +86,8 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', data_alteracao = NOW() WHERE id = %d", 
-			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id);	
+		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', id_gerente = %d, data_alteracao = NOW() WHERE id = %d", 
+			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id_gerente ,$this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -100,6 +106,7 @@ class projeto extends app
 						    A.id_cliente,
 						    A.id_proposta,
 						    A.id_pilar,
+						    A.id_gerente,
 						    A.Data_inicio,
 						    A.Data_fim,
 						    A.id_status,
@@ -449,6 +456,8 @@ class projeto extends app
 			    projetostatus D ON A.id_status = D.id
 			        INNER JOIN
 			    projetorecursos E ON A.id = E.id_projeto
+			    	INNER JOIN 
+			    funcionarios F  ON A.id_gerente = F.id
 			WHERE
 			    D.id NOT IN (4, 5)
 			        AND E.id_funcionario = (SELECT 
@@ -457,8 +466,11 @@ class projeto extends app
 			            funcionarios FSR
 			        WHERE
 			            FSR.email = '%s')
+			        OR 
+			        	F.email = '%s'
+
 			        GROUP BY A.id
-					;", $_SESSION['email']);
+					;", $_SESSION['email'], $_SESSION['email']);
 		
 
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
@@ -477,7 +489,6 @@ class projeto extends app
 						GROUP BY A.id;
 						");
 		} 
-
 		if($result = $conn->query($query))
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
@@ -521,15 +532,13 @@ class projeto extends app
 									LEFT JOIN 
 								projetostatus D ON A.id_status = D.id
 									LEFT JOIN 
-								projetorecursos F ON A.id = F.id_projeto
-									LEFT JOIN 
-								funcionarios E ON F.id_funcionario = E.id
+								funcionarios E ON A.id_gerente = E.id
 								");
 		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= " WHERE E.email = "."'".$_SESSION['email']."'";
 		}
-
+		
 		$query .= " GROUP BY A.id";
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	

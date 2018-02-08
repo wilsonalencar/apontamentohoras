@@ -29,6 +29,7 @@ function getDataProposta(id)
             $("#id_pilar").val(d.data.id_pilar);
             $("#data_inicio").val(d.data.Data_inicio);
             $("#data_fim").val(d.data.Data_fim);
+            $("#id_gerente").val(d.data.id_gerente);
             if(d.data.Cliente_reembolsa == 'S'){
                 $("#cliente_s").attr('checked', 'checked');
             }else {
@@ -69,6 +70,12 @@ $( document ).ready(function() {
     if ($("#status").val() == '') {
         alert('Informar o status do projeto.');
         $("#status").focus();
+        return false;
+    }
+
+    if ($("#id_gerente").val() == '') {
+        alert('Informar o gerente do projeto.');
+        $("#id_gerente").focus();
         return false;
     }
 
