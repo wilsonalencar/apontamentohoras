@@ -174,7 +174,7 @@ $projetodespesa->lista_aprovacao();
                         <label for="id_projeto">Projeto</label><br />
                           <select id="id_projeto" name="id_projeto" class="form-control input-sm id_projeto_class">
                               <option value="">Projetos</option>
-                                <?php $projeto->montaSelect($apontamento->id_projeto); ?>
+                                <?php $projeto->montaSelect($apontamento->id_projeto, true); ?>
                             </select>
                         </div>
                         

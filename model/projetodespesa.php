@@ -158,6 +158,89 @@ class projetodespesa extends app
 		}
 	}
 
+	public function relatorioFunc(){
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf("SELECT 
+						    A.id AS id,
+						    A.Vlr_Unit AS Vlr_Unit,
+						    A.Qtd_despesa AS quantidade,
+						    A.Vlr_Total,
+						    A.Num_doc as documento,
+						    A.Aprovado AS status,
+						    A.Data_despesa AS data_despesa,
+						    B.nome AS nomefuncionario,
+						    B.id AS id_funcionario,
+						    C.id AS id_projeto,
+						    D.nome AS nomepilar,
+						    F.codigo AS projeto1,
+						    E.nome AS projeto2,
+						    G.descricao AS tipodespesa
+						FROM
+						    projetodespesas A
+						        INNER JOIN
+						    funcionarios B ON A.id_funcionario = B.id
+						        INNER JOIN
+						    projetos C ON A.id_projeto = C.id
+						        INNER JOIN
+						    pilares D ON C.id_pilar = D.id
+						        INNER JOIN
+						    clientes E ON C.id_cliente = E.id
+						        INNER JOIN
+						    propostas F ON C.id_proposta = F.id
+								INNER JOIN 
+							tiposdespesas G ON A.id_tipodespesa = G.id
+						WHERE
+						    B.status = 'A'");
+		
+		if ($this->id_funcionario > 0) {
+			$query .= " AND A.id_funcionario = ".$this->id_funcionario;
+		}
+
+		if ($this->id_projeto > 0) {
+			$query .= " AND A.id_projeto = ".$this->id_projeto;
+		}
+
+		if ($this->id_projeto == 0 && $this->id_funcionario == 0) {
+			$query .= " AND A.id_projeto = 0"; 
+		}
+
+		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
+			$query .= " AND A.Data_despesa BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+		}
+		
+		$query .= " ORDER BY A.data_despesa, A.id_projeto, A.id";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		$this->array['valorTotalGeral'] = 0;
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$timestamp = strtotime($row['data_despesa']);
+			$row['data_despesa'] = date("d/m/Y", $timestamp);
+			$row['status'] = $this->formatStatusL($row['status']);
+			$row['quantidade'] = number_format($row['quantidade'], 0, '', '');
+			if (empty($this->array['dados'][$row['id_projeto']])) {
+				$this->array['dados'][$row['id_projeto']]['valorTotal'] = 0;	
+			}
+			$this->array['dados'][$row['id_projeto']]['projeto'] = $row['projeto2'].' - '.$row['projeto1'];
+			$this->array['dados'][$row['id_projeto']][] = $row;
+			$this->array['dados'][$row['id_projeto']]['valorTotal'] = $row['Vlr_Total'] + $this->array['dados'][$row['id_projeto']]['valorTotal'] ;	
+			$this->array['valorTotalGeral'] = $row['Vlr_Total'] + $this->array['valorTotalGeral'];
+		}
+		$this->array['valorTotalGeral'] = number_format($this->array['valorTotalGeral'], 2, ',', '.');
+	}
+
+	private function formatStatusL($status)
+	{
+		if ($status == 'S') {
+			return "APROVADO";
+		} elseif ($status == 'R') {
+			return "REJEITADO";
+		} 
+		return "PENDENTE";
+	}
+
 	public function lista_aprovacao()
 	{
 		$conn = $this->getDB->mysqli_connection;

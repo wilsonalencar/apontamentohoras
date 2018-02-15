@@ -441,10 +441,11 @@ class projeto extends app
 		}
 	}
 
-	public function montaSelect($selected=0)
+	public function montaSelect($selected=0, $gerente=false)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT 
+
+		$query = "SELECT 
 			    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
 			FROM
 			    projetos A
@@ -456,8 +457,11 @@ class projeto extends app
 			    projetostatus D ON A.id_status = D.id
 			        INNER JOIN
 			    projetorecursos E ON A.id = E.id_projeto
-			    	INNER JOIN 
-			    funcionarios F  ON A.id_gerente = F.id
+					INNER JOIN 
+				funcionarios F ON A.id_gerente = F.id
+			";
+
+		$query .= "			    
 			WHERE
 			    D.id NOT IN (4, 5)
 			        AND E.id_funcionario = (SELECT 
@@ -465,13 +469,14 @@ class projeto extends app
 			        FROM
 			            funcionarios FSR
 			        WHERE
-			            FSR.email = '%s')
-			        OR 
-			        	F.email = '%s'
-
-			        GROUP BY A.id
-					;", $_SESSION['email'], $_SESSION['email']);
+			            FSR.email = "."'".$_SESSION['email']."'".")
+			  ";  
 		
+		if ($gerente) {
+			$query .= " OR F.email = "."'".$_SESSION['email']."'"."";
+		}
+
+		$query .= " GROUP BY A.id ;";
 
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
 			$query = sprintf("SELECT 

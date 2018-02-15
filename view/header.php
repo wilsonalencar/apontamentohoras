@@ -378,7 +378,9 @@
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hpilar.php" >Horas por pilares</a>
                                 </li>
-
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_despProjRec.php" >Despesas por Projeto e Recurso</a>
+                                </li>
                             </ul>
                         </li>
                         <?php } ?>
