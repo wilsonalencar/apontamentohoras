@@ -276,6 +276,10 @@ class projetodespesa extends app
 			$query .= sprintf(" AND G.Email = '%s' ", $_SESSION['email']);
 		}
 
+		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
+			$query .= sprintf(" AND F.Email <> '%s' ", $_SESSION['email']);
+		}
+
 		if ($this->id_projeto > 0) {
 			$query .= " AND A.id_projeto = ".$this->id_projeto;
 		}
@@ -409,6 +413,7 @@ class projetodespesa extends app
 		$query = "SELECT 
 				A.id_funcionario,
 				A.id_projeto,
+				B.id_gerente,
 				A.Data_despesa as data,
 				A.Vlr_total,
 				I.descricao as tipodespesa,
@@ -437,7 +442,46 @@ class projetodespesa extends app
 			$this->msg = "Ocorreu um erro no envio de emails";	
 			return false;	
 		}
+
 		$row = $result->fetch_array(MYSQLI_ASSOC);
+		if ($row['id_funcionario'] == $row['id_gerente']) {
+			
+			$query = "SELECT 
+				A.id_funcionario,
+				A.id_projeto,
+				A.Data_despesa as data,
+				A.Vlr_total,
+				I.descricao as tipodespesa,
+				C.codigo as codProposta,
+				D.email as email,
+				D.nome as nomeFuncionario,
+				E.nome as nomeCliente,
+			    F.email as emailAprovador,
+			    GROUP_CONCAT(G.email separator ',') AS emailAprovador
+			FROM 
+				projetodespesas A 
+			INNER JOIN 
+				projetos B on A.id_projeto = B.id 
+			INNER JOIN 
+				propostas C on B.id_proposta = C.id
+			INNER JOIN 
+				funcionarios D on A.id_funcionario = D.id
+			INNER JOIN 
+				clientes E on B.id_cliente = E.id
+			INNER JOIN 
+				tiposdespesas I on A.id_tipodespesa = I.id 
+			INNER JOIN 
+				funcionarios F on B.id_gerente = F.id
+			LEFT JOIN
+				usuarios G ON G.id_perfilusuario = ".funcionalidadeConst::ADMIN."
+			WHERE A.id = ".$id.";";		
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro no envio de emails";	
+				return false;	
+			}	
+			$row = $result->fetch_array(MYSQLI_ASSOC);
+		}
+
 		$timestamp = strtotime($row['data']);
     	$row['data'] = date("d/m/Y", $timestamp);
 		return $row;
@@ -486,7 +530,17 @@ class projetodespesa extends app
 		$email_enviar = $email;
 
 		if (!empty($emailAprovador)) {
-			$email_enviar = ",".$emailAprovador;
+			if (strstr($emailAprovador, ",")) {
+				$val = '';
+				$arr = preg_split('/[^\w@\.]+/', $emailAprovador);
+				foreach ($arr as $key => $value) {
+					$val .= $value.",";
+				}
+				$val = substr($val,0,-1);
+				$email_enviar = $val;
+			} else {
+				$email_enviar = $emailAprovador;
+			}
 		}
 
 		$assunto = "Aprovação do Reembolso das Despesas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;

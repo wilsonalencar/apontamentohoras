@@ -163,7 +163,7 @@ class apontamento extends app
 			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email']);
 		
 		if (!$conn->query($query)) {
-			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+	 	 	$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
 
@@ -175,7 +175,7 @@ class apontamento extends app
 
 	public function update()
 	{
-		$conn = $this->getDB->mysqli_connection;
+		$conn  = $this->getDB->mysqli_connection;
 		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= '%s', data_fim= '%s', id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', data_alteracao = NOW() WHERE id = %d", 
 			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id);	
 	
@@ -251,11 +251,12 @@ class apontamento extends app
 		return "Não Aprovado";
 	}
 	public function carregaHoras($id)
-	{
+	{	
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
 				    A.id_funcionario,
 				    A.id_projeto,
+				    B.id_gerente,
 				    A.Data_apontamento AS data,
 				    A.Qtd_hrs_real AS horas,
 				    A.observacao AS atividade,
@@ -283,6 +284,43 @@ class apontamento extends app
 			return false;	
 		}
 		$row = $result->fetch_array(MYSQLI_ASSOC);
+		
+		if ($row['id_funcionario'] == $row['id_gerente']) {
+			$query = "SELECT 
+				    A.id_funcionario,
+				    A.id_projeto,
+				    B.id_gerente,
+				    A.Data_apontamento AS data,
+				    A.Qtd_hrs_real AS horas,
+				    A.observacao AS atividade,
+				    C.codigo AS codProposta,
+				    D.email AS email,
+				    D.nome AS nomeFuncionario,
+				    E.nome AS nomeCliente,
+				    GROUP_CONCAT(G.email separator ',') AS emailAprovador
+				FROM
+				    projetohoras A
+				        INNER JOIN
+				    projetos B ON A.id_projeto = B.id
+				        INNER JOIN
+				    propostas C ON B.id_proposta = C.id
+				        INNER JOIN
+				    funcionarios D ON A.id_funcionario = D.id
+				        INNER JOIN
+				    clientes E ON B.id_cliente = E.id
+						INNER JOIN
+				    funcionarios F ON B.id_gerente = F.id
+						LEFT JOIN
+					usuarios G ON G.id_perfilusuario = ".funcionalidadeConst::ADMIN." 
+				WHERE A.id = ".$id.";";
+				
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro no envio de emails";	
+				return false;	
+			}	
+			$row = $result->fetch_array(MYSQLI_ASSOC);
+		}
+
 		$timestamp = strtotime($row['data']);
     	$row['data'] = date("d/m/Y", $timestamp);
 		return $row;
@@ -318,6 +356,10 @@ class apontamento extends app
 
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
 			$query .= sprintf(" AND G.Email = '%s' ", $_SESSION['email']);
+		}
+
+		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
+			$query .= sprintf(" AND F.Email <> '%s' ", $_SESSION['email']);
 		}
 
 		if ($this->id_projeto > 0) {
@@ -426,9 +468,18 @@ class apontamento extends app
 	public function mailPendente($email, $emailAprovador, $nomeFuncionario, $id_projeto, $nomeCliente, $codProposta)
 	{	
 		$email_enviar = $email;
-
 		if (!empty($emailAprovador)) {
-			$email_enviar = ",".$emailAprovador;
+			if (strstr($emailAprovador, ",")) {
+				$val = '';
+				$arr = preg_split('/[^\w@\.]+/', $emailAprovador);
+				foreach ($arr as $key => $value) {
+					$val .= $value.",";
+				}
+				$val = substr($val,0,-1);
+				$email_enviar = $val;
+			} else {
+				$email_enviar = $emailAprovador;
+			}
 		}
 
 		$assunto = "Aprovação das Horas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;

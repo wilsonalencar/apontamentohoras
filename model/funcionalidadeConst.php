@@ -28,4 +28,5 @@ class funcionalidadeConst
 	const perfil_relatorios			 	= 13;
 	const perfil_cria_apontamentos 		= 14;
 	const ADMIN						 	= 1;
+	const GERENTE						= 2;
 }

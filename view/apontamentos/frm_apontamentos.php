@@ -5,10 +5,10 @@
     <div id="page-wrapper" >
       <div class="header"> 
             <h1 class="page-header">
-                 Apontamento de horas
+                 Apontamentos
             </h1>
           <ol class="breadcrumb">
-            <li><a href="#">Apontamento de horas</a></li>
+            <li><a href="#">Apontamentos</a></li>
           </ol> 
                   
       </div>
