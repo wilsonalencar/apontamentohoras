@@ -15,6 +15,7 @@ class projetodespesa extends app
 	public $Vlr_unit;
 	public $Vlr_total;
 	public $data_busca_ini;
+	public $arrayIDS;
 	public $data_busca_fim;
 	public $Aprovado;
 	public $msg;
@@ -98,6 +99,59 @@ class projetodespesa extends app
 		}
 
 		return $this->insert();
+	}
+
+	public function MontaArray($array){
+		$val = '';
+
+		foreach ($array as $key => $value) {
+			if ($value != funcionalidadeConst::PENDENTE) {
+				$val .= "'";
+				$val .= $key."',";
+			}
+		}
+		$val = substr($val, 0, -1);
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT 
+					A.id,
+				    A.id_funcionario,
+				    A.id_projeto,
+				    A.Aprovado,
+				    A.Data_despesa AS data,
+				    A.Vlr_total,
+				    I.descricao AS tipodespesa,
+				    C.codigo AS codProposta,
+				    D.email AS email,
+				    D.nome AS nomeFuncionario,
+				    E.nome AS nomeCliente
+				FROM
+				    projetodespesas A
+				        INNER JOIN
+				    projetos B ON A.id_projeto = B.id
+				        INNER JOIN
+				    propostas C ON B.id_proposta = C.id
+				        INNER JOIN
+				    funcionarios D ON A.id_funcionario = D.id
+				        INNER JOIN
+				    clientes E ON B.id_cliente = E.id
+				        INNER JOIN
+				    tiposdespesas I ON A.id_tipodespesa = I.id
+				WHERE A.id in (".$val.") group by A.id order by A.id ;";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no envio de emails";	
+			return false;	
+		}
+
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)){
+			$row['Vlr_total'] = number_format($row['Vlr_total'], 2, ',', '.');
+			$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
+			$timestamp = strtotime($row['data']);
+			$row['data'] = date("d/m/Y", $timestamp);
+			$this->array['dados'][$row['email']][$row['id']] = $row;
+		}
+
+		return $this->array;
 	}
 
 	public function insert()
@@ -220,12 +274,12 @@ class projetodespesa extends app
 			$row['data_despesa'] = date("d/m/Y", $timestamp);
 			$row['status'] = $this->formatStatusL($row['status']);
 			$row['quantidade'] = number_format($row['quantidade'], 0, '', '');
-			if (empty($this->array['dados'][$row['id_projeto']])) {
-				$this->array['dados'][$row['id_projeto']]['valorTotal'] = 0;	
+			if (empty($this->array['dados'][$row['id_funcionario']])) {
+				$this->array['dados'][$row['id_funcionario']]['valorTotal'] = 0;	
 			}
-			$this->array['dados'][$row['id_projeto']]['projeto'] = $row['projeto2'].' - '.$row['projeto1'];
-			$this->array['dados'][$row['id_projeto']][] = $row;
-			$this->array['dados'][$row['id_projeto']]['valorTotal'] = $row['Vlr_Total'] + $this->array['dados'][$row['id_projeto']]['valorTotal'] ;	
+			$this->array['dados'][$row['id_funcionario']]['projeto'] = $row['projeto2'].' - '.$row['projeto1'];
+			$this->array['dados'][$row['id_funcionario']][] = $row;
+			$this->array['dados'][$row['id_funcionario']]['valorTotal'] = $row['Vlr_Total'] + $this->array['dados'][$row['id_funcionario']]['valorTotal'] ;	
 			$this->array['valorTotalGeral'] = $row['Vlr_Total'] + $this->array['valorTotalGeral'];
 		}
 		$this->array['valorTotalGeral'] = number_format($this->array['valorTotalGeral'], 2, ',', '.');
@@ -318,18 +372,6 @@ class projetodespesa extends app
 				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 				return false;	
 			}
-			$inmail = $this->carregaHoras($id);		
-			//Fazendo o envio dos emails 
-			if ($status == funcionalidadeConst::APROVADO) {
-				$this->mailAprovar($inmail['email'], 'luciafcastro.lfc@gmail.com', $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta'], $inmail['data'], $inmail['tipodespesa'], $inmail['Vlr_total']);
-			}
-
-			if ($status == funcionalidadeConst::REJEITADO) {
-				$this->mailReprovar($inmail['email'], 'luciafcastro.lfc@gmail.com', $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta'], $inmail['data'], $inmail['tipodespesa'], $inmail['Vlr_total']);
-			}	
-			
-			$this->msg = "Despesas atualizadas com sucesso!";
-			return true;
 		}
 		$this->msg = "Despesas atualizadas com sucesso!";
 		return true;
@@ -487,73 +529,79 @@ class projetodespesa extends app
 		return $row;
 	}
 
-	public function mailAprovar($email, $emailAprovador, $id_projeto, $nomeCliente, $codProposta, $data, $tipodespesa, $Vlr_total)
+	public function mailAprovacao($array)
 	{
-		$email_enviar = $email.",".$emailAprovador;
-		$assunto = "Despesas Aprovadas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
-
-		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
-		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
-		$cabecalho .= "Return-Path: $email_enviar \r\n";
-		$cabecalho .= "From: $email_enviar \r\n";
-		$cabecalho .= "Reply-To: $email_enviar \r\n";
-
-		$mensagem = "<h3>Foram aprovadas as despesas do projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.",conforme abaixo:</h3>";
-		$mensagem .= "<table border='0'><tr><td><b>Data </b></td><td><b>Despesa </b></td><td><b>  Valor Total R$ </b></td></tr>";
-		$mensagem .= "<tr align='center'><td>".$data."</td><td>".$tipodespesa."</td><td>R$".$Vlr_total."</td></tr>";
-		$mensagem .= "</table>";
-		
-		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+		foreach ($array as $dados => $valores) {
+			foreach ($valores as $email => $despesas) {
+			$this->mail->addAddress($email);
+			$assunto = utf8_decode("Suas despesas receberam Interações");
+			$mensagem = "<h3>Suas despesas, receberam interações, conforme abaixo :</h3>
+							<table border='2'>
+								<tr>
+									<td align='center'>
+										<b> Cliente </b>
+									</td>
+									<td align='center'>
+										<b> Projeto </b>
+									</td>
+									<td align='center'>
+										<b> Data </b>
+									</td>
+									<td align='center'>
+										<b> Aprovado </b>
+									</td>
+									<td align='center'>
+										<b> Tipo da despesa </b>
+									</td>
+									<td align='center'> 
+										<b> Valor Total R$ </b>
+									</td>
+								</tr>";
+			//Corpo do Email
+			foreach ($despesas as $key => $value) {
+				$mensagem .= "<tr align='center'>
+									<td width='20%'>".$value['nomeCliente']."</td>
+									<td width='15%'>".$value['id_projeto'] ."--". $value['codProposta']."</td>
+									<td width='20%'>".$value['data']."</td>
+									<td width='10%'>".$value['Aprovado']."</td>
+									<td width='20%'>".$value['tipodespesa']."</td>
+									<td width='10%'>R$ ".$value['Vlr_total']."</td>
+								</tr>";
+			}
+			$mensagem .="</table>";
+			$this->mail->IsHTML(true);
+			$this->mail->Subject  = $assunto;
+			$this->mail->Body = $mensagem;		
+			$this->mail->Send();
+			$this->mail->ClearAllRecipients();
+			$this->mail->ClearAttachments();								
+			}
+		}
 	}
 
-	public function mailReprovar($email, $emailAprovador, $id_projeto, $nomeCliente, $codProposta, $data, $tipodespesa, $Vlr_total)
-	{
-		$email_enviar = $email.",".$emailAprovador;
-		$assunto = "Despesas Rejeitadas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
-
-		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
-		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
-		$cabecalho .= "Return-Path: $email_enviar \r\n";
-		$cabecalho .= "From: $email_enviar \r\n";
-		$cabecalho .= "Reply-To: $email_enviar \r\n";
-
-		$mensagem = "<h3>Não foram aprovadas as despesas do projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.",conforme abaixo:</h3>";
-		$mensagem .= "<table border='0'><tr><td><b>Data </b></td><td><b>Despesa </b></td><td><b>  Valor Total R$ </b></td></tr>";
-		$mensagem .= "<tr align='center'><td>".$data."</td><td>".$tipodespesa."</td><td>".$Vlr_total."</td></tr>";
-		$mensagem .= "</table>";
-		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
-	}
-
-
-	public function mailPendente($email, $emailAprovador, $nomeFuncionario, $id_projeto, $nomeCliente, $codProposta)
+	public function mailPendente($email, $nomeFuncionario, $id_projeto, $nomeCliente, $codProposta)
 	{	
 		$email_enviar = $email;
 
 		if (!empty($emailAprovador)) {
 			if (strstr($emailAprovador, ",")) {
-				$val = '';
 				$arr = preg_split('/[^\w@\.]+/', $emailAprovador);
 				foreach ($arr as $key => $value) {
-					$val .= $value.",";
+					$this->mail->addAddress($value);
 				}
-				$val = substr($val,0,-1);
-				$email_enviar = $val;
 			} else {
-				$email_enviar = $emailAprovador;
+				$this->mail->addAddress($emailAprovador);
 			}
 		}
+		$assunto = utf8_decode("Aprovação do Reembolso das Despesas - Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta);
+		$mensagem = "<h3>Existem despesas do profissional : ".$nomeFuncionario." <br /> No projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.", <br />Pendentes para a aprovação.</h3>";
 
-		$assunto = "Aprovação do Reembolso das Despesas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
-
-		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
-		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
-		$cabecalho .= "Return-Path: $email_enviar \r\n";
-		$cabecalho .= "From: $email_enviar \r\n";
-		$cabecalho .= "Reply-To: $email_enviar \r\n";
-
-		$mensagem = "<h3>Existem despesas do profissional : ".$nomeFuncionario." no projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.", pendentes para a aprovação.</h3>";
-		
-		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+		$this->mail->IsHTML(true);
+		$this->mail->Subject  = $assunto; // Assunto da mensagem
+		$this->mail->Body = $mensagem;		
+		$this->mail->Send();
+		$this->mail->ClearAllRecipients();
+		$this->mail->ClearAttachments();
 	}
 
 }

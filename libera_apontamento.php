@@ -37,6 +37,9 @@ if ($action == APROVA_H) {
 		foreach ($aprova as $id => $Aprovado) {
 			$success = $apontamento->Aprova($id, $Aprovado);
 		}
+
+		$array = $apontamento->MontaArray($aprova);
+		$apontamento->MailAprovacao($array);
 	}
 	$msg     = $apontamento->msg; 
 	header("LOCATION:libera_apontamento.php?id_projeto=".$apontamento->id_projeto."&id_funcionario=".$apontamento->id_funcionario."&msg=".$msg."&success=".$success);
@@ -47,6 +50,9 @@ if ($action == APROVA_D) {
 		foreach ($aprova as $id => $Aprovado) {
 			$success = $projetodespesa->Aprova($id, $Aprovado);
 		}
+		
+		$array = $projetodespesa->MontaArray($aprova);
+		$projetodespesa->MailAprovacao($array);
 	}
 	$msg     = $projetodespesa->msg; 
 	header("LOCATION:libera_apontamento.php?id_projeto=".$projetodespesa->id_projeto."&id_funcionario=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success.'#despesa');

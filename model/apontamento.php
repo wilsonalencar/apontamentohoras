@@ -199,17 +199,6 @@ class apontamento extends app
 				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 				return false;	
 			}
-
-			$inmail = $this->carregaHoras($id);
-			if ($status == funcionalidadeConst::APROVADO) {
-				$this->mailAprovar($inmail['email'], 'luciafcastro.lfc@gmail.com', $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta'], $inmail['data'], $inmail['horas'], $inmail['atividade']);
-			}
-
-			if ($status == funcionalidadeConst::REJEITADO) {
-				$this->mailReprovar($inmail['email'], 'luciafcastro.lfc@gmail.com', $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta'], $inmail['data'], $inmail['horas'], $inmail['atividade']);
-			}
-			$this->msg = "Apontamentos atualizados com sucesso!";
-			return true;
 		}
 		$this->msg = "Apontamentos atualizados com sucesso!";
 		return true;
@@ -250,6 +239,56 @@ class apontamento extends app
 		} 
 		return "Não Aprovado";
 	}
+	
+	public function MontaArray($array){
+		$val = '';
+		foreach ($array as $key => $value) {
+			if ($value != funcionalidadeConst::PENDENTE) {
+				$val .= "'";
+				$val .= $key."',";
+			}
+		}
+		$val = substr($val, 0, -1);
+		
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT 
+					A.id,
+				    A.id_funcionario,
+				    A.id_projeto,
+				    A.Aprovado,
+				    A.Qtd_hrs_real,
+				    A.observacao as atividade,
+				    A.Data_apontamento AS data,
+				    C.codigo AS codProposta,
+				    D.email AS email,
+				    D.nome AS nomeFuncionario,
+				    E.nome AS nomeCliente
+				FROM
+				    projetohoras A
+				        INNER JOIN
+				    projetos B ON A.id_projeto = B.id
+				        INNER JOIN
+				    propostas C ON B.id_proposta = C.id
+				        INNER JOIN
+				    funcionarios D ON A.id_funcionario = D.id
+				        INNER JOIN
+				    clientes E ON B.id_cliente = E.id
+				WHERE A.id in (".$val.") order by A.id ;";
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no envio de emails";	
+			return false;	
+		}
+
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)){
+			$timestamp = strtotime($row['data']);
+			$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
+			$row['data'] = date("d/m/Y", $timestamp);
+			$this->array['dados'][$row['email']][$row['id']] = $row;
+		}
+		return $this->array;
+	}
+
 	public function carregaHoras($id)
 	{	
 		$conn = $this->getDB->mysqli_connection;
@@ -428,40 +467,55 @@ class apontamento extends app
 		return true;	
 	}
 
-	public function mailAprovar($email, $emailAprovador, $id_projeto, $nomeCliente, $codProposta, $data, $horas, $atividade)
+	public function mailAprovacao($array)
 	{
-		$email_enviar = $email.",".$emailAprovador;
-		$assunto = "Horas aprovadas - Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
-
-		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
-		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
-		$cabecalho .= "Return-Path: $email_enviar \r\n";
-		$cabecalho .= "From: $email_enviar \r\n";
-		$cabecalho .= "Reply-To: $email_enviar \r\n";
-
-		$mensagem = "<h3>Foram aprovadas as horas do projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.",conforme abaixo:</h3>";
-		$mensagem .= "<table border='0'><tr><td><b>Data </b></td><td><b>Horas </b></td><td><b>  Atividade </b></td></tr>";
-		$mensagem .= "<tr align='center'><td>".$data."</td><td>".$horas."</td><td>".$atividade."</td></tr>";
-		$mensagem .= "</table>";
-		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
-	}
-
-	public function mailReprovar($email, $emailAprovador, $id_projeto, $nomeCliente, $codProposta, $data, $horas, $atividade)
-	{
-		$email_enviar = $email.",".$emailAprovador;
-		$assunto = "Horas Rejeitadas - Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
-
-		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
-		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
-		$cabecalho .= "Return-Path: $email_enviar \r\n";
-		$cabecalho .= "From: $email_enviar \r\n";
-		$cabecalho .= "Reply-To: $email_enviar \r\n";
-
-		$mensagem = "<h3>Foram rejeitadas as horas do projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.",conforme abaixo:</h3>";
-		$mensagem .= "<table border='0'><tr><td><b>Data </b></td><td><b>Horas </b></td><td><b>  Atividade </b></td></tr>";
-		$mensagem .= "<tr align='center'><td>".$data."</td><td>".$horas."</td><td>".$atividade."</td></tr>";
-		$mensagem .= "</table>";
-		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+		foreach ($array as $dados => $valores) {
+			foreach ($valores as $email => $apontamentos) {
+			$this->mail->addAddress($email);
+			$assunto = utf8_decode("Seus apontamentos receberam Interações");
+			$mensagem = "<h3>Seus apontamentos receberam interações, conforme abaixo :</h3>
+							<table border='2'>
+								<tr>
+									<td align='center'>
+										<b> Cliente </b>
+									</td>
+									<td align='center'>
+										<b> Projeto </b>
+									</td>
+									<td align='center'>
+										<b> Data </b>
+									</td>
+									<td align='center'>
+										<b> Aprovado </b>
+									</td>
+									<td align='center'>
+										<b> Atividade </b>
+									</td>
+									<td align='center'> 
+										<b> Horas </b>
+									</td>
+								</tr>";
+			//Corpo do Email
+			foreach ($apontamentos as $key => $value) {
+				$mensagem .= "<tr align='center'>
+									<td width='20%'>".$value['nomeCliente']."</td>
+									<td width='15%'>".$value['id_projeto'] ."--". $value['codProposta']."</td>
+									<td width='20%'>".$value['data']."</td>
+									<td width='10%'>".$value['Aprovado']."</td>
+									<td width='20%'>".$value['atividade']."</td>
+									<td width='10%'>".$value['Qtd_hrs_real']."</td>
+								</tr>";
+			}
+			$mensagem .="</table>";
+			
+			$this->mail->IsHTML(true);
+			$this->mail->Subject  = $assunto;
+			$this->mail->Body = $mensagem;		
+			$this->mail->Send();
+			$this->mail->ClearAllRecipients();
+			$this->mail->ClearAttachments();								
+			}
+		}
 	}
 
 
@@ -470,28 +524,25 @@ class apontamento extends app
 		$email_enviar = $email;
 		if (!empty($emailAprovador)) {
 			if (strstr($emailAprovador, ",")) {
-				$val = '';
+
 				$arr = preg_split('/[^\w@\.]+/', $emailAprovador);
 				foreach ($arr as $key => $value) {
-					$val .= $value.",";
+					$this->mail->addAddress($value);
 				}
-				$val = substr($val,0,-1);
-				$email_enviar = $val;
 			} else {
-				$email_enviar = $emailAprovador;
+				$this->mail->addAddress($emailAprovador);
 			}
 		}
 
-		$assunto = "Aprovação das Horas – Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta;
+		$assunto = utf8_decode("Aprovação das Horas - Projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta);
+		$mensagem = "<h3>Existem horas do(a) profissional(a) : ".$nomeFuncionario." <br /> No projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta." <br /> Pendentes para a aprovação.</h3>";
 
-		$cabecalho = 'MIME-Version: 1.0' . "\r\n";
-		$cabecalho .= 'Content-type: text/html; charset=iso-8859-1;' . "\r\n";
-		$cabecalho .= "Return-Path: $email_enviar \r\n";
-		$cabecalho .= "From: $email_enviar \r\n";
-		$cabecalho .= "Reply-To: $email_enviar \r\n";
-
-		$mensagem = "<h3>Existem horas do profissional : ".$nomeFuncionario." no projeto ".$id_projeto." - ".$nomeCliente." - ".$codProposta.", pendentes para a aprovação.</h3>";
-		//mail($email_enviar, $assunto, $mensagem, $cabecalho);
+		$this->mail->IsHTML(true);
+		$this->mail->Subject  = $assunto; // Assunto da mensagem
+		$this->mail->Body = $mensagem;		
+		$this->mail->Send();
+		$this->mail->ClearAllRecipients();
+		$this->mail->ClearAttachments();
 	}
 }
 

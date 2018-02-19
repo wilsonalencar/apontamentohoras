@@ -2,7 +2,7 @@
 session_start();
 require_once('database.php');
 require_once('funcionalidadeConst.php');
-
+require_once('PHPMailer/PHPMailer.php');
 /**
 * Lucas Alencar
 */
@@ -10,11 +10,12 @@ class app extends config
 {	
 	const STATUS_SISTEMA_ATIVO = 'A';
 	const STATUS_SISTEMA_INATIVO = 'I';
-
+	public $mail;
 	public $getDB;
  	public function __construct(){
  		$this->validLogin();
  		$this->getDB = new dba;
+ 		$this->mail = new PHPMailer;
 
  		if (!$this->validAccess()) {
  			header('LOCATION:index.php');

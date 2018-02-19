@@ -58,7 +58,7 @@
             <div class="card-content">
                 <a href="#" data-toggle="modal" data-target="#ModalPesquisa">Selecione o Projeto</a><br><br>
                 <div class="table-responsive">  
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="display: none;" >
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="display:none" >
                         <thead>
                             <tr>
                                 <th>Recurso</th>
