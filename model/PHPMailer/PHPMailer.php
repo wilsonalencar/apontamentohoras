@@ -80,7 +80,7 @@ class PHPMailer
      *
      * @var string
      */
-    public $FromName = 'Lucas Alencar';
+    public $FromName = 'Gestão de Projetos';
 
     /**
      * The envelope sender of the message.
