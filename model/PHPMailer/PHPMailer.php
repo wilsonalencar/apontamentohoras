@@ -73,7 +73,7 @@ class PHPMailer
      *
      * @var string
      */
-    public $From = 'lucas.saboreweb@gmail.com';
+    public $From = 'gestaoprojetosbravobpo@gmail.com';
 
     /**
      * The From name of the message.
@@ -292,14 +292,14 @@ class PHPMailer
      *
      * @var string
      */
-    public $Username = 'lucas.saboreweb@gmail.com';
+    public $Username = 'gestaoprojetosbravobpo@gmail.com';
 
     /**
      * SMTP password.
      *
      * @var string
      */
-    public $Password = 'squirreladmin';
+    public $Password = 'Bravotax2018';
 
     /**
      * SMTP auth type.
