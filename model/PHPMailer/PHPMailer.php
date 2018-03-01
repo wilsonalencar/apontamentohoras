@@ -338,7 +338,7 @@ class PHPMailer
      *
      * @var int
      */
-    public $SMTPDebug = 2;
+    public $SMTPDebug = 1;
 
     /**
      * How to handle debug output.
