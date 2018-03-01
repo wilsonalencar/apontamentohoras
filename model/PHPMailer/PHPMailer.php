@@ -239,7 +239,7 @@ class PHPMailer
      *
      * @var int
      */
-    public $Port = 465;
+    public $Port = 587;
 
     /**
      * The SMTP HELO of the message.
