@@ -541,11 +541,6 @@ class apontamento extends app
 		$this->mail->Subject  = $assunto; // Assunto da mensagem
 		$this->mail->Body = $mensagem;		
 		$this->mail->Send();
-
-		echo "<pre>";
-		print_r($this->mail);
-		echo "</pre>";exit;
-		
 		$this->mail->ClearAllRecipients();
 		$this->mail->ClearAttachments();
 	}
