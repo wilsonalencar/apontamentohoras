@@ -21,6 +21,7 @@ class projeto extends app
 	public $msg;
 	public $array;
 	public $array_Fin;
+	public $array_Fin_precificacao;
 	public $fileAnexo;
 
 
@@ -132,6 +133,60 @@ class projeto extends app
 		$this->array = $result->fetch_array(MYSQLI_ASSOC);
 		return true;
 	}
+
+	public function calcPrecificacao($id_projeto)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT SUM(Vlr_parcela_cimp) as receita_bruta, SUM(Vlr_parcela_simp) as receita_liquida FROM projetoprevisaofat where id_projeto = ".$id_projeto.";";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		$result = $result->fetch_array(MYSQLI_ASSOC);
+		$this->array_Fin_precificacao['receita_liquida'] = $result['receita_liquida'];
+		$this->array_Fin_precificacao['receita_bruta'] = $result['receita_bruta'];
+
+		$query = "SELECT A.id as id_apontamento, A.id_funcionario, A.Qtd_hrs_real, B.mes_alocacao, B.Vlr_taxa_compra, C.valor_taxa FROM projetohoras A LEFT JOIN projetorecursos B ON A.id_perfilprofissional = B.id_perfilprofissional INNER JOIN funcionarios C ON A.id_funcionario = C.id WHERE A.id_projeto = ".$id_projeto.";";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+
+		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
+			$dados[] = $array;	
+		}
+		$this->array_Fin_precificacao['custos_direto'] = 0;
+		foreach ($dados as $key => $value) {
+			$soma = $value['Vlr_taxa_compra'] * $value['Qtd_hrs_real'];
+			if (empty($value['Vlr_taxa_compra'])) {
+				$soma = $value['valor_taxa'] * $value['Qtd_hrs_real'];
+			}
+			$dados[$key]['total'] = $soma;
+			$this->array_Fin_precificacao['custos_direto'] += $soma;
+		}
+		$this->array_Fin_precificacao['CM1'] = 0;
+		if (!empty($this->array_Fin_precificacao['receita_liquida']) && !empty($this->array_Fin_precificacao['custos_direto'])) {
+			$this->array_Fin_precificacao['CM1'] = $this->array_Fin_precificacao['receita_liquida'] - $this->array_Fin_precificacao['custos_direto'];
+		}
+
+		$this->array_Fin_precificacao['CM1%'] = 0;
+		if ($this->array_Fin_precificacao['CM1'] > 0 && !empty($this->array_Fin_precificacao['receita_liquida'])) {
+			$this->array_Fin_precificacao['CM1%'] = (($this->array_Fin_precificacao['CM1'] * 100)/$this->array_Fin_precificacao['receita_liquida']); 
+		}
+
+		//formatando valores
+		$this->array_Fin_precificacao['receita_liquida'] = number_format($this->array_Fin_precificacao['receita_liquida'], 2, ',', '.'); 
+		$this->array_Fin_precificacao['receita_bruta'] = number_format($this->array_Fin_precificacao['receita_bruta'], 2, ',', '.'); 
+		$this->array_Fin_precificacao['custos_direto'] = number_format($this->array_Fin_precificacao['custos_direto'], 2, ',', '.'); 
+		$this->array_Fin_precificacao['CM1'] = number_format($this->array_Fin_precificacao['CM1'], 2, ',', '.'); 
+		$this->array_Fin_precificacao['CM1%'] = number_format($this->array_Fin_precificacao['CM1%'], 2, ',', '.'); 
+
+
+		return $this->array_Fin_precificacao;
+	}
+
 
 	public function calcFinanceiro($id_projeto)
 	{	
@@ -374,7 +429,6 @@ class projeto extends app
 		return $this->array_Fin;
 	}
 
-
 	private function formatStatusL($status)
 	{
 		if ($status == 'S') {
@@ -456,7 +510,7 @@ class projeto extends app
 			        INNER JOIN
 			    projetostatus D ON A.id_status = D.id
 			        INNER JOIN
-			    projetorecursos E ON A.id = E.id_projeto
+			    liberarprojeto E ON A.id = E.id_projeto
 					INNER JOIN 
 				funcionarios F ON A.id_gerente = F.id
 			";
@@ -477,7 +531,7 @@ class projeto extends app
 		}
 
 		$query .= " GROUP BY A.id ;";
-
+		
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
 			$query = sprintf("SELECT 
 						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta

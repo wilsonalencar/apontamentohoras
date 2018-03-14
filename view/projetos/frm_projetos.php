@@ -38,7 +38,8 @@
                               <ul class="tabs">
                                   <li class="tab col s3"><a href="#test1">Dados</a></li>
                                   <li class="tab col s3 disabled" id="divDespesas"><a href="#despesa">Despesas</a></li>
-                                  <li class="tab col s3 disabled" id="divFluxoFin"><a href="#fluxoFin">Fluxo Financeiro</a></li>
+                                  <li class="tab col s3 disabled" id="divFluxoFin"><a href="#precificacao">Precificação</a></li>
+                                  <!-- <li class="tab col s3 disabled" id="divFluxoFin"><a href="#fluxoFin">Fluxo Financeiro</a></li> -->
                               </ul>
                             </div>
 
@@ -242,8 +243,6 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
-                                                                    </th>
-                                                                    <th align="center">
                                                                         <a href="#" data-toggle="modal" data-target="#ModalRecursos" style="color : #fff;">+</a>
                                                                     </th>
                                                                 </tr>
@@ -251,11 +250,10 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <th>Perfil</th>
-                                                                    <th>Profissional</th>
                                                                     <th>Taxa Compra</th>
+                                                                    <th>Taxa Venda</th>
                                                                     <th>Mês / Ano</th>
                                                                     <th>Horas Estimadas</th>
-                                                                    <th>Horas Realizadas</th>
                                                                     <td></td>
                                                                 </tr>
                                                                 <?php
@@ -263,16 +261,11 @@
                                                                 foreach($projetorecursos->array as $row){ ?>
                                                                     <tr class="odd gradeX">
                                                                         <td><?php echo $row['nomePerfil']; ?></td>
-                                                                        <td><?php echo $row['nomeFuncionario']; ?></td>
                                                                         <td>R$ <?php echo $row['Vlr_taxa_compra']; ?></td>
+                                                                        <td>R$ <?php echo $row['Vlr_taxa_venda']; ?></td>
                                                                         <td><?php echo $row['mes_alocacao']; ?></td>
                                                                         <td><?php echo $row['Qtd_hrs_estimada']; ?></td>
-                                                                        <td><?php echo $projetorecursos->getHorasReais($row['id_projeto'], $row['id_funcionario'], $row['mes_alocacao']) ?></td>
-                                                                        <td><?php if ($projetorecursos->getHorasReais($row['id_projeto'], $row['id_funcionario'], $row['mes_alocacao']) > 0) { ?>
-                                                                        <?php } else { ?>
-                                                                            <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
-                                                                        <?php } ?>
-                                                                        </td>
+                                                                        <td> <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i> </td>
                                                                     </tr>
                                                                 <?php } }?>
                                                             </tbody>
@@ -394,12 +387,11 @@
                                                 </select> 
                                             </div>
                                             <div class="col s1"></div>
-                                            <div class="col s4">
-                                                <label for="id_funcionario">Profissional</label>
-                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm funcionario_perfilprofissional">
-                                                  <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelect(); ?>
-                                                </select> 
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="vlr_taxa_venda">Taxa Venda R$</label>
+                                                  <input type="text" onkeypress="moeda(this)" id="vlr_taxa_venda" name="vlr_taxa_venda" class="validate" maxlength="255">
+                                                </div>
                                             </div>
                                           </div>
                                             <div class="row">
@@ -642,7 +634,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div id="fluxoFin" class="col s12">
+                                <!-- <div id="fluxoFin" class="col s12">
                                     <div class="card-content">
                                         <div class="row">
                                             <div class="col s2">
@@ -811,6 +803,83 @@
 
 
                                     </div>
+                                </div> -->
+                                <div id="precificacao">
+                                     <div class="card-content">
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Código do Projeto : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p><?php echo $projeto->id; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Cliente : </b></p>
+                                            </div>
+                                            <div class="col s6">
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Proposta : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col s2">
+                                                <p><b>Pilar : </b></p>
+                                            </div>
+                                            <div class="col s2">
+                                                <p class="pilar"><?php echo $projeto->id_pilar; ?></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr style="background: #c0392b;">
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> P & L </p>
+                                                        </th>
+                                                        <th align="left">
+                                                            <p style="color : #fff;"> TOTAL </p>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="odd gradeX">
+                                                        <td>RECEITA BRUTA</td>
+                                                        <td>R$ <?php echo $precificacao['receita_bruta']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>RECEITA LÍQUIDA</td>
+                                                        <td>R$ <?php echo $precificacao['receita_liquida']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>CUSTOS DIRETOS</td>
+                                                        <td>R$ <?php echo $precificacao['custos_direto']; ?></td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>CM1</td>
+                                                        <td><?php echo $precificacao['CM1']; ?> %</td>
+                                                    </tr>
+                                                    <tr class="odd gradeX">
+                                                        <td>CM1%</td>
+                                                        <td><?php echo $precificacao['CM1%']; ?> %</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
                                 </div>
                         </div>
                   <div class="clearBoth"></div>
@@ -853,22 +922,6 @@
 <script>
 
 $( document ).ready(function() {
-    $( "#id_perfilprofissional" ).change(function() {
-        $("#vlr_taxa_compra").val('');
-        $.ajax({
-            url : "<?php echo app::dominio; ?>projetos.php",
-            type: 'post',
-            dataType: 'HTML',
-            data: {"action": 5, "id_perfilprofissional": $(this).val()},
-            success: function(d){
-                $('.funcionario_perfilprofissional').html(d);
-            }
-        });
-    });
-
-    $( "#id_funcionario" ).change(function() {
-        $("#vlr_taxa_compra").val($('option:selected', this).attr('valor_taxa'));
-    });
 
     $( "#Vlr_parcela_cimp" ).blur(function() {
         var money = document.getElementById('Vlr_parcela_cimp').value.replace( '.', '' );

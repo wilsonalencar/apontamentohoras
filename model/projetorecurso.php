@@ -13,6 +13,7 @@ class projetorecurso extends app
 	public $mes_alocacao;
 	public $Qtd_hrs_estimada;
 	public $Vlr_taxa_compra;
+	public $Vlr_taxa_venda;
 	public $msg;
 	public $array;
 
@@ -26,11 +27,6 @@ class projetorecurso extends app
 
 		if (empty($this->id_perfilprofissional)) {
 			$this->msg = "Insira o perfil profissional.";
-			return false;
-		}
-
-		if (empty($this->id_funcionario)) {
-			$this->msg = "Insira o funcionário .";
 			return false;
 		}
 
@@ -54,6 +50,11 @@ class projetorecurso extends app
 			return false;
 		}
 
+		if (empty($this->Vlr_taxa_venda)) {
+			$this->msg = "Insira o Valor da taxa de venda do recurso.";
+			return false;
+		}
+
 		if (!$this->checkExiste()) {
 			return false;
 		}
@@ -64,7 +65,7 @@ class projetorecurso extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT id FROM projetorecursos WHERE id_projeto = %d AND id_funcionario = %d AND mes_alocacao= '%s'", $this->id_projeto, $this->id_funcionario, $this->mes_alocacao);	
+		$query = sprintf("SELECT id FROM projetorecursos WHERE id_projeto = %d AND id_perfilprofissional = %d AND mes_alocacao= '%s'", $this->id_projeto, $this->id_perfilprofissional, $this->mes_alocacao);	
 			
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro durante a verificação da disponibilidade do recurso.";
@@ -72,7 +73,7 @@ class projetorecurso extends app
 		}
 		
 		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
-			$this->msg = "Desculpe, já existe uma estimativa criada para esse funcionario, nesse mesmo mês/ano e projeto.";
+			$this->msg = "Desculpe, já existe uma estimativa criada para esse perfil, nesse mesmo mês/ano e projeto.";
 			return false;			
 		}
 		return true;
@@ -93,9 +94,9 @@ class projetorecurso extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetorecursos (id_projeto, id_perfilprofissional, id_funcionario, mes_alocacao, Qtd_hrs_estimada, Vlr_taxa_compra, usuario)
+		$query = sprintf(" INSERT INTO projetorecursos (id_projeto, id_perfilprofissional, Vlr_taxa_venda, mes_alocacao, Qtd_hrs_estimada, Vlr_taxa_compra, usuario)
 		VALUES (%d ,%d, %d, '%s', %d, %d, '%s')", 
-			$this->id_projeto, $this->id_perfilprofissional, $this->id_funcionario, $this->mes_alocacao, $this->Qtd_hrs_estimada,$this->Vlr_taxa_compra, $_SESSION['email']);	
+			$this->id_projeto, $this->id_perfilprofissional, $this->Vlr_taxa_venda, $this->mes_alocacao, $this->Qtd_hrs_estimada,$this->Vlr_taxa_compra, $_SESSION['email']);	
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -144,41 +145,39 @@ class projetorecurso extends app
 		$query = sprintf("SELECT 
 						    A.id,
 						    A.id_projeto,
-						    A.id_funcionario,
 						    A.mes_alocacao,
 						    A.id_perfilprofissional,
 						    A.Qtd_hrs_estimada,
 						    A.Vlr_taxa_compra,
-						    B.nome as nomePerfil,
-						    C.nome as nomeFuncionario
+						    A.Vlr_taxa_venda,
+						    B.nome as nomePerfil
 						FROM
 						    projetorecursos A
 						INNER JOIN
 						    perfilprofissional B ON A.id_perfilprofissional = B.id
-				        INNER JOIN
-						    funcionarios C ON A.id_funcionario = C.id
 						WHERE
 						    A.id_projeto = %d", $id_projeto);
-		
+
 		if (!$result = $conn->query($query)) {
-			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	
+			$this->msg = "Ocorreu um erro no carregamento dos perfis profissionais.";	
 			return false;	
 		}
+
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 			$row['Vlr_taxa_compra'] = number_format($row['Vlr_taxa_compra'], 2, ',', '.');
+			$row['Vlr_taxa_venda'] = number_format($row['Vlr_taxa_venda'], 2, ',', '.');
 			$this->array[] = $row;
 		}
 	}
 
-	public function getHorasReais($id_projeto, $id_funcionario, $mes_alocacao){
+	public function getHorasReais($id_projeto, $id_perfilprofissional, $mes_alocacao){
 		$data = explode("/", $mes_alocacao);
 		
 		$d1 = $data[1].'-'.$data[0].'-01';
 		$d2 = $data[1].'-'.$data[0].'-31';
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT SUM(Qtd_hrs_real) as Qtd_hrs_real FROM projetohoras WHERE id_projeto = ".$id_projeto." AND id_funcionario =".$id_funcionario." AND data_apontamento BETWEEN "."'".$d1."'"." AND "."'".$d2."'"."";
+		$query = "SELECT SUM(Qtd_hrs_real) as Qtd_hrs_real FROM projetohoras WHERE id_projeto = ".$id_projeto." AND id_perfilprofissional =".$id_perfilprofissional." AND data_apontamento BETWEEN "."'".$d1."'"." AND "."'".$d2."'"."";
 
-		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	
 			return false;	

@@ -16,7 +16,6 @@ define('SAVE', 1);
 define('GET', 2);
 define('ANEXAR', 3);
 define('ANEXAR_DELETE', 4);
-define('MONTASELECTAJAXFUNCIONARIOS', 5);
 
 $projeto 				= new projeto;
 $proposta 				= new proposta;
@@ -40,6 +39,8 @@ $projeto->data_inicio  			= $projeto->getRequest('data_inicio', 0);
 $projeto->data_fim  			= $projeto->getRequest('data_fim', '');
 $projeto->status		  		= $projeto->getRequest('status', 1);
 $financeiro 					= $projeto->calcFinanceiro($projeto->getRequest('id'));
+$precificacao 					= $projeto->calcPrecificacao($projeto->getRequest('id'));
+
 
 $success 	= $projeto->getRequest('success', 0);
 $msg 		= $projeto->getRequest('msg', '');
@@ -89,11 +90,6 @@ if ($action == ANEXAR_DELETE) {
 	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
 }
 
-if ($action == MONTASELECTAJAXFUNCIONARIOS) {
-	$funcionario->id_perfilprofissional = $funcionario->getRequest('id_perfilprofissional', '');
-	echo $funcionario->montaSelect(0, 0, $funcionario->id_perfilprofissional, true);
-	exit;
-}
  
 require_once('view/projetos/frm_projetos.php');
 ?>

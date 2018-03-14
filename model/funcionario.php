@@ -67,10 +67,14 @@ class funcionario extends app
 		$query = "SELECT 
 					A.id, A.nome, A.valor_taxa
 				FROM 
-					funcionarios A
-				LEFT JOIN 
-					projetorecursos B on A.id = B.id_funcionario
-				WHERE 1 = 1 ";
+					funcionarios A ";
+
+		if ($id_projeto > 0) {
+			$query .= " LEFT JOIN 
+			liberarprojeto B on A.id = B.id_funcionario ";
+		}
+				
+		$query .= " WHERE 1 = 1 ";
 
 				$query .= sprintf(" AND A.status = '%s' ", $this::STATUS_SISTEMA_ATIVO);
 
@@ -83,6 +87,7 @@ class funcionario extends app
 				}
 				 
 		$query .= " GROUP BY A.id";
+		
 		if($result = $conn->query($query))
 		{
 			if ($option) {
