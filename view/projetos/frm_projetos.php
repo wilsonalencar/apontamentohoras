@@ -869,7 +869,7 @@
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>CM1</td>
-                                                        <td><?php echo $precificacao['CM1']; ?> %</td>
+                                                        <td>R$ <?php echo $precificacao['CM1']; ?></td>
                                                     </tr>
                                                     <tr class="odd gradeX">
                                                         <td>CM1%</td>
