@@ -148,7 +148,7 @@ class projeto extends app
 		$this->array_Fin_precificacao['receita_liquida'] = $result['receita_liquida'];
 		$this->array_Fin_precificacao['receita_bruta'] = $result['receita_bruta'];
 
-		$query = "SELECT A.id as id_apontamento, A.id_funcionario, B.Qtd_hrs_estimada, B.mes_alocacao, B.Vlr_taxa_compra FROM projetohoras A LEFT JOIN projetorecursos B ON A.id_perfilprofissional = B.id_perfilprofissional WHERE A.id_projeto = ".$id_projeto.";";
+		$query = "SELECT A.id, A.Qtd_hrs_estimada, A.mes_alocacao, A.Vlr_taxa_compra FROM projetorecursos A WHERE A.id_projeto = ".$id_projeto.";";
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
@@ -158,6 +158,7 @@ class projeto extends app
 		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
 			$dados[] = $array;	
 		}
+
 		$this->array_Fin_precificacao['custos_direto'] = 0;
 		if (!empty($dados)) {
 			foreach ($dados as $key => $value) {
