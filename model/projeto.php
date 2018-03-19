@@ -158,19 +158,22 @@ class projeto extends app
 			$dados[] = $array;	
 		}
 		$this->array_Fin_precificacao['custos_direto'] = 0;
-		foreach ($dados as $key => $value) {
-			$soma = $value['Vlr_taxa_compra'] * $value['Qtd_hrs_real'];
-			if (empty($value['Vlr_taxa_compra'])) {
-				$soma = $value['valor_taxa'] * $value['Qtd_hrs_real'];
+		if (!empty($dados)) {
+			foreach ($dados as $key => $value) {
+				$soma = $value['Vlr_taxa_compra'] * $value['Qtd_hrs_real'];
+				if (empty($value['Vlr_taxa_compra'])) {
+					$soma = $value['valor_taxa'] * $value['Qtd_hrs_real'];
+				}
+				$dados[$key]['total'] = $soma;
+				$this->array_Fin_precificacao['custos_direto'] += $soma;
 			}
-			$dados[$key]['total'] = $soma;
-			$this->array_Fin_precificacao['custos_direto'] += $soma;
+
 		}
+		
 		$this->array_Fin_precificacao['CM1'] = 0;
 		if (!empty($this->array_Fin_precificacao['receita_liquida']) && !empty($this->array_Fin_precificacao['custos_direto'])) {
 			$this->array_Fin_precificacao['CM1'] = $this->array_Fin_precificacao['receita_liquida'] - $this->array_Fin_precificacao['custos_direto'];
 		}
-
 		$this->array_Fin_precificacao['CM1%'] = 0;
 		if ($this->array_Fin_precificacao['CM1'] > 0 && !empty($this->array_Fin_precificacao['receita_liquida'])) {
 			$this->array_Fin_precificacao['CM1%'] = (($this->array_Fin_precificacao['CM1'] * 100)/$this->array_Fin_precificacao['receita_liquida']); 
@@ -181,8 +184,7 @@ class projeto extends app
 		$this->array_Fin_precificacao['receita_bruta'] = number_format($this->array_Fin_precificacao['receita_bruta'], 2, ',', '.'); 
 		$this->array_Fin_precificacao['custos_direto'] = number_format($this->array_Fin_precificacao['custos_direto'], 2, ',', '.'); 
 		$this->array_Fin_precificacao['CM1'] = number_format($this->array_Fin_precificacao['CM1'], 2, ',', '.'); 
-		$this->array_Fin_precificacao['CM1%'] = number_format($this->array_Fin_precificacao['CM1%'], 2, ',', '.'); 
-
+		$this->array_Fin_precificacao['CM1%'] = number_format($this->array_Fin_precificacao['CM1%'], 2, ',', '.'); 			
 
 		return $this->array_Fin_precificacao;
 	}
