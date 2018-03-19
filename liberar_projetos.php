@@ -25,7 +25,7 @@ $msg 							= $liberaprojetos->getRequest('msg', '');
 $success 						= $liberaprojetos->getRequest('success', '');	
 $action 						= $liberaprojetos->getRequest('action', 0);
 
-$lista = $liberaprojetos->list($liberaprojetos->id_projeto);
+$lista = $liberaprojetos->listagem($liberaprojetos->id_projeto);
 
 if ($action == SAVE) {	
 	$success = $liberaprojetos->save();

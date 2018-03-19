@@ -104,7 +104,7 @@ class liberaprojetos extends app
 		return true;
 	}
 
-	public function list($projeto_id)
+	public function listagem($projeto_id)
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf("SELECT A.id, B.nome FROM liberarprojeto A INNER JOIN funcionarios B ON A.id_funcionario = B.id WHERE A.id_projeto = ".$projeto_id."");
