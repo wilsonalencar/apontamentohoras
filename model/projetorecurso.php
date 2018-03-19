@@ -95,9 +95,9 @@ class projetorecurso extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf(" INSERT INTO projetorecursos (id_projeto, id_perfilprofissional, Vlr_taxa_venda, mes_alocacao, Qtd_hrs_estimada, Vlr_taxa_compra, usuario)
-		VALUES (%d ,%d, %d, '%s', %d, %d, '%s')", 
+		VALUES (%d ,%d, '%s', '%s', %d, '%s', '%s')", 
 			$this->id_projeto, $this->id_perfilprofissional, $this->Vlr_taxa_venda, $this->mes_alocacao, $this->Qtd_hrs_estimada,$this->Vlr_taxa_compra, $_SESSION['email']);	
-		
+			
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	

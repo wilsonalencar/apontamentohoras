@@ -143,11 +143,12 @@ class projeto extends app
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
 		}
+
 		$result = $result->fetch_array(MYSQLI_ASSOC);
 		$this->array_Fin_precificacao['receita_liquida'] = $result['receita_liquida'];
 		$this->array_Fin_precificacao['receita_bruta'] = $result['receita_bruta'];
 
-		$query = "SELECT A.id as id_apontamento, A.id_funcionario, A.Qtd_hrs_real, B.mes_alocacao, B.Vlr_taxa_compra, C.valor_taxa FROM projetohoras A LEFT JOIN projetorecursos B ON A.id_perfilprofissional = B.id_perfilprofissional INNER JOIN funcionarios C ON A.id_funcionario = C.id WHERE A.id_projeto = ".$id_projeto.";";
+		$query = "SELECT A.id as id_apontamento, A.id_funcionario, B.Qtd_hrs_estimada, B.mes_alocacao, B.Vlr_taxa_compra FROM projetohoras A LEFT JOIN projetorecursos B ON A.id_perfilprofissional = B.id_perfilprofissional WHERE A.id_projeto = ".$id_projeto.";";
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
@@ -160,16 +161,12 @@ class projeto extends app
 		$this->array_Fin_precificacao['custos_direto'] = 0;
 		if (!empty($dados)) {
 			foreach ($dados as $key => $value) {
-				$soma = $value['Vlr_taxa_compra'] * $value['Qtd_hrs_real'];
-				if (empty($value['Vlr_taxa_compra'])) {
-					$soma = $value['valor_taxa'] * $value['Qtd_hrs_real'];
-				}
+				$soma = $value['Vlr_taxa_compra'] * $value['Qtd_hrs_estimada'];
 				$dados[$key]['total'] = $soma;
 				$this->array_Fin_precificacao['custos_direto'] += $soma;
 			}
-
 		}
-		
+
 		$this->array_Fin_precificacao['CM1'] = 0;
 		if (!empty($this->array_Fin_precificacao['receita_liquida']) && !empty($this->array_Fin_precificacao['custos_direto'])) {
 			$this->array_Fin_precificacao['CM1'] = $this->array_Fin_precificacao['receita_liquida'] - $this->array_Fin_precificacao['custos_direto'];
