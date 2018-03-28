@@ -17,19 +17,25 @@
 		   $ID = $b;
 		}
 
-		$quebraLinha = PHP_EOL;
+		//$quebraLinha = PHP_EOL;
+		$quebraLinha = '<br>';
 
 		//indice>
 		$txt .= 'CAD2200_01|';
 		$txt .= $ID.'|';
-		$txt .= $xml->evtAdmissao->vinculo->infoContrato->localTrabalho->localTrabGeral->nrInsc.'|'; //cnpj empregador
+		$txt .= $xml->evtAdmissao->ideEmpregador->nrInsc.'|'; //cnpj empregador
 
 		$indicadorExclusao = '|';
-		$identificadorRetificacao = '|';
+		$identificadorRetificacao = 'N|';
+
+
+		if ((int)$xml->evtAdmissao->ideEvento->indRetif === 2) {
+			$identificadorRetificacao = 'S|';
+		}
 
 		/* TRABALHADOR */
-		$txt .= $indicadorExclusao.'|';
-		$txt .= $identificadorRetificacao.'|';
+		$txt .= $indicadorExclusao;
+		$txt .= $identificadorRetificacao;
 		$txt .= $xml->evtAdmissao->trabalhador->cpfTrab.'|'; //cpf trabalhador
 		$txt .= $xml->evtAdmissao->trabalhador->nisTrab.'|'; //nis trabalhador
 		$txt .= $xml->evtAdmissao->trabalhador->nmTrab.'|'; //nome trabalhador
@@ -46,7 +52,6 @@
 		$txt .= $xml->evtAdmissao->trabalhador->nascimento->uf.'|';//uf trabalhador
 		$txt .= $xml->evtAdmissao->trabalhador->nascimento->paisNascto.'|';//pais nacto trabalhador 
 		$txt .= $xml->evtAdmissao->trabalhador->nascimento->paisNac.'|';//pais nacto trabalhador 
-		$txt .= $xml->evtAdmissao->trabalhador->nascimento->paisNac.'|';//pais nacto trabalhador 
 		$txt .= $xml->evtAdmissao->trabalhador->nascimento->nmMae.'|';//mae trabalhador 
 		$txt .= $xml->evtAdmissao->trabalhador->nascimento->nmPai.'|';//pai trabalhador 
 
@@ -56,6 +61,7 @@
 		$txt .= $resideExterior;
 		$txt .= $xml->evtAdmissao->trabalhador->endereco->brasil->tpLograd.'|';//tp lograd
 		$txt .= $xml->evtAdmissao->trabalhador->endereco->brasil->dscLograd.'|';
+		$txt .= $xml->evtAdmissao->trabalhador->endereco->brasil->nrLograd.'|';
 		$txt .= $xml->evtAdmissao->trabalhador->endereco->brasil->complemento.'|'; //complemento
 		$txt .= $xml->evtAdmissao->trabalhador->endereco->brasil->bairro.'|'; //bairro
 		$txt .= $xml->evtAdmissao->trabalhador->endereco->brasil->cep.'|'; //cep
@@ -95,10 +101,10 @@
 		
 
 		if (!empty($xml->evtAdmissao->trabalhador->dependente)) {
-			$txt .= $quebraLinha;
-			$txt .= 'CAD2200_02|';
-
+			
 			foreach($xml->evtAdmissao->trabalhador->dependente as $dependente) {
+				$txt .= $quebraLinha;
+				$txt .= 'CAD2200_02|';
 				$txt .= $dependente->tpDep.'|';
 				$txt .= $dependente->nmDep.'|'; 
 				$txt .= $dependente->dtNascto.'|';
@@ -165,7 +171,6 @@
 			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->cnpjSindCategProf.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->FGTS->opcFGTS.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->FGTS->dtOpcFGTS.'|';
-			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->FGTS->dtOpcFGTS.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->aprend->nrInsc.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->trabTemporario->hipLeg.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoRegimeTrab->infoCeletista->trabTemporario->justContr.'|';
@@ -193,7 +198,6 @@
 			$txt .= $xml->evtAdmissao->vinculo->infoContrato->horContratual->descTpJorn.'|'; // ????? 
 			$txt .= $xml->evtAdmissao->vinculo->infoContrato->horContratual->tmpParc.'|';
 
-			$txt .= $xml->evtAdmissao->vinculo->infoContrato->horContratual->tmpParc.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoContrato->localTrabalho->localTrabGeral->tpInsc.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoContrato->localTrabalho->localTrabGeral->nrInsc.'|';
 			$txt .= $xml->evtAdmissao->vinculo->infoContrato->localTrabalho->localTrabGeral->descComp.'|';
@@ -237,10 +241,9 @@
 
 		if (!empty($xml->evtAdmissao->vinculo->infoContrato->horContratual->horario)) {
 
-			$txt .= $quebraLinha;
-			$txt .= 'CAD2200_06|';
-
 			foreach($xml->evtAdmissao->vinculo->infoContrato->horContratual->horario as $horario) {
+				$txt .= $quebraLinha;
+				$txt .= 'CAD2200_06|';
 				$txt .= $horario->dia.'|';
 				$txt .= $horario->codHorContrat.'|';
 			}
@@ -259,6 +262,7 @@
 
 			$txt .= $xml->evtAdmissao->infoContrato->observacoes->observacao.'|'; //verificar
 		}
+
 
 		$name = str_replace('xml', 'txt', $file['name']);
 		$file = fopen($name, 'a');
