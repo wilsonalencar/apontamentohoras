@@ -26,16 +26,17 @@
 		$txt .= $xml->evtAdmissao->ideEmpregador->nrInsc.'|'; //cnpj empregador
 
 		$indicadorExclusao = '|';
-		$identificadorRetificacao = 'N|';
+		$identificadorRetificacao = 'N';
 
 
 		if ((int)$xml->evtAdmissao->ideEvento->indRetif === 2) {
-			$identificadorRetificacao = 'S|';
+			$identificadorRetificacao = 'S';
 		}
 
 		/* TRABALHADOR */
 		$txt .= $indicadorExclusao;
-		$txt .= $identificadorRetificacao;
+		$txt .= $identificadorRetificacao.'|';
+		
 		$txt .= $xml->evtAdmissao->trabalhador->cpfTrab.'|'; //cpf trabalhador
 		$txt .= $xml->evtAdmissao->trabalhador->nisTrab.'|'; //nis trabalhador
 		$txt .= $xml->evtAdmissao->trabalhador->nmTrab.'|'; //nome trabalhador
