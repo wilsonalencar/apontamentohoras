@@ -17,8 +17,8 @@
 		   $ID = $b;
 		}
 
-		//$quebraLinha = PHP_EOL;
-		$quebraLinha = '<br>';
+		$quebraLinha = PHP_EOL;
+		//$quebraLinha = '<br>';
 
 		//indice>
 		$txt .= 'CAD2200_01|';
