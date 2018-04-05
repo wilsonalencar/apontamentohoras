@@ -89,6 +89,13 @@
                             </select> 
                         </div>
                       </div>
+                      <div class="row" id="divRazaoSocial" style="display:none">
+                        <div class="col s4">
+                          <label for="razao_social">Razão Social</label>
+                          <input type="text" id="razao_social" name="razao_social" maxlength="255" value="<?php echo $funcionario->razao_social; ?>" >
+                        </div>
+                      </div>
+
 
                       <div class="row">
                         <div class="col s4">
@@ -219,3 +226,16 @@
 	require_once(app::path.'/view/footer.php');
 ?>
 <script src="<?php echo app::dominio; ?>view/assets/js/funcionarios/funcionario.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+
+  $('#id_tipocontratacao').on('change', function() {
+    if (parseInt($(this).val()) == <?php echo $funcionario::PJ ?>) {
+      document.getElementById("divRazaoSocial").style.display = "block";
+    } else {
+      document.getElementById("divRazaoSocial").style.display = "none";
+    }
+  });
+});
+
+</script>

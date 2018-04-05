@@ -19,47 +19,51 @@ class apontamento extends app
 	public $data_busca_ini;
 	public $data_busca_fim;
 	public $Cliente_reembolsa;
+	public $Entrada_1;
+	public $Saida_1;
+	public $Entrada_2;
+	public $Saida_2;
 	public $proposta;
 	public $msg;
 	public $array;
 
-	private function check(){
-		
+	private function check(){	
 		if (empty($this->id_cliente)) {
 			$this->msg = "Favor informar o cliente.";
 			return false;
 		}
-			
 		if (empty($this->id_proposta)) {
 			$this->msg = "Favor informar a proposta.";
 			return false;
 		}
-
 		if (empty($this->id_projeto)) {
 			$this->msg = "Favor informar o projeto.";
 			return false;	
 		}
-
 		if (empty($this->id_funcionario)) {
 			$this->msg = "Favor informar o funcionário.";
 			return false;	
 		}
-
 		if (empty($this->Data_apontamento)) {
 			$this->msg = "Favor informar a data do apontamento.";
 			return false;	
 		}
-
 		if (empty($this->Qtd_hrs_real)) {
 			$this->msg = "Favor informar a quantidade de horas real.";
 			return false;	
 		}
-		
 		if ($this->Qtd_hrs_real < 0) {
 			$this->msg = "Favor informar a quantidade de horas corretamente.";
 			return false;	
 		}
-
+		if (empty($this->Entrada_1)) {
+			$this->msg = "Favor informar a hora de entrada 1.";
+			return false;	
+		}
+		if (empty($this->Saida_1)) {
+			$this->msg = "Favor informar a hora de saída 1.";
+			return false;	
+		}
 		if (!$this->checkData($this->Data_apontamento)) {
 			return false;
 		}
@@ -155,12 +159,53 @@ class apontamento extends app
 		return $this->insert();
 	}
 
+	public function relatorioFunc()
+	{
+
+		$conn = $this->getDB->mysqli_connection;
+
+		$query = "SELECT B.nome, A.id_funcionario, A.data_apontamento, A.Qtd_hrs_real, A.Entrada_1, A.Saida_1, A.Entrada_2, A.Saida_2, C.Razao_social FROM projetohoras A INNER JOIN funcionarios B ON A.id_funcionario = B.id LEFT JOIN empresafunpj C ON A.id_funcionario = C.id_funcionario WHERE 1 ";
+
+		if ($this->id_funcionario > 0) {
+			$query .= " AND A.id_funcionario = ".$this->id_funcionario;
+		}
+		
+		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
+			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+		}
+
+		$query .= " ORDER BY A.data_apontamento ASC";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$timestamp = strtotime($row['data_apontamento']);
+			$row['data_apontamento'] = date("d/m/Y", $timestamp);
+			if (empty($this->array['dados'][$row['id_funcionario']])) {
+				$this->array['dados'][$row['id_funcionario']]['Qtd_hrs_real'] = 0;	
+			}
+			$this->array['dados'][$row['id_funcionario']][] = $row;
+			$this->array['dados'][$row['id_funcionario']]['Qtd_hrs_real'] = $row['Qtd_hrs_real'] + $this->array['dados'][$row['id_funcionario']]['Qtd_hrs_real'] ;	
+		}
+	}
+
 	public function insert()
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario)
-		VALUES (%d, %d, %d, '%s', %d, '%s', '%s', '%s')", 
-			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email']);
+		
+		$var = explode(':', $this->Qtd_hrs_real);
+		$this->Qtd_hrs_real = '';
+		foreach ($var as $value) {
+			$this->Qtd_hrs_real .= '.'.$value;
+		}
+		$this->Qtd_hrs_real = substr($this->Qtd_hrs_real, 1);
+
+		$query = sprintf("INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario, Entrada_1, Saida_1, Entrada_2, Saida_2)
+		VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s)", 
+			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email'], $this->Entrada_1, $this->Saida_1, $this->quote($this->Entrada_2, true, true),$this->quote($this->Saida_2, true, true));
 		
 		if (!$conn->query($query)) {
 	 	 	$this->msg = "Ocorreu um erro, contate o administrador do sistema!";

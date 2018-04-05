@@ -25,9 +25,11 @@ class funcionario extends app
 	public $valor_taxa;
 	public $status;
 	public $msg;
+	public $razao_social;
 	public $id_responsabilidade;
 	public $insertID;
 	public $fileCV = false;
+	const PJ = 3;
 
 
 	private function checkRG()
@@ -289,9 +291,20 @@ class funcionario extends app
 		$query = sprintf(" INSERT INTO funcionarios (nome, apelido, data_nascimento, id_tipocontratacao, id_perfilprofissional,id_responsabilidade, rg , cpf , endereco, valor_taxa , complemento ,	cod_municipio, cep, telefone, email , emailParticular, usuario, status)
 		VALUES ('%s','%s', '%s', %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s ,'%s', '%s')", 
 			$this->nome, $this->apelido, $this->data_nascimento, $this->id_tipocontratacao, $this->id_perfilprofissional, $this->id_responsabilidade, $this->rg, $this->cpf,$this->endereco, $this->valor_taxa,$this->complemento,$this->cod_municipio,$this->cep,$this->telefone,$this->email, $this->quote($this->emailParticular, true, true), $_SESSION['email'], $this->status);
+		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
+		}
+
+		if (!empty($this->razao_social) && $this->id_tipocontratacao == $this::PJ) {
+			$id = $conn->insert_id;
+			$query = $query = sprintf("INSERT INTO empresafunpj(id_funcionario, Razao_social) VALUES (%d,'%s')", $id, $this->razao_social);
+
+			if (!$conn->query($query)) {
+				$this->msg = "Ocorreu um erro, contate o administrador do sistema (Razão Social) !";
+				return false;	
+			}
 		}
 
 		if (!empty($this->fileCV)) {
@@ -381,6 +394,23 @@ class funcionario extends app
 		}
 	}
 
+	private function checkExistencia($id)
+	{
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT * FROM empresafunpj WHERE id_funcionario = %d", $id);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do email do funcionario";
+			return false;	
+		}
+		if (!empty($result->fetch_array(MYSQLI_ASSOC))) {
+			$this->msg = "Email do funcionário já está sendo utilizado";
+			return false;			
+		}
+		
+		return true;
+
+	}
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
@@ -394,6 +424,20 @@ class funcionario extends app
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
+		}
+
+		if (!empty($this->razao_social) && $this->id_tipocontratacao == $this::PJ) {
+			$id = $this->id;
+			if ($this->checkExistencia($id)) {
+				$query = $query = sprintf("INSERT INTO empresafunpj(id_funcionario, Razao_social) VALUES (%d,'%s')", $id, $this->razao_social);	
+			} else {
+				$query = "UPDATE empresafunpj SET Razao_social = '".$this->razao_social."' WHERE id_funcionario = ".$id."";
+			}
+			if (!$conn->query($query)) {
+				$this->msg = "Ocorreu um erro, contate o administrador do sistema (Razão Social) !";
+				return false;	
+			}
+
 		}
 
 		if (!empty($this->fileCV)) {
@@ -417,7 +461,7 @@ class funcionario extends app
 	public function get($id)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf("SELECT id, nome, apelido, cpf, rg, data_nascimento, endereco, complemento, cod_municipio, cep, telefone, email, id_tipocontratacao, id_perfilprofissional, id_responsabilidade, valor_taxa ,status, emailParticular FROM funcionarios WHERE id =  %d ", $this->id);
+		$query = sprintf("SELECT A.id, A.nome, A.apelido, A.cpf, A.rg, A.data_nascimento, A.endereco, A.complemento, A.cod_municipio, A.cep, A.telefone, A.email, A.id_tipocontratacao , A.id_perfilprofissional, A.id_responsabilidade, A.valor_taxa ,A.status, A.emailParticular, B.Razao_social FROM funcionarios A LEFT JOIN empresafunpj B ON A.id = B.id_funcionario WHERE A.id =  %d ", $this->id);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento do funcionário";	
@@ -478,9 +522,16 @@ class funcionario extends app
 		
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf("DELETE FROM funcionarios WHERE id = %d ", $id);
+
+		$query2 = sprintf("DELETE FROM empresafunpj WHERE id_funcionario = %d ", $id);
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "O funcionário tem um vinculo externo, exclusão não permitida.";	
+			return false;	
+		}
+
+		if (!$result = $conn->query($query2)) {
+			$this->msg = "Ocorreu um erro na exclusão da razão social do funcionário.";	
 			return false;	
 		}
 

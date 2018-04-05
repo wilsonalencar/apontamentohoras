@@ -384,6 +384,9 @@
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_despProjRec.php" >Despesas</a>
                                 </li>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_apontamento.php" >Apontamento</a>
+                                </li>
                             </ul>
                         </li>
                         <?php } ?>

@@ -344,13 +344,33 @@
                                                 <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
                                             </div>
                                             <div class="col s1"></div>
-                                            <div class="col s4">
-                                            <label for="Qtd_hrs_real">Quantidade de horas</label>
-                                              <input type="number" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate" maxlength="7">
+                                            <div class="col s2">
+                                            <label for="Entrada_1">Entrada 1</label>
+                                              <input type="time" id="Entrada_1" name="Entrada_1" class="validate" maxlength="5">
                                             </div>
+                                            <div class="col s2">
+                                            <label for="Saida_1">Saída 1</label>
+                                              <input type="time" id="Saida_1" name="Saida_1" class="validate" maxlength="5">
+                                            </div>
+
+                                            <div class="col s2">
+                                            <label for="Entrada_2">Entrada 2</label>
+                                              <input type="time" id="Entrada_2" name="Entrada_2" class="validate" maxlength="5">
+                                            </div>
+                                            <div class="col s2">
+                                            <label for="Saida_2">Saída 2</label>
+                                              <input type="time" id="Saida_2" name="Saida_2" class="validate" maxlength="5">
+                                            </div>
+
                                           </div>
-                                            <div class="row">
-                                                <div class="col s8">
+                                          <div class="row">
+                                            <div class="col s2">
+                                            <label for="Qtd_hrs_real">Total de Horas</label>
+                                                <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
+                                                <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
+                                            </div>
+                                            <div class="col s1"></div>
+                                                <div class="col s9">
                                                 <label for="observacao">Atividade</label>
                                                   <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
                                                 </div>
@@ -408,6 +428,57 @@ $(document).ready(function(){
         money = number_format(money, 2, ',', '.');
         $("#vl_total_qtd").val(money);
     }); 
+
+    $( "#Saida_1" ).blur(function() {
+        var time_entrada = document.getElementById('Entrada_1').value;
+        var time_saida = document.getElementById('Saida_1').value;
+
+        s = time_entrada.split(':');
+        e = time_saida.split(':');
+
+        min = e[1]-s[1];
+        hour_carry = 0;
+        if(min < 0){
+            min += 60;
+            hour_carry += 1;
+        }
+        hour = e[0]-s[0]-hour_carry;
+        diff = hour + ":" + min;
+
+        $("#Qtd_hrs_real").val(diff);
+        $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
+    }); 
+
+    $( "#Saida_2" ).blur(function() {
+        var time_entrada = document.getElementById('Entrada_2').value;
+        var time_saida = document.getElementById('Saida_2').value;
+        var time_atual = document.getElementById('Qtd_hrs_real').value;
+
+        s = time_entrada.split(':');
+        e = time_saida.split(':');
+        f = time_atual.split(':');
+
+        min = e[1]-s[1];
+        hour_carry = 0;
+
+        if(min < 0){
+            min += 60;
+            hour_carry = parseFloat(hour_carry) + parseFloat(1);
+        }
+        min = parseFloat(f[1]) + parseFloat(min);        
+        if (min >= 60) {
+            min = parseFloat(min) - parseFloat(60)
+            hour_carry = parseFloat(hour_carry) + parseFloat(1);
+        }
+
+        hour = e[0]-s[0];
+        hour = parseFloat(hour) + parseFloat(f[0])+ parseFloat(hour_carry);
+        diff = hour + ":" + min;
+
+        $("#Qtd_hrs_real").val(diff);
+        $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
+    }); 
+
 });
 
 
