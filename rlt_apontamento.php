@@ -68,6 +68,11 @@
                             <?php
                             if (!empty($apontamento->array['dados'])) {
                              foreach($apontamento->array['dados'] as $id_func => $dados) {
+                              $count = count($dados) + 3;
+
+                              while ($count > 27) {
+                                $count = $count - 27;
+                              }
                                     foreach ($dados as $key => $value_fim) { 
                                       if (is_array($value_fim)) { 
 
@@ -95,32 +100,35 @@
                                     <th>Total:</th>
                                     <th><?php echo $dados['Qtd_hrs_real']; ?></th> 
                                   </tr>
-                                  <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <th></th>
-                                    <th>&nbsp;</th> 
-                                  </tr>
                                  <tr>
                                    <td></td>
                                    <td></td>
                                    <td></td>
                                    <td></td>
-                                   <th align="left">Assinatura</th>
+                                   <th align="left"></th>
                                    <th align="left">________________________________</th>
                                  </tr>
-                                  <tr>
+                                 <tr>
+                                   <td></td>
+                                   <td></td>
+                                   <td></td>
+                                   <td></td>
+                                   <th></th>
+                                   <th align="left"><?php echo $funcionariodados; ?></th>
+                                 </tr>
+                                  
+                                <?php
+                                while ($count <= 27) {
+                                  $count++;
+                                  echo "<tr>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
                                     <th></th>
                                     <th>&nbsp;</th> 
-                                  </tr>
-                                  
-                                <?php } } ?>
+                                  </tr>";
+                                } } } ?>
                            </tbody>
                         </table>
                 </div>  
@@ -189,7 +197,7 @@ $('#dataTables-example').dataTable({
                 "autoWidth": true,
                 customize: function ( doc ) {
                   doc.pageMargins = [150,80,20,30];
-                  doc.defaultStyle.fontSize = 12;
+                  doc.defaultStyle.fontSize = 11;
                   doc.styles.tableHeader.fontSize = 13;
                       doc['header']=(function() {
                       return {
@@ -202,7 +210,7 @@ $('#dataTables-example').dataTable({
                           {
                             alignment: 'right',
                             italics: true,
-                            text: '<?php echo $funcionariodados; ?> <?php if ($datasbusca) { ?> \n Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
+                            text: 'Relatório <?php if ($datasbusca) { ?> \n Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
                             fontSize: 12,
                             margin: [10,0]
                           },
