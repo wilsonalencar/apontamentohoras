@@ -426,6 +426,17 @@ class funcionario extends app
 			return false;	
 		}
 
+		if ($this->id_tipocontratacao != $this::PJ) {
+			$id = $this->id;	
+			if (!$this->checkExistencia($id)) {
+				$query = "DELETE FROM empresafunpj WHERE id_funcionario = ".$id."";	
+				if (!$conn->query($query)) {
+					$this->msg = "Ocorreu um erro, contate o administrador do sistema (Razão Social) !";
+					return false;	
+				}
+			}
+		}
+
 		if (!empty($this->razao_social) && $this->id_tipocontratacao == $this::PJ) {
 			$id = $this->id;
 			if ($this->checkExistencia($id)) {

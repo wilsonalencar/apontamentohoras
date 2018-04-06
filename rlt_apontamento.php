@@ -34,11 +34,11 @@
 <div id="page-wrapper">
 <div class="header"> 
             <h1 class="page-header">
-                Despesas por Projeto e Recurso
+                Relatório de apontamentos
             </h1>
             <ol class="breadcrumb">
           <li><a href="#">Relatórios</a></li>
-          <li class="active">Despesas por projetos e recursos</li>
+          <li class="active">Apontamento</li>
         </ol> 
                         
 </div>
@@ -68,7 +68,7 @@
                             <?php
                             if (!empty($apontamento->array['dados'])) {
                              foreach($apontamento->array['dados'] as $id_func => $dados) {
-                              $count = count($dados) + 3;
+                              $count = count($dados) + 5;
 
                               while ($count > 27) {
                                 $count = $count - 27;
@@ -76,7 +76,7 @@
                                     foreach ($dados as $key => $value_fim) { 
                                       if (is_array($value_fim)) { 
 
-                                        $funcionariodados = $value_fim['Razao_social'];
+                                        $funcionariodados = $value_fim['id_funcionario'] .' - '. $value_fim['Razao_social'];
                                         if (empty($value_fim['Razao_social'])) {
                                           $funcionariodados = $value_fim['nome'];
                                         }
@@ -99,6 +99,22 @@
                                     <td></td>
                                     <th>Total:</th>
                                     <th><?php echo $dados['Qtd_hrs_real']; ?></th> 
+                                  </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <th></th>
+                                    <th>&nbsp;</th> 
+                                  </tr>
+                                  <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <th></th>
+                                    <th>&nbsp;</th> 
                                   </tr>
                                  <tr>
                                    <td></td>

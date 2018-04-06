@@ -304,7 +304,7 @@
                                         </div>
                                         <div class="modal-footer">
                                         <input type="hidden" name="action" value="5">
-                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <button type="submit" class="btn btn-success" id="buttonDespesas" onclick="escondedespesas()">Salvar</button>
                                             <div class="col s1"></div>
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
@@ -380,7 +380,7 @@
                                         <div class="modal-footer">
                                         <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
                                         <input type="hidden" name="action" value="1">
-                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <button type="submit" class="btn btn-success" id="buttonHoras" onclick="escondehoras()">Salvar</button>
                                             <div class="col s1"></div>
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
@@ -415,6 +415,13 @@ require_once(app::path.'/view/footer.php');
 
 <script>
 
+function escondehoras(){
+    $("#buttonHoras").css("display", "none");
+}
+
+function escondedespesas(){
+    $("#buttonDespesas").css("display", "none");
+}
 
 $(document).ready(function(){
     if ($('#id_funcionario_busca').val() > 0 && $('#id_projeto_busca').val() > 0){
