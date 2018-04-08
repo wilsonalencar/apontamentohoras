@@ -36,11 +36,18 @@ function getDataFuncionario(id)
             $("#apelido").val(d.data.apelido);
             $("#data_nascimento").val(d.data.data_nascimento);
             $("#id_tipocontratacao").val(d.data.id_tipocontratacao);
+            if (d.data.id_tipocontratacao == 3) {
+                document.getElementById("divRazaoSocial").style.display = "block";
+            } else{
+                 document.getElementById("divRazaoSocial").style.display = "none";
+            }
+
             $("#id_perfilprofissional").val(d.data.id_perfilprofissional);
             $("#id_responsabilidade").val(d.data.id_responsabilidade);
             $("#rg").val(d.data.rg);
             $("#cpf").val(d.data.cpf);
             $("#endereco").val(d.data.endereco);
+            $("#razao_social").val(d.data.Razao_social);            
             $("#complemento").val(d.data.complemento);
             $("#cod_municipio").val(d.data.cod_municipio);
             $("#cep").val(d.data.cep);

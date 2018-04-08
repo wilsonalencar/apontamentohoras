@@ -23,6 +23,11 @@ $apontamento->id_funcionario		= $apontamento->getRequest('id_funcionario_ap', 0)
 $apontamento->id_projeto  			= $apontamento->getRequest('id_projeto_ap', 0);
 $apontamento->id_perfilprofissional = $apontamento->getRequest('id_perfilprofissional', 0);
 $apontamento->Data_apontamento  	= $apontamento->getRequest('Data_apontamento', 0);
+$apontamento->Entrada_1  			= $apontamento->getRequest('Entrada_1', 0);
+$apontamento->Saida_1  				= $apontamento->getRequest('Saida_1', 0);
+$apontamento->Entrada_2  			= $apontamento->getRequest('Entrada_2', 0);
+$apontamento->Saida_2  				= $apontamento->getRequest('Saida_2', 0);
+
 $apontamento->Qtd_hrs_real 			= $apontamento->getRequest('Qtd_hrs_real', 0);
 $apontamento->observacao		  	= $apontamento->getRequest('observacao', '');
 $apontamento->Aprovado 				= $apontamento->getRequest('Aprovado', 'N');

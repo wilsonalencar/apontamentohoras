@@ -23,6 +23,7 @@ $funcionario->nome 					= $funcionario->getRequest('nome', '');
 $funcionario->apelido 				= $funcionario->getRequest('apelido', '');
 $funcionario->cpf  					= $funcionario->getRequest('cpf', '');
 $funcionario->rg  					= $funcionario->getRequest('rg', '');
+$funcionario->razao_social			= $funcionario->getRequest('razao_social', '');
 $funcionario->data_nascimento		= $funcionario->getRequest('data_nascimento', '');
 $funcionario->id_tipocontratacao	= $funcionario->getRequest('id_tipocontratacao', '');
 $funcionario->id_perfilprofissional	= $funcionario->getRequest('id_perfilprofissional', '');
