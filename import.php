@@ -14,11 +14,11 @@
 		}
 
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2300') {
-			converteTxtLayout2299($_FILES['xml'], $quebraLinha);
+			converteTxtLayout2300($_FILES['xml'], $quebraLinha);
 		}
 
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2205') {
-			converteTxtLayout2299($_FILES['xml'], $quebraLinha);
+			converteTxtLayout2205($_FILES['xml'], $quebraLinha);
 		}
 	}
 
@@ -137,7 +137,7 @@
 				}
 			}
 		}
-		
+
 	$name = str_replace('xml', 'txt', $file['name']);
 	$file = fopen($name, 'a');
 	fwrite($file, $txt);
