@@ -1,7 +1,7 @@
 <?php
 	error_reporting(0);
 	$quebraLinha = PHP_EOL;
-	//$quebraLinha = '<br>';
+	$quebraLinha = '<br>';
 
 	if (!empty($_FILES)) {
 
@@ -14,8 +14,294 @@
 		}
 
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2300') {
-			converteTxtLayout2299($_FILES['xml'], $quebraLinha);
+			converteTxtLayout2300($_FILES['xml'], $quebraLinha);
 		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2399') {
+			converteTxtLayout2399($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2206') {
+			converteTxtLayout2206($_FILES['xml'], $quebraLinha);
+		}
+	}
+
+	function converteTxtLayout2206($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+	
+		foreach($xml->evtAltContratual->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+		
+		$txt .= 'CAD2206_01|';
+		$txt .= $ID;
+
+		$txt .= $xml->evtAltContratual->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+		$txt .= $xml->evtAltContratual->ideEvento->indRetif.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->dtAlteracao.'|';
+		$txt .= $xml->evtAltContratual->altContratual->dtEf.'|';
+		$txt .= $xml->evtAltContratual->altContratual->dscAlt.'|';
+
+		$txt .= $xml->evtAltContratual->ideVinculo->cpfTrab.'|';
+		$txt .= $xml->evtAltContratual->ideVinculo->nisTrab.'|';
+
+		$txt .= $quebraLinha;
+		$txt .= 'CAD2206_02|';
+		$txt .= $xml->evtAltContratual->ideVinculo->matricula.'|';
+		$txt .= $xml->evtAltContratual->altContratual->vinculo->tpRegPrev.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoCeletista->tpRegJor.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoCeletista->natAtividade.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoCeletista->dtBase.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoCeletista->cnpjSindCategProf.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoCeletista->trabTemp->justProrr.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoCeletista->aprend->nrInsc.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->codCateg.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->codCargo.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->codFuncao.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->codCarreira.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->dtIngrCarr.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->remuneracao->vrSalFx.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->remuneracao->undSalFixo.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->remuneracao->dscSalVar.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->duracao->tpContr.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->duracao->dtTerm.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->horContratual->qtdHrsSem.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->horContratual->tpJornada.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->horContratual->dscTpJorn.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->horContratual->tmpParc.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabGeral->tpInsc.'|';	
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabGeral->nrInsc.'|';	
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabGeral->descComp.'|';		
+		
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->tpLograd.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->dscLograd.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->nrLograd.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->complemento.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->bairro.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->cep.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->codMunic.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->localTrabalho->localTrabDom->uf.'|';
+
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->alvaraJudicial->nrProcJud.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->servPubl->mtvAlter.'|';
+
+		$txt .= $quebraLinha;
+		$txt .= 'CAD2206_03|';
+		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoEstatutario->tpPlanRP.'|';
+
+		if (!empty($xml->evtAltContratual->altContratual->infoContrato->horContratual->horario)) {
+
+			foreach($xml->evtAltContratual->altContratual->infoContrato->horContratual->horario as $horario) {
+				$txt .= $quebraLinha;
+				$txt .= 'CAD2206_04|';
+				$txt .= $horario->dia.'|';
+				$txt .= $horario->codHorContrat.'|';
+			}
+		}
+		
+		$txt .= $quebraLinha;
+		$txt .= 'CAD2206_05|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->filiacaoSindical->cnpjSindTrab.'|';
+
+
+		if (!empty($xml->evtAltContratual->altContratual->infoContrato->observacoes)) {
+
+			foreach($xml->evtAltContratual->altContratual->infoContrato->observacoes as $observacoes) {
+				$txt .= $quebraLinha;
+				$txt .= 'CAD2206_06|';
+				$txt .= $observacoes->observacao.'|';
+			}
+		}
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout2399($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+	
+		foreach($xml->evtTSVTermino->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+		
+		$txt .= 'MOV1018_01|';
+		$txt .= $ID;
+		$txt .= $xml->evtTSVTermino->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+
+		$txt .= $xml->evtTSVTermino->ideTrabSemVinculo->cpfTrab.'|';
+		$txt .= $xml->evtTSVTermino->ideTrabSemVinculo->nisTrab.'|';
+		$txt .= $xml->evtTSVTermino->ideTrabSemVinculo->codCateg.'|';
+
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->dtTerm.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->mtvDesligTSV.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->quarentena->dtFimQuar.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->verbasResc->infoMV->indMV.'|';
+
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev)) {
+			
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev as $dmDev) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1018_02|';
+				$txt .= $dmDev->ideDmDev.'|'; 
+			}
+		}
+		
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev)) {
+
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->ideEstabLot)) {
+
+					foreach($dmDev->ideEstabLot as $lote) {
+						$txt .= $quebraLinha;
+						$txt .= 'MOV1018_03|';
+						$txt .= $lote->tpInsc.'|';
+						$txt .= $lote->nrInsc.'|';
+						$txt .= $lote->codLotacao.'|';
+						$txt .= $lote->infoAgNocivo->grauExp.'|';
+						$txt .= $lote->infoSimples->indSimples.'|';
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev)) {
+
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->ideEstabLot)) {
+
+					foreach($dmDev->ideEstabLot as $lote) {
+						
+						if (!empty($lote->detVerbas)) {
+
+							foreach($lote->detVerbas as $verbas) {
+
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1018_04|';
+								$txt .= $verbas->codRubr.'|';
+								$txt .= $verbas->ideTabRubr.'|';
+								$txt .= $verbas->qtdRubr.'|';
+								$txt .= $verbas->fatorRubr.'|';
+								$txt .= $verbas->vrUnit.'|';
+								$txt .= $verbas->vrRubr.'|';
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev)) {
+
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->ideEstabLot)) {
+
+					foreach($dmDev->ideEstabLot as $lote) {
+						
+						if (!empty($lote->infoSaudeColet->detOper)) {
+
+							foreach($lote->infoSaudeColet->detOper as $detOper) {
+
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1018_05|';
+								$txt .= $detOper->cnpjOper.'|';
+								$txt .= $detOper->regANS.'|';
+								$txt .= $detOper->vrPgTit.'|';
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev)) {
+
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->ideEstabLot)) {
+
+					foreach($dmDev->ideEstabLot as $lote) {
+						
+						if (!empty($lote->infoSaudeColet->detOper)) {
+
+							foreach($lote->infoSaudeColet->detOper as $detOper) {
+
+								if (!empty($detOper->detPlano)) {
+									
+									foreach($detOper->detPlano as $detPlano) {
+
+										$txt .= $quebraLinha;
+										$txt .= 'MOV1018_06|';
+
+										$txt .= $detPlano->tpDep.'|';
+										$txt .= $detPlano->cpfDep.'|';
+										$txt .= $detPlano->nmDep.'|';
+										$txt .= $detPlano->dtNascto.'|';
+										$txt .= $detPlano->vlrPgDep.'|';
+
+									}									
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->procJudTrab)) {
+
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->procJudTrab as $procJudTrab) {
+
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1018_07|';
+
+				$txt .= $procJudTrab->tpTrib.'|';
+				$txt .= $procJudTrab->nrProcJud.'|';
+				$txt .= $procJudTrab->codSusp.'|';
+			}
+		}
+
+		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr)) {
+
+			foreach($xml->evtTSVTermino->infoTSVTermino->verbasResc->infoMV->remunOutrEmpr as $remunOutrEmpr) {
+
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1018_08|';
+
+				$txt .= $remunOutrEmpr->tpInsc.'|';
+				$txt .= $remunOutrEmpr->nrInsc.'|';
+				$txt .= $remunOutrEmpr->codCateg.'|';
+			}
+		}
+		
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
 	}
 
 	function converteTxtLayout2300($file, $quebraLinha)
@@ -24,21 +310,21 @@
 		$txt = '';
 		$txt .= 'CAD2300_01|';  
 
-		$txt .= $xml->eSocial->evtTSVInicio->Id.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->ideEmpregador->nrInsc.'|';
+		$txt .= $xml->evtTSVInicio->Id.'|';
+		$txt .= $xml->evtTSVInicio->ideEmpregador->nrInsc.'|';
 
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
 
-		$txt .= $xml->eSocial->evtTSVInicio->ideEvento->indRetif.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
-		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->ideEvento->indRetif.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
 
 		//quando chegar no negrito (ficar atento pois a maioria é foreach)
 		//todo negrito tem que verificar se veio registro para mostrar
@@ -46,9 +332,9 @@
 		//$txt .= 'CAD2300_02|';
 
 		/*
-		if (!empty($txt .= $xml->eSocial->evtTSVInicio->trabalhador->dependente)) {
+		if (!empty($txt .= $xml->evtTSVInicio->trabalhador->dependente)) {
 			
-			foreach($xml->eSocial->evtTSVInicio->trabalhador->dependente as $dependente) {
+			foreach($xml->evtTSVInicio->trabalhador->dependente as $dependente) {
 				$txt .= $quebraLinha;
 				$txt .= 'CAD2300_02|';
 				$txt .= $dependente->nmDep.'|'; 
