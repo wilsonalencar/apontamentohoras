@@ -1,14 +1,272 @@
 <?php
 	error_reporting(0);
+	$quebraLinha = PHP_EOL;
+	//$quebraLinha = '<br>';
 
 	if (!empty($_FILES)) {
 
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2200') {
-			converteTxtLayout2200($_FILES['xml']);
+			converteTxtLayout2200($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2299') {
+			converteTxtLayout2299($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2300') {
+			converteTxtLayout2299($_FILES['xml'], $quebraLinha);
 		}
 	}
 
-	function converteTxtLayout2200($file)
+	function converteTxtLayout2300($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'CAD2300_01|';  
+
+		$txt .= $xml->eSocial->evtTSVInicio->Id.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+
+		$txt .= $xml->eSocial->evtTSVInicio->ideEvento->indRetif.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+		$txt .= $xml->eSocial->evtTSVInicio->trabalhador->cpfTrab.'|';
+
+		//quando chegar no negrito (ficar atento pois a maioria é foreach)
+		//todo negrito tem que verificar se veio registro para mostrar
+		//$txt .= $quebraLinha;
+		//$txt .= 'CAD2300_02|';
+
+		/*
+		if (!empty($txt .= $xml->eSocial->evtTSVInicio->trabalhador->dependente)) {
+			
+			foreach($xml->eSocial->evtTSVInicio->trabalhador->dependente as $dependente) {
+				$txt .= $quebraLinha;
+				$txt .= 'CAD2300_02|';
+				$txt .= $dependente->nmDep.'|'; 
+			}
+		}*/
+	}
+
+	function converteTxtLayout2299($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+
+		$txt = '';
+		foreach($xml->evtDeslig->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= 'MOV1007_01|';
+		$txt .= $ID.'|';
+
+		$txt .= $xml->evtDeslig->ideEmpregador->nrInsc.'|'; //cnpj empregador
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+
+		$txt .= $xml->evtDeslig->ideVinculo->cpfTrab.'|'; //cpf trab
+		$txt .= $xml->evtDeslig->ideVinculo->nisTrab.'|'; //nis trab
+		$txt .= $xml->evtDeslig->ideVinculo->matricula.'|'; //matricula
+
+		$txt .= $xml->evtDeslig->infoDeslig->mtvDeslig.'|'; //motivo desligamento codigo
+		$txt .= $xml->evtDeslig->infoDeslig->dtDeslig.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->indPagtoAPI.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->dtProjFimAPI.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->pensAlim.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->percAliment.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->vrAlim.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->nrCertObito.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->nrProcTrab.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->indCumprParc.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->observacao.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->sucessaoVinc->cnpjSucessora.'|';
+
+		$txt .= $xml->evtDeslig->infoDeslig->quarentena->dtFimQuar.'|';
+
+		$txt .= $xml->evtDeslig->infoDeslig->verbasResc->infoMV->indMV.'|';
+
+		$txt .= $xml->evtDeslig->infoDeslig->transfTit->cpfSubstituto.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->transfTit->dtNascto.'|';
+
+		$txt .= $xml->evtDeslig->infoDeslig->consigFGTS->idConsig.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->consigFGTS->insConsig.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->consigFGTS->nrContr.'|';
+		
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+			
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1007_02|';
+				$txt .= $dmDev->ideDmDev.'|'; 
+			}
+		}
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						$txt .= $quebraLinha;
+						$txt .= 'MOV1007_03|';
+						$txt .= $lote->tpInsc.'|';
+						$txt .= $lote->nrInsc.'|';
+						$txt .= $lote->infoAgNocivo->grauExp.'|';
+						$txt .= $lote->infoSimples->indSimples.'|';
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						
+						if (!empty($lote->detVerbas)) {
+
+							foreach($lote->detVerbas as $verbas) {
+
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1007_04|';
+								$txt .= $verbas->codRubr.'|';
+								$txt .= $verbas->ideTabRubr.'|';
+								$txt .= $verbas->qtdRubr.'|';
+								$txt .= $verbas->fatorRubr.'|';
+								$txt .= $verbas->vrUnit.'|';
+								$txt .= $verbas->vrRubr.'|';
+								
+
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						
+						if (!empty($lote->infoSaudeColet->detOper)) {
+
+							foreach($lote->infoSaudeColet->detOper as $detOper) {
+
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1007_05|';
+								$txt .= $detOper->cnpjOper.'|';
+								$txt .= $detOper->regANS.'|';
+								$txt .= $detOper->vrPgTit.'|';
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						
+						if (!empty($lote->infoSaudeColet->detOper)) {
+
+							foreach($lote->infoSaudeColet->detOper as $detOper) {
+
+								if (!empty($detOper->detPlano)) {
+
+									foreach($detOper->detPlano as $detPlano) {
+										$txt .= $quebraLinha;
+										$txt .= 'MOV1007_06|';
+										$txt .= $detPlano->tpDep.'|';
+										$txt .= $detPlano->cpfDep.'|';
+										$txt .= $detPlano->nmDep.'|';
+										$txt .= $detPlano->dtNascto.'|';
+										$txt .= $detPlano->vlrPgDep.'|';
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+
+						$txt .= $quebraLinha;
+						$txt .= 'MOV1007_07|';
+						$txt .= $ideADC->dtAcConv.'|';
+						$txt .= $ideADC->tpAcConv.'|';
+						$txt .= $ideADC->compAcConv.'|';
+						$txt .= $ideADC->dtEfAcConv.'|';
+						$txt .= $ideADC->dsc.'|';
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						
+						if (!empty($ideADC->idePeriodo)) {
+
+							foreach($ideADC->idePeriodo as $idePeriodo) {
+
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1007_08|';
+								$txt .= $idePeriodo->perRef.'|';
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout2200($file, $quebraLinha)
 	{
 		$xml = simplexml_load_file($file['tmp_name']);
 		
@@ -17,10 +275,7 @@
 		   $ID = $b;
 		}
 
-		$quebraLinha = PHP_EOL;
-		//$quebraLinha = '<br>';
-
-		//indice>
+	
 		$txt .= 'CAD2200_01|';
 		$txt .= $ID.'|';
 		$txt .= $xml->evtAdmissao->ideEmpregador->nrInsc.'|'; //cnpj empregador
