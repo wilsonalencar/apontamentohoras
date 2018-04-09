@@ -40,8 +40,37 @@
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2250') {
 			converteTxtLayout2250($_FILES['xml'], $quebraLinha);
 		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2190') {
+			converteTxtLayout2190($_FILES['xml'], $quebraLinha);
+		}
 	}
 
+	function converteTxtLayout2190($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'CAD3030|';  
+
+		foreach($xml->evtAdmPrelim->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtAdmPrelim->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+
+		$txt .= $xml->evtAdmPrelim->infoRegPrelim->cpfTrab.'|';
+		$txt .= $xml->evtAdmPrelim->infoRegPrelim->dtNascto.'|';
+		$txt .= $xml->evtAdmPrelim->infoRegPrelim->dtAdm.'|';
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
 	function converteTxtLayout2250($file, $quebraLinha)
 	{
 		$xml = simplexml_load_file($file['tmp_name']);
@@ -66,7 +95,7 @@
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->dtPrevDeslig.'|';
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->tpAvPrevio.'|';
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->observacao.'|';
-		
+
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->dtCancAvPrv.'|';
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->observacao.'|';
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->mtvCancAvPrevio.'|';
