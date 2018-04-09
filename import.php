@@ -28,6 +28,177 @@
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2205') {
 			converteTxtLayout2205($_FILES['xml'], $quebraLinha);
 		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2306') {
+			converteTxtLayout2306($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2230') {
+			converteTxtLayout2230($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2250') {
+			converteTxtLayout2250($_FILES['xml'], $quebraLinha);
+		}
+	}
+
+	function converteTxtLayout2250($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV1003|';  
+
+		foreach($xml->evtAvPrevio->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtAvPrevio->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+
+		$txt .= $xml->evtAvPrevio->ideVinculo->cpfTrab.'|';
+		$txt .= $xml->evtAvPrevio->ideVinculo->nisTrab.'|';
+		$txt .= $xml->evtAvPrevio->ideVinculo->matricula.'|';
+
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->dtAvPrv.'|';
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->dtPrevDeslig.'|';
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->tpAvPrevio.'|';
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->detAvPrevio->observacao.'|';
+		
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->dtCancAvPrv.'|';
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->observacao.'|';
+		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->mtvCancAvPrevio.'|';
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout2230($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV2230_01|';  
+
+		foreach($xml->evtAfastTemp->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtAfastTemp->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;		
+
+		$txt .= $xml->evtAfastTemp->ideVinculo->cpfTrab.'|';
+		$txt .= $xml->evtAfastTemp->ideVinculo->nisTrab.'|';
+		$txt .= $xml->evtAfastTemp->ideVinculo->matricula.'|';
+		$txt .= $xml->evtAfastTemp->ideVinculo->codCateg.'|';
+
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->dtIniAfast.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->codMotAfast.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoMesmoMtv.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->tpAcidTransito.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->observacao.'|';
+
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoCessao->cnpjCess.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoCessao->infOnus.'|';
+
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoMandSind->cnpjSind.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoMandSind->infOnusRemun.'|';
+		
+		$txt .= $xml->evtAfastTemp->infoAfastamento->infoRetif->origRetif.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->infoRetif->tpProc.'|';
+		$txt .= $xml->evtAfastTemp->infoAfastamento->infoRetif->nrProc.'|';
+
+		$txt .= $xml->evtAfastTemp->infoAfastamento->fimAfastamento->dtTermAfast.'|';
+
+
+		if (!empty($xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoAtestado)) {	
+			foreach($xml->evtAfastTemp->infoAfastamento->iniAfastamento->infoAtestado as $infoAtestado) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV2230_02|';
+				$txt .= $infoAtestado->codCID.'|';
+				$txt .= $infoAtestado->qtdDiasAfast.'|'; 
+				$txt .= $infoAtestado->emitente->nmEmit.'|'; 
+				$txt .= $infoAtestado->emitente->ideOC.'|'; 
+				$txt .= $infoAtestado->emitente->nrOc.'|'; 
+				$txt .= $infoAtestado->emitente->ufOC.'|'; 
+			}
+		}
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout2306($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'CAD2306_01|';  
+
+		foreach($xml->evtTSVAltContr->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtTSVAltContr->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+		$txt .= $xml->evtTSVAltContr->ideEvento->indRetif.'|';
+		$txt .= $xml->evtTSVAltContr->ideTrabSemVinculo->cpfTrab.'|';
+		$txt .= $xml->evtTSVAltContr->ideTrabSemVinculo->nisTrab.'|';
+		$txt .= $xml->evtTSVAltContr->ideTrabSemVinculo->codCateg.'|';
+
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->dtAlteracao.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->natAtividade.'|';
+
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->dtAlteracao.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->cargoFuncao->codCargo.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->cargoFuncao->codFuncao.'|';
+
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->remuneracao->vrSalFx.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->remuneracao->undSalFixo.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->remuneracao->dscSalVar.'|';
+
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->natEstagio.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->nivEstagio.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->areaAtuacao.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->nrApol.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->vlrBolsa.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->dtPrevTerm.'|';
+
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->cnpjInstEnsino.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->nmRazao.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->dscLograd.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->nrLograd.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->bairro.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->cep.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->codMunic.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->instEnsino->uf.'|';
+		
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->cnpjAgntInteg.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->nmRazao.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->dscLograd.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->nrLograd.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->bairro.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->cep.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->codMunic.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->ageIntegracao->uf.'|';
+
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->supervisorEstagio->cpfSupervisor.'|';
+		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->supervisorEstagio->nmSuperv.'|';
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
 	}
 
 	function converteTxtLayout2300($file, $quebraLinha)
@@ -104,7 +275,7 @@
 		$txt .= $xml->evtTSVInicio->trabalhador->infoDeficiencia->observacao.'|';
 
 		
-		if (!empty($txt .= $xml->evtTSVInicio->trabalhador->dependente)) {
+		if (!empty($xml->evtTSVInicio->trabalhador->dependente)) {
 			
 			foreach($xml->evtTSVInicio->trabalhador->dependente as $dependente) {
 				$txt .= $quebraLinha;
@@ -297,7 +468,7 @@
 		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->infoDeficiencia->infoCota.'|';
 		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->infoDeficiencia->observacao.'|';
 
-		if (!empty($txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->dependente)) {
+		if (!empty($xml->evtAltCadastral->alteracao->dadosTrabalhador->dependente)) {
 			foreach($xml->evtAltCadastral->alteracao->dadosTrabalhador->dependente as $dependente) {
 				$txt .= $quebraLinha;
 				$txt .= 'CAD2205_02|';
