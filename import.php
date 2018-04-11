@@ -44,6 +44,179 @@
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2190') {
 			converteTxtLayout2190($_FILES['xml'], $quebraLinha);
 		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2298') {
+			converteTxtLayout2298($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1295') {
+			converteTxtLayout1295($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1299') {
+			converteTxtLayout1299($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1298') {
+			converteTxtLayout1298($_FILES['xml'], $quebraLinha);
+		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1300') {
+			converteTxtLayout1300($_FILES['xml'], $quebraLinha);
+		}
+	}
+
+	function converteTxtLayout1300($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV1300_01|';  
+
+		foreach($xml->evtContrSindPatr->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtContrSindPatr->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+		
+		$txt .= $xml->evtContrSindPatr->ideEvento->indApuracao.'|';
+		$txt .= $xml->evtContrSindPatr->ideEvento->perApur.'|';
+
+		if (!empty($xml->evtContrSindPatr->contribSind)) {	
+			foreach($xml->evtContrSindPatr->contribSind as $contribSind) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1300_02|';
+				$txt .= $contribSind->cnpjSindic.'|';
+				$txt .= $contribSind->tpContribSind.'|'; 
+				$txt .= $contribSind->vlrContribSind.'|'; 
+			}
+		}
+	
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout1299($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV3028|';  
+
+		foreach($xml->evtFechaEvPer->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtFechaEvPer->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+		
+		$txt .= $xml->evtFechaEvPer->ideEvento->indApuracao.'|';
+		$txt .= $xml->evtFechaEvPer->ideEvento->perApur.'|';
+		$txt .= $xml->evtFechaEvPer->ideRespInf->nmResp.'|';
+		$txt .= $xml->evtFechaEvPer->ideRespInf->cpfResp.'|';
+		$txt .= substr($xml->evtFechaEvPer->ideRespInf->telefone, 0, 2).'|';
+		$txt .= substr($xml->evtFechaEvPer->ideRespInf->telefone, 2).'|';
+		$txt .= $xml->evtFechaEvPer->ideRespInf->email.'|';
+	
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout1298($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV3027|';  
+
+		foreach($xml->evtReabreEvPer->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtReabreEvPer->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+		
+		$txt .= $xml->evtReabreEvPer->ideEvento->indApuracao.'|';
+		$txt .= $xml->evtReabreEvPer->ideEvento->perApur.'|';
+	
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout1295($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV1295|';  
+
+		foreach($xml->evtTotConting->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtTotConting->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+		
+		$txt .= $xml->evtTotConting->ideEvento->indApuracao.'|';
+		$txt .= $xml->evtTotConting->ideEvento->perApur.'|';
+		$txt .= $xml->evtTotConting->ideRespInf->nmResp.'|';
+		$txt .= $xml->evtTotConting->ideRespInf->cpfResp.'|';
+		$txt .= substr($xml->evtTotConting->ideRespInf->telefone, 0, 2).'|';
+		$txt .= substr($xml->evtTotConting->ideRespInf->telefone, 2).'|';
+		$txt .= $xml->evtTotConting->ideRespInf->email.'|';
+	
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+	}
+
+	function converteTxtLayout2298($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV1017|';  
+
+		foreach($xml->evtReintegr->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtReintegr->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;
+
+		$txt .= $xml->evtReintegr->ideVinculo->cpfTrab.'|';
+		$txt .= $xml->evtReintegr->ideVinculo->nisTrab.'|';
+		$txt .= $xml->evtReintegr->ideVinculo->matricula.'|';
+
+		$txt .= $xml->evtReintegr->infoReintegr->tpReint.'|';
+		$txt .= $xml->evtReintegr->infoReintegr->nrProcJud.'|';
+		$txt .= $xml->evtReintegr->infoReintegr->nrLeiAnistia.'|';
+		$txt .= $xml->evtReintegr->infoReintegr->dtEfetRetorno.'|';
+		$txt .= $xml->evtReintegr->infoReintegr->dtEfeito.'|';
+		$txt .= $xml->evtReintegr->infoReintegr->indPagtoJuizo.'|';
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
 	}
 
 	function converteTxtLayout2190($file, $quebraLinha)
