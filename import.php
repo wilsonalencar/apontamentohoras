@@ -1466,7 +1466,8 @@
 
 			$txt .= $xml->evtAdmissao->infoContrato->observacoes->observacao.'|'; //verificar
 		}
-
+		
+		$txt .= $quebraLinha;
 
 		$name = str_replace('xml', 'txt', $file['name']);
 		$file = fopen($name, 'a');
