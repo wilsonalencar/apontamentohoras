@@ -65,12 +65,12 @@
 			converteTxtLayout1300($_FILES['xml'], $quebraLinha);
 		}
 
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1210') {
-			converteTxtLayout1210($_FILES['xml'], $quebraLinha);
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1200') {
+			converteTxtLayout1200($_FILES['xml'], $quebraLinha);
 		}
 	}
 
-	function converteTxtLayout1210($file, $quebraLinha)
+	function converteTxtLayout1200($file, $quebraLinha)
 	{
 		$xml = simplexml_load_file($file['tmp_name']);
 		$txt = '';
