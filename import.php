@@ -64,6 +64,294 @@
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1300') {
 			converteTxtLayout1300($_FILES['xml'], $quebraLinha);
 		}
+
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1210') {
+			converteTxtLayout1210($_FILES['xml'], $quebraLinha);
+		}
+	}
+
+	function converteTxtLayout1210($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV0021_01|';  
+
+		foreach($xml->evtRemun->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtRemun->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;	
+
+		$txt .= $xml->evtRemun->ideEvento->indApuracao.'|';
+		$txt .= $xml->evtRemun->ideEvento->perApur.'|';
+
+		$txt .= $xml->evtRemun->ideTrabalhador->cpfTrab.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->nisTrab.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->nmTrab.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->dtNascto.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->codCBO.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->natAtividade.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->qtdDiasTrab.'|';
+
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->cnpjEmpregAnt.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->matricAnt.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->dtAdm.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->observacao.'|';
+
+		$txt .= $xml->evtRemun->ideTrabalhador->infoMV->indMV.'|';
+
+		if (!empty($xml->evtRemun->ideTrabalhador->infoMV->remunOutrEmpr)) {
+			foreach($xml->evtRemun->ideTrabalhador->infoMV->remunOutrEmpr as $remunOutrEmpr) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV0021_02|';
+				$txt .= $remunOutrEmpr->nrInsc.'|';
+				$txt .= $remunOutrEmpr->codCateg.'|'; 
+				$txt .= $remunOutrEmpr->vlrRemunOE.'|'; 
+			}
+		}
+
+		if (!empty($xml->evtRemun->ideTrabalhador->procJudTrab)) {
+			foreach($xml->evtRemun->ideTrabalhador->procJudTrab as $procJudTrab) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV0021_03|';
+				$txt .= $procJudTrab->tpTrib.'|';
+				$txt .= $procJudTrab->nrProcJud.'|'; 
+				$txt .= $procJudTrab->codSusp.'|'; 
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV0021_04|';
+				$txt .= $dmDev->ideDmDev.'|';
+				$txt .= $dmDev->codCateg.'|'; 
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						$txt .= $quebraLinha;
+						$txt .= 'MOV0021_05|';
+						$txt .= $lote->tpInsc.'|';
+						$txt .= $lote->nrInsc.'|';
+						$txt .= $lote->codLotacao.'|';
+						$txt .= $lote->qtdDiasAv.'|';				
+					}
+				}
+			}
+		}
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						if (!empty($lote->remunPerApur)) {
+							foreach ($lote->remunPerApur as $remunPerApur) {
+								$txt .= 'MOV0021_06|';
+								$txt .= $remunPerApur->matricula.'|';
+								$txt .= $remunPerApur->indSimples.'|';
+								$txt .= $remunPerApur->infoAgNocivo->grauExp.'|';
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						if (!empty($lote->remunPerApur)) {
+							foreach ($lote->remunPerApur as $remunPerApur) {
+								if (!empty($remunPerApur->itensRemun)) {
+									foreach ($remunPerApur->itensRemun as $itensRemun) {
+										$txt .= 'MOV0021_07|';
+										$txt .= $itensRemun->codRubr.'|';
+										$txt .= $itensRemun->ideTabRubr.'|';
+										$txt .= $itensRemun->qtdRubr.'|';
+										$txt .= $itensRemun->fatorRubr.'|';
+										$txt .= $itensRemun->vrUnit.'|';
+										$txt .= $itensRemun->vrRubr.'|';
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						if (!empty($lote->remunPerApur)) {
+							foreach ($lote->remunPerApur as $remunPerApur) {
+								if (!empty($remunPerApur->infoSaudeColet->detOper)) {
+									foreach ($remunPerApur->infoSaudeColet->detOper as $detOper) {
+										$txt .= 'MOV0021_08|';
+										$txt .= $detOper->cnpjOper.'|';
+										$txt .= $detOper->regANS.'|';
+										$txt .= $detOper->vrPgTit.'|';
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						if (!empty($lote->remunPerApur)) {
+							foreach ($lote->remunPerApur as $remunPerApur) {
+								if (!empty($remunPerApur->infoSaudeColet->detOper)) {
+									foreach ($remunPerApur->infoSaudeColet->detOper as $detOper) {
+										if (!empty($detOper->detPlano)) {
+											foreach ($detOper->detPlano as $detPlano) {
+												$txt .= 'MOV0021_09|';
+												$txt .= $detPlano->tpDep.'|';
+												$txt .= $detPlano->cpfDep.'|';
+												$txt .= $detPlano->nmDep.'|';
+												$txt .= $detPlano->dtNascto.'|';
+												$txt .= $detPlano->vlrPgDep.'|';
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						$txt .= 'MOV0021_10|';
+						$txt .= $ideADC->dtAcConv.'|';
+						$txt .= $ideADC->tpAcConv.'|';
+						$txt .= $ideADC->compAcConv.'|';
+						$txt .= $ideADC->dtEfAcConv.'|';
+						$txt .= $ideADC->dsc.'|';
+						$txt .= $ideADC->remunSuc.'|';
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						if (!empty($ideADC->idePeriodo)) {
+							foreach ($ideADC->idePeriodo as $idePeriodo) {
+								$txt .= 'MOV0021_11|';
+								$txt .= $idePeriodo->perRef.'|';
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						if (!empty($ideADC->idePeriodo)) {
+							foreach ($ideADC->idePeriodo as $idePeriodo) {
+								if (!empty($idePeriodo->ideEstabLot)) {
+									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
+										$txt .= 'MOV0021_12|';
+										$txt .= $ideEstabLot->tpInsc.'|';
+										$txt .= $ideEstabLot->nrInsc.'|';
+										$txt .= $ideEstabLot->codLotacao.'|';
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						if (!empty($ideADC->idePeriodo)) {
+							foreach ($ideADC->idePeriodo as $idePeriodo) {
+								if (!empty($idePeriodo->ideEstabLot)) {
+									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
+										if (!empty($ideEstabLot->remunPerAnt)) {
+											foreach ($ideEstabLot->remunPerAnt as $remunPerAnt) {
+												$txt .= 'MOV0021_13|';
+												$txt .= $remunPerAnt->matricula.'|';
+												$txt .= $remunPerAnt->matricula.'|';
+												$txt .= $remunPerAnt->infoAgNocivo->grauExp.'|';
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
+					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+						if (!empty($lote->remunPerAnt)) {
+							foreach ($lote->remunPerAnt as $remunPerAnt) {
+								if (!empty($remunPerAnt->itensRemun)) {
+									foreach ($remunPerAnt->itensRemun as $itensRemun) {
+										$txt .= 'MOV0021_14|';
+										$txt .= $itensRemun->codRubr.'|';
+										$txt .= $itensRemun->ideTabRubr.'|';
+										$txt .= $itensRemun->qtdRubr.'|';
+										$txt .= $itensRemun->fatorRubr.'|';
+										$txt .= $itensRemun->vrUnit.'|';
+										$txt .= $itensRemun->vrRubr.'|';
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtRemun->dmDev)) {
+			foreach($xml->evtRemun->dmDev as $dmDev) {
+				if (!empty($dmDev->infoTrabInterm)) {
+					foreach($dmDev->infoTrabInterm as $infoTrabInterm) {
+						$txt .= 'MOV0021_15|';
+						$txt .= $infoTrabInterm->codConv.'|';
+					}
+				}
+			}
+		}
+
+		$name = str_replace('xml', 'txt', $file['name']);
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
 	}
 
 	function converteTxtLayout1300($file, $quebraLinha)
