@@ -348,10 +348,17 @@
 			}
 		}
 
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout1300($file, $quebraLinha)
@@ -382,11 +389,18 @@
 				$txt .= $contribSind->vlrContribSind.'|'; 
 			}
 		}
-	
+		
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout1299($file, $quebraLinha)
@@ -413,10 +427,17 @@
 		$txt .= substr($xml->evtFechaEvPer->ideRespInf->telefone, 2).'|';
 		$txt .= $xml->evtFechaEvPer->ideRespInf->email.'|';
 	
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout1298($file, $quebraLinha)
@@ -438,10 +459,17 @@
 		$txt .= $xml->evtReabreEvPer->ideEvento->indApuracao.'|';
 		$txt .= $xml->evtReabreEvPer->ideEvento->perApur.'|';
 	
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout1295($file, $quebraLinha)
@@ -467,11 +495,17 @@
 		$txt .= substr($xml->evtTotConting->ideRespInf->telefone, 0, 2).'|';
 		$txt .= substr($xml->evtTotConting->ideRespInf->telefone, 2).'|';
 		$txt .= $xml->evtTotConting->ideRespInf->email.'|';
-	
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2298($file, $quebraLinha)
@@ -500,11 +534,17 @@
 		$txt .= $xml->evtReintegr->infoReintegr->dtEfetRetorno.'|';
 		$txt .= $xml->evtReintegr->infoReintegr->dtEfeito.'|';
 		$txt .= $xml->evtReintegr->infoReintegr->indPagtoJuizo.'|';
-
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2190($file, $quebraLinha)
@@ -526,11 +566,17 @@
 		$txt .= $xml->evtAdmPrelim->infoRegPrelim->cpfTrab.'|';
 		$txt .= $xml->evtAdmPrelim->infoRegPrelim->dtNascto.'|';
 		$txt .= $xml->evtAdmPrelim->infoRegPrelim->dtAdm.'|';
-
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 	function converteTxtLayout2250($file, $quebraLinha)
 	{
@@ -560,11 +606,18 @@
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->dtCancAvPrv.'|';
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->observacao.'|';
 		$txt .= $xml->evtAvPrevio->infoAvPrevio->cancAvPrevio->mtvCancAvPrevio.'|';
+		$txt .= $quebraLinha;
 
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2230($file, $quebraLinha)
@@ -619,11 +672,20 @@
 				$txt .= $infoAtestado->emitente->ufOC.'|'; 
 			}
 		}
+		$txt .= $quebraLinha;
 
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
+
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2306($file, $quebraLinha)
@@ -684,11 +746,18 @@
 
 		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->supervisorEstagio->cpfSupervisor.'|';
 		$txt .= $xml->evtTSVAltContr->infoTSVAlteracao->infoComplementares->infoEstagiario->supervisorEstagio->nmSuperv.'|';
+		$txt .= $quebraLinha;
 
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2300($file, $quebraLinha)
@@ -881,11 +950,18 @@
 
 		$txt .= $xml->evtTSVInicio->infoTSVInicio->afastamento->dtIniAfast.'|';
 		$txt .= $xml->evtTSVInicio->infoTSVInicio->afastamento->codMotAfast.'|';
+		$txt .= $quebraLinha;
 
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2205($file, $quebraLinha)
@@ -1007,11 +1083,18 @@
 				}
 			}
 		}
+		$txt .= $quebraLinha;
 
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2206($file, $quebraLinha)
@@ -1112,11 +1195,17 @@
 				$txt .= $observacoes->observacao.'|';
 			}
 		}
-
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2399($file, $quebraLinha)
@@ -1285,11 +1374,17 @@
 				$txt .= $remunOutrEmpr->codCateg.'|';
 			}
 		}
-		
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2299($file, $quebraLinha)
@@ -1495,11 +1590,17 @@
 				}
 			}
 		}
-
+		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
 	}
 
 	function converteTxtLayout2200($file, $quebraLinha)
@@ -1756,11 +1857,41 @@
 		}
 		
 		$txt .= $quebraLinha;
-
 		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
+	}
+
+	function donwloadArquivo($file)
+	{
+	  if(isset($file) && file_exists($file)){ // faz o teste se a variavel não esta vazia e se o arquivo realmente existe
+      	switch(strtolower(substr(strrchr(basename($file),"."),1))){ // verifica a extensão do arquivo para pegar o tipo
+		     case "pdf": $tipo="application/pdf"; break;
+		     case "exe": $tipo="application/octet-stream"; break;
+		     case "zip": $tipo="application/zip"; break;
+		     case "doc": $tipo="application/msword"; break;
+		     case "xls": $tipo="application/vnd.ms-excel"; break;
+		     case "ppt": $tipo="application/vnd.ms-powerpoint"; break;
+		     case "gif": $tipo="image/gif"; break;
+		     case "png": $tipo="image/png"; break;
+		     case "jpg": $tipo="image/jpg"; break;
+		     case "mp3": $tipo="audio/mpeg"; break;
+		     case "php": // deixar vazio por seurança
+		     case "htm": // deixar vazio por seurança
+		     case "html": // deixar vazio por seurança
+	  		}
+      header("Content-Type: ".$tipo); // informa o tipo do arquivo ao navegador
+      header("Content-Length: ".filesize($file)); // informa o tamanho do arquivo ao navegador
+      header("Content-Disposition: attachment; filename=".basename($file)); // informa ao navegador que é tipo anexo e faz abrir a janela de download, tambem informa o nome do arquivo
+      readfile($file); // lê o arquivo
+	  }
 	}
 ?>
 
