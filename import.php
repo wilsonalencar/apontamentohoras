@@ -776,7 +776,16 @@
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
 
-		$txt .= $xml->evtTSVInicio->ideEvento->indRetif.'|';
+		$indRetif = '|';
+		if ((int)$xml->evtTSVInicio->ideEvento->indRetif == 1) {
+			$indRetif = 'S|';
+		}
+
+		if ((int)$xml->evtTSVInicio->ideEvento->indRetif == 2) {
+			$indRetif = 'N|';
+		}
+
+		$txt .= $indRetif;
 		$txt .= $xml->evtTSVInicio->trabalhador->cpfTrab.'|';
 		$txt .= $xml->evtTSVInicio->trabalhador->nisTrab.'|';
 		$txt .= $xml->evtTSVInicio->trabalhador->nmTrab.'|';
