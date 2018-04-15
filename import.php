@@ -68,6 +68,8 @@
 		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1200') {
 			converteTxtLayout1200($_FILES['xml'], $quebraLinha);
 		}
+
+		exit;
 	}
 
 	function converteTxtLayout1200($file, $quebraLinha)
