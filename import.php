@@ -69,8 +69,287 @@
 			converteTxtLayout1200($_FILES['xml'], $quebraLinha);
 		}
 
+		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1210') {
+			converteTxtLayout1210($_FILES['xml'], $quebraLinha);
+		}
+
 		exit;
 	}
+
+	function converteTxtLayout1210($file, $quebraLinha)
+	{
+		$xml = simplexml_load_file($file['tmp_name']);
+		$txt = '';
+		$txt .= 'MOV3024_01|';  
+
+		foreach($xml->evtPgtos->attributes() as $a => $b) {
+		   $ID = $b;
+		}
+
+		$txt .= $ID.'|';
+		$txt .= $xml->evtPgtos->ideEmpregador->nrInsc.'|';
+
+		$indicadorExclusao = '|';
+		$txt .= $indicadorExclusao;	
+
+		$txt .= $xml->evtPgtos->ideEvento->indApuracao.'|';
+		$txt .= $xml->evtPgtos->ideEvento->perApur.'|';
+		
+		$txt .= $xml->evtPgtos->ideBenef->cpfBenef.'|';
+
+		$txt .= $xml->evtPgtos->ideBenef->deps->vrDedDep.'|';
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV3024_02|';
+				$txt .= $infoPgto->dtPgto.'|';
+				$txt .= $infoPgto->tpPgto.'|'; 
+				$txt .= $infoPgto->indResBr.'|'; 
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				$txt .= $infoPgto->detPgtoBenPr->perRef.'|'; 
+				$txt .= $infoPgto->detPgtoBenPr->ideDmDev.'|'; 
+				$txt .= $infoPgto->detPgtoBenPr->indPgtoTt.'|'; 
+				$txt .= $infoPgto->detPgtoBenPr->vrLiq.'|'; 
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				$txt .= $infoPgto->idePgtoExt->idePais->codPais.'|'; 
+				$txt .= $infoPgto->idePgtoExt->idePais->indNIF.'|'; 
+				$txt .= $infoPgto->idePgtoExt->idePais->nifBenef.'|'; 	
+				$txt .= $infoPgto->idePgtoExt->endExt->dscLograd.'|'; 	
+				$txt .= $infoPgto->idePgtoExt->endExt->nrLograd.'|'; 	
+				$txt .= $infoPgto->idePgtoExt->endExt->complem.'|'; 	
+				$txt .= $infoPgto->idePgtoExt->endExt->bairro.'|'; 	
+				$txt .= $infoPgto->idePgtoExt->endExt->nmCid.'|'; 	
+				$txt .= $infoPgto->idePgtoExt->endExt->codPostal.'|'; 	
+			}
+		}
+		
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFl)) {
+					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
+						$txt .= $quebraLinha;
+						$txt .= 'MOV3024_03|';
+						$txt .= $detPgtoFl->perRef.'|'; 
+						$txt .= $detPgtoFl->ideDmDev.'|'; 
+						$txt .= $detPgtoFl->indPgtoTt.'|'; 
+						$txt .= $detPgtoFl->vrLiq.'|'; 
+						$txt .= $detPgtoFl->nrRecArq.'|'; 
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFl)) {
+					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
+						if (!empty($detPgtoFl->retPgtoTot)) {
+							foreach ($detPgtoFl->retPgtoTot as $retPgtoTot) {
+								$txt .= $quebraLinha;
+								$txt .= 'MOV3024_04|';
+								$txt .= $retPgtoTot->codRubr.'|'; 
+								$txt .= $retPgtoTot->ideTabRubr.'|'; 
+								$txt .= $retPgtoTot->qtdRubr.'|'; 
+								$txt .= $retPgtoTot->fatorRubr.'|'; 
+								$txt .= $retPgtoTot->vrUnit.'|'; 
+								$txt .= $retPgtoTot->vrRubr.'|';		
+							}
+						} 
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFl)) {
+					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
+						if (!empty($detPgtoFl->retPgtoTot)) {
+							foreach ($detPgtoFl->retPgtoTot as $retPgtoTot) {
+								if (!empty($retPgtoTot->penAlim)) {
+									foreach ($retPgtoTot->penAlim as $penAlim) {
+										$txt .= $quebraLinha;
+										$txt .= 'MOV3024_05|';
+										$txt .= $retPgtoTot->cpfBenef.'|'; 
+										$txt .= $retPgtoTot->dtNasctoBenef.'|'; 
+										$txt .= $retPgtoTot->nmBenefic.'|'; 
+										$txt .= $retPgtoTot->vlrPensao.'|'; 
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFl)) {
+					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
+						if (!empty($detPgtoFl->infoPgtoParc)) {
+							foreach ($detPgtoFl->infoPgtoParc as $infoPgtoParc) {
+								$txt .= $quebraLinha;
+								$txt .= 'MOV3024_06|';
+								$txt .= $infoPgtoParc->codRubr.'|'; 
+								$txt .= $infoPgtoParc->ideTabRubr.'|'; 
+								$txt .= $infoPgtoParc->qtdRubr.'|'; 
+								$txt .= $infoPgtoParc->fatorRubr.'|'; 
+								$txt .= $infoPgtoParc->vrUnit.'|'; 
+								$txt .= $infoPgtoParc->vrRubr.'|';		
+							}
+						} 
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoBenPr)) {
+					foreach ($infoPgto->detPgtoBenPr as $detPgtoBenPr) {
+						if (!empty($detPgtoBenPr->retPgtoTot)) {
+							foreach ($detPgtoBenPr->retPgtoTot as $retPgtoTot) {
+								$txt .= $quebraLinha;
+								$txt .= 'MOV3024_07|';
+								$txt .= $retPgtoTot->codRubr.'|'; 
+								$txt .= $retPgtoTot->ideTabRubr.'|'; 
+								$txt .= $retPgtoTot->qtdRubr.'|'; 
+								$txt .= $retPgtoTot->fatorRubr.'|'; 
+								$txt .= $retPgtoTot->vrUnit.'|'; 
+								$txt .= $retPgtoTot->vrRubr.'|';		
+							}
+						} 
+
+						if (!empty($detPgtoBenPr->infoPgtoParc)) {
+							foreach ($detPgtoBenPr->infoPgtoParc as $infoPgtoParc) {
+								$txt .= $quebraLinha;
+								$txt .= 'MOV3024_08|';
+								$txt .= $infoPgtoParc->codRubr.'|'; 
+								$txt .= $infoPgtoParc->ideTabRubr.'|'; 
+								$txt .= $infoPgtoParc->qtdRubr.'|'; 
+								$txt .= $infoPgtoParc->fatorRubr.'|'; 
+								$txt .= $infoPgtoParc->vrUnit.'|'; 
+								$txt .= $infoPgtoParc->vrRubr.'|';		
+							}
+						} 
+					}
+				}
+			}
+		}
+
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFer)) {
+					foreach ($infoPgto->detPgtoFer as $detPgtoFer) {
+						$txt .= $quebraLinha;
+						$txt .= 'MOV3024_09|';
+						$txt .= $detPgtoFer->codCateg.'|'; 
+						$txt .= $detPgtoFer->dtIniGoz.'|'; 
+						$txt .= $detPgtoFer->qtDias.'|'; 
+						$txt .= $detPgtoFer->vrLiq.'|'; 
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFer)) {
+					foreach ($infoPgto->detPgtoFer as $detPgtoFer) {
+						if (!empty($detPgtoFer->detRubrFer)) {
+							foreach ($detPgtoFer->detRubrFer as $detRubrFer) {
+								$txt .= $quebraLinha;
+								$txt .= 'MOV3024_10|';
+								$txt .= $detRubrFer->codRubr.'|'; 
+								$txt .= $detRubrFer->ideTabRubr.'|'; 
+								$txt .= $detRubrFer->qtdRubr.'|'; 
+								$txt .= $detRubrFer->fatorRubr.'|'; 
+								$txt .= $detRubrFer->vrUnit.'|'; 
+								$txt .= $detRubrFer->vrRubr.'|';	
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoFer)) {
+					foreach ($infoPgto->detPgtoFer as $detPgtoFer) {
+						if (!empty($detPgtoFer->detRubrFer)) {
+							foreach ($detPgtoFer->detRubrFer as $detRubrFer) {
+								if (!empty($detRubrFer->penAlim)) {
+									foreach ($detRubrFer->penAlim as $penAlim) {
+										$txt .= $quebraLinha;
+										$txt .= 'MOV3024_11|';
+										$txt .= $penAlim->cpfBenef.'|'; 
+										$txt .= $penAlim->dtNasctoBenef.'|'; 
+										$txt .= $penAlim->nmBenefic.'|'; 
+										$txt .= $penAlim->vlrPensao.'|'; 
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoAnt)) {
+					foreach ($infoPgto->detPgtoAnt as $detPgtoAnt) {
+						$txt .= $quebraLinha;
+						$txt .= 'MOV3024_12|';
+						$txt .= $detPgtoAnt->codCateg.'|'; 
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
+			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				if (!empty($infoPgto->detPgtoAnt)) {
+					foreach ($infoPgto->detPgtoAnt as $detPgtoAnt) {
+						if (!empty($detPgtoAnt->infoPgtoAnt)) {
+							foreach ($detPgtoAnt->infoPgtoAnt as $infoPgtoAnt) {
+								$txt .= $quebraLinha;
+								$txt .= 'MOV3024_13|';
+								$txt .= $infoPgtoAnt->tpBcIRRF.'|'; 
+								$txt .= $infoPgtoAnt->vrBcIRRF.'|'; 
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$txt .= $quebraLinha;
+		$name = str_replace('xml', 'txt', $file['name']);
+		if (file_exists($name)) {
+			unlink($name);
+		}
+
+		$file = fopen($name, 'a');
+		fwrite($file, $txt);
+		fclose($file);
+		if (file_exists($name)) {
+			donwloadArquivo($name);
+		}
+	}
+
 
 	function converteTxtLayout1200($file, $quebraLinha)
 	{
