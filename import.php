@@ -1141,16 +1141,13 @@
 		}
 
 		if (!empty($xml->evtTSVInicio->trabalhador->documentos)) {
-			$txt .= $quebraLinha;
-			$txt .= 'CAD2300_03|';		
 
 			foreach($xml->evtTSVInicio->trabalhador->documentos as $key => $documentos) {
 				foreach($documentos as $keyValue => $documento) {
 					
+					$txt .= $quebraLinha;
+					$txt .= 'CAD2300_03|';		
 					if ($keyValue != 'CTPS') {
-
-						
-
 						$txt .= $keyValue.'|';
 						if ($keyValue == 'RIC') {
 							$txt .= $documento->nrRic.'|';
@@ -1339,12 +1336,11 @@
 		}
 
 		if (!empty($xml->evtAltCadastral->alteracao->dadosTrabalhador->documentos)) {
-			$txt .= $quebraLinha;
-			$txt .= 'CAD2205_03|';		
 
 			foreach($xml->evtAltCadastral->alteracao->dadosTrabalhador->documentos as $key => $documentos) {
 				foreach($documentos as $keyValue => $documento) {
-					
+					$txt .= $quebraLinha;
+					$txt .= 'CAD2205_03|';		
 					if ($keyValue != 'CTPS') {
 
 						$txt .= $keyValue.'|';
@@ -2000,15 +1996,13 @@
 		}
 
 		if (!empty($xml->evtAdmissao->trabalhador->documentos)) {
-			$txt .= $quebraLinha;
-			$txt .= 'CAD2200_03|';		
 
 			foreach($xml->evtAdmissao->trabalhador->documentos as $key => $documentos) {
 				foreach($documentos as $keyValue => $documento) {
 					
+					$txt .= $quebraLinha;
+					$txt .= 'CAD2200_03|';		
 					if ($keyValue != 'CTPS') {
-
-						
 
 						$txt .= $keyValue.'|';
 						if ($keyValue == 'RIC') {
