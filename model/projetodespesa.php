@@ -24,7 +24,7 @@ class projetodespesa extends app
 	private function check()
 	{
 		if (empty($this->id_projeto)) {
-			$this->msg = "Insira o projeto.";
+			$this->msg = "Selecione o projeto.";
 			return false;
 		}
 
@@ -34,7 +34,7 @@ class projetodespesa extends app
 		}
 
 		if (empty($this->id_funcionario)) {
-			$this->msg = "Insira o funcionário .";
+			$this->msg = "Selecione o funcionário.";
 			return false;
 		}
 
@@ -93,9 +93,6 @@ class projetodespesa extends app
 	{
 		if (!$this->check()) {
 		 	return false;
-		}
-		if ($this->id > 0) {
-			return $this->update();
 		}
 
 		return $this->insert();

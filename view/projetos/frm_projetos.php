@@ -450,7 +450,7 @@
                                 </div>
 
                                 <!-- Modal de despesas -->
-                                <div id="ModalDespesas" class="modal fade" >
+                                <!-- <div id="ModalDespesas" class="modal fade" >
                                     <div class="modal-header">
                                         <h4 class="modal-title">Gerenciamento de Despesas</h4>
                                     </div>
@@ -530,7 +530,7 @@
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
                                     </form>    
-                                </div>
+                                </div> -->
 
                                 <div id="despesa" class="col s12">
                                     <div class="card-content">
@@ -595,7 +595,7 @@
                                                     <th align="center">
                                                     </th>
                                                     <th align="center">
-                                                        <a href="#" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
+                                                        <a href="#" data-toggle="modal" onclick="document.getElementById('Data_despesa').focus();" style="color : #fff;">+</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -630,6 +630,49 @@
                                                         </td>
                                                     </tr>
                                                 <?php } }?>
+                                                <tr>
+                                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+                                                    <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                                    <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente ?>">
+                                                    <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+
+                                                    <!-- inicio form -->
+
+                                                    <td>
+                                                        <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
+                                                    </td>
+                                                    <td width="20%"><select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                                                  <option value="">Selecione</option>
+                                                    <?php $funcionario->montaSelect(0, $projeto->id); ?>
+                                                </select>
+                                                    </td>
+                                                    <td width="10%">
+                                                        <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
+                                                          <option value="">Selecione</option>
+                                                            <?php $tipodespesa->montaSelect(); ?>
+                                                        </select> 
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
+                                                    </td>
+                                                    <td width="5%">
+                                                        <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" onkeypress="moeda(this)" id="Vlr_unit" name="Vlr_unit" class="validate" maxlength="255">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" id="vl_total_qtd" readonly="true" maxlength="255">
+                                                    </td>
+                                                    <td>
+                                                    <input type="hidden" name="action" value="1">
+                                                        Não Aprovado
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success" id="buttonDespesas" style="display:block" onclick="escondedespesas()">+</button>
+                                                    </td>
+                                                    </form>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -944,6 +987,17 @@ $( document ).ready(function() {
     });
     
 });
+$( "#Vlr_unit" ).blur(function() {
+        var money = document.getElementById('Vlr_unit').value.replace( '.', '' );
+        money = money.replace( ',', '.' );
+        money = money * document.getElementById('Qtd_despesa').value;
+        money = number_format(money, 2, ',', '.');
+        $("#vl_total_qtd").val(money);
+    }); 
+
+function escondedespesas(){
+    $("#buttonDespesas").css("display", "none");
+}
 
 function excluir_anexo(file)
 {

@@ -57,7 +57,6 @@
                                                 </select>
                                         <?php } else { ?>
                                                 <?php $profissional = $funcionario->findFuncionario(); ?>
-                                                <p><b> Profissional : </b></p>
                                                 <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
                                                 <input type="hidden" name="id_funcionario_busca" id="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
                                         <?php }?>
@@ -84,14 +83,22 @@
                                                         <th align="center">
                                                         </th>
                                                         <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th align="center">
-                                                            <a href="#" data-toggle="modal" id="add_button" data-target="#ModalHoras" style="color : #fff; display: none;  ">+</a>
+                                                            <a href="#" data-toggle="modal" id="add_button" onclick="document.getElementById('Data_apontamento').focus();" style="color : #fff; display: none;  ">+</a>
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <th>Data</th>
+                                                        <th>Entrada 1</th>
+                                                        <th>Saída 1</th>
+                                                        <th>Entrada 2</th>
+                                                        <th>Saída 2</th>
                                                         <th>Qtd. Horas</th>
                                                         <th>Atividade</th>
                                                         <th>Status</th>
@@ -104,6 +111,10 @@
                                                         ?>
                                                         <tr class="odd gradeX">
                                                             <td><?php echo $row['Data_apontamento']; ?></td>
+                                                            <td><?php echo $row['Entrada_1']; ?></td>
+                                                            <td><?php echo $row['Saida_1']; ?></td>
+                                                            <td><?php echo $row['Entrada_2']; ?></td>
+                                                            <td><?php echo $row['Saida_2']; ?></td>
                                                             <td><?php echo $row['Qtd_hrs_real']; ?></td>
                                                             <td><?php echo $row['observacao']; ?></td>
                                                             <td><?php echo $row['Aprovado']; ?></td>
@@ -114,6 +125,44 @@
                                                             </td>
                                                         </tr>
                                                     <?php } }?>
+
+                                                <tr class="odd gradeX" id="trFormHoras">
+                                                <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+                                                <input type="hidden" name="id_projeto_ap" value="<?php echo $apontamento->id_projeto; ?>">
+                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
+                                                <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
+
+                                                    <td>
+                                                        <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" id="Entrada_1" name="Entrada_1" class="validate" maxlength="5">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" id="Saida_1" name="Saida_1" class="validate" maxlength="5">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" id="Entrada_2" name="Entrada_2" class="validate" maxlength="5">
+                                                    </td> 
+                                                    <td>
+                                                        <input type="time" id="Saida_2" name="Saida_2" class="validate" maxlength="5">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
+                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
+                                                    </td>
+                                                    <td>
+                                                        Não Aprovado
+                                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
+                                                        <input type="hidden" name="action" value="1">
+                                                    </td>
+                                                    <td><button type="submit" class="btn btn-success" style="display:none" id="buttonHoras" onclick="escondehoras()">+</button></td>
+                                                </form>
+                                                </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
@@ -179,7 +228,7 @@
                                                     <th align="center">
                                                     </th>
                                                     <th align="center">
-                                                        <a href="#" data-toggle="modal" data-target="#ModalDespesas" style="color : #fff;">+</a>
+                                                        <a href="#" data-toggle="modal" onclick="document.getElementById('Data_despesa').focus();" style="color : #fff;">+</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -214,177 +263,59 @@
                                                         </td>
                                                     </tr>
                                                 <?php } }?>
+                                                <tr>
+                                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+                                                    <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
+                                                    <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
+                                                    <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
+
+                                                    <!-- inicio form -->
+
+                                                    <td>
+                                                        <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
+                                                    </td>
+                                                    <td width="20%">
+                                                         <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
+                                                            <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
+                                                              <option value="">Selecione</option>
+                                                                <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
+                                                            </select> 
+                                                        <?php } else { ?>
+                                                                <?php $profissional = $funcionario->findFuncionario(); ?>
+                                                                <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
+                                                                <input type="hidden" name="id_funcionario" value="<?php echo $profissional['id']; ?>">
+                                                        <?php }?>
+                                                    </td>
+                                                    <td width="10%">
+                                                        <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
+                                                          <option value="">Selecione</option>
+                                                            <?php $tipodespesa->montaSelect(); ?>
+                                                        </select> 
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
+                                                    </td>
+                                                    <td width="5%">
+                                                        <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" onkeypress="moeda(this)" id="Vlr_unit" name="Vlr_unit" class="validate" maxlength="255">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" id="vl_total_qtd" readonly="true" maxlength="255">
+                                                    </td>
+                                                    <td>
+                                                    <input type="hidden" name="action" value="5">
+                                                        Não Aprovado
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="btn btn-success" id="buttonDespesas" style="display:block" onclick="escondedespesas()">+</button>
+                                                    </td>
+                                                    </form>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
-                                
-                                <!-- Modal de despesas -->
-                                <div id="ModalDespesas" class="modal fade" >
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Gerenciamento de Despesas</h4>
-                                    </div>
-
-                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
-                                        <div class="modal-body">
-                                          <div class="row">
-                                            <div class="col s4">
-                                            <label for="id_projeto">Código do Projeto</label><br />
-                                              <?php echo $apontamento->id_projeto; ?>
-                                              <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
-                                            </div>
-                                            
-                                            <div class="col s4">
-                                            <label for="nome">Cliente</label><br />
-                                                <p class="cliente"><?php echo $apontamento->cliente; ?></p>
-                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
-                                            </div>
-
-                                            <div class="col s4">
-                                            <label for="proposta">Proposta</label><br />
-                                              <p class="proposta"><?php echo $apontamento->proposta; ?></p>
-                                              <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
-                                            </div>
-                                          </div>
-
-                                          <div class="row">
-                                            <div class="col s3">
-                                            <label for="Data_despesa">Data da Despesa</label>
-                                                <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
-                                            </div>
-                                            <div class="col s1"></div>
-                                            <div class="col s4">
-                                                <label for="id_tipodespesa">Tipo da Despesa</label>
-                                                <select id="id_tipodespesa" name="id_tipodespesa" class="form-control input-sm">
-                                                  <option value="">Selecione</option>
-                                                    <?php $tipodespesa->montaSelect(); ?>
-                                                </select> 
-                                            </div>
-
-
-                                            <div class="col s3">
-                                            <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
-                                                <label for="id_funcionario">Profissional</label>
-                                                <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
-                                                  <option value="">Selecione</option>
-                                                    <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
-                                                </select> 
-                                            <?php } else { ?>
-                                                    <?php $profissional = $funcionario->findFuncionario(); ?>
-                                                    <p><b> Profissional : </b></p>
-                                                    <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
-                                                    <input type="hidden" name="id_funcionario" value="<?php echo $profissional['id']; ?>">
-                                            <?php }?>
-                                            </div>
-                                          </div>
-                                            <div class="row">
-                                                <div class="col s4">
-                                                <label for="Num_doc">Nº Doc</label>
-                                                  <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
-                                                </div>
-                                                <div class="col s1"></div>
-                                                <div class="col s4">
-                                                <label for="Vlr_unit">Valor Unitário R$ :</label>
-                                                  <input type="text" onkeypress="moeda(this)" id="Vlr_unit" name="Vlr_unit" class="validate" maxlength="255">
-                                                </div>
-                                            </div>
-                          
-                                            <div class="row">
-                                                <div class="col s4">
-                                                <label for="Qtd_despesa">Quantidade</label>
-                                                  <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
-                                                </div>
-                                                <div class="col s1"></div>
-
-                                                <div class="col s4">
-                                                <label for="Vlr_unit">Valor Total R$ :</label>
-                                                  <input type="text" id="vl_total_qtd" readonly="true" maxlength="255">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                        <input type="hidden" name="action" value="5">
-                                            <button type="submit" class="btn btn-success" id="buttonDespesas" onclick="escondedespesas()">Salvar</button>
-                                            <div class="col s1"></div>
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-                                        </div>
-                                    </form>    
-                                </div>
-
-                                <!-- Modal de apontamento -->
-                                <div id="ModalHoras" class="modal fade" >
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Gerenciamento de horas</h4>
-                                    </div>
-
-                                    <form class="col s12" id="apontamentos" action="apontamentos.php" method="post" name="cad_apontamentos">
-                                        <div class="modal-body">
-                                          <div class="row">
-                                            <div class="col s4">
-                                            <label for="id_projeto">Código do Projeto</label><br />
-                                              <?php echo $apontamento->id_projeto; ?>
-                                              <input type="hidden" name="id_projeto_ap" value="<?php echo $apontamento->id_projeto; ?>">
-                                            </div>
-                                            <div class="col s4">
-                                            <label for="nome">Cliente</label><br />
-                                                <p class="cliente"><?php echo $apontamento->cliente; ?></p>
-                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente; ?>">
-                                            </div>
-
-                                            <div class="col s4">
-                                            <label for="proposta">Proposta</label><br />
-                                              <p class="proposta"><?php echo $apontamento->proposta; ?></p>
-                                              <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
-                                            </div>
-                                          </div>
-
-                                          <div class="row">
-                                            <div class="col s3">
-                                            <label for="Data_apontamento">Data Apontamento</label>
-                                                <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
-                                            </div>
-                                            <div class="col s1"></div>
-                                            <div class="col s2">
-                                            <label for="Entrada_1">Entrada 1</label>
-                                              <input type="time" id="Entrada_1" name="Entrada_1" class="validate" maxlength="5">
-                                            </div>
-                                            <div class="col s2">
-                                            <label for="Saida_1">Saída 1</label>
-                                              <input type="time" id="Saida_1" name="Saida_1" class="validate" maxlength="5">
-                                            </div>
-
-                                            <div class="col s2">
-                                            <label for="Entrada_2">Entrada 2</label>
-                                              <input type="time" id="Entrada_2" name="Entrada_2" class="validate" maxlength="5">
-                                            </div>
-                                            <div class="col s2">
-                                            <label for="Saida_2">Saída 2</label>
-                                              <input type="time" id="Saida_2" name="Saida_2" class="validate" maxlength="5">
-                                            </div>
-
-                                          </div>
-                                          <div class="row">
-                                            <div class="col s2">
-                                            <label for="Qtd_hrs_real">Total de Horas</label>
-                                                <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
-                                                <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
-                                            </div>
-                                            <div class="col s1"></div>
-                                                <div class="col s9">
-                                                <label for="observacao">Atividade</label>
-                                                  <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
-                                                </div>
-                                            </div>
-                          
-                                        </div>
-                                        <div class="modal-footer">
-                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
-                                        <input type="hidden" name="action" value="1">
-                                            <button type="submit" class="btn btn-success" id="buttonHoras" onclick="escondehoras()">Salvar</button>
-                                            <div class="col s1"></div>
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-                                        </div>
-                                    </form>    
                                 </div>
                             </div>
 
@@ -426,9 +357,11 @@ function escondedespesas(){
 $(document).ready(function(){
     if ($('#id_funcionario_busca').val() > 0 && $('#id_projeto_busca').val() > 0){
         $("#add_button").css("display", "block");
+        $("#buttonHoras").css("display", "block");
+        $("#buttonDespesas").css("display", "block");
     }
 
-    $( "#Qtd_despesa" ).blur(function() {
+    $( "#Vlr_unit" ).blur(function() {
         var money = document.getElementById('Vlr_unit').value.replace( '.', '' );
         money = money.replace( ',', '.' );
         money = money * document.getElementById('Qtd_despesa').value;
@@ -460,30 +393,30 @@ $(document).ready(function(){
         var time_entrada = document.getElementById('Entrada_2').value;
         var time_saida = document.getElementById('Saida_2').value;
         var time_atual = document.getElementById('Qtd_hrs_real').value;
+        if (time_entrada != "" && time_saida != "") {
+            s = time_entrada.split(':');
+            e = time_saida.split(':');
+            f = time_atual.split(':');
 
-        s = time_entrada.split(':');
-        e = time_saida.split(':');
-        f = time_atual.split(':');
+            min = e[1]-s[1];
+            hour_carry = 0;
 
-        min = e[1]-s[1];
-        hour_carry = 0;
+            if(min < 0){
+                min += 60;
+                hour_carry = parseFloat(hour_carry) + parseFloat(1);
+            }
+            min = parseFloat(f[1]) + parseFloat(min);        
+            if (min >= 60) {
+                min = parseFloat(min) - parseFloat(60)
+                hour_carry = parseFloat(hour_carry) + parseFloat(1);
+            }
 
-        if(min < 0){
-            min += 60;
-            hour_carry = parseFloat(hour_carry) + parseFloat(1);
+            hour = e[0]-s[0];
+            hour = parseFloat(hour) + parseFloat(f[0])+ parseFloat(hour_carry);
+            diff = hour + ":" + min;
+            $("#Qtd_hrs_real").val(diff);
+            $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
         }
-        min = parseFloat(f[1]) + parseFloat(min);        
-        if (min >= 60) {
-            min = parseFloat(min) - parseFloat(60)
-            hour_carry = parseFloat(hour_carry) + parseFloat(1);
-        }
-
-        hour = e[0]-s[0];
-        hour = parseFloat(hour) + parseFloat(f[0])+ parseFloat(hour_carry);
-        diff = hour + ":" + min;
-
-        $("#Qtd_hrs_real").val(diff);
-        $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
     }); 
 
 });

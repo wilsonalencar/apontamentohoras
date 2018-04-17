@@ -64,8 +64,71 @@ class apontamento extends app
 			$this->msg = "Favor informar a hora de saída 1.";
 			return false;	
 		}
+		if (strtotime($this->Entrada_1) > strtotime($this->Saida_1)) {
+			$this->msg = "O horário de saída 1 é menor que o de Entrada 1.";
+			return false;
+		}
+		if (!empty($this->Entrada_2) && empty($this->Saida_2)) {
+			$this->msg = "Favor informar a saída 2.";
+			return false;
+		}
+		if (empty($this->Entrada_2) && !empty($this->Saida_2)) {
+			$this->msg = "Favor informar a Entrada 2.";
+			return false;
+		}
+		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2)) {
+			return false;	
+		}
+
 		if (!$this->checkData($this->Data_apontamento)) {
 			return false;
+		}
+		return true;
+	}
+	private function checkHorarios($entrada1, $saida1, $entrada2 = 0, $saida2 = 0)
+	{
+		if (!empty($entrada2) && !empty($saida2)) {
+			if (strtotime($entrada2) > strtotime($saida2)) {
+				$this->msg = "O horário de saida 2 é menor que o de Entrada 2.";
+				return false;
+			}
+
+			if (strtotime($entrada1) > strtotime($saida2) || strtotime($saida1) > strtotime($entrada2)){
+				$this->msg = "O horário informado está incorreto, favor verificar.";
+				return false;
+			}
+		}
+		$horarios = array();
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT 
+					    id, Data_apontamento, Entrada_1, Saida_1, Entrada_2, Saida_2
+					FROM
+					    projetohoras
+					WHERE
+					    data_apontamento = '".$this->Data_apontamento."' AND id_funcionario = ".$this->id_funcionario." AND id_projeto = ".$this->id_projeto."";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro na verificação de duplicidade de lançamento de horas.";	
+			return false;	
+		}
+
+		while ($horarios[] = $result->fetch_array(MYSQLI_ASSOC)) {
+		}
+
+		if (!empty($horarios)) {
+			foreach ($horarios as $key => $val) {
+				if (is_array($val)) {
+					if ((strtotime($entrada1) >= strtotime($val['Entrada_1']) && strtotime($entrada1) <= strtotime($val['Saida_1'])) || (strtotime($entrada1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Saida_1'])) || (strtotime($entrada1) >= strtotime($val['Entrada_2']) && strtotime($entrada1) <= strtotime($val['Saida_2'])) || (strtotime($entrada1) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])) || (strtotime($saida1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Saida_1'])) || (strtotime($saida1) <= strtotime($val['Entrada_2']) && strtotime($saida1) >= strtotime($val['Saida_2']))) {
+						$this->msg = "Período já foi lançado, favor verificar.";
+						return false; 
+					}
+
+					if (!empty($entrada2) && !empty($saida2) && ((strtotime($entrada2) >= strtotime($val['Entrada_1']) && strtotime($entrada2) <= strtotime($val['Saida_1'])) || (strtotime($entrada2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Saida_1'])) || (strtotime($entrada2) >= strtotime($val['Entrada_2']) && strtotime($entrada2) <= strtotime($val['Saida_2'])) || (strtotime($entrada2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])) || (strtotime($saida2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Saida_1'])) || (strtotime($saida2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])))) {
+						$this->msg = "Período já foi lançado, favor verificar.";
+						return false; 
+					}
+				}
+			}
 		}
 		return true;
 	}
@@ -153,9 +216,6 @@ class apontamento extends app
 		 	return false;
 		}
 
-		if ($this->id > 0) {
-			return $this->update();
-		}
 		return $this->insert();
 	}
 
@@ -202,7 +262,14 @@ class apontamento extends app
 			$this->Qtd_hrs_real .= '.'.$value;
 		}
 		$this->Qtd_hrs_real = substr($this->Qtd_hrs_real, 1);
-
+		
+		$horaReal = explode('.', $this->Qtd_hrs_real);
+		if ($horaReal[1] > 0) {
+			$horaReal[1] = $horaReal[1]/60;
+		}
+		$horareal2 = explode('.', $horaReal[1]);
+		$this->Qtd_hrs_real = $horaReal[0].'.'.substr($horareal2[1], 0,1);
+		
 		$query = sprintf("INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario, Entrada_1, Saida_1, Entrada_2, Saida_2)
 		VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s)", 
 			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email'], $this->Entrada_1, $this->Saida_1, $this->quote($this->Entrada_2, true, true),$this->quote($this->Saida_2, true, true));
@@ -253,7 +320,7 @@ class apontamento extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		if ($this->id_projeto > 0 or $this->id_funcionario > 0) {
-			$query = "SELECT id, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, id_funcionario, id_projeto FROM projetohoras where 1 ";
+			$query = "SELECT id,Entrada_1, Entrada_2, Saida_1, Saida_2, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, id_funcionario, id_projeto FROM projetohoras where 1";
 			if ($this->id_projeto > 0) {
 				$query .= " AND id_projeto = ".$this->id_projeto;
 			}
@@ -262,6 +329,8 @@ class apontamento extends app
 				$query .= " AND id_funcionario = ".$this->id_funcionario;
 			}
 
+			$query .= " order by Data_apontamento desc; ";
+			
 			if (!$result = $conn->query($query)) {
 				$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 				return false;	
