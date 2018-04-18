@@ -117,6 +117,7 @@ $projetodespesa->lista_aprovacao();
                                                 <th>Profissional</th>
                                                 <th>Data</th>
                                                 <th>Nº Doc</th>
+                                                <th>Tipo Despesa</th>
                                                 <th>Qtd. Despesa</th>
                                                 <th>Valor Unit.</th>
                                                 <th>Valor Total</th>
@@ -131,6 +132,7 @@ $projetodespesa->lista_aprovacao();
                                                     <td><?php echo $row['funcionarioNome']; ?></td>
                                                     <td><?php echo $row['Data_despesa']; ?></td>
                                                     <td><?php echo $row['Num_doc']; ?></td>
+                                                    <td><?php echo $row['descricao']; ?></td>
                                                     <td><?php echo $row['Qtd_despesa']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_total']; ?></td>

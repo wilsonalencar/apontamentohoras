@@ -88,7 +88,6 @@
                                                         <th></th>
                                                         <th></th>
                                                         <th align="center">
-                                                            <a href="#" data-toggle="modal" id="add_button" onclick="document.getElementById('Data_apontamento').focus();" style="color : #fff; display: none;  ">+</a>
                                                         </th>
                                                     </tr>
                                                 </thead>
@@ -104,6 +103,42 @@
                                                         <th>Status</th>
                                                         <td></td>
                                                     </tr>
+	                                                <tr class="odd gradeX" id="trFormHoras">
+	                                                <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+	                                                <input type="hidden" name="id_projeto_ap" value="<?php echo $apontamento->id_projeto; ?>">
+	                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
+	                                                <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
+
+	                                                    <td>
+	                                                        <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
+	                                                    </td>
+	                                                    <td>
+	                                                        <input type="time" id="Entrada_1" name="Entrada_1" class="validate" maxlength="5">
+	                                                    </td>
+	                                                    <td>
+	                                                        <input type="time" id="Saida_1" name="Saida_1" class="validate" maxlength="5">
+	                                                    </td>
+	                                                    <td>
+	                                                        <input type="time" id="Entrada_2" name="Entrada_2" class="validate" maxlength="5">
+	                                                    </td> 
+	                                                    <td>
+	                                                        <input type="time" id="Saida_2" name="Saida_2" class="validate" maxlength="5">
+	                                                    </td>
+	                                                    <td>
+	                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
+	                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
+	                                                    </td>
+	                                                    <td>
+	                                                        <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
+	                                                    </td>
+	                                                    <td>
+	                                                        Não Aprovado
+	                                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
+	                                                        <input type="hidden" name="action" value="1">
+	                                                    </td>
+	                                                    <td><button type="submit" class="btn btn-success" style="display:none" id="buttonHoras" onclick="escondehoras()">+</button></td>
+	                                                </form>
+	                                                </tr>
                                                     <?php
                                                     if (!empty($apontamento->array)) {
                                                     foreach($apontamento->array as $row){ 
@@ -125,44 +160,6 @@
                                                             </td>
                                                         </tr>
                                                     <?php } }?>
-
-                                                <tr class="odd gradeX" id="trFormHoras">
-                                                <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
-                                                <input type="hidden" name="id_projeto_ap" value="<?php echo $apontamento->id_projeto; ?>">
-                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
-                                                <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
-
-                                                    <td>
-                                                        <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
-                                                    </td>
-                                                    <td>
-                                                        <input type="time" id="Entrada_1" name="Entrada_1" class="validate" maxlength="5">
-                                                    </td>
-                                                    <td>
-                                                        <input type="time" id="Saida_1" name="Saida_1" class="validate" maxlength="5">
-                                                    </td>
-                                                    <td>
-                                                        <input type="time" id="Entrada_2" name="Entrada_2" class="validate" maxlength="5">
-                                                    </td> 
-                                                    <td>
-                                                        <input type="time" id="Saida_2" name="Saida_2" class="validate" maxlength="5">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
-                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
-                                                    </td>
-                                                    <td>
-                                                        Não Aprovado
-                                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
-                                                        <input type="hidden" name="action" value="1">
-                                                    </td>
-                                                    <td><button type="submit" class="btn btn-success" style="display:none" id="buttonHoras" onclick="escondehoras()">+</button></td>
-                                                </form>
-                                                </tr>
-
                                                 </tbody>
                                             </table>
                                         </div>
@@ -228,7 +225,6 @@
                                                     <th align="center">
                                                     </th>
                                                     <th align="center">
-                                                        <a href="#" data-toggle="modal" onclick="document.getElementById('Data_despesa').focus();" style="color : #fff;">+</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -244,25 +240,6 @@
                                                     <th>Status</th>
                                                     <td></td>
                                                 </tr>
-                                                <?php
-                                                if (!empty($projetodespesas->array)) {
-                                                foreach($projetodespesas->array as $row){ ?>
-                                                    <tr class="odd gradeX">
-                                                        <td><?php echo $row['Data_despesa']; ?></td>
-                                                        <td><?php echo $row['NomeFuncionario']; ?></td>
-                                                        <td><?php echo $row['NomeDespesa']; ?></td>
-                                                        <td><?php echo $row['Num_doc']; ?></td>
-                                                        <td><?php echo $row['Qtd_despesa']; ?></td>
-                                                        <td>R$<?php echo $row['Vlr_unit']; ?></td>
-                                                        <td>R$<?php echo $row['Vlr_total']; ?></td>
-                                                        <td><?php echo $row['Aprovado']; ?></td>
-                                                        <td>
-                                                        <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
-                                                            <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
-                                                        <?php } ?>
-                                                        </td>
-                                                    </tr>
-                                                <?php } }?>
                                                 <tr>
                                                     <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
                                                     <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
@@ -270,7 +247,6 @@
                                                     <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
 
                                                     <!-- inicio form -->
-
                                                     <td>
                                                         <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
                                                     </td>
@@ -313,6 +289,25 @@
                                                     </td>
                                                     </form>
                                                 </tr>
+                                                <?php
+                                                if (!empty($projetodespesas->array)) {
+                                                foreach($projetodespesas->array as $row){ ?>
+                                                    <tr class="odd gradeX">
+                                                        <td><?php echo $row['Data_despesa']; ?></td>
+                                                        <td><?php echo $row['NomeFuncionario']; ?></td>
+                                                        <td><?php echo $row['NomeDespesa']; ?></td>
+                                                        <td><?php echo $row['Num_doc']; ?></td>
+                                                        <td><?php echo $row['Qtd_despesa']; ?></td>
+                                                        <td>R$<?php echo $row['Vlr_unit']; ?></td>
+                                                        <td>R$<?php echo $row['Vlr_total']; ?></td>
+                                                        <td><?php echo $row['Aprovado']; ?></td>
+                                                        <td>
+                                                        <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
+                                                            <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                        <?php } ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php } }?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -375,7 +370,7 @@ $(document).ready(function(){
 
         s = time_entrada.split(':');
         e = time_saida.split(':');
-
+        if (time_entrada != "" && time_saida != "") {
         min = e[1]-s[1];
         hour_carry = 0;
         if(min < 0){
@@ -387,6 +382,7 @@ $(document).ready(function(){
 
         $("#Qtd_hrs_real").val(diff);
         $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
+    	}
     }); 
 
     $( "#Saida_2" ).blur(function() {
@@ -403,16 +399,17 @@ $(document).ready(function(){
 
             if(min < 0){
                 min += 60;
-                hour_carry = parseFloat(hour_carry) + parseFloat(1);
+                hour_carry += 1;
             }
-            min = parseFloat(f[1]) + parseFloat(min);        
+            min = parseFloat(f[1]) + parseFloat(min); 
             if (min >= 60) {
-                min = parseFloat(min) - parseFloat(60)
-                hour_carry = parseFloat(hour_carry) + parseFloat(1);
+                min -= 60;
+                hour_carry -= 1;
             }
 
-            hour = e[0]-s[0];
-            hour = parseFloat(hour) + parseFloat(f[0])+ parseFloat(hour_carry);
+            hour = e[0]-s[0]-hour_carry;
+            hour = parseFloat(hour) + parseFloat(f[0]);
+
             diff = hour + ":" + min;
             $("#Qtd_hrs_real").val(diff);
             $("#Qtd_hrs_real_exibe").attr('placeholder',diff);

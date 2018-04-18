@@ -306,7 +306,8 @@ class projetodespesa extends app
                     A.Qtd_despesa,
                     A.Vlr_unit,
                     A.Vlr_total,
-				    A.Aprovado as status
+				    A.Aprovado as status,
+				    H.descricao
 				FROM 
 					projetodespesas A 
 				INNER JOIN 
@@ -319,6 +320,8 @@ class projetodespesa extends app
 					funcionarios F on A.id_funcionario = F.id
 				INNER JOIN
 					funcionarios G on B.id_gerente = G.id
+				INNER JOIN 
+					tiposdespesas H on A.id_tipodespesa = H.id
 				WHERE 
 					A.Aprovado = 'N'
 					";

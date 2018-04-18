@@ -595,7 +595,6 @@
                                                     <th align="center">
                                                     </th>
                                                     <th align="center">
-                                                        <a href="#" data-toggle="modal" onclick="document.getElementById('Data_despesa').focus();" style="color : #fff;">+</a>
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -611,25 +610,6 @@
                                                     <th>Status</th>
                                                     <td></td>
                                                 </tr>
-                                                <?php
-                                                if (!empty($projetodespesas->array)) {
-                                                foreach($projetodespesas->array as $row){ ?>
-                                                    <tr class="odd gradeX">
-                                                        <td><?php echo $row['Data_despesa']; ?></td>
-                                                        <td><?php echo $row['NomeFuncionario']; ?></td>
-                                                        <td><?php echo $row['NomeDespesa']; ?></td>
-                                                        <td><?php echo $row['Num_doc']; ?></td>
-                                                        <td><?php echo $row['Qtd_despesa']; ?></td>
-                                                        <td>R$ <?php echo $row['Vlr_unit']; ?></td>
-                                                        <td>R$ <?php echo $row['Vlr_total']; ?></td>
-                                                        <td><?php echo $row['Aprovado']; ?></td>
-                                                        <td>
-                                                        <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
-                                                        <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
-                                                        <?php } ?>
-                                                        </td>
-                                                    </tr>
-                                                <?php } }?>
                                                 <tr>
                                                     <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
                                                     <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
@@ -673,6 +653,25 @@
                                                     </td>
                                                     </form>
                                                 </tr>
+                                                <?php
+                                                if (!empty($projetodespesas->array)) {
+                                                foreach($projetodespesas->array as $row){ ?>
+                                                    <tr class="odd gradeX">
+                                                        <td><?php echo $row['Data_despesa']; ?></td>
+                                                        <td><?php echo $row['NomeFuncionario']; ?></td>
+                                                        <td><?php echo $row['NomeDespesa']; ?></td>
+                                                        <td><?php echo $row['Num_doc']; ?></td>
+                                                        <td><?php echo $row['Qtd_despesa']; ?></td>
+                                                        <td>R$ <?php echo $row['Vlr_unit']; ?></td>
+                                                        <td>R$ <?php echo $row['Vlr_total']; ?></td>
+                                                        <td><?php echo $row['Aprovado']; ?></td>
+                                                        <td>
+                                                        <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
+                                                        <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
+                                                        <?php } ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php } }?>
                                             </tbody>
                                         </table>
                                     </div>
