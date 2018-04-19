@@ -215,6 +215,8 @@ $('#dataTables-example').dataTable({
                   doc.pageMargins = [150,80,20,30];
                   doc.defaultStyle.fontSize = 11;
                   doc.styles.tableHeader.fontSize = 13;
+                  doc.styles.tableBodyEven.alignment = 'center';
+                  doc.styles.tableBodyOdd.alignment = 'center';
                       doc['header']=(function() {
                       return {
                         columns: [
