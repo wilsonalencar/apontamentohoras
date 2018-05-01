@@ -96,7 +96,7 @@
 			}	
 
 		}
-		$date = date('dmY H:i');
+		$date = date('dmYHi');
 		$zip = new ZipArchive();
 		$path = 'convert_'.$date.'.zip';
 
