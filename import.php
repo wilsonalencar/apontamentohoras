@@ -4,73 +4,117 @@
 	//$quebraLinha = '<br>';
 
 	if (!empty($_FILES)) {
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2200') {
-			converteTxtLayout2200($_FILES['xml'], $quebraLinha);
+		$files = array();
+		
+		foreach ($_FILES['xml']['name'] as $a => $b) {
+			$files[$a]['name'] = $b;
 		}
 
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2299') {
-			converteTxtLayout2299($_FILES['xml'], $quebraLinha);
+		foreach ($_FILES['xml']['type'] as $c => $d) {
+			$files[$c]['type'] = $d;
+		}
+		
+		foreach ($_FILES['xml']['tmp_name'] as $e => $f) {
+			$files[$e]['tmp_name'] = $f;
+		}
+		
+		foreach ($_FILES['xml']['error'] as $g => $h) {
+			$files[$g]['error'] = $h;
 		}
 
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2399') {
-			converteTxtLayout2399($_FILES['xml'], $quebraLinha);
+		foreach ($_FILES['xml']['size'] as $g => $h) {
+			$files[$g]['size'] = $h;
 		}
 
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2206') {
-			converteTxtLayout2206($_FILES['xml'], $quebraLinha);
+		foreach ($files as $id => $file) {
+			if (substr($file['name'], 0, 6) == 'S-2200') {
+				$arr[] = converteTxtLayout2200($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2299') {
+				$arr[] = converteTxtLayout2299($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2399') {
+				$arr[] = converteTxtLayout2399($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2206') {
+				$arr[] = converteTxtLayout2206($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2300') {
+				$arr[] = converteTxtLayout2300($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2205') {
+				$arr[] = converteTxtLayout2205($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2306') {
+				$arr[] = converteTxtLayout2306($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2230') {
+				$arr[] = converteTxtLayout2230($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2250') {
+				$arr[] = converteTxtLayout2250($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2190') {
+				$arr[] = converteTxtLayout2190($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-2298') {
+				$arr[] = converteTxtLayout2298($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-1295') {
+				$arr[] = converteTxtLayout1295($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-1299') {
+				$arr[] = converteTxtLayout1299($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-1298') {
+				$arr[] = converteTxtLayout1298($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-1300') {
+				$arr[] = converteTxtLayout1300($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-1200') {
+				$arr[] = converteTxtLayout1200($file, $quebraLinha);
+			}
+
+			if (substr($file['name'], 0, 6) == 'S-1210') {
+				$arr[] = converteTxtLayout1210($file, $quebraLinha);
+			}	
+
+		}
+		$date = date('dmY H:i');
+		$zip = new ZipArchive();
+		$path = 'convert_'.$date.'.zip';
+
+		touch($path);
+		
+		$res = $zip->open($path , ZipArchive::CREATE);
+		if($res === true){
+			foreach ($arr as $in => $name) {
+		    	$zip->addFile(  $name , $name );
+			}
+		
+		$zip->close();
+
+		foreach ($arr as $inn => $namee) {
+		    unlink($namee);
 		}
 
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2300') {
-			converteTxtLayout2300($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2205') {
-			converteTxtLayout2205($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2306') {
-			converteTxtLayout2306($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2230') {
-			converteTxtLayout2230($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2250') {
-			converteTxtLayout2250($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2190') {
-			converteTxtLayout2190($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-2298') {
-			converteTxtLayout2298($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1295') {
-			converteTxtLayout1295($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1299') {
-			converteTxtLayout1299($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1298') {
-			converteTxtLayout1298($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1300') {
-			converteTxtLayout1300($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1200') {
-			converteTxtLayout1200($_FILES['xml'], $quebraLinha);
-		}
-
-		if (substr($_FILES['xml']['name'], 0, 6) == 'S-1210') {
-			converteTxtLayout1210($_FILES['xml'], $quebraLinha);
+		donwloadArquivo($path);			     
 		}
 
 		exit;
@@ -346,7 +390,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -638,7 +682,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -680,7 +724,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -717,7 +761,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -749,7 +793,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -785,7 +829,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -824,7 +868,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -856,7 +900,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 	function converteTxtLayout2250($file, $quebraLinha)
@@ -897,7 +941,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -965,7 +1009,7 @@
 		fclose($file);
 
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1037,7 +1081,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1087,17 +1131,17 @@
 		$resideExterior = '|';
 		$txt .= $resideExterior;
 
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->tpLograd.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->dscLograd.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->nrLograd.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->complemento.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->bairro.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->cep.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->uf.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->brasil->codMunic.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->tpLograd.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->dscLograd.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->nrLograd.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->complemento.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->bairro.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->cep.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->uf.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->brasil->codMunic.'|';
 
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->exterior->paisResid.'|';
-		$txt .= $xml->evtTSVInicio->nascimento->endereco->exterior->nmCid.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->exterior->paisResid.'|';
+		$txt .= $xml->evtTSVInicio->trabalhador->endereco->exterior->nmCid.'|';
 
 		$txt .= $xml->evtTSVInicio->trabalhador->documentos->CTPS->nrCtps.'|'; 
 		$txt .= $xml->evtTSVInicio->trabalhador->documentos->CTPS->serieCtps.'|';
@@ -1247,7 +1291,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1379,7 +1423,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1490,7 +1534,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1669,7 +1713,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1885,7 +1929,7 @@
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -1898,7 +1942,6 @@
 		   $ID = $b;
 		}
 
-	
 		$txt .= 'CAD2200_01|';
 		$txt .= $ID.'|';
 		$txt .= $xml->evtAdmissao->ideEmpregador->nrInsc.'|'; //cnpj empregador
@@ -2140,17 +2183,17 @@
 
 			$txt .= $xml->evtAdmissao->infoContrato->observacoes->observacao.'|'; //verificar
 		}
-		
 		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
 		if (file_exists($name)) {
 			unlink($name);
 		}
+
 		$file = fopen($name, 'a');
 		fwrite($file, $txt);
 		fclose($file);
 		if (file_exists($name)) {
-			donwloadArquivo($name);
+			return $name;
 		}
 	}
 
@@ -2188,7 +2231,7 @@
 	<body>
 		<form method="POST" action="import.php" enctype="multipart/form-data">
 			<label>Informar XML</label><br><br>
-			<input type="file" name="xml" id="xml">
+			<input type="file" name="xml[]" id="xml" multiple>
 			<input type="submit" value="Gerar TXT">
 		</form>		
 	</body>
