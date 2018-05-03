@@ -1102,11 +1102,11 @@
 		$txt .= $indicadorExclusao;
 
 		$indRetif = '|';
-		if ((int)$xml->evtTSVInicio->ideEvento->indRetif == 1) {
+		if ((int)$xml->evtTSVInicio->ideEvento->indRetif == 2) {
 			$indRetif = 'S|';
 		}
 
-		if ((int)$xml->evtTSVInicio->ideEvento->indRetif == 2) {
+		if ((int)$xml->evtTSVInicio->ideEvento->indRetif == 1) {
 			$indRetif = 'N|';
 		}
 
