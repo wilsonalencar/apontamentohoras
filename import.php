@@ -1437,7 +1437,7 @@
 		}
 		
 		$txt .= 'CAD2206_01|';
-		$txt .= $ID;
+		$txt .= $ID.'|'; 
 
 		$txt .= $xml->evtAltContratual->ideEmpregador->nrInsc.'|';
 
@@ -1548,7 +1548,7 @@
 		}
 		
 		$txt .= 'MOV1018_01|';
-		$txt .= $ID;
+		$txt .= $ID.'|'; 
 		$txt .= $xml->evtTSVTermino->ideEmpregador->nrInsc.'|';
 
 		$indicadorExclusao = '|';
