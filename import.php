@@ -1748,7 +1748,13 @@
 		$txt .= $xml->evtDeslig->infoDeslig->nrCertObito.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->nrProcTrab.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->indCumprParc.'|';
-		$txt .= $xml->evtDeslig->infoDeslig->observacao.'|';
+
+		if (!empty($xml->evtDeslig->infoDeslig->observacoes)) {
+			foreach($xml->evtDeslig->infoDeslig->observacoes as $observacoes) {
+				$txt .= $observacoes->observacao.'|'; 
+			}
+		}
+
 		$txt .= $xml->evtDeslig->infoDeslig->sucessaoVinc->cnpjSucessora.'|';
 
 		$txt .= $xml->evtDeslig->infoDeslig->quarentena->dtFimQuar.'|';
@@ -1758,9 +1764,13 @@
 		$txt .= $xml->evtDeslig->infoDeslig->transfTit->cpfSubstituto.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->transfTit->dtNascto.'|';
 
-		$txt .= $xml->evtDeslig->infoDeslig->consigFGTS->idConsig.'|';
-		$txt .= $xml->evtDeslig->infoDeslig->consigFGTS->insConsig.'|';
-		$txt .= $xml->evtDeslig->infoDeslig->consigFGTS->nrContr.'|';
+
+		if (!empty($xml->evtDeslig->infoDeslig->consigFGTS)) {	
+			foreach($xml->evtDeslig->infoDeslig->consigFGTS as $FGTS) {
+				$txt .= $FGTS->insConsig.'|';
+				$txt .= $FGTS->nrContr.'|';
+			}
+		}		
 		
 
 		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
@@ -1920,6 +1930,115 @@
 				}
 			}
 		}
+		
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						
+						if (!empty($ideADC->idePeriodo)) {
+
+							foreach($ideADC->idePeriodo as $idePeriodo) {
+
+								if (!empty($idePeriodo->ideEstabLot)) {
+									
+									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
+										$txt .= $quebraLinha;
+										$txt .= 'MOV1007_09|';
+										$txt .= $ideEstabLot->tpInsc.'|';
+										$txt .= $ideEstabLot->nrInsc.'|';
+										$txt .= $ideEstabLot->codLotacao.'|';
+										$txt .= $ideEstabLot->infoAgNocivo->grauExp.'|';
+										$txt .= $ideEstabLot->infoSimples->indSimples.'|';
+									}
+
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoPerAnt->ideADC)) {
+
+					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						
+						if (!empty($ideADC->idePeriodo)) {
+
+							foreach($ideADC->idePeriodo as $idePeriodo) {
+
+								if (!empty($idePeriodo->ideEstabLot)) {
+									
+									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
+										
+										if (!empty($ideEstabLot->detVerbas)) {
+										
+											foreach ($ideEstabLot->detVerbas as $detVerbas) {
+												$txt .= $quebraLinha;
+												$txt .= 'MOV1007_10|';
+												$txt .= $detVerbas->codRubr.'|';
+												$txt .= $detVerbas->ideTabRubr.'|';
+												$txt .= $detVerbas->qtdRubr.'|';
+												$txt .= $detVerbas->fatorRubr.'|';
+												$txt .= $detVerbas->vrUnit.'|';
+												$txt .= $detVerbas->vrRubr.'|';
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+
+				if (!empty($dmDev->infoTrabInterm)) {
+
+					foreach($dmDev->infoTrabInterm as $infoTrabInterm) {				
+						$txt .= $quebraLinha;
+						$txt .= 'MOV1007_11|';
+						$txt .= $infoTrabInterm->codConv.'|';
+
+					}
+				}
+			}
+		}
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->procJudTrab)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->procJudTrab as $procJudTrab) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1007_12|';
+				$txt .= $procJudTrab->tpTrib.'|';
+				$txt .= $procJudTrab->nrProcJud.'|';
+				$txt .= $procJudTrab->codSusp.'|';
+			}
+		}
+
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->infoMV->remunOutrEmpr)) {
+
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->infoMV->remunOutrEmpr as $remunOutrEmpr) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1007_13|';
+				$txt .= $remunOutrEmpr->tpInsc.'|';
+				$txt .= $remunOutrEmpr->nrInsc.'|';
+				$txt .= $remunOutrEmpr->vlrRemunOE.'|';
+			}
+		}
+
 		$txt .= $quebraLinha;
 		$name = str_replace('xml', 'txt', $file['name']);
 		if (file_exists($name)) {
