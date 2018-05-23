@@ -478,6 +478,7 @@
 					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
 						if (!empty($lote->remunPerApur)) {
 							foreach ($lote->remunPerApur as $remunPerApur) {
+								$txt .= $quebraLinha;
 								$txt .= 'MOV0021_06|';
 								$txt .= $remunPerApur->matricula.'|';
 								$txt .= $remunPerApur->indSimples.'|';
@@ -497,6 +498,7 @@
 							foreach ($lote->remunPerApur as $remunPerApur) {
 								if (!empty($remunPerApur->itensRemun)) {
 									foreach ($remunPerApur->itensRemun as $itensRemun) {
+										$txt .= $quebraLinha;
 										$txt .= 'MOV0021_07|';
 										$txt .= $itensRemun->codRubr.'|';
 										$txt .= $itensRemun->ideTabRubr.'|';
@@ -521,6 +523,7 @@
 							foreach ($lote->remunPerApur as $remunPerApur) {
 								if (!empty($remunPerApur->infoSaudeColet->detOper)) {
 									foreach ($remunPerApur->infoSaudeColet->detOper as $detOper) {
+										$txt .= $quebraLinha;
 										$txt .= 'MOV0021_08|';
 										$txt .= $detOper->cnpjOper.'|';
 										$txt .= $detOper->regANS.'|';
@@ -544,6 +547,7 @@
 									foreach ($remunPerApur->infoSaudeColet->detOper as $detOper) {
 										if (!empty($detOper->detPlano)) {
 											foreach ($detOper->detPlano as $detPlano) {
+												$txt .= $quebraLinha;
 												$txt .= 'MOV0021_09|';
 												$txt .= $detPlano->tpDep.'|';
 												$txt .= $detPlano->cpfDep.'|';
@@ -565,6 +569,7 @@
 			foreach($xml->evtRemun->dmDev as $dmDev) {
 				if (!empty($dmDev->infoPerAnt->ideADC)) {
 					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
+						$txt .= $quebraLinha;
 						$txt .= 'MOV0021_10|';
 						$txt .= $ideADC->dtAcConv.'|';
 						$txt .= $ideADC->tpAcConv.'|';
@@ -583,6 +588,7 @@
 					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
 						if (!empty($ideADC->idePeriodo)) {
 							foreach ($ideADC->idePeriodo as $idePeriodo) {
+								$txt .= $quebraLinha;
 								$txt .= 'MOV0021_11|';
 								$txt .= $idePeriodo->perRef.'|';
 							}
@@ -600,6 +606,7 @@
 							foreach ($ideADC->idePeriodo as $idePeriodo) {
 								if (!empty($idePeriodo->ideEstabLot)) {
 									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
+										$txt .= $quebraLinha;
 										$txt .= 'MOV0021_12|';
 										$txt .= $ideEstabLot->tpInsc.'|';
 										$txt .= $ideEstabLot->nrInsc.'|';
@@ -623,6 +630,7 @@
 									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
 										if (!empty($ideEstabLot->remunPerAnt)) {
 											foreach ($ideEstabLot->remunPerAnt as $remunPerAnt) {
+												$txt .= $quebraLinha;
 												$txt .= 'MOV0021_13|';
 												$txt .= $remunPerAnt->matricula.'|';
 												$txt .= $remunPerAnt->matricula.'|';
@@ -646,6 +654,7 @@
 							foreach ($lote->remunPerAnt as $remunPerAnt) {
 								if (!empty($remunPerAnt->itensRemun)) {
 									foreach ($remunPerAnt->itensRemun as $itensRemun) {
+										$txt .= $quebraLinha;
 										$txt .= 'MOV0021_14|';
 										$txt .= $itensRemun->codRubr.'|';
 										$txt .= $itensRemun->ideTabRubr.'|';
@@ -666,6 +675,7 @@
 			foreach($xml->evtRemun->dmDev as $dmDev) {
 				if (!empty($dmDev->infoTrabInterm)) {
 					foreach($dmDev->infoTrabInterm as $infoTrabInterm) {
+						$txt .= $quebraLinha;
 						$txt .= 'MOV0021_15|';
 						$txt .= $infoTrabInterm->codConv.'|';
 					}
