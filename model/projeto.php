@@ -23,7 +23,8 @@ class projeto extends app
 	public $array_Fin;
 	public $array_Fin_precificacao;
 	public $fileAnexo;
-
+	public $statusID;
+	public $farol;
 
 	private function check(){
 		
@@ -493,6 +494,153 @@ class projeto extends app
 			$this->array['dados'][$row['id_projeto']]['valorTotal'] = $row['qtd_hrs'] + $this->array['dados'][$row['id_projeto']]['valorTotal'] ;	
 			$this->array['valorTotalGeral'] = $row['qtd_hrs'] + $this->array['valorTotalGeral'];
 		}
+	}
+
+	public function relatorioAcompanhamento(){
+		$conn = $this->getDB->mysqli_connection;
+		$query = 'SELECT
+					A.id,
+					B.descricao as status,
+				    DATE_FORMAT(A.data_cadastro, "%d/%m/%Y") as fechado,
+				    C.codigo as cliente,
+				    D.nome as tipo,
+				    E.nome as escopo,
+				    F.apelido as gp,
+				    DATE_FORMAT(A.data_inicio, "%d/%m/%Y") as inicio,
+				    DATE_FORMAT(A.data_fim, "%d/%m/%Y") as termino_previsto,
+				    GROUP_CONCAT(H.nome) as equipe
+				FROM
+					projetos A 
+				INNER JOIN 
+					projetostatus B on A.id_status = B.id
+				INNER JOIN
+					clientes C on A.id_cliente = C.id
+				INNER JOIN
+					pilares D on A.id_pilar = D.id
+				INNER JOIN
+					propostas E on A.id_proposta = E.id 
+				LEFT JOIN
+					funcionarios F on A.id_gerente = F.id
+				LEFT JOIN
+					liberarprojeto G on A.id = G.id_projeto
+				LEFT JOIN 
+					funcionarios H on H.id = G.id_funcionario
+						';
+
+		if (!empty($this->statusID)) {
+			$query .= " WHERE A.id_status = ".$this->statusID;
+		}
+
+		$query .= " GROUP BY A.id;";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$precificacao = $this->calcPrecificacao($row['id']);
+			$row['valor_venda_total'] = $precificacao['receita_bruta'];
+			$row['CM1%_Venda'] = $precificacao['CM1%'];
+			
+			//calculando cm1 do mes %%%%%
+			$mesanterior = date('Y-m-d H:i:s', strtotime('-1 months', strtotime(date('Y-m-d H:i:s'))));
+			$custosDiretosant = $this->calcGastos($row['id'], $mesanterior);
+			
+			$first = $precificacao['receita_liquida'] - $custosDiretosant;
+			if ($precificacao['receita_liquida'] == 0) {
+				$precificacao['receita_liquida'] = 1;
+			}
+			$row['CM1_Mes'] = ($first*100)/$precificacao['receita_liquida'];
+			//fim calculo
+
+
+			//calculando ytd
+			$mesatual = date('Y-m-d H:i:s');
+			$custosDiretosatual = $this->calcGastos($row['id'], $mesatual);
+			$second = $precificacao['receita_liquida'] - $custosDiretosatual;
+			if ($precificacao['receita_liquida'] == 0) {
+				$precificacao['receita_liquida'] = 1;
+			}
+			$row['CM1_YTD'] = ($second*100)/$precificacao['receita_liquida'];
+			//fim calculo
+
+			//calculando EAD
+			$custosDiretos = $this->calcGastos($row['id']);
+			$third = $precificacao['receita_liquida'] - $custosDiretos;
+			if ($precificacao['receita_liquida'] == 0) {
+				$precificacao['receita_liquida'] = 1;
+			}
+			$row['CM1_EAC'] = ($third*100)/$precificacao['receita_liquida'];
+			//fim calculo
+
+			$this->array[] = $row;
+		}
+
+	return $this->array;
+	}
+
+	private function calcGastos($id_projeto, $data=null)
+	{
+		$conn = $this->getDB->mysqli_connection;
+
+		$funcionarios = 'SELECT 
+						    B.id, B.apelido, B.valor_taxa
+						FROM
+						    liberarprojeto A
+						        INNER JOIN
+						    funcionarios B ON A.id_funcionario = B.id
+						WHERE 
+							A.id_projeto ='.$id_projeto.'';
+
+		$data = substr($data, 0,-9);
+		$funcs = array();
+		if($result = $conn->query($funcionarios))
+		{
+			while($row = $result->fetch_array(MYSQLI_ASSOC)){
+				$funcs[$row['id']] = $row;
+				$horasApontadas = 'SELECT
+										id_funcionario, 
+										SUM(qtd_hrs_real) as horas
+									FROM
+										projetohoras
+									WHERE 
+										id_projeto ='.$id_projeto.'
+									AND 
+										id_funcionario = '.$row['id'].'
+									AND 
+										data_apontamento <= "'.$data.'"
+									GROUP BY id_funcionario';
+
+				if (empty($data)) {
+					$horasApontadas = 'SELECT
+										id_funcionario, 
+										SUM(qtd_hrs_real) as horas
+									FROM
+										projetohoras
+									WHERE 
+										id_projeto ='.$id_projeto.'
+									AND 
+										id_funcionario = '.$row['id'].'
+									GROUP BY id_funcionario';	
+				}
+
+				if($result = $conn->query($horasApontadas))
+				{
+					while($rer = $result->fetch_array(MYSQLI_ASSOC)){
+						$funcs[$rer['id_funcionario']]['horas'] = $rer['horas'];
+					}
+				}
+			}
+		}
+
+		$valorTT = 0.00;
+		foreach ($funcs as $key => $date) {
+			$funcs[$key]['Valor_total'] = $date['horas'] * $date['valor_taxa'];
+			$valorTT += $funcs[$key]['Valor_total'];	
+		}
+
+	return $valorTT;
 	}
 
 	public function montaSelect($selected=0, $gerente=false)

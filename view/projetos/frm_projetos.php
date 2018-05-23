@@ -140,7 +140,9 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
+                                                                    <?php if (@!$_GET['view']) { ?>
                                                                         <a href="#" data-toggle="modal" data-target="#ModalFaturas" style="color : #fff;">+</a>
+                                                                    <?php } ?>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -181,7 +183,9 @@
                                                                       <p style="color : #fff;"> Anexos </p>
                                                                     </th>
                                                                     <th>
+                                                                    <?php if (@!$_GET['view']) { ?>
                                                                         <a href="#" data-toggle="modal" data-target="#ModalAnexos" style="color: #fff;">+</a>
+                                                                    <?php } ?>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -243,7 +247,9 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
+                                                                    <?php if (@!$_GET['view']) { ?>
                                                                         <a href="#" data-toggle="modal" data-target="#ModalRecursos" style="color : #fff;">+</a>
+                                                                    <?php } ?>
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -281,9 +287,13 @@
                                             <input type="hidden" id="id" name="id" value="<?php echo $projeto->id; ?>">
                                             <input type="hidden" id="action" name="action" value="1">
                                             <div class="col s7"></div>
+                                            <?php if (@!$_GET['view']) { ?>
                                             <div>
                                                 <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">
                                             </div>
+                                            <?php } else { ?>
+                                                <a class="waves-effect waves-light btn" href="<?php echo app::dominio; ?>acompanhamento_projetos.php">Voltar</a>
+                                            <?php    } ?>
                                         </div>
                                     </form>
                                 </div>
@@ -342,7 +352,9 @@
 
                                         <div class="modal-footer">
                                         <input type="hidden" name="action" value="1">
+                                            <?php if (@!$_GET['view']) { ?>
                                             <button type="submit" class="btn btn-success">Salvar</button>
+                                            <?php } ?>
                                             <div class="col s1"></div>
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
@@ -415,7 +427,9 @@
                                         </div>
                                         <div class="modal-footer">
                                         <input type="hidden" name="action" value="1">
+                                        <?php if (@!$_GET['view']) { ?>
                                             <button type="submit" class="btn btn-success">Salvar</button>
+                                        <?php } ?>
                                             <div class="col s1"></div>
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
@@ -442,7 +456,9 @@
                                             
                                         <div class="modal-footer">
                                         <input type="hidden" name="action" value="3">
+                                        <?php if (@!$_GET['view']) { ?>
                                             <button type="submit" class="btn btn-success">Salvar</button>
+                                        <?php }?>
                                             <div class="col s1"></div>
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                                         </div>
@@ -649,7 +665,9 @@
                                                         Não Aprovado
                                                     </td>
                                                     <td>
+                                                    <?php if (@!$_GET['view']) { ?>
                                                         <button type="submit" class="btn btn-success" id="buttonDespesas" style="display:block" onclick="escondedespesas()">+</button>
+                                                    <?php }?>
                                                     </td>
                                                     </form>
                                                 </tr>
