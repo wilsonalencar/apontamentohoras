@@ -418,8 +418,6 @@
 		$txt .= $xml->evtRemun->ideTrabalhador->nisTrab.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->nmTrab.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->dtNascto.'|';
-		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->codCBO.'|';
-		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->natAtividade.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->qtdDiasTrab.'|';
 
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->cnpjEmpregAnt.'|';
@@ -455,6 +453,9 @@
 				$txt .= 'MOV0021_04|';
 				$txt .= $dmDev->ideDmDev.'|';
 				$txt .= $dmDev->codCateg.'|'; 
+				$txt .= $dmDev->infoComplCont->codCBO.'|'; 
+				$txt .= $dmDev->infoComplCont->natAtividade.'|'; 
+				$txt .= $dmDev->infoComplCont->qtdDiasTrab.'|'; 
 			}
 		}
 
@@ -1758,31 +1759,14 @@
 		$txt .= $xml->evtDeslig->infoDeslig->nrCertObito.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->nrProcTrab.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->indCumprParc.'|';
-
-		if (!empty($xml->evtDeslig->infoDeslig->observacoes)) {
-			foreach($xml->evtDeslig->infoDeslig->observacoes as $observacoes) {
-				$txt .= $observacoes->observacao.'|'; 
-			}
-		}
-
 		$txt .= $xml->evtDeslig->infoDeslig->sucessaoVinc->cnpjSucessora.'|';
-
 		$txt .= $xml->evtDeslig->infoDeslig->quarentena->dtFimQuar.'|';
-
 		$txt .= $xml->evtDeslig->infoDeslig->verbasResc->infoMV->indMV.'|';
-
 		$txt .= $xml->evtDeslig->infoDeslig->transfTit->cpfSubstituto.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->transfTit->dtNascto.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->qtdDiasInterm.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->verbasResc->procCS->nrProcJud.'|';
 
-		$idConsig = '|';
-		if (!empty($xml->evtDeslig->infoDeslig->consigFGTS)) {	
-			foreach($xml->evtDeslig->infoDeslig->consigFGTS as $FGTS) {
-				$txt .= $idConsig;
-				$txt .= $FGTS->insConsig.'|';
-				$txt .= $FGTS->nrContr.'|';
-			}
-		}		
-		
 
 		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
 			
