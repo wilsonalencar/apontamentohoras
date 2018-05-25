@@ -155,15 +155,6 @@
 
 		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
 			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
-				$txt .= $infoPgto->detPgtoBenPr->perRef.'|'; 
-				$txt .= $infoPgto->detPgtoBenPr->ideDmDev.'|'; 
-				$txt .= $infoPgto->detPgtoBenPr->indPgtoTt.'|'; 
-				$txt .= $infoPgto->detPgtoBenPr->vrLiq.'|'; 
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
 				$txt .= $infoPgto->idePgtoExt->idePais->codPais.'|'; 
 				$txt .= $infoPgto->idePgtoExt->idePais->indNIF.'|'; 
 				$txt .= $infoPgto->idePgtoExt->idePais->nifBenef.'|'; 	
