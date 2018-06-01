@@ -280,7 +280,13 @@ class apontamento extends app
 		}
 
 		$inmail = $this->carregaHoras($conn->insert_id);
-		$this->mailPendente($inmail['email'], $inmail['emailAprovador'], $inmail['nomeFuncionario'] , $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
+		//Enviar para tamara quando o usuário for gerente do próprio projeto
+		if ($inmail['id_funcionario'] == $inmail['id_gerente']) {
+			$this->mailPendente($inmail['email'], 'tamara.santos@bravobpo.com.br', $inmail['nomeFuncionario'] , $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
+		} else {
+			$this->mailPendente($inmail['email'], $inmail['emailAprovador'], $inmail['nomeFuncionario'] , $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
+
+		}
 		$this->msg = "Apontamento Criado com sucesso!";
 		return true;
 	}
