@@ -367,6 +367,10 @@ $(document).ready(function(){
     $( "#Saida_1" ).blur(function() {
         var time_entrada = document.getElementById('Entrada_1').value;
         var time_saida = document.getElementById('Saida_1').value;
+        if (time_saida == '00:00') {
+            time_saida = '23:59';
+            $("#Saida_1").val(time_saida);
+        }
 
         s = time_entrada.split(':');
         e = time_saida.split(':');
@@ -389,6 +393,10 @@ $(document).ready(function(){
         var time_entrada = document.getElementById('Entrada_2').value;
         var time_saida = document.getElementById('Saida_2').value;
         var time_atual = document.getElementById('Qtd_hrs_real').value;
+        if (time_saida == '00:00') {
+            time_saida = '23:59';
+            $("#Saida_2").val(time_saida);
+        }
         if (time_entrada != "" && time_saida != "") {
             s = time_entrada.split(':');
             e = time_saida.split(':');
