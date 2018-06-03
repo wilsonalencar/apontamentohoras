@@ -633,9 +633,12 @@ class projeto extends app
 				}
 			}
 		}
-
+		
 		$valorTT = 0.00;
 		foreach ($funcs as $key => $date) {
+			if (!isset($date['horas'])) {
+				$date['horas'] = 0;
+			}
 			$funcs[$key]['Valor_total'] = $date['horas'] * $date['valor_taxa'];
 			$valorTT += $funcs[$key]['Valor_total'];	
 		}
