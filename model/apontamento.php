@@ -268,8 +268,20 @@ class apontamento extends app
 			$horaReal[1] = $horaReal[1]/60;
 		}
 		$horareal2 = explode('.', $horaReal[1]);
+		if (substr($this->Saida_1, -2) == '59' || substr($this->Saida_2, -2) == '59') {
+		$tam = strlen($horareal2[1]);
+		$tam_2 = strlen($horareal2[1])+1;
+		$final = substr_replace($horareal2[1], ".", $tam_2-$tam).substr($horareal2[1], $tam_2-$tam);
+		$horareal2[1] = round($final);
+		}
+
+		if ($horareal2[1] == 10) {
+			$horaReal[0] = $horaReal[0]+1;
+			$horareal2[1] = 0;
+		} 
+
 		$this->Qtd_hrs_real = $horaReal[0].'.'.substr($horareal2[1], 0,1);
-		
+
 		$query = sprintf("INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario, Entrada_1, Saida_1, Entrada_2, Saida_2)
 		VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s)", 
 			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email'], $this->Entrada_1, $this->Saida_1, $this->quote($this->Entrada_2, true, true),$this->quote($this->Saida_2, true, true));
