@@ -150,11 +150,6 @@
 				$txt .= $infoPgto->dtPgto.'|';
 				$txt .= $infoPgto->tpPgto.'|'; 
 				$txt .= $infoPgto->indResBr.'|'; 
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
 				$txt .= $infoPgto->idePgtoExt->idePais->codPais.'|'; 
 				$txt .= $infoPgto->idePgtoExt->idePais->indNIF.'|'; 
 				$txt .= $infoPgto->idePgtoExt->idePais->nifBenef.'|'; 	
@@ -164,11 +159,7 @@
 				$txt .= $infoPgto->idePgtoExt->endExt->bairro.'|'; 	
 				$txt .= $infoPgto->idePgtoExt->endExt->nmCid.'|'; 	
 				$txt .= $infoPgto->idePgtoExt->endExt->codPostal.'|'; 	
-			}
-		}
-		
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+
 				if (!empty($infoPgto->detPgtoFl)) {
 					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
 						$txt .= $quebraLinha;
@@ -178,15 +169,7 @@
 						$txt .= $detPgtoFl->indPgtoTt.'|'; 
 						$txt .= $detPgtoFl->vrLiq.'|'; 
 						$txt .= $detPgtoFl->nrRecArq.'|'; 
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
-				if (!empty($infoPgto->detPgtoFl)) {
-					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
+					
 						if (!empty($detPgtoFl->retPgtoTot)) {
 							foreach ($detPgtoFl->retPgtoTot as $retPgtoTot) {
 								$txt .= $quebraLinha;
@@ -197,19 +180,7 @@
 								$txt .= $retPgtoTot->fatorRubr.'|'; 
 								$txt .= $retPgtoTot->vrUnit.'|'; 
 								$txt .= $retPgtoTot->vrRubr.'|';		
-							}
-						} 
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
-				if (!empty($infoPgto->detPgtoFl)) {
-					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
-						if (!empty($detPgtoFl->retPgtoTot)) {
-							foreach ($detPgtoFl->retPgtoTot as $retPgtoTot) {
+						
 								if (!empty($retPgtoTot->penAlim)) {
 									foreach ($retPgtoTot->penAlim as $penAlim) {
 										$txt .= $quebraLinha;
@@ -224,11 +195,7 @@
 						}
 					}
 				}
-			}
-		}
 
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
 				if (!empty($infoPgto->detPgtoFl)) {
 					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
 						if (!empty($detPgtoFl->infoPgtoParc)) {
@@ -245,11 +212,7 @@
 						} 
 					}
 				}
-			}
-		}
 
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
 				if (!empty($infoPgto->detPgtoBenPr)) {
 					foreach ($infoPgto->detPgtoBenPr as $detPgtoBenPr) {
 						if (!empty($detPgtoBenPr->retPgtoTot)) {
@@ -279,12 +242,7 @@
 						} 
 					}
 				}
-			}
-		}
 
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
 				if (!empty($infoPgto->detPgtoFer)) {
 					foreach ($infoPgto->detPgtoFer as $detPgtoFer) {
 						$txt .= $quebraLinha;
@@ -293,15 +251,7 @@
 						$txt .= $detPgtoFer->dtIniGoz.'|'; 
 						$txt .= $detPgtoFer->qtDias.'|'; 
 						$txt .= $detPgtoFer->vrLiq.'|'; 
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
-				if (!empty($infoPgto->detPgtoFer)) {
-					foreach ($infoPgto->detPgtoFer as $detPgtoFer) {
+					
 						if (!empty($detPgtoFer->detRubrFer)) {
 							foreach ($detPgtoFer->detRubrFer as $detRubrFer) {
 								$txt .= $quebraLinha;
@@ -312,19 +262,7 @@
 								$txt .= $detRubrFer->fatorRubr.'|'; 
 								$txt .= $detRubrFer->vrUnit.'|'; 
 								$txt .= $detRubrFer->vrRubr.'|';	
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
-				if (!empty($infoPgto->detPgtoFer)) {
-					foreach ($infoPgto->detPgtoFer as $detPgtoFer) {
-						if (!empty($detPgtoFer->detRubrFer)) {
-							foreach ($detPgtoFer->detRubrFer as $detRubrFer) {
+							
 								if (!empty($detRubrFer->penAlim)) {
 									foreach ($detRubrFer->penAlim as $penAlim) {
 										$txt .= $quebraLinha;
@@ -339,25 +277,13 @@
 						}
 					}
 				}
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+			
 				if (!empty($infoPgto->detPgtoAnt)) {
 					foreach ($infoPgto->detPgtoAnt as $detPgtoAnt) {
 						$txt .= $quebraLinha;
 						$txt .= 'MOV3024_12|';
 						$txt .= $detPgtoAnt->codCateg.'|'; 
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
-			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
-				if (!empty($infoPgto->detPgtoAnt)) {
-					foreach ($infoPgto->detPgtoAnt as $detPgtoAnt) {
+					
 						if (!empty($detPgtoAnt->infoPgtoAnt)) {
 							foreach ($detPgtoAnt->infoPgtoAnt as $infoPgtoAnt) {
 								$txt .= $quebraLinha;
@@ -567,7 +493,7 @@
 						}
 					}
 				}
-				
+
 				if (!empty($dmDev->infoTrabInterm)) {
 					foreach($dmDev->infoTrabInterm as $infoTrabInterm) {
 						$txt .= $quebraLinha;
