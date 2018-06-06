@@ -385,7 +385,6 @@
 		}
 	}
 
-
 	function converteTxtLayout1200($file, $quebraLinha)
 	{
 		$xml = simplexml_load_file($file['tmp_name']);
@@ -447,11 +446,7 @@
 				$txt .= $dmDev->infoComplCont->codCBO.'|'; 
 				$txt .= $dmDev->infoComplCont->natAtividade.'|'; 
 				$txt .= $dmDev->infoComplCont->qtdDiasTrab.'|'; 
-			}
-		}
 
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
 				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
 					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
 						$txt .= $quebraLinha;
@@ -460,14 +455,7 @@
 						$txt .= $lote->nrInsc.'|';
 						$txt .= $lote->codLotacao.'|';
 						$txt .= $lote->qtdDiasAv.'|';				
-					}
-				}
-			}
-		}
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
-					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
+					
 						if (!empty($lote->remunPerApur)) {
 							foreach ($lote->remunPerApur as $remunPerApur) {
 								$txt .= $quebraLinha;
@@ -475,19 +463,7 @@
 								$txt .= $remunPerApur->matricula.'|';
 								$txt .= $remunPerApur->indSimples.'|';
 								$txt .= $remunPerApur->infoAgNocivo->grauExp.'|';
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
-					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-						if (!empty($lote->remunPerApur)) {
-							foreach ($lote->remunPerApur as $remunPerApur) {
+							
 								if (!empty($remunPerApur->itensRemun)) {
 									foreach ($remunPerApur->itensRemun as $itensRemun) {
 										$txt .= $quebraLinha;
@@ -500,19 +476,6 @@
 										$txt .= $itensRemun->vrRubr.'|';
 									}
 								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
-					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-						if (!empty($lote->remunPerApur)) {
-							foreach ($lote->remunPerApur as $remunPerApur) {
 								if (!empty($remunPerApur->infoSaudeColet->detOper)) {
 									foreach ($remunPerApur->infoSaudeColet->detOper as $detOper) {
 										$txt .= $quebraLinha;
@@ -520,23 +483,7 @@
 										$txt .= $detOper->cnpjOper.'|';
 										$txt .= $detOper->regANS.'|';
 										$txt .= $detOper->vrPgTit.'|';
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
-					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-						if (!empty($lote->remunPerApur)) {
-							foreach ($lote->remunPerApur as $remunPerApur) {
-								if (!empty($remunPerApur->infoSaudeColet->detOper)) {
-									foreach ($remunPerApur->infoSaudeColet->detOper as $detOper) {
 										if (!empty($detOper->detPlano)) {
 											foreach ($detOper->detPlano as $detPlano) {
 												$txt .= $quebraLinha;
@@ -554,11 +501,7 @@
 						}
 					}
 				}
-			}
-		}
 
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
 				if (!empty($dmDev->infoPerAnt->ideADC)) {
 					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
 						$txt .= $quebraLinha;
@@ -569,33 +512,13 @@
 						$txt .= $ideADC->dtEfAcConv.'|';
 						$txt .= $ideADC->dsc.'|';
 						$txt .= $ideADC->remunSuc.'|';
-					}
-				}
-			}
-		}
 
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerAnt->ideADC)) {
-					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
 						if (!empty($ideADC->idePeriodo)) {
 							foreach ($ideADC->idePeriodo as $idePeriodo) {
 								$txt .= $quebraLinha;
 								$txt .= 'MOV0021_11|';
 								$txt .= $idePeriodo->perRef.'|';
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerAnt->ideADC)) {
-					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
-						if (!empty($ideADC->idePeriodo)) {
-							foreach ($ideADC->idePeriodo as $idePeriodo) {
+							
 								if (!empty($idePeriodo->ideEstabLot)) {
 									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
 										$txt .= $quebraLinha;
@@ -603,23 +526,7 @@
 										$txt .= $ideEstabLot->tpInsc.'|';
 										$txt .= $ideEstabLot->nrInsc.'|';
 										$txt .= $ideEstabLot->codLotacao.'|';
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerAnt->ideADC)) {
-					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
-						if (!empty($ideADC->idePeriodo)) {
-							foreach ($ideADC->idePeriodo as $idePeriodo) {
-								if (!empty($idePeriodo->ideEstabLot)) {
-									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
+									
 										if (!empty($ideEstabLot->remunPerAnt)) {
 											foreach ($ideEstabLot->remunPerAnt as $remunPerAnt) {
 												$txt .= $quebraLinha;
@@ -660,11 +567,7 @@
 						}
 					}
 				}
-			}
-		}
-
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
+				
 				if (!empty($dmDev->infoTrabInterm)) {
 					foreach($dmDev->infoTrabInterm as $infoTrabInterm) {
 						$txt .= $quebraLinha;
@@ -1030,7 +933,17 @@
 
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
-		$txt .= $xml->evtTSVAltContr->ideEvento->indRetif.'|';
+
+		$indRetif = '|';
+		if ((int)$xml->evtTSVAltContr->ideEvento->indRetif == 2) {
+			$indRetif = 'S|';
+		}
+
+		if ((int)$xml->evtTSVAltContr->ideEvento->indRetif == 1) {
+			$indRetif = 'N|';
+		}
+
+		$txt .= $indRetif;
 		$txt .= $xml->evtTSVAltContr->ideTrabSemVinculo->cpfTrab.'|';
 		$txt .= $xml->evtTSVAltContr->ideTrabSemVinculo->nisTrab.'|';
 		$txt .= $xml->evtTSVAltContr->ideTrabSemVinculo->codCateg.'|';
@@ -1313,7 +1226,16 @@
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
 
-		$txt .= $xml->evtAltCadastral->ideEvento->indRetif.'|';
+		$indRetif = '|';
+		if ((int)$xml->evtAltCadastral->ideEvento->indRetif == 2) {
+			$indRetif = 'S|';
+		}
+
+		if ((int)$xml->evtAltCadastral->ideEvento->indRetif == 1) {
+			$indRetif = 'N|';
+		}
+
+		$txt .= $indRetif;
 		$txt .= $xml->evtAltCadastral->alteracao->dtAlteracao.'|';
 
 		$txt .= $xml->evtAltCadastral->ideTrabalhador->cpfTrab.'|';
@@ -1325,6 +1247,15 @@
 		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->estCiv.'|';
 		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->grauInstr.'|';
 		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nmSoc.'|';
+		
+
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->dtNascto.'|';
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->codMunic.'|';
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->uf.'|';
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->paisNascto.'|';
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->paisNac.'|';
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->nmMae.'|';
+		$txt .= $xml->evtAltCadastral->alteracao->dadosTrabalhador->nascimento->nmPai.'|';
 
 		$resideExterior = '|';
 		$txt .= $resideExterior;
@@ -1445,7 +1376,17 @@
 
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
-		$txt .= $xml->evtAltContratual->ideEvento->indRetif.'|';
+
+		$indRetif = '|';
+		if ((int)$xml->evtAltContratual->ideEvento->indRetif == 2) {
+			$indRetif = 'S|';
+		}
+
+		if ((int)$xml->evtAltContratual->ideEvento->indRetif == 1) {
+			$indRetif = 'N|';
+		}
+
+		$txt .= $indRetif;
 
 		$txt .= $xml->evtAltContratual->altContratual->dtAlteracao.'|';
 		$txt .= $xml->evtAltContratual->altContratual->dtEf.'|';
@@ -1501,8 +1442,10 @@
 		$txt .= $xml->evtAltContratual->altContratual->infoContrato->servPubl->mtvAlter.'|';
 
 		$txt .= $quebraLinha;
-		$txt .= 'CAD2206_03|';
-		$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoEstatutario->tpPlanRP.'|';
+		if (!empty($xml->evtAltContratual->altContratual->infoRegimeTrab->infoEstatutario->tpPlanRP)) {
+			$txt .= 'CAD2206_03|';
+			$txt .= $xml->evtAltContratual->altContratual->infoRegimeTrab->infoEstatutario->tpPlanRP.'|';
+		}
 
 		if (!empty($xml->evtAltContratual->altContratual->infoContrato->horContratual->horario)) {
 
@@ -1515,8 +1458,10 @@
 		}
 		
 		$txt .= $quebraLinha;
-		$txt .= 'CAD2206_05|';
-		$txt .= $xml->evtAltContratual->altContratual->infoContrato->filiacaoSindical->cnpjSindTrab.'|';
+		if (!empty($xml->evtAltContratual->altContratual->infoContrato->filiacaoSindical->cnpjSindTrab)) {
+			$txt .= 'CAD2206_05|';
+			$txt .= $xml->evtAltContratual->altContratual->infoContrato->filiacaoSindical->cnpjSindTrab.'|';
+		}
 
 
 		if (!empty($xml->evtAltContratual->altContratual->infoContrato->observacoes)) {
