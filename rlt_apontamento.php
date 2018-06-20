@@ -84,11 +84,11 @@
                                         ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $value_fim['data_apontamento']; ?></td>
-                                        <td><?php echo $value_fim['Entrada_1']; ?></td>
-                                        <td><?php echo $value_fim['Saida_1']; ?></td>
-                                        <td><?php echo $value_fim['Entrada_2']; ?></td>
-                                        <td><?php echo $value_fim['Saida_2']; ?></td>
-                                        <td><?php echo $value_fim['Qtd_hrs_real']; ?></td>
+                                        <td><?php echo str_replace('.', ',', $value_fim['Entrada_1']); ?></td>
+                                        <td><?php echo str_replace('.', ',', $value_fim['Saida_1']); ?></td>
+                                        <td><?php echo str_replace('.', ',', $value_fim['Entrada_2']); ?></td>
+                                        <td><?php echo str_replace('.', ',', $value_fim['Saida_2']); ?></td>
+                                        <td><?php echo str_replace('.', ',', $value_fim['Qtd_hrs_real']); ?></td>
                                     </tr>
                                 <?php } }?>
 
@@ -98,7 +98,7 @@
                                     <td></td>
                                     <td></td>
                                     <th>Total:</th>
-                                    <th><?php echo $dados['Qtd_hrs_real']; ?></th> 
+                                    <th><?php echo str_replace('.', ',', $dados['Qtd_hrs_real']); ?></th> 
                                   </tr>
                                   <tr>
                                     <td></td>

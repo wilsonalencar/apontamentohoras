@@ -56,7 +56,7 @@
                                         <td><?php echo $value_fim['nomefuncionario']; ?></td>
                                         <td><?php echo $value_fim['atividade']; ?></td>
                                         <td style="width: 30%"><?php echo $value_fim['data_apont']; ?></td>
-                                        <td><?php echo $value_fim['qtd_hrs']; ?></td>
+                                        <td><?php echo str_replace('.', ',', $value_fim['qtd_hrs']); ?></td>
                                         <td><?php echo $value_fim['status']; ?></td>
                                     </tr>
 
@@ -68,7 +68,7 @@
                                     <td></td>
                                     <td></td>
                                     <th>Total horas:</th>
-                                    <th><?php echo $dados['valorTotal']; ?></th> 
+                                    <th><?php echo str_replace('.', ',', $dados['valorTotal']); ?></th> 
                                     <td></td>
                                   </tr>
                                   <tr>

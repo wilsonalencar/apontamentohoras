@@ -113,16 +113,16 @@
 	                                                        <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
 	                                                    </td>
 	                                                    <td>
-	                                                        <input type="time" id="Entrada_1" name="Entrada_1" class="validate" maxlength="5">
+	                                                        <input type="time" id="Entrada_1" name="Entrada_1" class="validate calculate" maxlength="5">
 	                                                    </td>
 	                                                    <td>
-	                                                        <input type="time" id="Saida_1" name="Saida_1" class="validate" maxlength="5">
+	                                                        <input type="time" id="Saida_1" name="Saida_1" class="validate calculate" maxlength="5">
 	                                                    </td>
 	                                                    <td>
-	                                                        <input type="time" id="Entrada_2" name="Entrada_2" class="validate" maxlength="5">
+	                                                        <input type="time" id="Entrada_2" name="Entrada_2" class="validate calculate" maxlength="5">
 	                                                    </td> 
 	                                                    <td>
-	                                                        <input type="time" id="Saida_2" name="Saida_2" class="validate" maxlength="5">
+	                                                        <input type="time" id="Saida_2" name="Saida_2" class="validate calculate" maxlength="5">
 	                                                    </td>
 	                                                    <td>
 	                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
@@ -364,32 +364,45 @@ $(document).ready(function(){
         $("#vl_total_qtd").val(money);
     }); 
 
-    $( "#Saida_1" ).blur(function() {
+
+    $( ".calculate" ).blur(function() {
+        Calcula();
+    });
+
+});
+
+function Calcula()
+{
         var time_entrada = document.getElementById('Entrada_1').value;
         var time_saida = document.getElementById('Saida_1').value;
-        if (time_saida == '00:00') {
-            time_saida = '23:59';
-            $("#Saida_1").val(time_saida);
-        }
 
-        s = time_entrada.split(':');
-        e = time_saida.split(':');
         if (time_entrada != "" && time_saida != "") {
-        min = e[1]-s[1];
-        hour_carry = 0;
-        if(min < 0){
-            min += 60;
-            hour_carry += 1;
+
+            var time_entrada = document.getElementById('Entrada_1').value;
+            var time_saida = document.getElementById('Saida_1').value;
+            if (time_saida == '00:00') {
+                time_saida = '23:59';
+                $("#Saida_1").val(time_saida);
+            }
+
+            s = time_entrada.split(':');
+            e = time_saida.split(':');
+            if (time_entrada != "" && time_saida != "") {
+            min = e[1]-s[1];
+            hour_carry = 0;
+            if(min < 0){
+                min += 60;
+                hour_carry += 1;
+            }
+            hour = e[0]-s[0]-hour_carry;
+            diff = hour + ":" + min;
+
+            $("#Qtd_hrs_real").val(diff);
+            $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
+            }
         }
-        hour = e[0]-s[0]-hour_carry;
-        diff = hour + ":" + min;
 
-        $("#Qtd_hrs_real").val(diff);
-        $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
-    	}
-    }); 
 
-    $( "#Saida_2" ).blur(function() {
         var time_entrada = document.getElementById('Entrada_2').value;
         var time_saida = document.getElementById('Saida_2').value;
         var time_atual = document.getElementById('Qtd_hrs_real').value;
@@ -397,7 +410,7 @@ $(document).ready(function(){
             time_saida = '23:59';
             $("#Saida_2").val(time_saida);
         }
-        if (time_entrada != "" && time_saida != "") {
+        if (time_entrada != "" && time_saida != "" && time_atual) {
             s = time_entrada.split(':');
             e = time_saida.split(':');
             f = time_atual.split(':');
@@ -422,9 +435,7 @@ $(document).ready(function(){
             $("#Qtd_hrs_real").val(diff);
             $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
         }
-    }); 
-
-});
+}
 
 
 function addParam(){
