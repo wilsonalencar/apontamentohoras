@@ -145,6 +145,7 @@
 
 		if (!empty($xml->evtPgtos->ideBenef->infoPgto)) {
 			foreach($xml->evtPgtos->ideBenef->infoPgto as $infoPgto) {
+				
 				$txt .= $quebraLinha;
 				$txt .= 'MOV3024_02|';
 				$txt .= $infoPgto->dtPgto.'|';
@@ -162,6 +163,7 @@
 
 				if (!empty($infoPgto->detPgtoFl)) {
 					foreach ($infoPgto->detPgtoFl as $detPgtoFl) {
+
 						$txt .= $quebraLinha;
 						$txt .= 'MOV3024_03|';
 						$txt .= $detPgtoFl->perRef.'|'; 
@@ -172,6 +174,7 @@
 					
 						if (!empty($detPgtoFl->retPgtoTot)) {
 							foreach ($detPgtoFl->retPgtoTot as $retPgtoTot) {
+
 								$txt .= $quebraLinha;
 								$txt .= 'MOV3024_04|';
 								$txt .= $retPgtoTot->codRubr.'|'; 
@@ -185,10 +188,10 @@
 									foreach ($retPgtoTot->penAlim as $penAlim) {
 										$txt .= $quebraLinha;
 										$txt .= 'MOV3024_05|';
-										$txt .= $retPgtoTot->cpfBenef.'|'; 
-										$txt .= $retPgtoTot->dtNasctoBenef.'|'; 
-										$txt .= $retPgtoTot->nmBenefic.'|'; 
-										$txt .= $retPgtoTot->vlrPensao.'|'; 
+										$txt .= $penAlim->cpfBenef.'|'; 
+										$txt .= $penAlim->dtNasctoBenef.'|'; 
+										$txt .= $penAlim->nmBenefic.'|'; 
+										$txt .= $penAlim->vlrPensao.'|'; 
 									}
 								}
 							}
