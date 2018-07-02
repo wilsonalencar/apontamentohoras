@@ -251,6 +251,7 @@
 						$txt .= $quebraLinha;
 						$txt .= 'MOV3024_09|';
 						$txt .= $detPgtoFer->codCateg.'|'; 
+						$txt .= $detPgtoFer->matricula.'|'; 
 						$txt .= $detPgtoFer->dtIniGoz.'|'; 
 						$txt .= $detPgtoFer->qtDias.'|'; 
 						$txt .= $detPgtoFer->vrLiq.'|'; 
