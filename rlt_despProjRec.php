@@ -6,18 +6,29 @@
     $projetodespesa = new projetodespesa;
     $projeto = new projeto;
     $funcionario = new funcionario;
+    $projetodespesa->id_funcionario = 0;
 
-    $action = $projetodespesa->getRequest('action', 0);
-    if ($action == 4) {
-      $funcionario->id_projeto = $funcionario->getRequest('id_projeto', '');
-      echo $funcionario->montaSelect(0, $funcionario->id_projeto, 0, true);
-      exit;
-    }
     $datasbusca = false;
+    $uniqueSelected = false;
     $dataIni = '';
     $dataFim = '';
     $projetodados = 0;
+
     $projetodespesa->id_funcionario = $projetodespesa->getRequest('id_funcionario', 0);
+    if (!empty($_SESSION['id_funcionario']) && in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS))) {
+      $uniqueSelected = true;
+      $projetodespesa->id_funcionario = $_SESSION['id_funcionario'];
+    }
+
+    $action = $projetodespesa->getRequest('action', 0);
+    if ($action == 4) {
+
+      $funcionario->id_projeto = $funcionario->getRequest('id_projeto', '');
+      echo $funcionario->montaSelect($projetodespesa->id_funcionario, $funcionario->id_projeto, 0, true, $uniqueSelected);
+      exit;
+    }
+
+  
     $projetodespesa->id_projeto     = $projetodespesa->getRequest('id_projeto', 0);
     $projetodespesa->data_busca_ini = $projetodespesa->getRequest('data_busca_ini', 0);
     $projetodespesa->data_busca_fim = $projetodespesa->getRequest('data_busca_fim', 0);
@@ -76,7 +87,9 @@
                             <?php
                             if (!empty($projetodespesa->array['dados'])) {
                              foreach($projetodespesa->array['dados'] as $id_func => $dados) {
+
                                 $projetodados = $dados['projeto'];
+                                $clientereembolsa = $dados[0]['Cliente_reembolsa'];
                                     foreach ($dados as $key => $value_fim) { 
                                       if (is_array($value_fim)) { ?>
                                     <tr class="odd gradeX">
@@ -141,14 +154,14 @@
                           <label for="id_projeto">Projeto</label><br />
                           <select id="id_projeto" name="id_projeto" class="form-control input-sm id_projeto_class">
                               <option value="">Projeto</option>
-                                  <?php $projeto->montaSelect($projetodespesa->id_projeto); ?>
+                                  <?php $projeto->montaSelect($projetodespesa->id_projeto, false, $_SESSION['id_funcionario']); ?>
                           </select>
                           </div>
                           <div class="col s4">
                           <label for="id_projeto">Funcionario</label><br />
                             <select id="id_funcionario" name="id_funcionario" class="form-control input-sm id_funcionario_class">
                                 <option value="">Funcionario</option>
-                                    <?php $funcionario->montaSelect($projetodespesa->id_funcionario); ?>
+                                    <?php $funcionario->montaSelect($projetodespesa->id_funcionario, 0, 0, false, $uniqueSelected); ?>
                             </select>
                           </div>
                       </div>
@@ -224,7 +237,7 @@ $('#dataTables-example').dataTable({
                           {
                             alignment: 'right',
                             italics: true,
-                            text: '<?php echo $projetodados; ?> <?php if ($datasbusca) { ?> \n Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
+                            text: '<?php echo $projetodados; ?> \n Cliente Reembolsa: <?php echo $clientereembolsa; ?><?php if ($datasbusca) { ?> - Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
                             fontSize: 12,
                             margin: [10,0]
                           },

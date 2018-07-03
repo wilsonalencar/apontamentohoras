@@ -225,7 +225,8 @@ class projetodespesa extends app
 						    D.nome AS nomepilar,
 						    F.codigo AS projeto1,
 						    E.nome AS projeto2,
-						    G.descricao AS tipodespesa
+						    G.descricao AS tipodespesa,
+						    C.Cliente_reembolsa as Cliente_reembolsa
 						FROM
 						    projetodespesas A
 						        INNER JOIN
@@ -278,6 +279,7 @@ class projetodespesa extends app
 			$this->array['dados'][$row['id_funcionario']][] = $row;
 			$this->array['dados'][$row['id_funcionario']]['valorTotal'] = $row['Vlr_Total'] + $this->array['dados'][$row['id_funcionario']]['valorTotal'] ;	
 			$this->array['valorTotalGeral'] = $row['Vlr_Total'] + $this->array['valorTotalGeral'];
+			$this->array['Cliente_reembolsa'] = $row['Cliente_reembolsa'];
 		}
 		$this->array['valorTotalGeral'] = number_format($this->array['valorTotalGeral'], 2, ',', '.');
 	}

@@ -109,7 +109,7 @@ class usuario extends app
 		}
 
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario, reset_senha FROM usuarios WHERE email = '%s' AND senha = '%s' AND status = '%s'", 
+		$query = sprintf("SELECT usuarioID, nome, email, id_perfilusuario, reset_senha, (select B.id FROM funcionarios B where B.email = A.email) as id_funcionario FROM usuarios A WHERE A.email = '%s' AND A.senha = '%s' AND A.status = '%s'", 
 			$this->email, $this->senha, $this::STATUS_SISTEMA_ATIVO);	
 		
 		if (!$result = $conn->query($query)) {
@@ -122,6 +122,12 @@ class usuario extends app
  			$_SESSION['email'] 				= $row['email'];
  			$_SESSION['id_perfilusuario'] 	= $row['id_perfilusuario'];
  			$_SESSION['reset_senha'] 		= $row['reset_senha'];
+ 			$_SESSION['id_funcionario']     = 0;
+ 			
+ 			if (!empty($row['id_funcionario'])) {
+ 				$_SESSION['id_funcionario']     = $row['id_funcionario'];
+ 			}
+ 			
  			$_SESSION['logado'] 			= 1;	
  			
  			return true;		

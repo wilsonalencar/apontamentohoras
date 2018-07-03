@@ -646,7 +646,7 @@ class projeto extends app
 	return $valorTT;
 	}
 
-	public function montaSelect($selected=0, $gerente=false)
+	public function montaSelect($selected=0, $gerente=false, $id_funcionario = 0)
 	{
 		$conn = $this->getDB->mysqli_connection;
 
@@ -679,6 +679,10 @@ class projeto extends app
 		
 		if ($gerente) {
 			$query .= " OR F.email = "."'".$_SESSION['email']."'"."";
+		}
+
+		if ($id_funcionario > 0) {
+			$query .= " AND E.id_funcionario = ".$id_funcionario;
 		}
 
 		$query .= " GROUP BY A.id ;";

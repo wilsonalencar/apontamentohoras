@@ -29,4 +29,9 @@ class funcionalidadeConst
 	const perfil_cria_apontamentos 		= 14;
 	const ADMIN						 	= 1;
 	const GERENTE						= 2;
+
+	//tabela perfilusuario
+	const PERFIL_ADMIN = 1;	
+	const PERFIL_RECURSO = 2;
+	const PERFIL_GERENTEPROJETOS = 3;
 }
