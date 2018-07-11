@@ -41,26 +41,31 @@
                               <br>
                                   <div class="row">
                                     <div class="col s4">
-                                        <label for="id_projeto">Projetos : </label>
-                                        <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control input-sm">
-                                          <option value="">Projetos</option>
-                                            <?php $projeto->montaSelect($apontamento->id_projeto, $apontamento->id_projeto); ?>
-                                        </select>
-                                    </div>    
-                                    <div class="col s1"></div>
-                                    <div class="col s4">
                                         <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                         <label for="id_funcionario_busca">Funcionario: </label> 
-                                                <select id="id_funcionario_busca" onchange="addParam()" name="id_funcionario_busca" class="form-control input-sm">
+                                                <select id="id_funcionario_busca" onchange="alterar_periodo()" name="id_funcionario_busca" class="form-control input-sm">
                                                     <option value="">Funcionario</option>
-                                                    <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
+                                                    <?php 
+                                                        $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); 
+                                                    ?>
                                                 </select>
                                         <?php } else { ?>
-                                                <?php $profissional = $funcionario->findFuncionario(); ?>
+                                                <?php 
+                                                    $profissional = $funcionario->findFuncionario();
+                                                    $id_funcionario = $profissional['id']; 
+                                                ?>
                                                 <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
                                                 <input type="hidden" name="id_funcionario_busca" id="id_funcionario_busca" value="<?php echo $profissional['id']; ?>">
                                         <?php }?>
+                                    </div>    
+                                    <div class="col s1"></div>
+                                    <div class="col s1">
+                                        
+                                    <label for="id_funcionario_busca">Período: </label> 
+                                      <input type="text" id="periodo_busca_form" name="periodo_busca_form" onchange="alterar_periodo()" value="<?php echo $periodo_busca; ?>" class="validate" maxlength="7">
+                                        
                                     </div>
+                                    
                                 </div>
                             </div>
 
@@ -70,7 +75,7 @@
                                     <div  class="col s12">
                                         <div class="table-responsive">
                                         <?php
-                                            $apontamento->lista($apontamento->id_projeto);
+                                            $apontamento->lista($periodo_busca, $id_funcionario);
                                         ?>
                                             <table class="table table-hover">
                                                 <thead>
@@ -93,6 +98,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
+                                                        <th>Projeto</th>
                                                         <th>Data</th>
                                                         <th>Entrada 1</th>
                                                         <th>Saída 1</th>
@@ -108,7 +114,12 @@
 	                                                <input type="hidden" name="id_projeto_ap" value="<?php echo $apontamento->id_projeto; ?>">
 	                                                <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
 	                                                <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
-
+                                                        <td>
+                                                            <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control">
+                                                              <option value="">Selecione um Projeto</option>
+                                                                <?php $projeto->montaSelect(); ?>
+                                                            </select>
+                                                        </td>
 	                                                    <td>
 	                                                        <input type="date" id="Data_apontamento" name="Data_apontamento" class="validate" maxlength="8">
 	                                                    </td>
@@ -125,7 +136,7 @@
 	                                                        <input type="time" id="Saida_2" name="Saida_2" class="validate calculate" maxlength="5">
 	                                                    </td>
 	                                                    <td>
-	                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="7">
+	                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="2">
 	                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
 	                                                    </td>
 	                                                    <td>
@@ -133,7 +144,7 @@
 	                                                    </td>
 	                                                    <td>
 	                                                        Não Aprovado
-	                                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $apontamento->id_funcionario; ?>">
+	                                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $id_funcionario; ?>">
 	                                                        <input type="hidden" name="action" value="1">
 	                                                    </td>
 	                                                    <td><button type="submit" class="btn btn-success" style="display:none" id="buttonHoras" onclick="escondehoras()">+</button></td>
@@ -145,6 +156,7 @@
 
                                                         ?>
                                                         <tr class="odd gradeX">
+                                                            <td><?php echo $row['nome_projeto']; ?></td>
                                                             <td><?php echo $row['Data_apontamento']; ?></td>
                                                             <td><?php echo $row['Entrada_1']; ?></td>
                                                             <td><?php echo $row['Saida_1']; ?></td>
@@ -319,7 +331,7 @@
         <form action="apontamentos.php" method="post" id="form_busca">
             <input type="hidden" name="id_projeto_ap" id="id_projeto_ap">
             <input type="hidden" name="id_funcionario_ap" id="id_funcionario_ap">
-            <input type="hidden" name="action" value="2">
+            <input type="hidden" name="periodo_busca" id="periodo_busca">
         </form>
         <form action="apontamentos.php" method="post" id="form_apontamentohoras">
             <input type="hidden" name="funcionar_projeto_concat" id="funcionar_projeto_concat">
@@ -439,11 +451,14 @@ function Calcula()
 
 
 function addParam(){
-    var id_projeto = document.getElementById("id_projeto_busca").value;
+    $("#buttonHoras").css("display", "block");
+}
+
+function alterar_periodo()
+{
+    document.getElementById('periodo_busca').value = document.getElementById('periodo_busca_form').value;
+
     var id_funcionario = document.getElementById("id_funcionario_busca").value;
-    if (id_projeto > 0) {
-        document.getElementById('id_projeto_ap').value = id_projeto;
-    }
     if (id_funcionario > 0) {
         document.getElementById('id_funcionario_ap').value = id_funcionario;
     }

@@ -208,6 +208,7 @@ class apontamento extends app
 
 	public function save()
 	{
+	
 		if ($this->id_projeto > 0) {
 			$this->carregaPendencia($this->id_projeto);
 		}
@@ -334,17 +335,29 @@ class apontamento extends app
 		return true;
 	}
 
-	public function lista()
+	public function lista($periodo=false, $id_funcionario=0)
 	{
 		$conn = $this->getDB->mysqli_connection;
-		if ($this->id_projeto > 0 or $this->id_funcionario > 0) {
-			$query = "SELECT id,Entrada_1, Entrada_2, Saida_1, Saida_2, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, id_funcionario, id_projeto FROM projetohoras where 1";
+
+		if ($this->id_funcionario > 0 && !$id_funcionario) {
+			$id_funcionario = $this->id_funcionario;
+		}		
+
+		if ($this->id_projeto > 0 or $id_funcionario > 0) {
+			$query = "SELECT a.id, a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.observacao, a.Aprovado, a.id_funcionario, a.id_projeto, 
+			CONCAT(b.id, ' - ', c.nome, ' - ', d.codigo) AS nome_projeto FROM projetohoras a INNER JOIN projetos b on a.id_projeto = b.id INNER JOIN clientes c ON b.id_cliente = c.id INNER JOIN propostas d ON b.id_proposta = d.id
+			    
+			     where 1";
 			if ($this->id_projeto > 0) {
 				$query .= " AND id_projeto = ".$this->id_projeto;
 			}
 			
-			if ($this->id_funcionario > 0) {
-				$query .= " AND id_funcionario = ".$this->id_funcionario;
+			if ($id_funcionario > 0) {
+				$query .= " AND id_funcionario = ".$id_funcionario;
+			}
+
+			if (!empty($periodo)) {
+				$query .= " AND DATE_FORMAT(data_apontamento, '%m/%Y') = '".$periodo."' ";
 			}
 
 			$query .= " order by Data_apontamento desc; ";

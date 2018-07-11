@@ -36,14 +36,22 @@ $success 	= $apontamento->getRequest('success', 0);
 $msg 		= $apontamento->getRequest('msg', '');
 $action		= $apontamento->getRequest('action', 0);
 
-if ($action == SAVE) {
-	$success = $apontamento->save();
-	$msg     = $apontamento->msg; 
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$apontamento->id_projeto."&id_funcionario_ap=".$apontamento->id_funcionario."&msg=".$msg."&success=".$success);
+$periodo_busca = $apontamento->getRequest('periodo_busca');
+if (empty($periodo_busca)) {
+	$periodo_busca = date('m/Y');
+} 
+
+$id_funcionario = 0;
+if (!empty($_POST['id_funcionario_ap'])) {
+	$id_funcionario = $_POST['id_funcionario_ap'];
 }
 
-if ($action == FILTRA) {
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$apontamento->id_projeto."&id_funcionario_ap=".$apontamento->id_funcionario."");
+if ($action == SAVE) {
+
+	$apontamento->id_projeto = $apontamento->getRequest('id_projeto', 0);
+	$success = $apontamento->save();
+	$msg     = $apontamento->msg; 
+	header("LOCATION:apontamentos.php?id_funcionario_ap=".$apontamento->id_funcionario."&msg=".$msg."&success=".$success);
 }
 
 if ($action == DEL) {
@@ -51,7 +59,7 @@ if ($action == DEL) {
 	$array = explode('-', $ids);
 	$success = $apontamento->deleta($apontamento->id);
 	$msg = $apontamento->msg;
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$array[1]."&id_funcionario_ap=".$array[0]."&msg=".$msg."&success=".$success);
+	header("LOCATION:apontamentos.php?id_funcionario_ap=".$array[0]."&msg=".$msg."&success=".$success);
 }
 
 require_once('view/apontamentos/frm_apontamentos.php');
