@@ -464,33 +464,21 @@
 												$txt .= $remunPerAnt->matricula.'|';
 												$txt .= $remunPerAnt->matricula.'|';
 												$txt .= $remunPerAnt->infoAgNocivo->grauExp.'|';
+												
+												if (!empty($remunPerAnt->itensRemun)) {
+													foreach ($remunPerAnt->itensRemun as $itensRemun) {
+														$txt .= $quebraLinha;
+														$txt .= 'MOV0021_14|';
+														$txt .= $itensRemun->codRubr.'|';
+														$txt .= $itensRemun->ideTabRubr.'|';
+														$txt .= $itensRemun->qtdRubr.'|';
+														$txt .= $itensRemun->fatorRubr.'|';
+														$txt .= $itensRemun->vrUnit.'|';
+														$txt .= $itensRemun->vrRubr.'|';
+													}
+												}
 											}
 										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		if (!empty($xml->evtRemun->dmDev)) {
-			foreach($xml->evtRemun->dmDev as $dmDev) {
-				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
-					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-						if (!empty($lote->remunPerApur)) {
-							foreach ($lote->remunPerApur as $remunPerApur) {
-								if (!empty($remunPerApur->itensRemun)) {
-									foreach ($remunPerApur->itensRemun as $itensRemun) {
-										$txt .= $quebraLinha;
-										$txt .= 'MOV0021_14|';
-										$txt .= $itensRemun->codRubr.'|';
-										$txt .= $itensRemun->ideTabRubr.'|';
-										$txt .= $itensRemun->qtdRubr.'|';
-										$txt .= $itensRemun->fatorRubr.'|';
-										$txt .= $itensRemun->vrUnit.'|';
-										$txt .= $itensRemun->vrRubr.'|';
 									}
 								}
 							}
