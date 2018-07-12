@@ -479,10 +479,10 @@
 			foreach($xml->evtRemun->dmDev as $dmDev) {
 				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
 					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-						if (!empty($lote->remunPerAnt)) {
-							foreach ($lote->remunPerAnt as $remunPerAnt) {
-								if (!empty($remunPerAnt->itensRemun)) {
-									foreach ($remunPerAnt->itensRemun as $itensRemun) {
+						if (!empty($lote->remunPerApur)) {
+							foreach ($lote->remunPerApur as $remunPerApur) {
+								if (!empty($remunPerApur->itensRemun)) {
+									foreach ($remunPerApur->itensRemun as $itensRemun) {
 										$txt .= $quebraLinha;
 										$txt .= 'MOV0021_14|';
 										$txt .= $itensRemun->codRubr.'|';
