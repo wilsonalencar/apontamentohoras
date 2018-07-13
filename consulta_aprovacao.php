@@ -44,6 +44,7 @@ $projetodespesa->lista_aprovacao();
                         <ul class="tabs">
                             <li class="tab col s3"><a href="#horas">Horas</a></li>
                             <li class="tab col s3"><a href="#despesa">Despesas</a></li>
+                            <li class="col s3">Horas Pendentes à Aprovação :<b> <?php echo $apontamento->array['horastotais']; ?></b> <br /> Horas Aprovadas :<b> <?php echo $apontamento->array['horasaprovadas']; ?></b></li>
                         </ul>
                       </div>
 
@@ -53,10 +54,25 @@ $projetodespesa->lista_aprovacao();
                     <!-- div de horas -->
                     <div id="horas" class="col s12">
                     <?php
+                      unset($apontamento->array['horastotais']);
+                      unset($apontamento->array['horasaprovadas']);
                       if (!empty($apontamento->array)) {
                     ?>
+                    <form class="col s12" action="libera_apontamento.php" method="post" id="libera_apontamento">
+                        <div>
+                          <div class="col s8"></div>
+                          <div class="col s1"></div>
+                          <div class="col s1"></div>
+                          <div class="col s2">
+                          <b> Aprovação das horas Em grupo </b> <br/> 
+                          <input class="with-gap" name="aprova_geral_horas" value="2" type="radio" id="lala2" />
+                          <label for="lala2">Não </label>
+
+                          <input class="with-gap" name="aprova_geral_horas" value="1" type="radio" id="lala3" />
+                          <label for="lala3">Sim </label>
+                          </div>
+                        </div>
                         <div class="table-responsive col s12">
-                            <form class="col s12" action="libera_apontamento.php" method="post" id="libera_apontamento">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -65,18 +81,21 @@ $projetodespesa->lista_aprovacao();
                                             <th>Data</th>
                                             <th>Qtde. Horas</th>
                                             <th>Atividade</th>
+                                            <th>Motivo</th>
                                             <th>Aprovação</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     <?php
-                                        foreach($apontamento->array as $row){ ?>
+                                        foreach($apontamento->array as $row){
+                                         ?>
                                             <tr class="odd gradeX">
                                                 <td><?php echo $row['id_projeto']; ?> -- <?php echo $row['nomeCliente']; ?> -- <?php echo $row['id_proposta']; ?></td>
                                                 <td><?php echo $row['funcionarioNome']; ?></td>
                                                 <td><?php echo $row['Data_apontamento']; ?></td>
                                                 <td><?php echo $row['Qtd_hrs']; ?></td>
                                                 <td><?php echo $row['atividade']; ?></td>
+                                                <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
                                                 <td>
                                                 <p>
                                                   <input class="with-gap" name="Aprova[<?php echo $row['id']; ?>]" value="S" type="radio" id="test3[<?php echo $row['id']; ?>]"  />
@@ -97,8 +116,8 @@ $projetodespesa->lista_aprovacao();
                             <input type="hidden" name="id_funcionario" value="<?php echo $apontamento->id_funcionario; ?>">
                             <input type="hidden" value="1" name="action" id="action">
                             <button type="submit" class="btn btn-success" > Salvar</button>
-                            </form>
                         </div>  
+                    </form>
                             <?php } ?>
                     </div>
 
@@ -108,8 +127,19 @@ $projetodespesa->lista_aprovacao();
                     <?php
                     if (!empty($projetodespesa->array)) {
                     ?>
-                        <div class="table-responsive">
-                                <form action="libera_apontamento.php" method="post" id="libera_apontamento">
+                      <form action="libera_apontamento.php" method="post" id="libera_apontamento">
+                        <div class="col s8"></div>
+                        <div class="col s1"></div>
+                        <div class="col s1"></div>
+                        <div class="col s2">
+                        <b> Aprovação das despesas Em grupo </b> <br/> 
+                        <input class="with-gap" name="aprova_geral_despesas" value="2" type="radio" id="lala4" />
+                        <label for="lala4">Não </label>
+
+                        <input class="with-gap" name="aprova_geral_despesas" value="1" type="radio" id="lala5" />
+                        <label for="lala5">Sim </label>
+                        </div>
+                        <div class="table-responsive col s12">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -121,6 +151,7 @@ $projetodespesa->lista_aprovacao();
                                                 <th>Qtd. Despesa</th>
                                                 <th>Valor Unit.</th>
                                                 <th>Valor Total</th>
+                                                <th>Motivo</th>
                                                 <th>Aprovação</th>
                                             </tr>
                                         </thead>
@@ -136,6 +167,7 @@ $projetodespesa->lista_aprovacao();
                                                     <td><?php echo $row['Qtd_despesa']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_total']; ?></td>
+                                                    <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
                                                     <td>
                                                     <p>
                                                       <input class="with-gap" name="Aprova[<?php echo $row['id']; ?>]" value="S" type="radio" id="test3[<?php echo $row['id']; ?>]"  />
@@ -156,8 +188,8 @@ $projetodespesa->lista_aprovacao();
                                 <input type="hidden" name="id_funcionario" value="<?php echo $apontamento->id_funcionario; ?>">
                                 <input type="hidden" value="3" name="action" id="action">
                                 <button type="submit" class="btn btn-success">Salvar</button>
-                                </form>
                         </div>
+                    </form>
                     <?php } ?>
                     </div>
                 </div>

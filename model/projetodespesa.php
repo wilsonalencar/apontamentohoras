@@ -348,6 +348,8 @@ class projetodespesa extends app
 			$query .= " AND A.Data_despesa BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}
 
+		$query .= " ORDER BY F.nome, A.Data_despesa asc";
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
@@ -363,23 +365,31 @@ class projetodespesa extends app
 		}
 	}
 
-	public function Aprova($id, $status)
+	public function Aprova($id, $status, $motivo = false)
 	{
 		if ($status != funcionalidadeConst::PENDENTE) {
+			if ($status == funcionalidadeConst::REJEITADO) {
+				if (empty($motivo)) {
+					$this->msg = "É necessário informar o motivo para recusar esta(s) despesa(s)!";
+					return false;
+				}
+			}
+
 			$conn = $this->getDB->mysqli_connection;
-			$query = sprintf(" UPDATE projetodespesas SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s' WHERE id = %d", 
-				$status, $_SESSION['email'] ,$id);	
+			$query = sprintf(" UPDATE projetodespesas SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s', motivo = %s WHERE id = %d", 
+				$status, $_SESSION['email'], $this->quote($motivo, true, true) ,$id);	
 
 			if (!$conn->query($query)) {
 				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 				return false;	
 			}
 		}
+		
 		$this->msg = "Despesas atualizadas com sucesso!";
 		return true;
 	}
 
-	public function lista_Apont($id_projeto, $id_funcionario)
+	public function lista_Apont($periodo = false, $id_funcionario)
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
@@ -394,19 +404,26 @@ class projetodespesa extends app
 						    A.Vlr_total,
 						    A.Aprovado,
 						    B.nome AS NomeFuncionario,
-						    C.descricao AS NomeDespesa
+						    C.descricao AS NomeDespesa,
+							CONCAT(D.id, ' - ', E.nome, ' - ', F.codigo) AS nome_projeto
 						FROM
 						    projetodespesas A
 						        INNER JOIN
 						    funcionarios B ON A.id_funcionario = B.id
 						        INNER JOIN
 						    tiposdespesas C ON A.id_tipodespesa = C.id
-						WHERE
-						    A.id_projeto = ".$id_projeto. "" ;
-		if ($id_funcionario > 0) {
-			$query .= " AND A.id_funcionario = ".$id_funcionario."";
+							    left JOIN 
+							projetos D on A.id_projeto = D.id 
+								left JOIN 
+							clientes E ON D.id_cliente = E.id 
+								left JOIN 
+							propostas F ON D.id_proposta = F.id
+						WHERE A.id_funcionario = ".$id_funcionario."";
+
+		if (!empty($periodo)) {
+			$query .= " AND DATE_FORMAT(A.data_despesa, '%m/%Y') = '".$periodo."' ";
 		}
-		
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento da previsão de faturamento.";	
 			return false;	

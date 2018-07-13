@@ -703,6 +703,7 @@ class projeto extends app
 						GROUP BY A.id;
 						");
 		} 
+		
 		if($result = $conn->query($query))
 		{
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
@@ -736,7 +737,7 @@ class projeto extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf("SELECT 
-							    A.id, B.codigo, C.nome, D.descricao
+							    A.id, B.codigo, C.nome, D.descricao, F.nome as pilar
 							FROM
 							    projetos A
 							        LEFT JOIN
@@ -747,6 +748,8 @@ class projeto extends app
 								projetostatus D ON A.id_status = D.id
 									LEFT JOIN 
 								funcionarios E ON A.id_gerente = E.id
+									LEFT JOIN
+								pilares F ON A.id_pilar = F.id
 								");
 		
 		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {

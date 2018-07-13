@@ -16,6 +16,8 @@ class apontamento extends app
 	public $id_cliente;
 	public $id_proposta;
 	public $cliente;
+	public $tipo_horas;
+	public $chamado;
 	public $data_busca_ini;
 	public $data_busca_fim;
 	public $Cliente_reembolsa;
@@ -76,15 +78,45 @@ class apontamento extends app
 			$this->msg = "Favor informar a Entrada 2.";
 			return false;
 		}
+
+		if (!$this->checkChamado($this->id_projeto)) {
+			if (empty($this->chamado)) {
+				$this->msg = 'Para esse projeto, é necessário um chamado';
+				return false;
+			}
+		}
+
+		if ($this->Qtd_hrs_real > 8 && $this->tipo_horas == 'N') {
+			$this->msg = 'Esse tipo de hora não é permitido para essa quantidade de horas';
+			return false;
+		}
+
 		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2)) {
 			return false;	
 		}
-
 		if (!$this->checkData($this->Data_apontamento)) {
 			return false;
 		}
 		return true;
 	}
+
+	private function checkChamado($id_projeto)
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "SELECT A.id FROM projetos A LEFT JOIN pilares B ON A.id_pilar = B.id WHERE A.id = ".$id_projeto." AND B.centro_custos = '010'";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro na verificação da obrigatorieridade do chamado.";	
+			return false;	
+		}
+
+		if ($result->num_rows > 0) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private function checkHorarios($entrada1, $saida1, $entrada2 = 0, $saida2 = 0)
 	{
 		if (!empty($entrada2) && !empty($saida2)) {
@@ -208,7 +240,6 @@ class apontamento extends app
 
 	public function save()
 	{
-	
 		if ($this->id_projeto > 0) {
 			$this->carregaPendencia($this->id_projeto);
 		}
@@ -283,9 +314,9 @@ class apontamento extends app
 
 		$this->Qtd_hrs_real = $horaReal[0].'.'.substr($horareal2[1], 0,1);
 
-		$query = sprintf("INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario, Entrada_1, Saida_1, Entrada_2, Saida_2)
-		VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s)", 
-			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email'], $this->Entrada_1, $this->Saida_1, $this->quote($this->Entrada_2, true, true),$this->quote($this->Saida_2, true, true));
+		$query = sprintf("INSERT INTO projetohoras (id_projeto, id_funcionario, id_perfilprofissional, Data_apontamento, Qtd_hrs_real, observacao, Aprovado, usuario, Entrada_1, Saida_1, Entrada_2, Saida_2, chamado, tipo_horas)
+		VALUES (%d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %s, %s, %s, '%s')", 
+			$this->id_projeto, $this->id_funcionario,$this->id_perfilprofissional, $this->Data_apontamento, $this->Qtd_hrs_real, $this->observacao, $this->Aprovado, $_SESSION['email'], $this->Entrada_1, $this->Saida_1, $this->quote($this->Entrada_2, true, true),$this->quote($this->Saida_2, true, true), $this->quote($this->chamado, true, true), $this->tipo_horas);
 		
 		if (!$conn->query($query)) {
 	 	 	$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -298,8 +329,8 @@ class apontamento extends app
 			$this->mailPendente($inmail['email'], 'tamara.santos@bravobpo.com.br', $inmail['nomeFuncionario'] , $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
 		} else {
 			$this->mailPendente($inmail['email'], $inmail['emailAprovador'], $inmail['nomeFuncionario'] , $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
-
 		}
+
 		$this->msg = "Apontamento Criado com sucesso!";
 		return true;
 	}
@@ -319,24 +350,34 @@ class apontamento extends app
 		return true;
 	}
 	
-	public function Aprova($id, $status)
+	public function Aprova($id, $status, $motivo = false)
 	{
 		if ($status != funcionalidadeConst::PENDENTE) {
+			if ($status == funcionalidadeConst::REJEITADO) {
+				if (empty($motivo)) {
+					$this->msg = "É necessário informar o motivo para recusar este(s) apontamento(s)!";
+					return false;
+				}
+			}
+
 			$conn = $this->getDB->mysqli_connection;
-			$query = sprintf(" UPDATE projetohoras SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s' WHERE id = %d", 
-				$status, $_SESSION['email'] ,$id);	
-		
+			$query = sprintf(" UPDATE projetohoras SET Aprovado= '%s', data_alteracao = NOW(), data_aprovacao = NOW(), login_aprovador = '%s', motivo = %s WHERE id = %d", 
+				$status, $_SESSION['email'], $this->quote($motivo, true, true) ,$id);	
+			
 			if (!$conn->query($query)) {
 				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 				return false;	
 			}
 		}
+
 		$this->msg = "Apontamentos atualizados com sucesso!";
 		return true;
 	}
 
 	public function lista($periodo=false, $id_funcionario=0)
 	{
+		$horasaprovadas = 0;
+		$horasrecusadas = 0;
 		$conn = $this->getDB->mysqli_connection;
 
 		if ($this->id_funcionario > 0 && !$id_funcionario) {
@@ -344,10 +385,9 @@ class apontamento extends app
 		}		
 
 		if ($this->id_projeto > 0 or $id_funcionario > 0) {
-			$query = "SELECT a.id, a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.observacao, a.Aprovado, a.id_funcionario, a.id_projeto, 
-			CONCAT(b.id, ' - ', c.nome, ' - ', d.codigo) AS nome_projeto FROM projetohoras a INNER JOIN projetos b on a.id_projeto = b.id INNER JOIN clientes c ON b.id_cliente = c.id INNER JOIN propostas d ON b.id_proposta = d.id
-			    
-			     where 1";
+			$query = "SELECT a.id, a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.observacao, a.Aprovado, a.id_funcionario, a.id_projeto, a.tipo_horas, a.chamado, 
+			CONCAT(b.id, ' - ', c.nome, ' - ', d.codigo) AS nome_projeto FROM projetohoras a INNER JOIN projetos b on a.id_projeto = b.id INNER JOIN clientes c ON b.id_cliente = c.id INNER JOIN propostas d ON b.id_proposta = d.id where 1";
+
 			if ($this->id_projeto > 0) {
 				$query .= " AND id_projeto = ".$this->id_projeto;
 			}
@@ -366,15 +406,24 @@ class apontamento extends app
 				$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 				return false;	
 			}
-
 			while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 	    		$timestamp = strtotime($row['Data_apontamento']);
 				$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
 				$row['Data_apontamento'] = date("d/m/Y", $timestamp);
+				if ($row['Aprovado'] == 'Não Aprovado') {
+					$horasrecusadas += $row['Qtd_hrs_real'];
+				}
+
+				if ($row['Aprovado'] == 'Aprovado') {
+					$horasaprovadas += $row['Qtd_hrs_real'];
+				}
 	    		$this->array[] = $row;
 			}
 		}
+		$this->array['horasaprovadas'] = $horasaprovadas;
+		$this->array['horasrecusadas'] = $horasrecusadas;
 	}
+
 	private function formatStatus($status)
 	{
 		if ($status == 'S') {
@@ -511,6 +560,8 @@ class apontamento extends app
 	}
 	public function lista_aprovacao()
 	{
+		$horas = 0;
+		$horasAprovadas = 0;
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT
 					A.id,
@@ -558,16 +609,79 @@ class apontamento extends app
 			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}
 		
+		$query .= " ORDER BY F.nome, A.Data_apontamento asc";
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	
 		}
-
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$horas += $row['Qtd_hrs'];
 			$timestamp = strtotime($row['Data_apontamento']);
     		$row['Data_apontamento'] = date("d/m/Y", $timestamp);
     		$this->array[] = $row;
 		}
+
+		$query = "SELECT
+					A.id,
+					A.id_projeto,
+				    C.codigo as id_proposta,
+				    A.Data_apontamento,
+				    D.nome as nomeCliente,
+				    F.nome as funcionarioNome,
+				    A.Qtd_hrs_real as Qtd_hrs,
+				    A.observacao as atividade,
+				    A.Aprovado as status
+				FROM 
+					projetohoras A 
+				INNER JOIN 
+					projetos B on A.id_projeto = B.id
+				INNER JOIN 
+					propostas C on B.id_proposta = C.id
+				INNER JOIN
+					clientes D on B.id_cliente = D.id
+				INNER JOIN 
+					funcionarios F on A.id_funcionario = F.id
+				INNER JOIN
+					funcionarios G on B.id_gerente = G.id
+				WHERE 
+					A.Aprovado = 'S'
+					";
+
+		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
+			$query .= sprintf(" AND G.Email = '%s' ", $_SESSION['email']);
+		}
+
+		if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::ADMIN) {
+			$query .= sprintf(" AND F.Email <> '%s' ", $_SESSION['email']);
+		}
+
+		if ($this->id_projeto > 0) {
+			$query .= " AND A.id_projeto = ".$this->id_projeto;
+		}
+			
+		if ($this->id_funcionario > 0) {
+			$query .= " AND A.id_funcionario = ".$this->id_funcionario;
+		}
+
+		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
+			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
+		}
+		
+		$query .= " ORDER BY F.nome, A.Data_apontamento asc";
+
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+			return false;	
+		}
+		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+			$horasAprovadas += $row['Qtd_hrs'];
+			$timestamp = strtotime($row['Data_apontamento']);
+    		$row['Data_apontamento'] = date("d/m/Y", $timestamp);
+		}
+	
+	$this->array['horastotais'] = $horas;
+	$this->array['horasaprovadas'] = $horasAprovadas;
 	}
 
 

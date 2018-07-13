@@ -63,8 +63,24 @@
                                         
                                     <label for="id_funcionario_busca">Período: </label> 
                                       <input type="text" id="periodo_busca_form" name="periodo_busca_form" onchange="alterar_periodo()" value="<?php echo $periodo_busca; ?>" class="validate" maxlength="7">
-                                        
                                     </div>
+                                    
+                                    <?php
+                                        $apontamento->lista($periodo_busca, $id_funcionario);
+                                    ?>
+                                    <div class="col s1"></div>
+                                    <div class="col s4">
+                                    <?php 
+                                    $horasaprovadas = 0;
+                                    $horasrecusadas = 0;
+                                    if (!empty($apontamento->array)) { 
+                                        $horasaprovadas = $apontamento->array['horasaprovadas'];
+                                        $horasrecusadas = $apontamento->array['horasrecusadas'];
+                                    } ?>
+                                        <label>Horas </label><br/>
+                                        Aprovadas  : <?php echo $horasaprovadas; ?><br/>
+                                        Reprovadas : <?php echo $horasrecusadas; ?>
+                                        </div>
                                     
                                 </div>
                             </div>
@@ -74,19 +90,19 @@
                                     <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos">
                                     <div  class="col s12">
                                         <div class="table-responsive">
-                                        <?php
-                                            $apontamento->lista($periodo_busca, $id_funcionario);
-                                        ?>
-                                            <table class="table table-hover">
+                                            <table class="table table-hover" style="font-size: 10px">
                                                 <thead>
                                                     <tr style="background: #c0392b;">
                                                         <th align="left">
-                                                            <p style="color : #fff;"> Apontamento das horas </p>
+                                                            <p style="color : #fff;"> Apontamentos </p>
                                                         </th>
                                                         <th align="center">
                                                         </th>
                                                         <th align="center">
                                                         </th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th></th>
                                                         <th></th>
                                                         <th></th>
                                                         <th></th>
@@ -106,6 +122,8 @@
                                                         <th>Saída 2</th>
                                                         <th>Qtd. Horas</th>
                                                         <th>Atividade</th>
+                                                        <th>Chamado</th>
+                                                        <th>Tipo de horas</th>
                                                         <th>Status</th>
                                                         <td></td>
                                                     </tr>
@@ -117,7 +135,7 @@
                                                         <td>
                                                             <select id="id_projeto_busca" onchange="addParam()" name="id_projeto" class="form-control">
                                                               <option value="">Selecione um Projeto</option>
-                                                                <?php $projeto->montaSelect(); ?>
+                                                                <?php $projeto->montaSelect(0, false, $apontamento->id_funcionario); ?>
                                                             </select>
                                                         </td>
 	                                                    <td>
@@ -140,8 +158,20 @@
 	                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
 	                                                    </td>
 	                                                    <td>
-	                                                        <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
-	                                                    </td>
+                                                            <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="chamado" name="chamado" class="validate" maxlength="20">
+                                                        </td>
+                                                        <td>
+                                                        <div>
+                                                            <input type="radio" id="normal" name="tipo_horas" value="N" checked/>
+                                                            <label for="normal">N</label>
+
+                                                            <input type="radio" id="banco" name="tipo_horas" value="B" />
+                                                            <label for="banco">B</label>
+                                                        </div>
+                                                        </td>
 	                                                    <td>
 	                                                        Não Aprovado
 	                                                        <input type="hidden" name="id_funcionario_ap" value="<?php echo $id_funcionario; ?>">
@@ -152,8 +182,9 @@
 	                                                </tr>
                                                     <?php
                                                     if (!empty($apontamento->array)) {
+                                                        unset($apontamento->array['horasaprovadas']);
+                                                        unset($apontamento->array['horasrecusadas']);
                                                     foreach($apontamento->array as $row){ 
-
                                                         ?>
                                                         <tr class="odd gradeX">
                                                             <td><?php echo $row['nome_projeto']; ?></td>
@@ -164,6 +195,8 @@
                                                             <td><?php echo $row['Saida_2']; ?></td>
                                                             <td><?php echo $row['Qtd_hrs_real']; ?></td>
                                                             <td><?php echo $row['observacao']; ?></td>
+                                                            <td><?php echo $row['chamado']; ?></td>
+                                                            <td><?php echo $row['tipo_horas']; ?></td>
                                                             <td><?php echo $row['Aprovado']; ?></td>
                                                             <td>
                                                             <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
@@ -186,35 +219,12 @@
                                 
                                 <!-- Modal de Despesas -->
                                 <div id="despesa" class="col s12">
-                                    <div class="card-content">
-                                        <div class="row">
-                                            <div class="col s2">
-                                                <p><b>Código do Projeto : </b></p>
-                                            </div>
-                                            <div class="col s2">
-                                                <p><?php echo $apontamento->id_projeto; ?></p>
-                                            </div>
-                                        </div>
-                                        <?php
-                                            $apontamento->carregaPendencia($apontamento->id_projeto);
-                                        ?>
-
-                                        <div class="row">
-                                            <div class="col s2">
-                                                <p><b>Cliente Reembolsa : </b></p>
-                                            </div>
-                                            <div class="col s2">
-                                                <?php if ($apontamento->Cliente_reembolsa == 'S'){ ?>
-                                                    <p> Sim </p>
-                                                 <?php } else {?>
-                                                    <p> Não </p>
-                                                 <?php } ?>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php
+                                        $apontamento->carregaPendencia($apontamento->id_projeto);
+                                    ?>
                                     <div class="table-responsive">
                                     <?php
-                                        $projetodespesas->lista_Apont($apontamento->id_projeto, $apontamento->id_funcionario);
+                                        $projetodespesas->lista_Apont($periodo_busca, $apontamento->id_funcionario);
                                     ?>
                                         <table class="table table-hover">
                                             <thead>
@@ -238,10 +248,13 @@
                                                     </th>
                                                     <th align="center">
                                                     </th>
+                                                    <th align="center">
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
+                                                    <th>Projeto</th>
                                                     <th>Data</th>
                                                     <th>Profissional</th>
                                                     <th>Despesa</th>
@@ -254,14 +267,18 @@
                                                 </tr>
                                                 <tr>
                                                     <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
-                                                    <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto; ?>">
-                                                    <input type="hidden" name="id_cliente" value="<?php echo $apontamento->id_cliente ?>">
-                                                    <input type="hidden" name="id_proposta" value="<?php echo $apontamento->id_proposta; ?>">
+                                                    
+                                                    <td>
+                                                        <select name="id_projeto" class="form-control">
+                                                          <option value="">Selecione um Projeto</option>
+                                                            <?php $projeto->montaSelect(0, false, $apontamento->id_funcionario); ?>
+                                                        </select>
+                                                    </td>
 
-                                                    <!-- inicio form -->
                                                     <td>
                                                         <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
                                                     </td>
+
                                                     <td width="20%">
                                                          <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                                             <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
@@ -269,6 +286,7 @@
                                                                 <?php $funcionario->montaSelect($apontamento->id_funcionario, $apontamento->id_projeto); ?>
                                                             </select> 
                                                         <?php } else { ?>
+                                                                <br />
                                                                 <?php $profissional = $funcionario->findFuncionario(); ?>
                                                                 <p><?php echo $profissional['nome'] ?>  /  <?php echo $profissional['email'] ?></p>
                                                                 <input type="hidden" name="id_funcionario" value="<?php echo $profissional['id']; ?>">
@@ -305,6 +323,7 @@
                                                 if (!empty($projetodespesas->array)) {
                                                 foreach($projetodespesas->array as $row){ ?>
                                                     <tr class="odd gradeX">
+                                                        <td><?php echo $row['nome_projeto']; ?></td>
                                                         <td><?php echo $row['Data_despesa']; ?></td>
                                                         <td><?php echo $row['NomeFuncionario']; ?></td>
                                                         <td><?php echo $row['NomeDespesa']; ?></td>
@@ -352,6 +371,10 @@ require_once(app::path.'/view/footer.php');
 ?>
 
 <script>
+
+window.onload = function(){
+document.getElementById("sideNav").click();
+}
 
 function escondehoras(){
     $("#buttonHoras").css("display", "none");
