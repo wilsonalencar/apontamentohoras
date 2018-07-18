@@ -49,6 +49,7 @@
                                     <thead>
                                         <tr>
                                             <th>Cód. Projeto</th>
+                                            <th>Pilar</th>
                                             <th>Cód. Proposta</th>
                                             <th>Cliente</th>
                                             <th>Status</th>
@@ -61,6 +62,7 @@
                                          foreach($projeto->array as $row){ ?>
                                             <tr class="odd gradeX">
                                                 <td><?php echo $row['id']; ?></td>
+                                                <td><?php echo $row['pilar']; ?></td>
                                                 <td><?php echo $row['codigo']; ?></td>
                                                 <td><?php echo $row['nome']; ?></td>
                                                 <td><?php echo $row['descricao']; ?></td>
@@ -89,25 +91,25 @@ $('#dataTables-example').dataTable({
              {
                 extend: 'copyHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2]
+                   columns: [ 0, 1, 2, 3, 4]
                 }
              },
              {
                 extend: 'excelHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2]
+                   columns: [0, 1, 2, 3, 4]
                 }
              },
              {
                 extend: 'csvHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2]
+                   columns: [0, 1, 2, 3, 4]
                 }
              },
              {
                 extend: 'pdfHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2]
+                   columns: [0, 1, 2, 3, 4]
                 }
              },
          ]

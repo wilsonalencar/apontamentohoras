@@ -17,6 +17,9 @@ $funcionario 				= new funcionario;
 $projetodespesa	 			= new projetodespesa;
 $aprova = array();
 $aprova							 	= $apontamento->getRequest('Aprova', 'N');
+
+$motivo = array();
+$motivo							 	= $apontamento->getRequest('Motivo', '');
 $apontamento->id					= $apontamento->getRequest('id', 0);
 $apontamento->id_cliente 			= $apontamento->getRequest('id_cliente', 0);
 $apontamento->id_projeto 			= $apontamento->getRequest('id_projeto', 0);
@@ -32,23 +35,73 @@ $success	= $apontamento->getRequest('success', 0);
 $msg		= $apontamento->getRequest('msg', '');
 $action		= $apontamento->getRequest('action', 0);
 
+$aprova_geral_horas = $projetodespesa->getRequest('aprova_geral_horas', 0);
+$aprova_geral_despesas = $projetodespesa->getRequest('aprova_geral_despesas', 0);
+
+$var = array();
+
 if ($action == APROVA_H) {
+	if (!empty($aprova) && $aprova_geral_horas == 1) {
+		foreach ($aprova as $id => $Aprovado) {
+			$aprova[$id] = 'S';
+		}
+	}
+	if (!empty($aprova) && $aprova_geral_horas == 2) {
+		foreach ($aprova as $id => $Aprovado) {
+			$aprova[$id] = 'R';
+		}
+	}
+
 	if (!empty($aprova)) {
 		foreach ($aprova as $id => $Aprovado) {
-			$success = $apontamento->Aprova($id, $Aprovado);
+			foreach ($motivo as $key => $motivo_single) {
+				if ($key == $id) {
+					$var[$id]['aprovado'] = $Aprovado;
+					$var[$id]['motivo'] = $motivo_single;
+				}
+			}
+		}
+		
+		foreach ($var as $h_id => $apontamento_dado) {
+			$success = $apontamento->Aprova($h_id, $apontamento_dado['aprovado'], $apontamento_dado['motivo']);
 		}
 
-		$array = $apontamento->MontaArray($aprova);
-		$apontamento->MailAprovacao($array);
+		// $array = $apontamento->MontaArray($aprova);
+		// $apontamento->MailAprovacao($array);
 	}
 	$msg     = $apontamento->msg; 
 	header("LOCATION:libera_apontamento.php?id_projeto=".$apontamento->id_projeto."&id_funcionario=".$apontamento->id_funcionario."&msg=".$msg."&success=".$success);
 }
 
 if ($action == APROVA_D) {
+
+	if (!empty($aprova) && $aprova_geral_despesas == 1) {
+		foreach ($aprova as $id => $Aprovado) {
+			$aprova[$id] = 'S';
+		}
+	}
+
+	if (!empty($aprova) && $aprova_geral_despesas == 2) {
+		foreach ($aprova as $id => $Aprovado) {
+			$aprova[$id] = 'R';
+		}
+	}
+
 	if (!empty($aprova)) {
 		foreach ($aprova as $id => $Aprovado) {
-			$success = $projetodespesa->Aprova($id, $Aprovado);
+			foreach ($motivo as $key => $motivo_single) {
+				if ($key == $id) {
+					$var[$id]['aprovado'] = $Aprovado;
+					$var[$id]['motivo'] = $motivo_single;
+				}
+			}
+		}
+
+		foreach ($var as $h_id => $despesa_dado) {
+			$success = $projetodespesa->Aprova($h_id, $despesa_dado['aprovado'], $despesa_dado['motivo']);
+			if (!$success) {
+				break;
+			}
 		}
 		
 		$array = $projetodespesa->MontaArray($aprova);
