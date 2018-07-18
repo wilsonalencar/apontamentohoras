@@ -462,7 +462,7 @@
 												$txt .= $quebraLinha;
 												$txt .= 'MOV0021_13|';
 												$txt .= $remunPerAnt->matricula.'|';
-												$txt .= $remunPerAnt->matricula.'|';
+												$txt .= $remunPerAnt->infoAgNocivo->indSimples.'|';
 												$txt .= $remunPerAnt->infoAgNocivo->grauExp.'|';
 											}
 										}
