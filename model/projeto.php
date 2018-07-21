@@ -687,7 +687,7 @@ class projeto extends app
 
 		$query .= " GROUP BY A.id ;";
 		
-		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN || $_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_FINANCEIRO) {
 			$query = sprintf("SELECT 
 						    A.id AS id_projeto, B.nome AS Cliente, C.codigo AS Proposta
 						FROM

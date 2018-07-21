@@ -34,4 +34,5 @@ class funcionalidadeConst
 	const PERFIL_ADMIN = 1;	
 	const PERFIL_RECURSO = 2;
 	const PERFIL_GERENTEPROJETOS = 3;
+	const PERFIL_FINANCEIRO = 4;
 }

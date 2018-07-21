@@ -64,10 +64,15 @@ if ($action == APROVA_H) {
 		
 		foreach ($var as $h_id => $apontamento_dado) {
 			$success = $apontamento->Aprova($h_id, $apontamento_dado['aprovado'], $apontamento_dado['motivo']);
+			if (!$success) {
+				break;
+			}
+			if ($success) {
+				$array = $apontamento->MontaArray($var);
+				$apontamento->MailAprovacao($array);
+			}
 		}
 
-		// $array = $apontamento->MontaArray($aprova);
-		// $apontamento->MailAprovacao($array);
 	}
 	$msg     = $apontamento->msg; 
 	header("LOCATION:libera_apontamento.php?id_projeto=".$apontamento->id_projeto."&id_funcionario=".$apontamento->id_funcionario."&msg=".$msg."&success=".$success);
@@ -102,10 +107,12 @@ if ($action == APROVA_D) {
 			if (!$success) {
 				break;
 			}
+			if ($success) {
+				$array = $projetodespesa->MontaArray($var);
+				$projetodespesa->MailAprovacao($array);
+			}
 		}
 		
-		$array = $projetodespesa->MontaArray($aprova);
-		$projetodespesa->MailAprovacao($array);
 	}
 	$msg     = $projetodespesa->msg; 
 	header("LOCATION:libera_apontamento.php?id_projeto=".$projetodespesa->id_projeto."&id_funcionario=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success.'#despesa');

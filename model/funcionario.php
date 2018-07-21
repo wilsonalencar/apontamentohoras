@@ -378,9 +378,13 @@ class funcionario extends app
 		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
 			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}
+
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOS) {
+			$query .= sprintf(" AND C.id_gerente = %d ", $_SESSION['id_funcionario']);
+		}
 		
 		$query .= " ORDER BY A.data_apontamento, B.id, A.id";
-		
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
@@ -525,7 +529,7 @@ class funcionario extends app
 		}
 		while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
 			$timestamp = strtotime($row['data_nascimento']);
-			$row['data_nascimento'] = date("d-m-Y", $timestamp);
+			$row['data_nascimento'] = date("d/m/Y", $timestamp);
 			$row['status'] = $this->formatStatus($row['status']);
 			$this->array[] = $row;
 		}

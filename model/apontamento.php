@@ -85,18 +85,21 @@ class apontamento extends app
 				return false;
 			}
 		}
-
-		if ($this->Qtd_hrs_real > 8 && $this->tipo_horas == 'N') {
-			$this->msg = 'Esse tipo de hora não é permitido para essa quantidade de horas';
+			
+		$horas = str_replace(':', '.', $this->Qtd_hrs_real);
+		if ($horas > 8 && $this->tipo_horas == 'N') {
+			$this->msg = 'Essa quantidade de horas passa da carga horária normal.';
 			return false;
 		}
 
 		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2)) {
 			return false;	
 		}
+
 		if (!$this->checkData($this->Data_apontamento)) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -377,7 +380,7 @@ class apontamento extends app
 	public function lista($periodo=false, $id_funcionario=0)
 	{
 		$horasaprovadas = 0;
-		$horasrecusadas = 0;
+		$horaslancadas = 0;
 		$conn = $this->getDB->mysqli_connection;
 
 		if ($this->id_funcionario > 0 && !$id_funcionario) {
@@ -410,10 +413,8 @@ class apontamento extends app
 	    		$timestamp = strtotime($row['Data_apontamento']);
 				$row['Aprovado'] = $this->formatStatus($row['Aprovado']);
 				$row['Data_apontamento'] = date("d/m/Y", $timestamp);
-				if ($row['Aprovado'] == 'Não Aprovado') {
-					$horasrecusadas += $row['Qtd_hrs_real'];
-				}
-
+				$horaslancadas += $row['Qtd_hrs_real'];
+				
 				if ($row['Aprovado'] == 'Aprovado') {
 					$horasaprovadas += $row['Qtd_hrs_real'];
 				}
@@ -421,7 +422,7 @@ class apontamento extends app
 			}
 		}
 		$this->array['horasaprovadas'] = $horasaprovadas;
-		$this->array['horasrecusadas'] = $horasrecusadas;
+		$this->array['horaslancadas'] = $horaslancadas;
 	}
 
 	private function formatStatus($status)
@@ -437,13 +438,15 @@ class apontamento extends app
 	public function MontaArray($array){
 		$val = '';
 		foreach ($array as $key => $value) {
-			if ($value != funcionalidadeConst::PENDENTE) {
-				$val .= "'";
-				$val .= $key."',";
+			if ($value['aprovado'] != funcionalidadeConst::PENDENTE) {
+				if ($value['aprovado'] != funcionalidadeConst::REJEITADO || !empty($value['motivo'])) {
+					$val .= "'";
+					$val .= $key."',";
+				}
 			}
 		}
 		$val = substr($val, 0, -1);
-		
+
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
 					A.id,

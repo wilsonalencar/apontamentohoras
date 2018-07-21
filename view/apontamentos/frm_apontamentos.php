@@ -72,14 +72,14 @@
                                     <div class="col s4">
                                     <?php 
                                     $horasaprovadas = 0;
-                                    $horasrecusadas = 0;
+                                    $horaslancadas = 0;
                                     if (!empty($apontamento->array)) { 
                                         $horasaprovadas = $apontamento->array['horasaprovadas'];
-                                        $horasrecusadas = $apontamento->array['horasrecusadas'];
+                                        $horaslancadas = $apontamento->array['horaslancadas'];
                                     } ?>
                                         <label>Horas </label><br/>
                                         Aprovadas  : <?php echo $horasaprovadas; ?><br/>
-                                        Reprovadas : <?php echo $horasrecusadas; ?>
+                                        Lançadas : <?php echo $horaslancadas; ?>
                                         </div>
                                     
                                 </div>
@@ -157,7 +157,7 @@
 	                                                        <input type="number" id="Qtd_hrs_real_exibe" placeholder="00:00" readonly="true" class="validate" maxlength="2">
 	                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
 	                                                    </td>
-	                                                    <td>
+	                                                    <td style="width: 20%"> 
                                                             <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
                                                         </td>
                                                         <td>
@@ -183,7 +183,7 @@
                                                     <?php
                                                     if (!empty($apontamento->array)) {
                                                         unset($apontamento->array['horasaprovadas']);
-                                                        unset($apontamento->array['horasrecusadas']);
+                                                        unset($apontamento->array['horaslancadas']);
                                                     foreach($apontamento->array as $row){ 
                                                         ?>
                                                         <tr class="odd gradeX">

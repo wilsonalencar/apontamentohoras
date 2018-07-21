@@ -103,8 +103,10 @@ class projetodespesa extends app
 
 		foreach ($array as $key => $value) {
 			if ($value != funcionalidadeConst::PENDENTE) {
-				$val .= "'";
-				$val .= $key."',";
+				if ($value['aprovado'] != funcionalidadeConst::REJEITADO || !empty($value['motivo'])) {
+					$val .= "'";
+					$val .= $key."',";
+				}
 			}
 		}
 		$val = substr($val, 0, -1);
