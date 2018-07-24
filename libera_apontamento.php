@@ -41,6 +41,7 @@ $aprova_geral_despesas = $projetodespesa->getRequest('aprova_geral_despesas', 0)
 $var = array();
 
 if ($action == APROVA_H) {
+
 	if (!empty($aprova) && $aprova_geral_horas == 1) {
 		foreach ($aprova as $id => $Aprovado) {
 			$aprova[$id] = 'S';
@@ -63,16 +64,13 @@ if ($action == APROVA_H) {
 		}
 		
 		foreach ($var as $h_id => $apontamento_dado) {
-			$success = $apontamento->Aprova($h_id, $apontamento_dado['aprovado'], $apontamento_dado['motivo']);
-			if (!$success) {
-				break;
-			}
-			if ($success) {
-				$array = $apontamento->MontaArray($var);
-				$apontamento->MailAprovacao($array);
-			}
+			$success = $apontamento->Aprova($h_id, $apontamento_dado['aprovado'], $apontamento_dado['motivo']);		
 		}
 
+		if (!empty($var)) {
+			$array = $apontamento->MontaArray($var);
+			$apontamento->MailAprovacao($array);
+		}
 	}
 	$msg     = $apontamento->msg; 
 	header("LOCATION:libera_apontamento.php?id_projeto=".$apontamento->id_projeto."&id_funcionario=".$apontamento->id_funcionario."&msg=".$msg."&success=".$success);
@@ -104,13 +102,10 @@ if ($action == APROVA_D) {
 
 		foreach ($var as $h_id => $despesa_dado) {
 			$success = $projetodespesa->Aprova($h_id, $despesa_dado['aprovado'], $despesa_dado['motivo']);
-			if (!$success) {
-				break;
-			}
-			if ($success) {
-				$array = $projetodespesa->MontaArray($var);
-				$projetodespesa->MailAprovacao($array);
-			}
+		}
+		if (!empty($var)) {
+			$array = $projetodespesa->MontaArray($var);
+			$projetodespesa->MailAprovacao($array);
 		}
 		
 	}

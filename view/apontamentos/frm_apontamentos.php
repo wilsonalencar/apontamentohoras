@@ -187,7 +187,7 @@
                                                     foreach($apontamento->array as $row){ 
                                                         ?>
                                                         <tr class="odd gradeX">
-                                                            <td><?php echo $row['nome_projeto']; ?></td>
+                                                            <td style="width: 12%"><?php echo $row['nome_projeto']; ?></td>
                                                             <td><?php echo $row['Data_apontamento']; ?></td>
                                                             <td><?php echo $row['Entrada_1']; ?></td>
                                                             <td><?php echo $row['Saida_1']; ?></td>
@@ -198,7 +198,7 @@
                                                             <td><?php echo $row['chamado']; ?></td>
                                                             <td><?php echo $row['tipo_horas']; ?></td>
                                                             <td><?php echo $row['Aprovado']; ?></td>
-                                                            <td>
+                                                            <td style="width: 8%;">
                                                             <?php if ($row['Aprovado'] != 'Aprovado') { ?>
                                                                 <a onclick="MotivosModal('<?php echo $row['motivo'];?>')">
                                                                     <i class="material-icons">expand</i>
@@ -209,8 +209,11 @@
                                                             <i onclick="excluiApot(this.id, <?php echo $row['id_funcionario']; ?>, <?php echo $row['id_projeto']; ?>)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                             <?php } ?>
 
-                                                            <?php if ($row['Aprovado'] != 'Aprovado') { ?>
-                                                            <i onclick="EditModal('<?php echo $row['id']; ?>','<?php echo $row['Entrada_1']; ?>','<?php echo $row['Saida_1']; ?>','<?php echo $row['Entrada_2']; ?>','<?php echo $row['Saida_2']; ?>','<?php echo $row['Qtd_hrs_real']; ?>','<?php echo $row['observacao']; ?>','<?php echo $row['chamado']; ?>','<?php echo $row['id_projeto']; ?>')" class="material-icons">edit</i>
+                                                            <?php if ($row['Aprovado'] != 'Aprovado') { 
+                                                            $dataapontamento = str_replace('/', '-', $row['Data_apontamento']);
+                                                            $dataapontamento = date('Y-m-d', strtotime($dataapontamento));
+                                                            ?>
+                                                            <i onclick="EditModal('<?php echo $row['id']; ?>','<?php echo $row['Entrada_1']; ?>','<?php echo $row['Saida_1']; ?>','<?php echo $row['Entrada_2']; ?>','<?php echo $row['Saida_2']; ?>','<?php echo $row['Qtd_hrs_real']; ?>','<?php echo $row['observacao']; ?>','<?php echo $row['chamado']; ?>','<?php echo $row['id_projeto']; ?>','<?php echo $row['tipo_horas']; ?>','<?php echo $dataapontamento; ?>')" class="material-icons">edit</i>
                                                             <?php } ?>
 
                                                             </td>
@@ -356,62 +359,90 @@
                                 </div>
                             </div>
 
-        <div id="ModalMotivo" class="modal fade" >
+        <div id="ModalMotivo" class="modal" style="height: 30%">
             <div class="modal-header">
                 <h4 class="modal-title">Motivo</h4>
-            </div>
-
-            <div class="modal-content">
-                <p class="motivo" id="motivo"></p> 
             </div>    
+            <div class="modal-body">
+                <p class="motivo" id="motivo"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
+            </div>
         </div>
 
         <div id="ModalEdicao" class="modal fade" >
             <div class="modal-header">
                 <h4 class="modal-title">Edição de Apontamento</h4>
             </div>
-            <div class="modal-content">
-                <div class="row">
-                    <form action="apontamentos.php" method="post">
-                        <input type="hidden" id="id_edit" name="id">
-                        <input type="hidden" id="id_projeto_edit" name="id_projeto">
+            <form action="apontamentos.php" method="post">
+                <div class="modal-content">                        
+                    <input type="hidden" id="id_edit" name="id">
+                    <input type="hidden" name="action" value="1">
 
-                        <input type="hidden" name="action" value="1">
-                        
-                        <label for="Entrada_1"> Entrada 1 </label>
-                        <input type="time" id="Entrada_1_e" name="Entrada_1" class="validate calculate_e" maxlength="5">
-                        
-                        <label for="Saida_1"> Saída 1 </label>
-                        <input type="time" id="Saida_1_e" name="Saida_1" class="validate calculate_e" maxlength="5">
-                
-                        <label for="Entrada_2"> Entrada 2 </label>
-                        <input type="time" id="Entrada_2_e" name="Entrada_2" class="validate calculate_e" maxlength="5">
+                    <div class="col s12">
+                        <div class="col s6">
+                            <label for="id_projeto">Projeto</label>
+                            <select id="id_projeto_edit" name="id_projeto" class="form-control">
+                              <option value="">Selecione um Projeto</option>
+                                <?php $projeto->montaSelect(0, false, $apontamento->id_funcionario); ?>
+                            </select>
+                        </div>
+                        <div class="col s6">
+                            <label for="data_apontamento">Data Apontamento</label>
+                            <input type="date" id="data_apontamento_e" name="Data_apontamento" class="validate" maxlength="8">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="col s12">
+                        <div class="col s6">
+                            <label for="Entrada_1"> Entrada 1 </label>
+                            <input type="time" id="Entrada_1_e" name="Entrada_1" class="validate calculate_e" maxlength="5">
+                        </div>
+                        <div class="col s6">
+                            <label for="Saida_1"> Saída 1 </label>
+                            <input type="time" id="Saida_1_e" name="Saida_1" class="validate calculate_e" maxlength="5">
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="col s6">
+                            <label for="Entrada_2"> Entrada 2 </label>
+                            <input type="time" id="Entrada_2_e" name="Entrada_2" class="validate calculate_e" maxlength="5">
+                        </div>
 
-                        <label for="Saida_2"> Saída 2 </label>
-                        <input type="time" id="Saida_2_e" name="Saida_2" class="validate calculate_e" maxlength="5">
-                      
-                        <label for="Qtd_hrs_real">Total de horas </label>
-                        <input type="number" id="Qtd_hrs_real_exibe_e" placeholder="00:00" readonly="true" class="validate" maxlength="2">
-                        <input type="hidden" id="Qtd_hrs_real_e" name="Qtd_hrs_real" class="validate">
-                        
-                        <label>Atividade</label>
-                        <input type="text" id="observacao_e" name="observacao" class="validate" maxlength="255">
-
-                        <label>Chamado</label>
-                        <input type="text" id="chamado_e" name="chamado" class="validate" maxlength="20">
-                        
-                        <div>
+                        <div class="col s6">
+                            <label for="Saida_2"> Saída 2 </label>
+                            <input type="time" id="Saida_2_e" name="Saida_2" class="validate calculate_e" maxlength="5">
+                        </div>
+                    </div>
+            
+                    <div class="col s12">
+                        <div class="col s6">
+                            <label for="Qtd_hrs_real">Total de horas </label>
+                            <input type="number" id="Qtd_hrs_real_exibe_e" placeholder="00:00" readonly="true" class="validate" maxlength="2">
+                            <input type="hidden" id="Qtd_hrs_real_e" name="Qtd_hrs_real" class="validate">
+                        </div>
+                        <div class="col s6">
                             <label>Tipo de horas</label><br>
-                            <input type="radio" id="normal_e" name="tipo_horas" value="N" checked/>
-                            <label for="normal_e">Normais</label>
+                            <input type="radio" id="normal_e" name="tipo_horas" value="N"/>
+                            <label for="normal_e">Normais</label><br/>
                             <input type="radio" id="banco_e" name="tipo_horas" value="B" />
                             <label for="banco_e">Banco</label>
                         </div>
+                    </div>
+                    
+                        <label for="observacao">Atividade</label>
+                        <input type="text" id="observacao_e" name="observacao" class="validate" maxlength="255">
 
-                        <button type="submit" class="btn btn-success">Atualizar</button>
-                    </form>
+                        <label for="chamado">Chamado</label>
+                        <input type="text" id="chamado_e" name="chamado" class="validate" maxlength="20">
+                    
                 </div>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
+                    <button type="submit" class="btn btn-success">Atualizar</button>
+                </div>
+            </form>
         </div>
         <div class="clearBoth"></div>
         <form action="apontamentos.php" method="post" id="form_busca">
@@ -615,14 +646,21 @@ function MotivosModal(string){
   $("#openmodal").click();
 }
 
-function EditModal(id, entrada_1, saida_1, entrada_2, saida_2, Qtd_hrs_real, observacao, chamado, id_projeto){
+function EditModal(id, entrada_1, saida_1, entrada_2, saida_2, Qtd_hrs_real, observacao, chamado, id_projeto, tipo_horas, data_apontamento){
     $("#Entrada_1_e").val(entrada_1);
     $("#Saida_1_e").val(saida_1);
     $("#Entrada_2_e").val(entrada_2);
     $("#Saida_2_e").val(saida_2);
     $("#Qtd_hrs_real_e").val(Qtd_hrs_real);
+    $("#data_apontamento_e").val(data_apontamento);
     $("#Qtd_hrs_real_exibe_e").attr('placeholder',Qtd_hrs_real);
     $("#observacao_e").val(observacao);
+    if (tipo_horas == 'N') {
+        $("#normal_e").prop('checked', 'true');
+    }
+    if (tipo_horas == 'B') {
+        $("#banco_e").prop('checked', 'true');
+    }
     $("#chamado_e").val(chamado);
     $("#id_edit").val(id);
     $("#id_projeto_edit").val(id_projeto);

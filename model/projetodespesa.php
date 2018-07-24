@@ -393,6 +393,10 @@ class projetodespesa extends app
 
 	public function lista_Apont($periodo = false, $id_funcionario)
 	{
+		if (!$periodo) {
+			$periodo = date('m/Y');
+		}
+		
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
 						    A.id,

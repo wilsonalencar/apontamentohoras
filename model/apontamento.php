@@ -29,57 +29,6 @@ class apontamento extends app
 	public $msg;
 	public $array;
 
-	private function checkEdition()
-	{
-		if (empty($this->Qtd_hrs_real)) {
-			$this->msg = "Favor informar a quantidade de horas real.";
-			return false;	
-		}
-		if ($this->Qtd_hrs_real < 0) {
-			$this->msg = "Favor informar a quantidade de horas corretamente.";
-			return false;	
-		}
-		if (empty($this->Entrada_1)) {
-			$this->msg = "Favor informar a hora de entrada 1.";
-			return false;	
-		}
-		if (empty($this->Saida_1)) {
-			$this->msg = "Favor informar a hora de saída 1.";
-			return false;	
-		}
-		if (strtotime($this->Entrada_1) > strtotime($this->Saida_1)) {
-			$this->msg = "O horário de saída 1 é menor que o de Entrada 1.";
-			return false;
-		}
-		if (!empty($this->Entrada_2) && empty($this->Saida_2)) {
-			$this->msg = "Favor informar a saída 2.";
-			return false;
-		}
-		if (empty($this->Entrada_2) && !empty($this->Saida_2)) {
-			$this->msg = "Favor informar a Entrada 2.";
-			return false;
-		}
-
-		if (!$this->checkChamado($this->id_projeto)) {
-			if (empty($this->chamado)) {
-				$this->msg = 'Para esse projeto, é necessário um chamado';
-				return false;
-			}
-		}
-		
-		$horas = str_replace(':', '.', $this->Qtd_hrs_real);
-		if ($horas > 8 && $this->tipo_horas == 'N') {
-			$this->msg = 'Essa quantidade de horas passa da carga horária normal.';
-			return false;
-		}
-
-		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2, $this->id)) {
-			return false;	
-		}
-
-		return true;
-	}
-
 	private function check(){	
 		if (empty($this->id_cliente)) {
 			$this->msg = "Favor informar o cliente.";
@@ -93,7 +42,7 @@ class apontamento extends app
 			$this->msg = "Favor informar o projeto.";
 			return false;	
 		}
-		if (empty($this->id_funcionario)) {
+		if (empty($this->id_funcionario) && empty($this->id)) {
 			$this->msg = "Favor informar o funcionário.";
 			return false;	
 		}
@@ -136,14 +85,14 @@ class apontamento extends app
 				return false;
 			}
 		}
-			
+
 		$horas = str_replace(':', '.', $this->Qtd_hrs_real);
 		if ($horas > 8 && $this->tipo_horas == 'N') {
 			$this->msg = 'Essa quantidade de horas passa da carga horária normal.';
 			return false;
 		}
 
-		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2)) {
+		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2, $this->id)) {
 			return false;	
 		}
 
@@ -269,7 +218,7 @@ class apontamento extends app
 	}
 
 
-	public function checkData($data_apontamento, $id = false)
+	public function checkData($data_apontamento)
 	{
 	 	$data_apontamento = strtotime($data_apontamento);
 		$data_apontamento = date("m/Y", $data_apontamento);
@@ -301,12 +250,12 @@ class apontamento extends app
 			$this->carregaPendencia($this->id_projeto);
 		}
 
-		if (!empty($this->id)) {
-			return $this->editApontamento();
-		}
-
 		if (!$this->check()) {
 		 	return false;
+		}
+
+		if (!empty($this->id)) {
+			return $this->editApontamento();
 		}
 
 		return $this->insert();
@@ -314,12 +263,9 @@ class apontamento extends app
 
 	public function editApontamento()
 	{
-		if (!$this->checkEdition()) {
-			return false;
-		}
 		$this->Qtd_hrs_real = str_replace(':', '.', $this->Qtd_hrs_real);
 		$conn = $this->getDB->mysqli_connection;
-		$query = "UPDATE projetohoras SET Qtd_hrs_real = ".$this->Qtd_hrs_real.", observacao = '".$this->observacao."', Entrada_1 = '".$this->Entrada_1."', Saida_1 = '".$this->Saida_1."', Entrada_2 = ".$this->quote($this->Entrada_2, true, true).", Saida_2 = ".$this->quote($this->Saida_2, true, true).", chamado = ".$this->quote($this->chamado, true, true).", tipo_horas = '".$this->tipo_horas."', Aprovado = 'N' where id = ".$this->id."";
+		$query = "UPDATE projetohoras SET Qtd_hrs_real = ".$this->Qtd_hrs_real.", observacao = '".$this->observacao."', Entrada_1 = '".$this->Entrada_1."', Saida_1 = '".$this->Saida_1."', Entrada_2 = ".$this->quote($this->Entrada_2, true, true).", Saida_2 = ".$this->quote($this->Saida_2, true, true).", chamado = ".$this->quote($this->chamado, true, true).", tipo_horas = '".$this->tipo_horas."', Aprovado = 'N', data_apontamento = '".$this->Data_apontamento."', id_projeto = ".$this->id_projeto." where id = ".$this->id."";
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
