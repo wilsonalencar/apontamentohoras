@@ -1,7 +1,6 @@
 <?php
   require_once(app::path.'view/header.php');
 ?>
-    
     <div id="page-wrapper" >
       <div class="header"> 
             <h1 class="page-header">
@@ -85,7 +84,8 @@
                                 </div>
                             </div>
 
-                            
+                                <a href="#" data-toggle="modal" style="display:none;" id="openmodal" data-target="#ModalMotivo"></a>
+                                <a href="#" data-toggle="modal" style="display:none;" id="openmodaledition" data-target="#ModalEdicao"></a>
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos">
                                     <div  class="col s12">
@@ -199,9 +199,20 @@
                                                             <td><?php echo $row['tipo_horas']; ?></td>
                                                             <td><?php echo $row['Aprovado']; ?></td>
                                                             <td>
+                                                            <?php if ($row['Aprovado'] != 'Aprovado') { ?>
+                                                                <a onclick="MotivosModal('<?php echo $row['motivo'];?>')">
+                                                                    <i class="material-icons">expand</i>
+                                                                </a>
+                                                            <?php } ?>
+
                                                             <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                                             <i onclick="excluiApot(this.id, <?php echo $row['id_funcionario']; ?>, <?php echo $row['id_projeto']; ?>)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                             <?php } ?>
+
+                                                            <?php if ($row['Aprovado'] != 'Aprovado') { ?>
+                                                            <i onclick="EditModal('<?php echo $row['id']; ?>','<?php echo $row['Entrada_1']; ?>','<?php echo $row['Saida_1']; ?>','<?php echo $row['Entrada_2']; ?>','<?php echo $row['Saida_2']; ?>','<?php echo $row['Qtd_hrs_real']; ?>','<?php echo $row['observacao']; ?>','<?php echo $row['chamado']; ?>','<?php echo $row['id_projeto']; ?>')" class="material-icons">edit</i>
+                                                            <?php } ?>
+
                                                             </td>
                                                         </tr>
                                                     <?php } }?>
@@ -345,7 +356,63 @@
                                 </div>
                             </div>
 
+        <div id="ModalMotivo" class="modal fade" >
+            <div class="modal-header">
+                <h4 class="modal-title">Motivo</h4>
+            </div>
 
+            <div class="modal-content">
+                <p class="motivo" id="motivo"></p> 
+            </div>    
+        </div>
+
+        <div id="ModalEdicao" class="modal fade" >
+            <div class="modal-header">
+                <h4 class="modal-title">Edição de Apontamento</h4>
+            </div>
+            <div class="modal-content">
+                <div class="row">
+                    <form action="apontamentos.php" method="post">
+                        <input type="hidden" id="id_edit" name="id">
+                        <input type="hidden" id="id_projeto_edit" name="id_projeto">
+
+                        <input type="hidden" name="action" value="1">
+                        
+                        <label for="Entrada_1"> Entrada 1 </label>
+                        <input type="time" id="Entrada_1_e" name="Entrada_1" class="validate calculate_e" maxlength="5">
+                        
+                        <label for="Saida_1"> Saída 1 </label>
+                        <input type="time" id="Saida_1_e" name="Saida_1" class="validate calculate_e" maxlength="5">
+                
+                        <label for="Entrada_2"> Entrada 2 </label>
+                        <input type="time" id="Entrada_2_e" name="Entrada_2" class="validate calculate_e" maxlength="5">
+
+                        <label for="Saida_2"> Saída 2 </label>
+                        <input type="time" id="Saida_2_e" name="Saida_2" class="validate calculate_e" maxlength="5">
+                      
+                        <label for="Qtd_hrs_real">Total de horas </label>
+                        <input type="number" id="Qtd_hrs_real_exibe_e" placeholder="00:00" readonly="true" class="validate" maxlength="2">
+                        <input type="hidden" id="Qtd_hrs_real_e" name="Qtd_hrs_real" class="validate">
+                        
+                        <label>Atividade</label>
+                        <input type="text" id="observacao_e" name="observacao" class="validate" maxlength="255">
+
+                        <label>Chamado</label>
+                        <input type="text" id="chamado_e" name="chamado" class="validate" maxlength="20">
+                        
+                        <div>
+                            <label>Tipo de horas</label><br>
+                            <input type="radio" id="normal_e" name="tipo_horas" value="N" checked/>
+                            <label for="normal_e">Normais</label>
+                            <input type="radio" id="banco_e" name="tipo_horas" value="B" />
+                            <label for="banco_e">Banco</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Atualizar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="clearBoth"></div>
         <form action="apontamentos.php" method="post" id="form_busca">
             <input type="hidden" name="id_projeto_ap" id="id_projeto_ap">
@@ -402,6 +469,10 @@ $(document).ready(function(){
 
     $( ".calculate" ).blur(function() {
         Calcula();
+    });
+
+    $( ".calculate_e" ).blur(function() {
+        Calcula_e();
     });
 
 });
@@ -472,6 +543,91 @@ function Calcula()
         }
 }
 
+function Calcula_e()
+{
+        var time_entrada = document.getElementById('Entrada_1_e').value;
+        var time_saida = document.getElementById('Saida_1_e').value;
+
+        if (time_entrada != "" && time_saida != "") {
+
+            var time_entrada = document.getElementById('Entrada_1_e').value;
+            var time_saida = document.getElementById('Saida_1_e').value;
+            if (time_saida == '00:00') {
+                time_saida = '23:59';
+                $("#Saida_1_e").val(time_saida);
+            }
+
+            s = time_entrada.split(':');
+            e = time_saida.split(':');
+            if (time_entrada != "" && time_saida != "") {
+            min = e[1]-s[1];
+            hour_carry = 0;
+            if(min < 0){
+                min += 60;
+                hour_carry += 1;
+            }
+            hour = e[0]-s[0]-hour_carry;
+            diff = hour + ":" + min;
+
+            $("#Qtd_hrs_real_e").val(diff);
+            $("#Qtd_hrs_real_exibe_e").attr('placeholder',diff);
+            }
+        }
+
+
+        var time_entrada = document.getElementById('Entrada_2_e').value;
+        var time_saida = document.getElementById('Saida_2_e').value;
+        var time_atual = document.getElementById('Qtd_hrs_real_e').value;
+        if (time_saida == '00:00') {
+            time_saida = '23:59';
+            $("#Saida_2_e").val(time_saida);
+        }
+        if (time_entrada != "" && time_saida != "" && time_atual) {
+            s = time_entrada.split(':');
+            e = time_saida.split(':');
+            f = time_atual.split(':');
+
+            min = e[1]-s[1];
+            hour_carry = 0;
+
+            if(min < 0){
+                min += 60;
+                hour_carry += 1;
+            }
+            min = parseFloat(f[1]) + parseFloat(min); 
+            if (min >= 60) {
+                min -= 60;
+                hour_carry -= 1;
+            }
+
+            hour = e[0]-s[0]-hour_carry;
+            hour = parseFloat(hour) + parseFloat(f[0]);
+
+            diff = hour + ":" + min;
+            $("#Qtd_hrs_real_e").val(diff);
+            $("#Qtd_hrs_real_exibe_e").attr('placeholder',diff);
+        }
+}
+
+
+function MotivosModal(string){
+  $("#motivo").html(string);
+  $("#openmodal").click();
+}
+
+function EditModal(id, entrada_1, saida_1, entrada_2, saida_2, Qtd_hrs_real, observacao, chamado, id_projeto){
+    $("#Entrada_1_e").val(entrada_1);
+    $("#Saida_1_e").val(saida_1);
+    $("#Entrada_2_e").val(entrada_2);
+    $("#Saida_2_e").val(saida_2);
+    $("#Qtd_hrs_real_e").val(Qtd_hrs_real);
+    $("#Qtd_hrs_real_exibe_e").attr('placeholder',Qtd_hrs_real);
+    $("#observacao_e").val(observacao);
+    $("#chamado_e").val(chamado);
+    $("#id_edit").val(id);
+    $("#id_projeto_edit").val(id_projeto);
+    $("#openmodaledition").click();   
+}
 
 function addParam(){
     $("#buttonHoras").css("display", "block");

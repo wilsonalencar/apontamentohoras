@@ -29,6 +29,57 @@ class apontamento extends app
 	public $msg;
 	public $array;
 
+	private function checkEdition()
+	{
+		if (empty($this->Qtd_hrs_real)) {
+			$this->msg = "Favor informar a quantidade de horas real.";
+			return false;	
+		}
+		if ($this->Qtd_hrs_real < 0) {
+			$this->msg = "Favor informar a quantidade de horas corretamente.";
+			return false;	
+		}
+		if (empty($this->Entrada_1)) {
+			$this->msg = "Favor informar a hora de entrada 1.";
+			return false;	
+		}
+		if (empty($this->Saida_1)) {
+			$this->msg = "Favor informar a hora de saída 1.";
+			return false;	
+		}
+		if (strtotime($this->Entrada_1) > strtotime($this->Saida_1)) {
+			$this->msg = "O horário de saída 1 é menor que o de Entrada 1.";
+			return false;
+		}
+		if (!empty($this->Entrada_2) && empty($this->Saida_2)) {
+			$this->msg = "Favor informar a saída 2.";
+			return false;
+		}
+		if (empty($this->Entrada_2) && !empty($this->Saida_2)) {
+			$this->msg = "Favor informar a Entrada 2.";
+			return false;
+		}
+
+		if (!$this->checkChamado($this->id_projeto)) {
+			if (empty($this->chamado)) {
+				$this->msg = 'Para esse projeto, é necessário um chamado';
+				return false;
+			}
+		}
+		
+		$horas = str_replace(':', '.', $this->Qtd_hrs_real);
+		if ($horas > 8 && $this->tipo_horas == 'N') {
+			$this->msg = 'Essa quantidade de horas passa da carga horária normal.';
+			return false;
+		}
+
+		if (!$this->checkHorarios($this->Entrada_1, $this->Saida_1, $this->Entrada_2, $this->Saida_2, $this->id)) {
+			return false;	
+		}
+
+		return true;
+	}
+
 	private function check(){	
 		if (empty($this->id_cliente)) {
 			$this->msg = "Favor informar o cliente.";
@@ -120,7 +171,7 @@ class apontamento extends app
 		return true;
 	}
 
-	private function checkHorarios($entrada1, $saida1, $entrada2 = 0, $saida2 = 0)
+	private function checkHorarios($entrada1, $saida1, $entrada2 = 0, $saida2 = 0, $id = 0)
 	{
 		if (!empty($entrada2) && !empty($saida2)) {
 			if (strtotime($entrada2) > strtotime($saida2)) {
@@ -141,6 +192,9 @@ class apontamento extends app
 					    projetohoras
 					WHERE
 					    data_apontamento = '".$this->Data_apontamento."' AND id_funcionario = ".$this->id_funcionario." AND id_projeto = ".$this->id_projeto."";
+	    if ($id) {
+	    	$query .= ' AND id <>'. $id;
+	    }
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro na verificação de duplicidade de lançamento de horas.";	
@@ -215,7 +269,7 @@ class apontamento extends app
 	}
 
 
-	public function checkData($data_apontamento)
+	public function checkData($data_apontamento, $id = false)
 	{
 	 	$data_apontamento = strtotime($data_apontamento);
 		$data_apontamento = date("m/Y", $data_apontamento);
@@ -247,12 +301,35 @@ class apontamento extends app
 			$this->carregaPendencia($this->id_projeto);
 		}
 
+		if (!empty($this->id)) {
+			return $this->editApontamento();
+		}
+
 		if (!$this->check()) {
 		 	return false;
 		}
 
 		return $this->insert();
 	}
+
+	public function editApontamento()
+	{
+		if (!$this->checkEdition()) {
+			return false;
+		}
+		$this->Qtd_hrs_real = str_replace(':', '.', $this->Qtd_hrs_real);
+		$conn = $this->getDB->mysqli_connection;
+		$query = "UPDATE projetohoras SET Qtd_hrs_real = ".$this->Qtd_hrs_real.", observacao = '".$this->observacao."', Entrada_1 = '".$this->Entrada_1."', Saida_1 = '".$this->Saida_1."', Entrada_2 = ".$this->quote($this->Entrada_2, true, true).", Saida_2 = ".$this->quote($this->Saida_2, true, true).", chamado = ".$this->quote($this->chamado, true, true).", tipo_horas = '".$this->tipo_horas."' where id = ".$this->id."";
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+
+		$this->msg = 'Registro atualizado com sucesso';
+		return true;
+	}
+
 
 	public function relatorioFunc()
 	{
@@ -338,21 +415,6 @@ class apontamento extends app
 		return true;
 	}
 
-	public function update()
-	{
-		$conn  = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= '%s', data_fim= '%s', id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', data_alteracao = NOW() WHERE id = %d", 
-			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->data_inicio, $this->data_fim, $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id);	
-	
-		if (!$conn->query($query)) {
-			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-			return false;	
-		}
-
-		$this->msg = "Registro atualizado com sucesso!";
-		return true;
-	}
-	
 	public function Aprova($id, $status, $motivo = false)
 	{
 		if ($status != funcionalidadeConst::PENDENTE) {
@@ -388,7 +450,7 @@ class apontamento extends app
 		}		
 
 		if ($this->id_projeto > 0 or $id_funcionario > 0) {
-			$query = "SELECT a.id, a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.observacao, a.Aprovado, a.id_funcionario, a.id_projeto, a.tipo_horas, a.chamado, 
+			$query = "SELECT a.id, a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.observacao, a.Aprovado, a.id_funcionario, a.id_projeto, a.tipo_horas, a.chamado, a.motivo, 
 			CONCAT(b.id, ' - ', c.nome, ' - ', d.codigo) AS nome_projeto FROM projetohoras a INNER JOIN projetos b on a.id_projeto = b.id INNER JOIN clientes c ON b.id_cliente = c.id INNER JOIN propostas d ON b.id_proposta = d.id where 1";
 
 			if ($this->id_projeto > 0) {
