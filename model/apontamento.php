@@ -319,7 +319,7 @@ class apontamento extends app
 		}
 		$this->Qtd_hrs_real = str_replace(':', '.', $this->Qtd_hrs_real);
 		$conn = $this->getDB->mysqli_connection;
-		$query = "UPDATE projetohoras SET Qtd_hrs_real = ".$this->Qtd_hrs_real.", observacao = '".$this->observacao."', Entrada_1 = '".$this->Entrada_1."', Saida_1 = '".$this->Saida_1."', Entrada_2 = ".$this->quote($this->Entrada_2, true, true).", Saida_2 = ".$this->quote($this->Saida_2, true, true).", chamado = ".$this->quote($this->chamado, true, true).", tipo_horas = '".$this->tipo_horas."' where id = ".$this->id."";
+		$query = "UPDATE projetohoras SET Qtd_hrs_real = ".$this->Qtd_hrs_real.", observacao = '".$this->observacao."', Entrada_1 = '".$this->Entrada_1."', Saida_1 = '".$this->Saida_1."', Entrada_2 = ".$this->quote($this->Entrada_2, true, true).", Saida_2 = ".$this->quote($this->Saida_2, true, true).", chamado = ".$this->quote($this->chamado, true, true).", tipo_horas = '".$this->tipo_horas."', Aprovado = 'N' where id = ".$this->id."";
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
