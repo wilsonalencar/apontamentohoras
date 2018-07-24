@@ -238,7 +238,7 @@
                                     ?>
                                     <div class="table-responsive">
                                     <?php
-                                        $projetodespesas->lista_Apont($periodo_busca, $apontamento->id_funcionario);
+                                        $projetodespesas->lista_Apont($periodo_busca, $id_funcionario);
                                     ?>
                                         <table class="table table-hover">
                                             <thead>
