@@ -15,6 +15,7 @@ class projetodespesa extends app
 	public $Vlr_unit;
 	public $Vlr_total;
 	public $data_busca_ini;
+	public $reembolso;
 	public $arrayIDS;
 	public $data_busca_fim;
 	public $Aprovado;
@@ -156,9 +157,9 @@ class projetodespesa extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetodespesas (id_projeto, id_funcionario, Data_despesa, id_tipodespesa, Num_doc, Qtd_despesa, Vlr_unit, Vlr_total, usuario)
-		VALUES (%d, %d, '%s', %d, '%s', %d, '%s', '%s', '%s')", 
-			$this->id_projeto, $this->id_funcionario, $this->Data_despesa, $this->id_tipodespesa, $this->Num_doc, $this->Qtd_despesa, $this->Vlr_unit, $this->Vlr_total, $_SESSION['email']);	
+		$query = sprintf(" INSERT INTO projetodespesas (id_projeto, id_funcionario, Data_despesa, id_tipodespesa, Num_doc, Qtd_despesa, Vlr_unit, Vlr_total, reembolso, usuario)
+		VALUES (%d, %d, '%s', %d, '%s', %d, '%s', '%s', '%s', '%s')", 
+			$this->id_projeto, $this->id_funcionario, $this->Data_despesa, $this->id_tipodespesa, $this->Num_doc, $this->Qtd_despesa, $this->Vlr_unit, $this->Vlr_total, $this->reembolso, $_SESSION['email']);	
 
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -221,14 +222,14 @@ class projetodespesa extends app
 						    A.Num_doc as documento,
 						    A.Aprovado AS status,
 						    A.Data_despesa AS data_despesa,
+						    A.reembolso,
 						    B.nome AS nomefuncionario,
 						    B.id AS id_funcionario,
 						    C.id AS id_projeto,
 						    D.nome AS nomepilar,
 						    F.codigo AS projeto1,
 						    E.nome AS projeto2,
-						    G.descricao AS tipodespesa,
-						    C.Cliente_reembolsa as Cliente_reembolsa
+						    G.descricao AS tipodespesa
 						FROM
 						    projetodespesas A
 						        INNER JOIN
@@ -274,6 +275,7 @@ class projetodespesa extends app
 			$row['data_despesa'] = date("d/m/Y", $timestamp);
 			$row['status'] = $this->formatStatusL($row['status']);
 			$row['quantidade'] = number_format($row['quantidade'], 0, '', '');
+			$row['reembolso'] = $this->formatReembolso($row['reembolso']);
 			if (empty($this->array['dados'][$row['id_funcionario']])) {
 				$this->array['dados'][$row['id_funcionario']]['valorTotal'] = 0;	
 			}
@@ -281,9 +283,16 @@ class projetodespesa extends app
 			$this->array['dados'][$row['id_funcionario']][] = $row;
 			$this->array['dados'][$row['id_funcionario']]['valorTotal'] = $row['Vlr_Total'] + $this->array['dados'][$row['id_funcionario']]['valorTotal'] ;	
 			$this->array['valorTotalGeral'] = $row['Vlr_Total'] + $this->array['valorTotalGeral'];
-			$this->array['Cliente_reembolsa'] = $row['Cliente_reembolsa'];
 		}
 		$this->array['valorTotalGeral'] = number_format($this->array['valorTotalGeral'], 2, ',', '.');
+	}
+
+	private function formatReembolso($reembolso)
+	{
+		if ($reembolso == 'S') {
+			return "SIM";
+		}
+		return "NÃO";
 	}
 
 	private function formatStatusL($status)
@@ -407,6 +416,7 @@ class projetodespesa extends app
 						    A.Num_doc,
 						    A.Qtd_despesa,
 						    A.Vlr_unit,
+						    A.reembolso,
 						    A.Vlr_total,
 						    A.Aprovado,
 						    B.nome AS NomeFuncionario,

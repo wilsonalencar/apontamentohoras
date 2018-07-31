@@ -20,7 +20,6 @@ class apontamento extends app
 	public $chamado;
 	public $data_busca_ini;
 	public $data_busca_fim;
-	public $Cliente_reembolsa;
 	public $Entrada_1;
 	public $Saida_1;
 	public $Entrada_2;
@@ -178,8 +177,7 @@ class apontamento extends app
 					    A.id_cliente,
 					    A.id_proposta,
 					    B.codigo as PropostaNome,
-					    C.nome as ClienteNome,
-						A.Cliente_reembolsa
+					    C.nome as ClienteNome
 					FROM
 					    projetos A
 					INNER JOIN 
@@ -198,8 +196,6 @@ class apontamento extends app
 		$this->id_proposta = $this->array['id_proposta'];
 		$this->cliente = $this->array['ClienteNome'];
 		$this->proposta = $this->array['PropostaNome'];
-		$this->Cliente_reembolsa = $this->array['Cliente_reembolsa'];
-
 
 		if ($this->id_perfilprofissional <= 0) {
 			$query = "SELECT 

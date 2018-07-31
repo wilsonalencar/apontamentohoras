@@ -30,11 +30,6 @@ function getDataProposta(id)
             $("#data_inicio").val(d.data.Data_inicio);
             $("#data_fim").val(d.data.Data_fim);
             $("#id_gerente").val(d.data.id_gerente);
-            if(d.data.Cliente_reembolsa == 'S'){
-                $("#cliente_s").attr('checked', 'checked');
-            }else {
-                $("cliente_n").attr('checked', 'checked');
-            }   
             $("#status").val(d.data.id_status);
             if (d.data.id != 0) {
                 document.getElementById('rowFatAnexos').style.display = 'block';

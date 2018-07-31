@@ -15,6 +15,7 @@ $projetodespesa->id_funcionario		= $projetodespesa->getRequest('id_funcionario',
 $projetodespesa->id_tipodespesa		= $projetodespesa->getRequest('id_tipodespesa', 0);
 $projetodespesa->Num_doc			= $projetodespesa->getRequest('Num_doc', '');
 $projetodespesa->Qtd_despesa		= $projetodespesa->getRequest('Qtd_despesa', 0);
+$projetodespesa->reembolso			= $projetodespesa->getRequest('reembolso', 0);
 $projetodespesa->Vlr_unit			= str_replace(',','.',str_replace('.','',$projetodespesa->getRequest('Vlr_unit', 0)));
 $projetodespesa->Vlr_total			= $projetodespesa->Vlr_unit * $projetodespesa->Qtd_despesa;
 

@@ -58,17 +58,6 @@
                                               <?php $cliente->montaSelect(); ?>
                                             </select>
                                         </div>
-                                        <div class="col s1"></div>
-                                         <div class="col s3">
-                                            <label for="Cliente_reembolsa">Cliente reembolsa ? </label><br>
-                                              <p>
-                                                <input class="with-gap" name="Cliente_reembolsa" value="S" type="radio" id="cliente_s"/>
-                                                <label for="cliente_s">Sim </label>
-                                              
-                                                <input class="with-gap" name="Cliente_reembolsa" value="N" checked type="radio" id="cliente_n" />
-                                                <label for="cliente_n">Não </label>
-                                              </p>
-                                        </div>
                                      </div>    
 
                                       

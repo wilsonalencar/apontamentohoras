@@ -16,7 +16,6 @@ class projeto extends app
 	public $ClienteNome;
 	public $data_busca_ini;
 	public $data_busca_fim;
-	public $Cliente_reembolsa;
 	public $status;
 	public $msg;
 	public $array;
@@ -72,9 +71,9 @@ class projeto extends app
 	{	
 		$conn = $this->getDB->mysqli_connection;
 
-		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, Cliente_reembolsa, id_gerente, usuario)
-		VALUES (%d, %d, %d, %s, %s, %d, '%s', %d, '%s')", 
-			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $this->id_gerente ,$_SESSION['email']);
+		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, id_gerente, usuario)
+		VALUES (%d, %d, %d, %s, %s, %d, %d, '%s')", 
+			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->id_gerente ,$_SESSION['email']);
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -88,8 +87,8 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, Cliente_reembolsa= '%s', usuario= '%s', id_gerente = %d, data_alteracao = NOW() WHERE id = %d", 
-			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->Cliente_reembolsa, $_SESSION['email'], $this->id_gerente ,$this->id);	
+		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, usuario= '%s', id_gerente = %d, data_alteracao = NOW() WHERE id = %d", 
+			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $_SESSION['email'], $this->id_gerente ,$this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -112,7 +111,6 @@ class projeto extends app
 						    A.Data_inicio,
 						    A.Data_fim,
 						    A.id_status,
-						    A.Cliente_reembolsa,
 						    B.nome AS ClienteNome,
 						    C.codigo AS PropostaNome,
 						    D.nome AS PilarNome
@@ -249,7 +247,7 @@ class projeto extends app
 		$fim = $mes_pesquisa_r.'-31';
 		
 		//Despesas do projeto 
-		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' AND B.Cliente_reembolsa = 'N'", $id_projeto, $ini, $fim);
+		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s'", $id_projeto, $ini, $fim);
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
@@ -334,7 +332,7 @@ class projeto extends app
 		$mes_pesquisa_r = ''.$mes_pesquisa_r.'-31';
 
 		//Despesas do projeto 
-		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' AND B.Cliente_reembolsa = 'N' ", $id_projeto, $mes_pesquisa_d, $mes_pesquisa_r);
+		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.id_projeto = %d AND A.Data_despesa between '%s' AND '%s' ", $id_projeto, $mes_pesquisa_d, $mes_pesquisa_r);
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
@@ -401,7 +399,7 @@ class projeto extends app
 		//Recursos
 
 		//Despesas do projeto 
-		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B on A.id_projeto = B.id WHERE A.id_projeto = %d AND B.Cliente_reembolsa = 'N' ", $id_projeto);
+		$query = sprintf("SELECT SUM(A.Vlr_total) as Vlr_total FROM projetodespesas A INNER JOIN projetos B on A.id_projeto = B.id WHERE A.id_projeto = %d ", $id_projeto);
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro no carregamento dos projetos";	
 			return false;	

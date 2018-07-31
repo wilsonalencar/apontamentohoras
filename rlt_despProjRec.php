@@ -75,6 +75,7 @@
                                 <th>Recurso</th>
                                 <th>Data da Despesa</th>
                                 <th>Tipo Despesa</th>
+                                <th>Reembolso ?</th>
                                 <th>Nº Doc</th>
                                 <th>Qtd.</th>
                                 <th>Valor Unitário</th>
@@ -89,13 +90,13 @@
                              foreach($projetodespesa->array['dados'] as $id_func => $dados) {
 
                                 $projetodados = $dados['projeto'];
-                                $clientereembolsa = $dados[0]['Cliente_reembolsa'];
                                     foreach ($dados as $key => $value_fim) { 
                                       if (is_array($value_fim)) { ?>
                                     <tr class="odd gradeX">
                                         <td><?php echo $value_fim['nomefuncionario']; ?></td>
                                         <td><?php echo $value_fim['data_despesa']; ?></td>
                                         <td><?php echo $value_fim['tipodespesa']; ?></td>
+                                        <td><?php echo $value_fim['reembolso']; ?></td>
                                         <td><?php echo $value_fim['documento']; ?></td>
                                         <td><?php echo $value_fim['quantidade']; ?></td>
                                         <td>R$ <?php echo number_format($value_fim['Vlr_Unit'], 2, ',', '.'); ?></td>
@@ -105,6 +106,7 @@
                                 <?php } }?>
 
                                   <tr> 
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -120,6 +122,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
                                     <th></th>
                                     <th></th>
                                     <th>&nbsp;</th> 
@@ -127,6 +130,7 @@
                                 
                                 <?php } ?>
                                 <tr> 
+                                  <td></td>
                                   <td></td>
                                   <td></td>
                                   <td></td>
@@ -207,23 +211,23 @@ $('#dataTables-example').dataTable({
              {
                 extend: 'excelHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
                 }
              },
              {
                 extend: 'csvHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
                 }
              },
              {
                 extend: 'pdfHtml5',
                 exportOptions: {
-                   columns: [0, 1, 2, 3, 4, 5, 6, 7]
+                   columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [90,60,20,30];
+                  doc.pageMargins = [30,60,20,30];
                   doc.defaultStyle.fontSize = 12;
                   doc.styles.tableHeader.fontSize = 13;
                       doc['header']=(function() {
@@ -237,7 +241,7 @@ $('#dataTables-example').dataTable({
                           {
                             alignment: 'right',
                             italics: true,
-                            text: '<?php echo $projetodados; ?> \n Cliente Reembolsa: <?php echo $clientereembolsa; ?><?php if ($datasbusca) { ?> - Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
+                            text: '<?php echo $projetodados; ?> <?php if ($datasbusca) { ?> - Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
                             fontSize: 12,
                             margin: [10,0]
                           },

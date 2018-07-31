@@ -196,7 +196,14 @@
                                                             <td><?php echo $row['Qtd_hrs_real']; ?></td>
                                                             <td><?php echo $row['observacao']; ?></td>
                                                             <td><?php echo $row['chamado']; ?></td>
-                                                            <td><?php echo $row['tipo_horas']; ?></td>
+                                                            <td><?php
+                                                            if ($row['tipo_horas'] == 'N') {
+                                                                echo "Normais";
+                                                            }
+                                                            if ($row['tipo_horas'] == 'B') {
+                                                                echo "Banco de Horas";
+                                                            }
+                                                            ?></td>
                                                             <td><?php echo $row['Aprovado']; ?></td>
                                                             <td style="width: 8%;">
                                                             <?php if ($row['Aprovado'] != 'Aprovado') { ?>
@@ -240,11 +247,13 @@
                                     <?php
                                         $projetodespesas->lista_Apont($periodo_busca, $id_funcionario);
                                     ?>
-                                        <table class="table table-hover">
+                                        <table class="table table-hover" style="font-size: 12px">
                                             <thead>
                                                 <tr style="background: #c0392b;">
                                                     <th align="left">
                                                         <p style="color : #fff;"> Despesas do projeto </p>
+                                                    </th>
+                                                    <th align="center">
                                                     </th>
                                                     <th align="center">
                                                     </th>
@@ -273,6 +282,7 @@
                                                     <th>Profissional</th>
                                                     <th>Despesa</th>
                                                     <th>Num. Doc.</th>
+                                                    <th>Reembolso?</th>
                                                     <th>Qtd.</th>
                                                     <th>Vlr. Unit.</th>
                                                     <th>Vlr. Total</th>
@@ -315,6 +325,13 @@
                                                     <td>
                                                         <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
                                                     </td>
+                                                    <td>
+                                                        <input type="radio" checked id="reembolso_s" name="reembolso" value="S"/>
+                                                        <label for="reembolso_s">Sim</label><br/>
+                                                        <input type="radio" id="reembolso_n" name="reembolso" value="N" />
+                                                        <label for="reembolso_n">Não</label>
+                                                    </td>
+
                                                     <td width="5%">
                                                         <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
                                                     </td>
@@ -342,6 +359,14 @@
                                                         <td><?php echo $row['NomeFuncionario']; ?></td>
                                                         <td><?php echo $row['NomeDespesa']; ?></td>
                                                         <td><?php echo $row['Num_doc']; ?></td>
+                                                        <td><?php
+                                                            if ($row['reembolso'] == 'S') {
+                                                                echo "Com Reembolso";
+                                                            }
+                                                            if ($row['reembolso'] == 'N') {
+                                                                echo "Sem Reembolso";
+                                                            }
+                                                            ?></td>
                                                         <td><?php echo $row['Qtd_despesa']; ?></td>
                                                         <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                         <td>R$<?php echo $row['Vlr_total']; ?></td>
