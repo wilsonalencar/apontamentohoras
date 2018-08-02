@@ -584,6 +584,7 @@ class apontamento extends app
 				    F.nome as funcionarioNome,
 				    A.Qtd_hrs_real as Qtd_hrs,
 				    A.observacao as atividade,
+					A.chamado,
 				    A.Aprovado as status
 				FROM 
 					projetohoras A 

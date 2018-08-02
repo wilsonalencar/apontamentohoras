@@ -81,6 +81,7 @@ $projetodespesa->lista_aprovacao();
                                             <th>Data</th>
                                             <th>Qtde. Horas</th>
                                             <th>Atividade</th>
+                                            <th>Chamado</th>
                                             <th>Motivo</th>
                                             <th>Aprovação</th>
                                         </tr>
@@ -95,6 +96,7 @@ $projetodespesa->lista_aprovacao();
                                                 <td><?php echo $row['Data_apontamento']; ?></td>
                                                 <td><?php echo $row['Qtd_hrs']; ?></td>
                                                 <td><?php echo $row['atividade']; ?></td>
+                                                <td><?php echo $row['chamado']; ?></td>
                                                 <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
                                                 <td>
                                                 <p>
