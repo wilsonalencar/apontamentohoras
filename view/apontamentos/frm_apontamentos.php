@@ -371,7 +371,12 @@
                                                         <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                         <td>R$<?php echo $row['Vlr_total']; ?></td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
-                                                        <td>
+                                                        <td style="width: 5%">
+                                                        <?php if ($row['Aprovado'] != 'Aprovado') { ?>
+                                                            <a onclick="MotivosModal('<?php echo $row['motivo'];?>')">
+                                                                <i class="material-icons">expand</i>
+                                                            </a>
+                                                        <?php } ?>
                                                         <?php if ($row['Aprovado'] != 'Aprovado' || $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                                             <i onclick="excluiDesp(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                         <?php } ?>

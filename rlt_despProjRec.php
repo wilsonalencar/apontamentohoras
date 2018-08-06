@@ -75,7 +75,7 @@
                                 <th>Recurso</th>
                                 <th>Data da Despesa</th>
                                 <th>Tipo Despesa</th>
-                                <th>Reembolso ?</th>
+                                <th>Reembolso</th>
                                 <th>Nº Doc</th>
                                 <th>Qtd.</th>
                                 <th>Valor Unitário</th>
@@ -241,7 +241,7 @@ $('#dataTables-example').dataTable({
                           {
                             alignment: 'right',
                             italics: true,
-                            text: '<?php echo $projetodados; ?> <?php if ($datasbusca) { ?> - Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
+                            text: '<?php echo $projetodados; ?> \n <?php if ($datasbusca) { ?> Período : <?php echo $dataIni; ?> à <?php echo $dataFim; ?> <?php } ?>',
                             fontSize: 12,
                             margin: [10,0]
                           },

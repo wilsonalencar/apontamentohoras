@@ -153,6 +153,7 @@ $projetodespesa->lista_aprovacao();
                                                 <th>Qtd. Despesa</th>
                                                 <th>Valor Unit.</th>
                                                 <th>Valor Total</th>
+                                                <th>Reembolso</th>
                                                 <th>Motivo</th>
                                                 <th>Aprovação</th>
                                             </tr>
@@ -169,6 +170,7 @@ $projetodespesa->lista_aprovacao();
                                                     <td><?php echo $row['Qtd_despesa']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_total']; ?></td>
+                                                    <td><?php echo $row['reembolso']; ?></td>
                                                     <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
                                                     <td>
                                                     <p>
