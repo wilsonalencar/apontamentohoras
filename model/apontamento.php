@@ -139,7 +139,7 @@ class apontamento extends app
 					FROM
 					    projetohoras
 					WHERE
-					    data_apontamento = '".$this->Data_apontamento."' AND id_funcionario = ".$this->id_funcionario." AND id_projeto = ".$this->id_projeto."";
+					    data_apontamento = '".$this->Data_apontamento."' AND id_funcionario = ".$this->id_funcionario."";
 	    if ($id) {
 	    	$query .= ' AND id <>'. $id;
 	    }
