@@ -565,7 +565,7 @@ function Calcula()
             diff = hour + ":" + min;
 
             $("#Qtd_hrs_real").val(diff);
-            $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
+            $("#Qtd_hrs_real_exibe").attr('placeholder',timeToDecimal(diff));
             }
         }
 
@@ -578,11 +578,7 @@ function Calcula()
             $("#Saida_2").val(time_saida);
         }
 
-        if (time_atual == '') {
-            time_atual = '00:00';
-        }
-
-        if (time_entrada != "" && time_saida != "") {
+        if (time_entrada != "" && time_saida != "" && time_atual) {
             s = time_entrada.split(':');
             e = time_saida.split(':');
             f = time_atual.split(':');
@@ -605,9 +601,16 @@ function Calcula()
 
             diff = hour + ":" + min;
             $("#Qtd_hrs_real").val(diff);
-            $("#Qtd_hrs_real_exibe").attr('placeholder',diff);
+            $("#Qtd_hrs_real_exibe").attr('placeholder',timeToDecimal(diff));
         }
 }
+
+function timeToDecimal(t) {
+    var arr = t.split(':');
+    var dec = parseInt((arr[1]/6)*10, 10);
+
+    return parseFloat(parseInt(arr[0], 10) + '.' + (dec<10?'0':'') + dec);
+}   
 
 function Calcula_e()
 {
@@ -636,7 +639,7 @@ function Calcula_e()
             diff = hour + ":" + min;
 
             $("#Qtd_hrs_real_e").val(diff);
-            $("#Qtd_hrs_real_exibe_e").attr('placeholder',diff);
+            $("#Qtd_hrs_real_exibe_e").attr('placeholder',timeToDecimal(diff));
             }
         }
 
@@ -671,7 +674,7 @@ function Calcula_e()
 
             diff = hour + ":" + min;
             $("#Qtd_hrs_real_e").val(diff);
-            $("#Qtd_hrs_real_exibe_e").attr('placeholder',diff);
+            $("#Qtd_hrs_real_exibe_e").attr('placeholder',timeToDecimal(diff));
         }
 }
 
