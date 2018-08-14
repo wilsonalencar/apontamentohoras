@@ -259,7 +259,33 @@ class apontamento extends app
 
 	public function editApontamento()
 	{
-		$this->Qtd_hrs_real = str_replace(':', '.', $this->Qtd_hrs_real);
+		$var = explode(':', $this->Qtd_hrs_real);
+		$this->Qtd_hrs_real = '';
+		foreach ($var as $value) {
+			$this->Qtd_hrs_real .= '.'.$value;
+		}
+		$this->Qtd_hrs_real = substr($this->Qtd_hrs_real, 1);
+		
+		$horaReal = explode('.', $this->Qtd_hrs_real);
+		if ($horaReal[1] > 0) {
+			$horaReal[1] = $horaReal[1]/60;
+		}
+		$horareal2 = explode('.', $horaReal[1]);
+		if (substr($this->Saida_1, -2) == '59' || substr($this->Saida_2, -2) == '59') {
+		$tam = strlen($horareal2[1]);
+		$tam_2 = strlen($horareal2[1])+1;
+		$final = substr_replace($horareal2[1], ".", $tam_2-$tam).substr($horareal2[1], $tam_2-$tam);
+		$horareal2[1] = round($final);
+		}
+
+		if ($horareal2[1] == 10) {
+			$horaReal[0] = $horaReal[0]+1;
+			$horareal2[1] = 0;
+		} 
+
+		$this->Qtd_hrs_real = $horaReal[0].'.'.substr($horareal2[1], 0,1);
+
+
 		$conn = $this->getDB->mysqli_connection;
 		$query = "UPDATE projetohoras SET Qtd_hrs_real = ".$this->Qtd_hrs_real.", observacao = '".$this->observacao."', Entrada_1 = '".$this->Entrada_1."', Saida_1 = '".$this->Saida_1."', Entrada_2 = ".$this->quote($this->Entrada_2, true, true).", Saida_2 = ".$this->quote($this->Saida_2, true, true).", chamado = ".$this->quote($this->chamado, true, true).", tipo_horas = '".$this->tipo_horas."', Aprovado = 'N', data_apontamento = '".$this->Data_apontamento."', id_projeto = ".$this->id_projeto." where id = ".$this->id."";
 		

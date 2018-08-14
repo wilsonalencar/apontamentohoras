@@ -577,7 +577,12 @@ function Calcula()
             time_saida = '23:59';
             $("#Saida_2").val(time_saida);
         }
-        if (time_entrada != "" && time_saida != "" && time_atual) {
+
+        if (time_atual == '') {
+            time_atual = '00:00';
+        }
+
+        if (time_entrada != "" && time_saida != "") {
             s = time_entrada.split(':');
             e = time_saida.split(':');
             f = time_atual.split(':');
