@@ -143,7 +143,7 @@ class apontamento extends app
 	    if ($id) {
 	    	$query .= ' AND id <>'. $id;
 	    }
-
+	    
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro na verificação de duplicidade de lançamento de horas.";	
 			return false;	
@@ -155,18 +155,19 @@ class apontamento extends app
 		if (!empty($horarios)) {
 			foreach ($horarios as $key => $val) {
 				if (is_array($val)) {
-					if ((strtotime($entrada1) >= strtotime($val['Entrada_1']) && strtotime($entrada1) <= strtotime($val['Saida_1'])) || (strtotime($entrada1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Saida_1'])) || (strtotime($entrada1) >= strtotime($val['Entrada_2']) && strtotime($entrada1) <= strtotime($val['Saida_2'])) || (strtotime($entrada1) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])) || (strtotime($saida1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Saida_1'])) || (strtotime($saida1) <= strtotime($val['Entrada_2']) && strtotime($saida1) >= strtotime($val['Saida_2']))) {
+					if ((strtotime($entrada1) >= strtotime($val['Entrada_1']) && strtotime($entrada1) <= strtotime($val['Saida_1'])) ||(strtotime($entrada1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Entrada_1'])) || (strtotime($entrada1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Saida_1'])) || (strtotime($entrada1) >= strtotime($val['Entrada_2']) && strtotime($entrada1) <= strtotime($val['Saida_2'])) || (strtotime($entrada1) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])) || (strtotime($saida1) <= strtotime($val['Entrada_1']) && strtotime($saida1) >= strtotime($val['Saida_1'])) || (strtotime($saida1) <= strtotime($val['Entrada_2']) && strtotime($saida1) >= strtotime($val['Saida_2']))) {
 						$this->msg = "Período já foi lançado, favor verificar.";
 						return false; 
 					}
 
-					if (!empty($entrada2) && !empty($saida2) && ((strtotime($entrada2) >= strtotime($val['Entrada_1']) && strtotime($entrada2) <= strtotime($val['Saida_1'])) || (strtotime($entrada2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Saida_1'])) || (strtotime($entrada2) >= strtotime($val['Entrada_2']) && strtotime($entrada2) <= strtotime($val['Saida_2'])) || (strtotime($entrada2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])) || (strtotime($saida2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Saida_1'])) || (strtotime($saida2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])))) {
+					if (!empty($entrada2) && !empty($saida2) && ((strtotime($entrada2) >= strtotime($val['Entrada_1']) && strtotime($entrada2) <= strtotime($val['Saida_1'])) || (strtotime($entrada2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Entrada_1'])) || (strtotime($entrada2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Entrada_2'])) || (strtotime($entrada1) <= strtotime($val['Entrada_2']) && strtotime($saida1) >= strtotime($val['Entrada_2'])) || (strtotime($entrada2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Saida_1'])) || (strtotime($entrada2) >= strtotime($val['Entrada_2']) && strtotime($entrada2) <= strtotime($val['Saida_2'])) || (strtotime($entrada2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])) || (strtotime($saida2) <= strtotime($val['Entrada_1']) && strtotime($saida2) >= strtotime($val['Saida_1'])) || (strtotime($saida2) <= strtotime($val['Entrada_2']) && strtotime($saida2) >= strtotime($val['Saida_2'])))) {
 						$this->msg = "Período já foi lançado, favor verificar.";
 						return false; 
 					}
 				}
 			}
 		}
+		
 		return true;
 	}
 
