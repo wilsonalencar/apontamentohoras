@@ -103,7 +103,7 @@ class projetodespesa extends app
 		$val = '';
 
 		foreach ($array as $key => $value) {
-			if ($value != funcionalidadeConst::PENDENTE) {
+			if ($value['aprovado'] != funcionalidadeConst::PENDENTE) {
 				if ($value['aprovado'] != funcionalidadeConst::REJEITADO || !empty($value['motivo'])) {
 					$val .= "'";
 					$val .= $key."',";
@@ -111,6 +111,12 @@ class projetodespesa extends app
 			}
 		}
 		$val = substr($val, 0, -1);
+
+		if (empty($val)) {
+			$this->msg = "É necessário preencher o(s) motivo(s) para fazer Rejeição em Grupo";	
+			return false;
+		}
+		
 		$conn = $this->getDB->mysqli_connection;
 		$query = "SELECT 
 					A.id,
