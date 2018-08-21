@@ -479,7 +479,7 @@ class apontamento extends app
 		$val = substr($val, 0, -1);
 		
 		if (empty($val)) {
-			$this->msg = "É necessário preencher o(s) motivo(s) para fazer Rejeição em Grupo";	
+			$this->msg = "É necessário preencher o(s) motivo(s) para fazer a Rejeição de um ou mais apontamentos.";	
 			return false;
 		}
 
