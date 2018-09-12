@@ -10,6 +10,7 @@ class projeto extends app
 	public $id_proposta;
 	public $id_gerente;
 	public $id_pilar;
+	public $tipofarol;
 	public $data_inicio;
 	public $data_fim;
 	public $PilarNome;
@@ -530,6 +531,14 @@ class projeto extends app
 
 		if (!empty($this->statusID)) {
 			$query .= " WHERE A.id_status = ".$this->statusID;
+		}
+
+		if (!empty($this->id_cliente)) {
+			$query .= " WHERE A.id_cliente = ".$this->id_cliente;
+		}
+		
+		if (!empty($this->id_pilar)) {
+			$query .= " WHERE A.id_pilar = ".$this->id_pilar;
 		}
 
 		$query .= " GROUP BY A.id;";

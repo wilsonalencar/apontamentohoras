@@ -1,14 +1,28 @@
 <?php
     require_once('model/projeto.php');
+    require_once('model/pilar.php');
+    require_once('model/cliente.php');
     require_once('model/statusProj.php');
     
     $statusProj       = new statusProj;
-    $projeto = new projeto;
+    $projeto          = new projeto;
+    $cliente          = new cliente;
+    $pilar            = new pilar;
+
+
     $msg    =  $projeto->getRequest('msg', ''); 
     $success = $projeto->getRequest('success', ''); 
+
     $projeto->id = $projeto->getRequest('id', 0);
+
     $farol = $projeto->getRequest('farol', 1);
+
+    $projeto->farol = $projeto->getRequest('farol', 1);
+    $projeto->tipofarol = $projeto->getRequest('tipofarol', 1);
     $projeto->statusID = $projeto->getRequest('statusID', 0);
+    $projeto->id_cliente = $projeto->getRequest('id_cliente', 0);
+    $projeto->id_pilar = $projeto->getRequest('id_pilar', 0);
+
     $projeto->relatorioAcompanhamento();
     require_once(app::path.'view/header.php');
 ?>
@@ -176,7 +190,7 @@
                                       <?php if ($farol == 1 || $farol == 4) { ?>
                                         <td><div class="circulo" style="background:<?php echo $corE;?>;"></div></td>
                                       <?php } ?>
-                                      <td align="center"><a href="<?php echo app::dominio; ?>projetos.php?id=<?php echo $dados['id']?>&view=true"><i class="fa fa-expand"></i></a></td>
+                                      <td align="center"><a href="<?php echo app::dominio; ?>projetos.php?id=<?php echo $dados['id']?>&view=true&statusID=<?php echo $projeto->statusID?>&statusID=<?php echo $projeto->id_pilar?>&id_cliente=<?php echo $projeto->id_cliente?>&farol=<?php echo $projeto->farol?>"><i class="fa fa-expand"></i></a></td>
                                       <?php if (!empty($dados['equipe'])) {
                                         $dados['equipe'] = str_replace(',', '-', $dados['equipe']);
                                       }  ?>
@@ -197,6 +211,10 @@
 
                 <div class="modal-content">
                     <p class="equipe" id="equipe"></p> 
+                </div>   
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button> 
                 </div>    
             </div>
 
@@ -227,6 +245,7 @@
                 <div class="modal-footer">
                     <input type="hidden" name="id_projeto" id="id_projeto">
                     <input type="hidden" name="action" value="1">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
                     <input type="submit" name="Inserir" class="btn btn-success">
                 </div>
                 </form>
@@ -241,12 +260,35 @@
                 <form class="col s12" action="acompanhamento_projetos.php" method="post" name="projeto">
                     <div class="modal-body">
                       <div class="row">
-                        <div class="col s4">
+                        <div class="col s3">
                         <label for="Status">Status</label>
                           <select id="status" name="statusID" class="form-control input-sm">
                             <option value="">Todos</option>
                                 <?php $statusProj->montaSelect(); ?>
                           </select>
+                        </div>
+                        <div class="col s3">
+                        <label for="tipofarol">Tipo do Farol</label>
+                          <select id="tipofarol" name="tipofarol" class="form-control input-sm">
+                            <option value="1">Todos</option>
+                            <option value="2">Vermelho</option>
+                            <option value="3">Amarelo</option>
+                            <option value="4">Verde</option>
+                          </select>
+                        </div>
+                        <div class="col s3">
+                        <label for="id_cliente">Cliente</label>
+                        <select id="id_cliente" name="id_cliente" class="form-control input-sm">
+                          <option value="">Cliente</option>
+                          <?php $cliente->montaSelect(); ?>
+                        </select>
+                        </div>
+                        <div class="col s3">
+                        <label for="id_pilar">Pilar</label>
+                        <select id="id_pilar" name="id_pilar" class="form-control input-sm">
+                          <option value="">Pilar</option>
+                          <?php $pilar->montaSelect(); ?>
+                        </select>
                         </div>
                       </div>
                       <div class="row" style="display: block">
@@ -353,8 +395,8 @@ $('#dataTables-example').dataTable({
             "url": "//cdn.datatables.net/plug-ins/1.10.9/i18n/Portuguese-Brasil.json"
         },
         "bSort": false,
-        paging: false,
-        dom: '<B>',
+        paging: true,
+        dom: '<"centerBtn"B>rtip',
         buttons: [
              {
                 extend: 'excelHtml5',
