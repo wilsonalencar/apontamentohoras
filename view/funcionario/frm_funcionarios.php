@@ -41,21 +41,22 @@
                         }
                      ?> 
 
-                    <form class="col s12" action="funcionarios.php" method="post" name="cad_funcionarios" id="cad_funcionarios" enctype="multipart/form-data">
+                    <form action="funcionarios.php" method="post" name="cad_funcionarios" id="cad_funcionarios" enctype="multipart/form-data">
+                    <div class="col s8">
                       <div class="row">
-                        <div class="col s8">
+                        <div class="col s10">
                         <label for="nome">Nome</label>
                           <input id="nome" type="text" name="nome" maxlength="255" class="validate" value="<?php echo $funcionario->nome; ?>">
                         </div>
                       </div>
 
                       <div class="row">
-                        <div class="col s4">
+                        <div class="col s5">
                         <label for="apelido">Apelido</label>
                           <input type="text" id="apelido" name="apelido" class="validate" maxlength="20" value="<?php echo $funcionario->apelido; ?>">
                         </div>
 
-                        <div class="col s4">
+                        <div class="col s5">
                         <label for="data_nascimento">Data de nascimento</label>
                           <input type="date" id="data_nascimento" name="data_nascimento" class="validate" maxlength="8" value="<?php echo $funcionario->data_nascimento; ?>">
                         </div>
@@ -65,7 +66,7 @@
                       
                       <div class="row">
                         
-                        <div class="col s2">
+                        <div class="col s4">
                             <label for="id_tipocontratacao">Tipo de Contratações</label>
                             <select id="id_tipocontratacao" name="id_tipocontratacao" class="form-control input-sm">
                               <option value="">Selecione</option>
@@ -73,7 +74,7 @@
                             </select>
                         </div>
 
-                        <div class="col s3">
+                        <div class="col s6">
                             <label for="id_perfilprofissional">Perfil Profissional</label>
                             <select id="id_perfilprofissional" name="id_perfilprofissional" class="form-control input-sm">
                               <option value="">Selecione</option>
@@ -81,7 +82,7 @@
                             </select> 
                         </div>
 
-                        <div class="col s3">
+                        <div class="col s6">
                             <label for="id_responsabilidade">Responsabilidade</label>
                             <select id="id_responsabilidade" name="id_responsabilidade" class="form-control input-sm">
                               <option value="">Selecione</option>
@@ -90,7 +91,7 @@
                         </div>
                       </div>
                       <div class="row" id="divRazaoSocial" style="display:none">
-                        <div class="col s4">
+                        <div class="col s6">
                           <label for="razao_social">Razão Social</label>
                           <input type="text" id="razao_social" name="razao_social" maxlength="255" value="<?php echo $funcionario->razao_social; ?>" >
                         </div>
@@ -98,7 +99,7 @@
 
 
                       <div class="row">
-                        <div class="col s4">
+                        <div class="col s6">
                         <label for="rg">RG</label>
                           <input type="text" id="rg" name="rg" class="validate" maxlength="12" value="<?php echo $funcionario->rg; ?>">
                         </div>
@@ -110,7 +111,7 @@
                       </div>
 
                       <div class="row">
-                        <div class="col s6">
+                        <div class="col s8">
                         <label for="endereco">Endereço</label>
                           <input type="text" id="endereco" name="endereco" class="validate" maxlength="255" value="<?php echo $funcionario->endereco; ?>">
                         </div>
@@ -122,14 +123,14 @@
                       </div>
 
                       <div class="row">
-                        <div class="col s8">
+                        <div class="col s10">
                         <label for="complemento">Complemento</label>
                           <input type="text" id="complemento" name="complemento" class="validate" maxlength="255" value="<?php echo $funcionario->complemento; ?>">
                         </div>
                       </div>
 
                       <div class="row">
-                        <div class="col s4">
+                        <div class="col s6">
                             <label for="cod_municipio">Municipio</label>
                             <select id="cod_municipio" name="cod_municipio" class="form-control input-sm">
                               <option value="" disabled selected>Cidade</option>
@@ -139,7 +140,7 @@
                       </div>
 
                       <div class="row">
-                        <div class="col s4">
+                        <div class="col s6">
                         <label for="cep">CEP</label>
                           <input type="text" id="cep" onkeypress="mask(this,val_cep)" name="cep" class="validate" maxlength="9" value="<?php echo $funcionario->cep; ?>">
                         </div>
@@ -150,21 +151,21 @@
                       </div>
 
                       <div class="row">
-                        <div class="col s8">
+                        <div class="col s10">
                         <label for="email">Email</label>
                           <input type="text" id="email" name="email" class="validate" maxlength="255" value="<?php echo $funcionario->email; ?>">
                         </div>
                       </div>
 
                       <div class="row">
-                        <div class="col s8">
+                        <div class="col s10">
                         <label for="emailParticular">Email Particular</label>
                           <input type="text" id="emailParticular" name="emailParticular" class="validate" maxlength="255" value="<?php echo $funcionario->emailParticular; ?>">
                         </div>
                       </div>
 
                       <div class="row">                        
-                        <div class="col s3">
+                        <div class="col s5">
                         <label for="Status">Status</label>
                           <select id="status" name="status" class="form-control input-sm">
                             <option value="<?php echo $funcionario::STATUS_SISTEMA_ATIVO ?>">Ativo</option>
@@ -175,7 +176,7 @@
                       </div>
 
                       <div class="row">                        
-                        <div class="col s3">
+                        <div class="col s5">
                            <?php 
                               if (!empty($funcionario->id)) { 
 
@@ -212,7 +213,30 @@
                             <input type="submit" name="salvar" value="salvar" id="btnSubmit" class="waves-effect waves-light btn">
                         </div>
                       </div>
+                    </div>
+                      <div class="col s3">
+                         <?php 
+                            if (!empty($funcionario->id)) { 
+
+                               $pasta = app::path.'files/foto_funcionario';
+                               if (is_dir($pasta)) {
+                                  $diretorio = dir($pasta);
+                                  while($arquivo = $diretorio -> read()){
+                                     if ($funcionario->id == preg_replace("/[^0-9]/", "", $arquivo)) {
+                                        echo "<img src='".app::dominio.'files/foto_funcionario/'.$arquivo."' alt='Foto' height='100%' width='100%'>";
+                                        echo "<input type='hidden' name='foto' id='foto' value='".$pasta.'/'.$arquivo."'>";
+                                        echo "<input type='hidden' name='excluir_foto' id='excluir_foto' value='0'>";
+                                        echo " <br /> <br /> <a href='#' onclick='excluir_foto();'>Excluir </a>";
+                                     }
+                                  }
+                               }
+                            } 
+                         ?><br>
+                         <label for="Status">Foto do Funcionário</label>
+                        <input type="file" id="foto" name="foto" class="validate">
+                      </div>
                     </form>
+                        
 
                 	<div class="clearBoth"></div>
                   </div>

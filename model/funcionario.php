@@ -29,6 +29,7 @@ class funcionario extends app
 	public $id_responsabilidade;
 	public $insertID;
 	public $fileCV = false;
+	public $fileFOTO = false;
 	const PJ = 3;
 
 
@@ -326,6 +327,18 @@ class funcionario extends app
 			}
 		}
 
+		if (!empty($this->fileFOTO)) {		
+			$an = new fotos;
+			$an->file = $this->fileFOTO;
+			$an->path = 'foto_funcionario';
+			$an->name = $conn->insert_id;
+
+			if (!$an->insert()) {
+				$this->msg = 'Ocorreu um erro ao atualizar funcionario '. $an->msg;
+				return false;
+			}
+		}
+
 		$conn->commit();
 
 		$this->msg = "Registro inserido com sucesso!";
@@ -347,6 +360,7 @@ class funcionario extends app
 		$query = sprintf("SELECT 
 							A.id as id,
 							A.Qtd_hrs_real as qtd_hrs,
+							A.tipo_horas as tipo_horas,
 						    A.observacao as atividade,
 						    A.Aprovado as status,
 						    A.Data_apontamento as data_apont,
@@ -472,7 +486,20 @@ class funcionario extends app
 				return false;
 			}
 		}
-		
+
+		if (!empty($this->fileFOTO)) {
+
+			$an = new fotos;
+			$an->file = $this->fileFOTO;
+			$an->path = 'foto_funcionario';
+			$an->name = $this->id;
+
+			if (!$an->insert()) {
+				$this->msg = 'Ocorreu um erro ao atualizar funcionario '. $an->msg;
+				return false;
+			}
+		}
+
 		$conn->commit();
 		$this->msg = "Registro atualizado com sucesso!";
 		return true;

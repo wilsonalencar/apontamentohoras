@@ -14,6 +14,16 @@ function excluir_anexo()
    document.getElementById('cad_funcionarios').submit();
 }
 
+function excluir_foto()
+{
+  if (!confirm('Tem certeza que deseja excluir essa foto?')) {
+    return false;
+  }
+
+   $("#excluir_foto").val(1);
+   document.getElementById('cad_funcionarios').submit();
+}
+
 function getDataFuncionario(id)
 {
    $.ajax({

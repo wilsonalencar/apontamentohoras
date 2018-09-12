@@ -39,6 +39,7 @@
                                 <th>Atividade</th>
                                 <th>Data</th>
                                 <th>Horas</th>
+                                <th>T</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -57,6 +58,7 @@
                                         <td><?php echo $value_fim['atividade']; ?></td>
                                         <td><?php echo $value_fim['data_apont']; ?></td>
                                         <td><?php echo str_replace('.', ',', $value_fim['qtd_hrs']); ?></td>
+                                        <td><?php echo $value_fim['tipo_horas']; ?></td>
                                         <td><?php echo $value_fim['status']; ?></td>
                                     </tr>
 
@@ -70,8 +72,10 @@
                                     <th>Total horas:</th>
                                     <th><?php echo str_replace('.', ',', $dados['valorTotal']); ?></th> 
                                     <td></td>
+                                    <td></td>
                                   </tr>
                                   <tr>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -88,6 +92,7 @@
                                   <td></td>
                                   <th>Total Geral :</th>
                                   <th><?php echo $funcionario->array['valorTotalGeral']; ?></th> 
+                                  <td></td>
                                   <td></td>
                                 </tr>
                                 <?php } ?>
@@ -157,19 +162,19 @@ $('#dataTables-example').dataTable({
              {
                 extend: 'excelHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
                 }
              },
              {
                 extend: 'csvHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
                 }
              },
              {
                 extend: 'pdfHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7]
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {

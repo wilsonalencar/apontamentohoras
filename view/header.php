@@ -12,8 +12,6 @@
     <link href="<?php echo app::dominio; ?>view/assets/css/custom-styles.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 
-    
-
     <link rel="stylesheet" href="<?php echo app::dominio; ?>view/assets/js/Lightweight-Chart/cssCharts.css"> 
 
     <!-- DataTables CSS -->
@@ -338,6 +336,7 @@
                         <li>
                             <a href="#" class="active-menu"><i class="fa fa-file-text"></i> Projetos<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                            <?php if ($_SESSION['id_perfilusuario'] != $funcConst::PERFIL_GERENTEPROJETOSADM) { ?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>projetos.php" >Adicionar</a>
                                 </li>
@@ -351,7 +350,7 @@
                                     <li>
                                         <a class="active-menu" href="<?php echo app::dominio; ?>projetoapontamentos.php" >Liberar Apontamento</a>
                                     </li>
-                                <?php } ?>        
+                                <?php } }?> 
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>acompanhamento_projetos.php" >Acompanhamento</a>
                                 </li>

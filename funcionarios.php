@@ -1,6 +1,7 @@
 <?php
 require_once('model/funcionario.php');
 require_once('model/anexo.php');
+require_once('model/fotos.php');
 require_once('model/contratacao.php');
 require_once('model/perfilprof.php');
 require_once('model/municipio.php');
@@ -40,6 +41,7 @@ $funcionario->status  				= $funcionario->getRequest('status', 'A');
 $funcionario->emailParticular 		= $funcionario->getRequest('emailParticular', '');
 
 $excluirAnexo 						= $funcionario->getRequest('excluir_anexo');
+$excluirFoto 						= $funcionario->getRequest('excluir_foto');
 
 $msg 								= $funcionario->getRequest('msg', '');	
 $success 							= $funcionario->getRequest('success', '');	
@@ -47,10 +49,16 @@ $action 							= $funcionario->getRequest('action', 0);
 
 if ($action == SAVE) {
 
-	if ((int)$excluirAnexo) {
-
-		if (file_exists($_POST['file'])) {
-			unlink($_POST['file']);
+	if ((int)$excluirAnexo || (int)$excluirFoto) {
+		
+		if ((int)$excluirFoto) {
+			if (file_exists($_POST['foto'])) {
+				unlink($_POST['foto']);
+			}
+		} else {
+			if (file_exists($_POST['file'])) {
+				unlink($_POST['file']);
+			}
 		}
 		
 		$msg = 'Registro atualizado';
@@ -60,6 +68,10 @@ if ($action == SAVE) {
 
 		if ($_FILES['curriculo']['size'] > 0) {
 			$funcionario->fileCV = $_FILES['curriculo'];
+		}
+
+		if ($_FILES['foto']['size'] > 0) {
+			$funcionario->fileFOTO = $_FILES['foto'];
 		}
 
 		$success = $funcionario->save();

@@ -65,8 +65,12 @@ class projetorecurso extends app
 	private function checkExiste()
 	{
 		$conn = $this->getDB->mysqli_connection;		
-		$query = sprintf("SELECT id FROM projetorecursos WHERE id_projeto = %d AND id_perfilprofissional = %d AND mes_alocacao= '%s'", $this->id_projeto, $this->id_perfilprofissional, $this->mes_alocacao);	
-			
+		$query = "SELECT id FROM projetorecursos WHERE id_projeto = ".$this->id_projeto." AND id_perfilprofissional = ".$this->id_perfilprofissional." AND mes_alocacao= '".$this->mes_alocacao."'";
+
+		if (!empty($this->id)) {
+			$query .= ' AND id <> '.$this->id;
+		}
+
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro durante a verificação da disponibilidade do recurso.";
 			return false;	
@@ -106,38 +110,18 @@ class projetorecurso extends app
 		return true;
 	}
 
-	// #FALTA
-	// public function update()
-	// {
-	// 	$conn = $this->getDB->mysqli_connection;
-	// 	$query = sprintf(" UPDATE projetoprevisaofat SET nome = '%s', status ='%s', usuario = %d, data_alteracao = NOW() WHERE id = %d", 
-	// 		$this->nome, $this->status, $_SESSION['usuarioID'], $this->id);	
-	
-	// 	if (!$conn->query($query)) {
-	// 		$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-	// 		return false;	
-	// 	}
+	public function update()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = "UPDATE projetorecursos SET id_perfilprofissional = ".$this->id_perfilprofissional.", Vlr_taxa_venda = '".$this->Vlr_taxa_venda."', mes_alocacao = '".$this->mes_alocacao."', Qtd_hrs_estimada = ".$this->Qtd_hrs_estimada.", Vlr_taxa_compra = '".$this->Vlr_taxa_compra."', usuario = '".$_SESSION['email']."' where id = ".$this->id."";
 
-	// 	$this->msg = "Registros atualizados com sucesso!";
-	// 	return true;
-	// }
-
-	// #FALTA
-	// public function get($id)
-	// {
-	// 	if (!$id) {
-	// 		return false;
-	// 	}
-	// 	$conn = $this->getDB->mysqli_connection;
-	// 	$query = sprintf("SELECT id, codigo, nome, status, usuario FROM projetoprevisaofat WHERE id =  %d ", $id);
-	// 	if (!$result = $conn->query($query)) {
-	// 		$this->msg = "Ocorreu um erro no carregamento do proposta";	
-	// 		return false;	
-	// 	}
-	// 	$this->array = $result->fetch_array(MYSQLI_ASSOC);
-	// 	$this->msg = 'Registro carregado com sucesso';
-	// 	return true;
-	// }
+		if (!$conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		$this->msg = "Registro atualizado com sucesso!";
+		return true;
+	}
 
 	public function lista($id_projeto)
 	{

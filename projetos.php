@@ -37,6 +37,7 @@ $projeto->id_pilar  			= $projeto->getRequest('id_pilar', 0);
 $projeto->data_inicio  			= $projeto->getRequest('data_inicio', 0);
 $projeto->data_fim  			= $projeto->getRequest('data_fim', '');
 $projeto->status		  		= $projeto->getRequest('status', 1);
+$projeto->listar		  		= $projeto->getRequest('listar', 'N');
 $financeiro 					= $projeto->calcFinanceiro($projeto->getRequest('id'));
 $precificacao 					= $projeto->calcPrecificacao($projeto->getRequest('id'));
 

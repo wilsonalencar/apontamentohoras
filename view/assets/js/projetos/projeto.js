@@ -26,6 +26,13 @@ function getDataProposta(id)
             $(".proposta").html(d.data.PropostaNome);
             $(".pilar").html(d.data.PilarNome);
             $("#id_proposta").val(d.data.id_proposta);
+
+            if (d.data.listar == 'S') {
+                $("#listar_s").prop('checked', 'checked');
+            } else {
+                $("#listar_n").prop('checked', 'checked');
+            }
+            
             $("#id_pilar").val(d.data.id_pilar);
             $("#data_inicio").val(d.data.Data_inicio);
             $("#data_fim").val(d.data.Data_fim);

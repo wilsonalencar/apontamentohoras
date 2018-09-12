@@ -42,10 +42,10 @@
 
                     <form class="col s12" action="liberar_projetos.php" method="post" name="cad_time">
                       <div class="row">
-                        <div class="col s3">
+                        <div class="col s6" style="font-size: 12px">
                        <label for="id_projeto">Projetos : </label>
-                          <select id="id_projeto" onchange="addParam()" name="id_projeto" class="form-control input-sm">
-                            <option value="">Projetos</option>
+                          <select id="id_projeto" onchange="addParam()" name="id_projeto" class="form-control input-sm select2class">
+                            <option value="">Selecionar Projeto</option>
                               <?php $projeto->montaSelect($liberaprojetos->id_projeto); ?>
                           </select>
                         </div>
@@ -106,7 +106,9 @@
 <?php
   require_once(app::path.'/view/footer.php');
 ?>
+
 <script type="text/javascript">
+
 function addParam(){
     var id_projeto = document.getElementById("id_projeto").value;
 

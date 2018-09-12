@@ -71,6 +71,19 @@ class projetoprevisaofat extends app
 		return true;
 	}
 
+	public function update()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = " UPDATE projetoprevisaofat SET mes_previsao_fat = '".$this->mes_previsao_fat."', Vlr_parcela_cimp = '".$this->Vlr_parcela_cimp."', Vlr_parcela_simp = '".$this->Vlr_parcela_simp."', usuario = '".$_SESSION['email']."' where id = ".$this->id."";
+
+		if (!$conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		$this->msg = "Registro Atualizado com sucesso!";
+		return true;
+	}
+
 
 	public function getParcela($id)
 	{

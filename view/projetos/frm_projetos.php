@@ -13,6 +13,9 @@
           </ol> 
                   
       </div>
+
+    <a href="#" data-toggle="modal" style="display:none;" id="openmodal" data-target="#Modal"></a>
+    <a href="#" data-toggle="modal" style="display:none;" id="openmodaledition" data-target="#ModalRecursosEdicao"></a>
     
          <div id="page-inner"> 
          <div class="row">
@@ -49,7 +52,6 @@
                             
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="projetos.php" method="post" name="cad_projetos" id="cad_projetos">
-
                                       <div class="row">
                                         <div class="col s6">
                                             <label for="id_cliente">Cliente</label>
@@ -57,6 +59,13 @@
                                               <option value="">Cliente</option>
                                               <?php $cliente->montaSelect(); ?>
                                             </select>
+                                        </div>
+                                         <div class="col s6">
+                                            <label>Listar ?</label><br>
+                                            <input type="radio" id="listar_s" name="listar" value="S"/>
+                                            <label for="listar_s">Sim</label>
+                                            <input type="radio" checked id="listar_n" name="listar" value="N" />
+                                            <label for="listar_n">Não</label>
                                         </div>
                                      </div>    
 
@@ -127,8 +136,6 @@
                                                                     <th align="center">
                                                                     </th>
                                                                     <th align="center">
-                                                                    </th>
-                                                                    <th align="center">
                                                                     <?php if (@!$_GET['view']) { ?>
                                                                         <a href="#" data-toggle="modal" data-target="#ModalFaturas" style="color : #fff;">+</a>
                                                                     <?php } ?>
@@ -145,13 +152,16 @@
                                                                 </tr>
                                                                 <?php
                                                                     if (!empty($projetoprevisaofat->array)) {
-                                                                        foreach($projetoprevisaofat->array as $row){ ?>
+                                                                        foreach($projetoprevisaofat->array as $row){
+                                                                            ?>
                                                                             <tr class="odd gradeX">
                                                                                 <td><?php echo $row['Num_parcela']; ?></td>
                                                                                 <td><?php echo $row['mes_previsao_fat']; ?></td>
                                                                                 <td>R$ <?php echo $row['Vlr_parcela_cimp']; ?></td>
                                                                                 <td>R$ <?php echo $row['Vlr_parcela_simp']; ?></td>
                                                                                 <td>
+                                                                                <i onclick="EditModalF('<?php echo $row['id']; ?>','<?php echo $row['Num_parcela']; ?>','<?php echo $row['mes_previsao_fat']; ?>','<?php echo $row['Vlr_parcela_cimp']; ?>','<?php echo $row['Vlr_parcela_simp']; ?>')" class="material-icons">edit</i>
+
                                                                                     <i onclick="excluiFat(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
                                                                                 </td>
                                                                             </tr>
@@ -260,7 +270,7 @@
                                                                         <td>R$ <?php echo $row['Vlr_taxa_venda']; ?></td>
                                                                         <td><?php echo $row['mes_alocacao']; ?></td>
                                                                         <td><?php echo $row['Qtd_hrs_estimada']; ?></td>
-                                                                        <td> <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i> </td>
+                                                                        <td> <i onclick="EditModal('<?php echo $row['id']; ?>','<?php echo $row['mes_alocacao']; ?>','<?php echo $row['id_perfilprofissional']; ?>','<?php echo $row['Qtd_hrs_estimada']; ?>','<?php echo $row['Vlr_taxa_compra']; ?>','<?php echo $row['Vlr_taxa_venda']; ?>')" class="material-icons">edit</i> <i onclick="excluiRec(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i> </td>
                                                                     </tr>
                                                                 <?php } }?>
                                                             </tbody>
@@ -269,7 +279,6 @@
                                                 </div>    
                                             </div>
                                         </div>
-
                                         <div class="row">
                                             <div class="input-field col s1">
                                             </div>
@@ -350,6 +359,70 @@
                                     </form>    
                                 </div>
 
+                                <!-- Modal de Faturas -->
+                                <div id="Modal" class="modal fade" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edição de Faturamento</h4>
+                                    </div>
+
+                                    <form class="col s12" id="projetoprevisaofats" action="projetoprevisaofats.php" method="post" name="projetoprevisaofats">
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col s4">
+                                            <label for="id_projeto">Código do Projeto</label><br />
+                                              <?php echo $projeto->id; ?>
+                                              <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                            </div>
+                                            
+                                            <div class="col s4">
+                                            <label for="nome">Cliente</label><br />
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></label>
+                                                <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
+                                            </div>
+
+                                            <div class="col s4">
+                                            <label for="proposta">Proposta</label><br />
+                                            <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
+                                              <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s2">
+                                            <label for="num_parcela">Parcela</label>
+                                              <input type="text" id="Num_parcela_e" readonly="true" name="Num_parcela" maxlength="3">
+                                            </div>
+
+                                            <div class="col s6">
+                                            <label for="Vlr_parcela_cimp_e">Valor Com impostos R$</label>
+                                              <input type="text" onkeypress="moeda(this)" id="Vlr_parcela_cimp_e" name="Vlr_parcela_cimp" class="validate" maxlength="255">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s2">
+                                            <label for="mes_previsao_fat_e">Mês / Ano</label>
+                                              <input type="text" id="mes_previsao_fat_e" name="mes_previsao_fat" class="validate" maxlength="7">
+                                            </div>
+                                            <div class="col s6">
+                                                <label for="Vlr_parcela_cimp">Valor Sem impostos R$</label>
+                                                  <input type="text" readonly="true" id="vl_parcela_simp_e" maxlength="255">
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                        <input type="hidden" name="idFat" id="id_edit_fatura">
+                                        <input type="hidden" name="action" value="1">
+                                            <?php if (@!$_GET['view']) { ?>
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                            <?php } ?>
+                                            <div class="col s1"></div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>    
+                                </div>
+
 
                                 <!-- Modal de Recursos -->
                                 <div id="ModalRecursos" class="modal fade" >
@@ -416,6 +489,81 @@
                                         </div>
                                         <div class="modal-footer">
                                         <input type="hidden" name="action" value="1">
+                                        <?php if (@!$_GET['view']) { ?>
+                                            <button type="submit" class="btn btn-success">Salvar</button>
+                                        <?php } ?>
+                                            <div class="col s1"></div>
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                                        </div>
+                                    </form>    
+                                </div>
+
+                                <!-- Modal de Recursos -->
+                                <div id="ModalRecursosEdicao" class="modal fade" >
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edição de Recursos</h4>
+                                    </div>
+
+                                    <form class="col s12" id="projetorecursos" action="projetorecursos.php" method="post" name="projetorecursos">
+                                        <div class="modal-body">
+                                          <div class="row">
+                                            <div class="col s4">
+                                            <label for="id_projeto">Código do Projeto</label><br />
+                                              <?php echo $projeto->id; ?>
+                                              <input type="hidden" name="id_projeto" value="<?php echo $projeto->id; ?>">
+                                            </div>
+                                            
+                                            <div class="col s4">
+                                            <label for="nome">Cliente</label><br />
+                                                <p class="cliente"><?php echo $projeto->id_cliente; ?></p>
+                                                <input type="hidden" name="id_cliente" value="<?php echo $projeto->id_cliente; ?>">
+                                            </div>
+
+                                            <div class="col s4">
+                                            <label for="proposta">Proposta</label><br />
+                                              <p class="proposta"><?php echo $projeto->id_proposta; ?></p>
+                                              <input type="hidden" name="id_proposta" value="<?php echo $projeto->id_proposta; ?>">
+                                            </div>
+                                          </div>
+
+                                          <div class="row">
+                                            <div class="col s4">
+                                                <label for="id_perfilprofissional_e">Perfil Profissional</label>
+                                                <select id="id_perfilprofissional_e" name="id_perfilprofissional" class="form-control input-sm">
+                                                  <option value="">Selecione</option>
+                                                    <?php $perfilprofissional->montaSelect(); ?>
+                                                </select> 
+                                            </div>
+                                            <div class="col s1"></div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="vlr_taxa_venda">Taxa Venda R$</label>
+                                                  <input type="text" onkeypress="moeda(this)" id="vlr_taxa_venda_e" name="vlr_taxa_venda" class="validate" maxlength="255">
+                                                </div>
+                                            </div>
+                                          </div>
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="vlr_taxa_compra">Taxa Compra R$</label>
+                                                  <input type="text" onkeypress="moeda(this)" id="vlr_taxa_compra_e" name="vlr_taxa_compra" class="validate" maxlength="255">
+                                                </div>
+                                                <div class="col s1"></div>
+                                                <div class="col s4">
+                                                <label for="mes_alocacao">Mês / Ano</label>
+                                                  <input type="text" id="mes_alocacao_e" name="mes_alocacao" class="validate" maxlength="7">
+                                                </div>
+                                            </div>
+                          
+                                            <div class="row">
+                                                <div class="col s4">
+                                                <label for="qtd_hrs_estimada">Horas Estimadas</label>
+                                                  <input type="text" id="qtd_hrs_estimada_e" name="qtd_hrs_estimada" class="validate" maxlength="7">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <input type="hidden" name="action" value="1">
+                                        <input type="hidden" name="idRec" id="id_edit">
                                         <?php if (@!$_GET['view']) { ?>
                                             <button type="submit" class="btn btn-success">Salvar</button>
                                         <?php } ?>
@@ -970,6 +1118,26 @@
 
 <script>
 
+function EditModal(id, mes_alocacao, perfilprofissional, qtd_hrs_estimada, vlr_taxa_compra, vlr_taxa_venda){
+    $("#mes_alocacao_e").val(mes_alocacao);
+    $("#id_perfilprofissional_e").val(perfilprofissional);
+    $("#qtd_hrs_estimada_e").val(qtd_hrs_estimada);
+    $("#vlr_taxa_compra_e").val(vlr_taxa_compra);
+    $("#vlr_taxa_venda_e").val(vlr_taxa_venda);
+    $("#id_edit").val(id);
+    $("#openmodaledition").click();   
+}
+
+function EditModalF(id, parcela, mes, valor_c_imposto, valor_s_imposto){
+    $("#Num_parcela_e").val(parcela);
+    $("#mes_previsao_fat_e").val(mes);
+    $("#Vlr_parcela_cimp_e").val(valor_c_imposto);
+    $("#vl_parcela_simp_e").val(valor_s_imposto);
+    $("#id_edit_fatura").val(id);
+    $("#openmodal").click();   
+}
+
+
 $( document ).ready(function() {
 
     $( "#Vlr_parcela_cimp" ).blur(function() {
@@ -978,6 +1146,15 @@ $( document ).ready(function() {
         money = money * 0.9185;
         money = number_format(money, 2, ',', '.');
         $("#vl_parcela_simp").val(money);
+        // alert(money);
+    });        
+
+    $( "#Vlr_parcela_cimp_e" ).blur(function() {
+        var money = document.getElementById('Vlr_parcela_cimp_e').value.replace( '.', '' );
+        money = money.replace( ',', '.' );
+        money = money * 0.9185;
+        money = number_format(money, 2, ',', '.');
+        $("#vl_parcela_simp_e").val(money);
         // alert(money);
     });        
 

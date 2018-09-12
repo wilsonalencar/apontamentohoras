@@ -19,6 +19,7 @@ class projeto extends app
 	public $status;
 	public $msg;
 	public $array;
+	public $listar;
 	public $array_Fin;
 	public $array_Fin_precificacao;
 	public $fileAnexo;
@@ -71,9 +72,9 @@ class projeto extends app
 	{	
 		$conn = $this->getDB->mysqli_connection;
 
-		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, id_gerente, usuario)
-		VALUES (%d, %d, %d, %s, %s, %d, %d, '%s')", 
-			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->id_gerente ,$_SESSION['email']);
+		$query = sprintf(" INSERT INTO projetos (id_cliente, id_proposta, id_pilar, data_inicio, data_fim, id_status, id_gerente, listar, usuario)
+		VALUES (%d, %d, %d, %s, %s, %d, %d, '%s', '%s')", 
+			$this->id_cliente, $this->id_proposta,$this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $this->id_gerente, $this->listar, $_SESSION['email']);
 		
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -87,8 +88,8 @@ class projeto extends app
 	public function update()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" UPDATE projetos SET id_cliente= %d, id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, usuario= '%s', id_gerente = %d, data_alteracao = NOW() WHERE id = %d", 
-			$this->id_cliente , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $_SESSION['email'], $this->id_gerente ,$this->id);	
+		$query = sprintf(" UPDATE projetos SET id_cliente= %d, listar= '%s', id_proposta= %d, id_pilar= %d, data_inicio= %s, data_fim= %s, id_status= %d, usuario= '%s', id_gerente = %d, data_alteracao = NOW() WHERE id = %d", 
+			$this->id_cliente , $this->listar , $this->id_proposta, $this->id_pilar, $this->quote($this->data_inicio, true, true), $this->quote($this->data_fim, true, true), $this->status, $_SESSION['email'], $this->id_gerente ,$this->id);	
 	
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -108,6 +109,7 @@ class projeto extends app
 						    A.id_proposta,
 						    A.id_pilar,
 						    A.id_gerente,
+						    A.listar,
 						    A.Data_inicio,
 						    A.Data_fim,
 						    A.id_status,
@@ -443,6 +445,7 @@ class projeto extends app
 		$query = sprintf("SELECT 
 							A.id as id,
 							A.Qtd_hrs_real as qtd_hrs,
+							A.tipo_horas as tipo_horas,
 						    A.observacao as atividade,
 						    A.Aprovado as status,
 						    A.id_projeto,
@@ -683,7 +686,7 @@ class projeto extends app
 			$query .= " AND E.id_funcionario = ".$id_funcionario;
 		}
 
-		$query .= " GROUP BY A.id ;";
+		$query .= " GROUP BY A.id ORDER BY B.nome, A.id;";
 		
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN || $_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_FINANCEIRO) {
 			$query = sprintf("SELECT 
@@ -698,7 +701,7 @@ class projeto extends app
 						    projetostatus D ON A.id_status = D.id
 						WHERE
 						    D.id NOT IN (4, 5)
-						GROUP BY A.id;
+						GROUP BY A.id ORDER BY B.nome, A.id;
 						");
 		} 
 		

@@ -136,6 +136,7 @@ class pilar extends app
 		$query = sprintf("SELECT 
 							A.id as id,
 							A.Qtd_hrs_real as qtd_hrs,
+							A.tipo_horas as tipo_horas,
 						    A.observacao as atividade,
 						    A.Aprovado as status,
 						    A.Data_apontamento as data_apont,
