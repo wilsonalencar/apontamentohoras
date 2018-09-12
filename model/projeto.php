@@ -582,9 +582,122 @@ class projeto extends app
 				$precificacao['receita_liquida'] = 1;
 			}
 			$row['CM1_EAC'] = ($third*100)/$precificacao['receita_liquida'];
-			//fim calculo
 
-			$this->array[] = $row;
+			$exibe1 = 0;
+			$exibe2 = 0;
+			$exibe3 = 0;
+
+			if ($this->tipofarol != 1) {
+				if ($row['CM1_Mes'] < 20 && $this->tipofarol == 2) {
+					$exibe1 = 1;
+					$a = 1;
+					$aa = 2;
+				} elseif ($row['CM1_Mes'] >= 20 && $row['CM1_Mes'] <= 29 && $this->tipofarol == 3) {
+					$exibe1 = 1;
+					$a = 2;
+					$aa = 3;
+				} elseif ($row['CM1_Mes'] >= 30 && $this->tipofarol == 4) {
+					$exibe1 = 1;
+					$a = 3;
+					$aa = 4;
+				} 
+
+				if ($row['CM1_YTD'] < 20 && $this->tipofarol == 2) {
+					$exibe2 = 1;
+					$b = 1;
+					$bb = 2;
+				} elseif ($row['CM1_YTD'] >= 20 && $row['CM1_YTD'] <= 29 && $this->tipofarol == 3) {
+					$exibe2 = 1;
+					$b = 2;
+					$bb = 3;
+				} elseif ($row['CM1_YTD'] >= 30 && $this->tipofarol == 4) {
+					$exibe2 = 1;
+					$b = 3;
+					$bb = 4;
+				}
+
+				if ($row['CM1_EAC'] < 20 && $this->tipofarol == 2) {
+					$exibe3 = 1;
+					$c = 1;
+					$cc = 2;
+				} elseif ($row['CM1_EAC'] >= 20 && $row['CM1_EAC'] <= 29 && $this->tipofarol == 3) {
+					$exibe3 = 1;
+					$c = 2;
+					$cc = 3;
+				} elseif ($row['CM1_EAC'] >= 30 && $this->tipofarol == 4) {
+					$exibe3 = 1;
+					$c = 3;
+					$cc = 4;
+				}
+
+				if ($this->farol == 1 && ($exibe1 && $exibe2 && $exibe3) && ($a == $b && $a == $c && $b == $c)) {
+					$this->array[$row['id']]['id'] = $row['id'];
+					$this->array[$row['id']]['status'] = $row['status'];
+					$this->array[$row['id']]['fechado'] = $row['fechado'];
+					$this->array[$row['id']]['cliente'] = $row['cliente'];
+					$this->array[$row['id']]['tipo'] = $row['tipo'];
+					$this->array[$row['id']]['escopo'] = $row['escopo'];
+					$this->array[$row['id']]['gp'] = $row['gp'];
+					$this->array[$row['id']]['inicio'] = $row['inicio'];
+					$this->array[$row['id']]['termino_previsto'] = $row['termino_previsto'];
+					$this->array[$row['id']]['equipe'] = $row['equipe'];
+					$this->array[$row['id']]['valor_venda_total'] = $row['valor_venda_total'];
+					$this->array[$row['id']]['CM1%_Venda'] = $row['CM1%_Venda'];
+					$this->array[$row['id']]['CM1_Mes'] = $row['CM1_Mes'];
+					$this->array[$row['id']]['CM1_YTD'] = $row['CM1_YTD'];
+					$this->array[$row['id']]['CM1_EAC'] = $row['CM1_EAC'];
+				} elseif($this->farol == 2 && $exibe1 && $this->tipofarol == $aa) {
+					$this->array[$row['id']]['id'] = $row['id'];
+					$this->array[$row['id']]['status'] = $row['status'];
+					$this->array[$row['id']]['fechado'] = $row['fechado'];
+					$this->array[$row['id']]['cliente'] = $row['cliente'];
+					$this->array[$row['id']]['tipo'] = $row['tipo'];
+					$this->array[$row['id']]['escopo'] = $row['escopo'];
+					$this->array[$row['id']]['gp'] = $row['gp'];
+					$this->array[$row['id']]['inicio'] = $row['inicio'];
+					$this->array[$row['id']]['termino_previsto'] = $row['termino_previsto'];
+					$this->array[$row['id']]['equipe'] = $row['equipe'];
+					$this->array[$row['id']]['valor_venda_total'] = $row['valor_venda_total'];
+					$this->array[$row['id']]['CM1%_Venda'] = $row['CM1%_Venda'];
+					$this->array[$row['id']]['CM1_Mes'] = $row['CM1_Mes'];
+					$this->array[$row['id']]['CM1_YTD'] = $row['CM1_YTD'];
+					$this->array[$row['id']]['CM1_EAC'] = $row['CM1_EAC'];
+				} elseif($this->farol == 3 && $exibe2 && $this->tipofarol == $bb) {
+					$this->array[$row['id']]['id'] = $row['id'];
+					$this->array[$row['id']]['status'] = $row['status'];
+					$this->array[$row['id']]['fechado'] = $row['fechado'];
+					$this->array[$row['id']]['cliente'] = $row['cliente'];
+					$this->array[$row['id']]['tipo'] = $row['tipo'];
+					$this->array[$row['id']]['escopo'] = $row['escopo'];
+					$this->array[$row['id']]['gp'] = $row['gp'];
+					$this->array[$row['id']]['inicio'] = $row['inicio'];
+					$this->array[$row['id']]['termino_previsto'] = $row['termino_previsto'];
+					$this->array[$row['id']]['equipe'] = $row['equipe'];
+					$this->array[$row['id']]['valor_venda_total'] = $row['valor_venda_total'];
+					$this->array[$row['id']]['CM1%_Venda'] = $row['CM1%_Venda'];
+					$this->array[$row['id']]['CM1_Mes'] = $row['CM1_Mes'];
+					$this->array[$row['id']]['CM1_YTD'] = $row['CM1_YTD'];
+					$this->array[$row['id']]['CM1_EAC'] = $row['CM1_EAC'];
+				} elseif($this->farol == 4 && $exibe3 && $this->tipofarol == $cc) {
+					$this->array[$row['id']]['id'] = $row['id'];
+					$this->array[$row['id']]['status'] = $row['status'];
+					$this->array[$row['id']]['fechado'] = $row['fechado'];
+					$this->array[$row['id']]['cliente'] = $row['cliente'];
+					$this->array[$row['id']]['tipo'] = $row['tipo'];
+					$this->array[$row['id']]['escopo'] = $row['escopo'];
+					$this->array[$row['id']]['gp'] = $row['gp'];
+					$this->array[$row['id']]['inicio'] = $row['inicio'];
+					$this->array[$row['id']]['termino_previsto'] = $row['termino_previsto'];
+					$this->array[$row['id']]['equipe'] = $row['equipe'];
+					$this->array[$row['id']]['valor_venda_total'] = $row['valor_venda_total'];
+					$this->array[$row['id']]['CM1%_Venda'] = $row['CM1%_Venda'];
+					$this->array[$row['id']]['CM1_Mes'] = $row['CM1_Mes'];
+					$this->array[$row['id']]['CM1_YTD'] = $row['CM1_YTD'];
+					$this->array[$row['id']]['CM1_EAC'] = $row['CM1_EAC'];
+				}
+			} else {
+				$this->array[] = $row;
+			}
 		}
 
 	return $this->array;

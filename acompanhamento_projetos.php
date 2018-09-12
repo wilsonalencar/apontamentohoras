@@ -268,7 +268,7 @@
                           </select>
                         </div>
                         <div class="col s3">
-                        <label for="tipofarol">Tipo do Farol</label>
+                        <label for="tipofarol">Cor do Farol</label>
                           <select id="tipofarol" name="tipofarol" class="form-control input-sm">
                             <option value="1">Todos</option>
                             <option value="2">Vermelho</option>
