@@ -80,6 +80,7 @@
                                 <th>Qtd.</th>
                                 <th>Valor Unitário</th>
                                 <th>Valor total</th>
+                                <th>Observação</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -98,10 +99,11 @@
                                         <td><?php echo $value_fim['tipodespesa']; ?></td>
                                         <td><?php echo $value_fim['reembolso']; ?></td>
                                         <td><?php echo $value_fim['documento']; ?></td>
+                                        <td><?php echo $value_fim['observacao']; ?></td>
+                                        <td><?php echo $value_fim['status']; ?></td>
                                         <td><?php echo $value_fim['quantidade']; ?></td>
                                         <td>R$ <?php echo number_format($value_fim['Vlr_Unit'], 2, ',', '.'); ?></td>
                                         <td>R$ <?php echo number_format($value_fim['Vlr_Total'], 2, ',', '.'); ?></td>
-                                        <td><?php echo $value_fim['status']; ?></td>
                                     </tr>
                                 <?php } }?>
 
@@ -112,9 +114,10 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <th>Valor total:</th>
                                     <th>R$ <?php echo number_format($dados['valorTotal'], 2, ',', '.'); ?></th> 
-                                    <td></td>
                                   </tr>
                                   <tr>
                                     <td></td>
@@ -123,6 +126,7 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th>&nbsp;</th> 
@@ -136,9 +140,10 @@
                                   <td></td>
                                   <td></td>
                                   <td></td>
+                                  <td></td>
+                                  <td></td>
                                   <th>Total Geral :</th>
                                   <th>R$ <?php echo $projetodespesa->array['valorTotalGeral']; ?></th> 
-                                  <td></td>
                                 </tr>
                                 <?php } ?>
                            </tbody>
@@ -161,13 +166,15 @@
                                   <?php $projeto->montaSelect($projetodespesa->id_projeto, false, $_SESSION['id_funcionario']); ?>
                           </select>
                           </div>
-                          <div class="col s4">
-                          <label for="id_projeto">Funcionario</label><br />
-                            <select id="id_funcionario" name="id_funcionario" class="form-control input-sm id_funcionario_class">
-                                <option value="">Funcionario</option>
-                                    <?php $funcionario->montaSelect($projetodespesa->id_funcionario, 0, 0, false, $uniqueSelected); ?>
-                            </select>
-                          </div>
+                          <?php if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::PERFIL_RECURSO) { ?>
+                            <div class="col s4">
+                            <label for="id_projeto">Funcionario</label><br />
+                              <select id="id_funcionario" name="id_funcionario" class="form-control input-sm id_funcionario_class">
+                                  <option value="">Funcionario</option>
+                                      <?php $funcionario->montaSelect($projetodespesa->id_funcionario, 0, 0, false, $uniqueSelected); ?>
+                              </select>
+                            </div>
+                          <?php } ?>
                       </div>
 
                       <div class="row">
@@ -211,25 +218,25 @@ $('#dataTables-example').dataTable({
              {
                 extend: 'excelHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 }
              },
              {
                 extend: 'csvHtml5',
                 exportOptions: {
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8]
+                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 }
              },
              {
                 extend: 'pdfHtml5',
                 exportOptions: {
-                   columns: [0, 1, 2, 3, 4, 5, 6, 7, 8]
+                   columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [30,60,20,30];
-                  doc.defaultStyle.fontSize = 12;
-                  doc.styles.tableHeader.fontSize = 13;
+                  doc.pageMargins = [30,60,20,10];
+                  doc.defaultStyle.fontSize = 5;
+                  doc.styles.tableHeader.fontSize = 6;
                       doc['header']=(function() {
                       return {
                         columns: [
@@ -256,7 +263,6 @@ $('#dataTables-example').dataTable({
                     });
                 },
                 title: '',
-                orientation: 'landscape',
                 pageSize: 'A4'
              }
          ]

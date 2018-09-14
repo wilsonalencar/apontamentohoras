@@ -16,11 +16,22 @@ $projetodespesa->id_tipodespesa		= $projetodespesa->getRequest('id_tipodespesa',
 $projetodespesa->Num_doc			= $projetodespesa->getRequest('Num_doc', '');
 $projetodespesa->Qtd_despesa		= $projetodespesa->getRequest('Qtd_despesa', 0);
 $projetodespesa->reembolso			= $projetodespesa->getRequest('reembolso', 0);
+$projetodespesa->observacao	  		= $projetodespesa->getRequest('observacao', '');
+
 $projetodespesa->Vlr_unit			= str_replace(',','.',str_replace('.','',$projetodespesa->getRequest('Vlr_unit', 0)));
 $projetodespesa->Vlr_total			= $projetodespesa->Vlr_unit * $projetodespesa->Qtd_despesa;
 
+$id_funcionario = $projetodespesa->getRequest('id_funcionario_ap', 0);
+
 $msg = '';
 $action 								= $projetodespesa->getRequest('action', 0);
+
+$periodo_busca = $projetodespesa->getRequest('periodo_busca');
+if (empty($periodo_busca)) {
+	$periodo_busca = date('m/Y');
+} 
+
+
 
 if ($action == SAVE) {
 	$success 		= $projetodespesa->save();
@@ -48,7 +59,7 @@ if ($action == DEL_APONT) {
 if ($action == SAVE_APONT) {
 	$success 		= $projetodespesa->save();
 	$msg     		= $projetodespesa->msg; 
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success.'#despesa');
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
 }
 
 require_once('view/projetos/frm_projetos.php');

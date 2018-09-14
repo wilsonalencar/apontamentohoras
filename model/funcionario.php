@@ -396,6 +396,10 @@ class funcionario extends app
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOS) {
 			$query .= sprintf(" AND C.id_gerente = %d ", $_SESSION['id_funcionario']);
 		}
+
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_RECURSO) {
+			$query .= " AND B.Email = '".$_SESSION['email']."'";
+		}
 		
 		$query .= " ORDER BY A.data_apontamento, B.id, A.id";
 

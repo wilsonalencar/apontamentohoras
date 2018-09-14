@@ -21,6 +21,7 @@ class projetodespesa extends app
 	public $Aprovado;
 	public $msg;
 	public $array;
+	public $observacao;
 
 	private function check()
 	{
@@ -163,9 +164,9 @@ class projetodespesa extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = sprintf(" INSERT INTO projetodespesas (id_projeto, id_funcionario, Data_despesa, id_tipodespesa, Num_doc, Qtd_despesa, Vlr_unit, Vlr_total, reembolso, usuario)
-		VALUES (%d, %d, '%s', %d, '%s', %d, '%s', '%s', '%s', '%s')", 
-			$this->id_projeto, $this->id_funcionario, $this->Data_despesa, $this->id_tipodespesa, $this->Num_doc, $this->Qtd_despesa, $this->Vlr_unit, $this->Vlr_total, $this->reembolso, $_SESSION['email']);	
+		$query = sprintf(" INSERT INTO projetodespesas (id_projeto, id_funcionario, Data_despesa, id_tipodespesa, Num_doc, Qtd_despesa, Vlr_unit, Vlr_total, reembolso, observacao, usuario)
+		VALUES (%d, %d, '%s', %d, '%s', %d, '%s', '%s', '%s', '%s', '%s')", 
+			$this->id_projeto, $this->id_funcionario, $this->Data_despesa, $this->id_tipodespesa, $this->Num_doc, $this->Qtd_despesa, $this->Vlr_unit, $this->Vlr_total, $this->reembolso, $this->observacao, $_SESSION['email']);	
 
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
@@ -225,6 +226,7 @@ class projetodespesa extends app
 						    A.Vlr_Unit AS Vlr_Unit,
 						    A.Qtd_despesa AS quantidade,
 						    A.Vlr_Total,
+						    A.observacao,
 						    A.Num_doc as documento,
 						    A.Aprovado AS status,
 						    A.Data_despesa AS data_despesa,
@@ -268,7 +270,11 @@ class projetodespesa extends app
 		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
 			$query .= " AND A.Data_despesa BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}
-		
+
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_RECURSO) {
+			$query .= " AND B.Email = '".$_SESSION['email']."'";
+		}
+
 		$query .= " ORDER BY A.data_despesa, A.id_projeto, A.id";
 
 		if (!$result = $conn->query($query)) {
@@ -321,6 +327,7 @@ class projetodespesa extends app
                     C.codigo as id_proposta,
                     F.nome as funcionarioNome,
                     A.Data_despesa,
+                    A.observacao,
                     A.reembolso,
                     A.Num_doc,
                     A.Qtd_despesa,
@@ -427,6 +434,7 @@ class projetodespesa extends app
 						    A.Vlr_total,
 						    A.motivo,
 						    A.Aprovado,
+						    A.observacao,
 						    B.nome AS NomeFuncionario,
 						    C.descricao AS NomeDespesa,
 							CONCAT(D.id, ' - ', E.nome, ' - ', F.codigo) AS nome_projeto

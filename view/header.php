@@ -376,12 +376,6 @@
                             <ul class="nav nav-second-level">
                                 <?php
                                  if (!in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_FINANCEIRO))){ ?>    
-                                <li>
-                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>
-                                </li>
-                                <li>
-                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hprojeto.php" >Horas por projetos</a>
-                                </li>
                                 <?php
                                  if (!in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_GERENTEPROJETOS))){ ?>
                                 <li>
@@ -392,6 +386,12 @@
                                 </li>
                                 <?php } ?>
                                 <?php } ?>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>
+                                </li>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hprojeto.php" >Horas por projetos</a>
+                                </li>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_despProjRec.php" >Despesas</a>
                                 </li>

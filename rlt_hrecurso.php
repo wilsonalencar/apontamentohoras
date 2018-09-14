@@ -111,6 +111,7 @@
 
                 <form class="col s12" action="rlt_hrecurso.php" method="post" name="funcionario">
                     <div class="modal-body">
+                      <?php if ($_SESSION['id_perfilusuario'] != funcionalidadeConst::PERFIL_RECURSO) { ?>
                       <div class="row">
                         <div class="col s4">
                         <label for="id_funcionario">Profissional</label><br />
@@ -120,6 +121,7 @@
                             </select>
                         </div>
                       </div>
+                      <?php } ?>
 
                       <div class="row">
                         <div class="col s4">
@@ -143,7 +145,6 @@
                     </div>
                 </form>    
             </div>
-
 <?php
     require_once(app::path.'view/footer.php');
 ?>
@@ -178,9 +179,9 @@ $('#dataTables-example').dataTable({
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [90,60,20,30];
+                  doc.pageMargins = [10,60,20,10];
                   doc.defaultStyle.fontSize = 7;
-                  doc.styles.tableHeader.fontSize = 12;
+                  doc.styles.tableHeader.fontSize = 8;
                       doc['header']=(function() {
                       return {
                         columns: [
@@ -201,7 +202,6 @@ $('#dataTables-example').dataTable({
                     });
                 },
                 title: '',
-                orientation: 'landscape',
                 pageSize: 'A4'
              }
          ]

@@ -49,7 +49,6 @@ if (!empty($_POST['id_funcionario_ap'])) {
 }
 
 if ($action == SAVE) {
-
 	$apontamento->id_projeto = $apontamento->getRequest('id_projeto', 0);
 	$success = $apontamento->save();
 	$msg     = $apontamento->msg; 

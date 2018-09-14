@@ -177,9 +177,9 @@ $('#dataTables-example').dataTable({
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [90,60,20,30];
+                  doc.pageMargins = [30,60,20,30];
                   doc.defaultStyle.fontSize = 7;
-                  doc.styles.tableHeader.fontSize = 12;
+                  doc.styles.tableHeader.fontSize = 11;
                       doc['header']=(function() {
                       return {
                         columns: [
@@ -200,7 +200,6 @@ $('#dataTables-example').dataTable({
                     });
                 },
                 title:'',
-                orientation: 'landscape',
                 pageSize: 'A4'
              },
          ]

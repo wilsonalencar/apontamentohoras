@@ -212,9 +212,9 @@ $('#dataTables-example').dataTable({
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [150,80,20,30];
-                  doc.defaultStyle.fontSize = 11;
-                  doc.styles.tableHeader.fontSize = 13;
+                  doc.pageMargins = [80,80,20,40];
+                  doc.defaultStyle.fontSize = 9;
+                  doc.styles.tableHeader.fontSize = 11;
                   doc.styles.tableBodyEven.alignment = 'center';
                   doc.styles.tableBodyOdd.alignment = 'center';
                       doc['header']=(function() {
@@ -243,7 +243,6 @@ $('#dataTables-example').dataTable({
                     });
                 },
                 title: '',
-                orientation: 'landscape',
                 pageSize: 'A4'
              }
          ]

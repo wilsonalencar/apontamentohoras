@@ -85,6 +85,7 @@
                             </div>
 
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodal" data-target="#ModalMotivo"></a>
+                                <a href="#" data-toggle="modal" style="display:none;" id="openmodalObs" data-target="#ModalObservacao"></a>
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodaledition" data-target="#ModalEdicao"></a>
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos">
@@ -158,7 +159,7 @@
 	                                                        <input type="hidden" id="Qtd_hrs_real" name="Qtd_hrs_real" class="validate">
 	                                                    </td>
 	                                                    <td style="width: 20%"> 
-                                                            <input type="text" id="observacao" name="observacao" class="validate" maxlength="255">
+                                                            <input type="text" id="observacao" name="observacao" class="validate" maxlength="250">
                                                         </td>
                                                         <td>
                                                             <input type="text" id="chamado" name="chamado" class="validate" maxlength="20">
@@ -237,7 +238,11 @@
                                     </div>
                                     </form>
                                 </div>  
-                                
+                                <?php
+                                if (!empty($_GET['id_funcionario_ap'])) {
+                                    $id_funcionario = $_GET['id_funcionario_ap'];
+                                }
+                                ?>
                                 <!-- Modal de Despesas -->
                                 <div id="despesa" class="col s12">
                                     <?php
@@ -273,6 +278,8 @@
                                                     </th>
                                                     <th align="center">
                                                     </th>
+                                                    <th align="center">
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -286,12 +293,14 @@
                                                     <th>Qtd.</th>
                                                     <th>Vlr. Unit.</th>
                                                     <th>Vlr. Total</th>
+                                                    <th>Observações</th>
                                                     <th>Status</th>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
                                                     <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
-                                                    
+                                                    <input type="hidden" name="periodo_busca" value="<?php echo $periodo_busca; ?>">
+                                                    <input type="hidden" name="funcionario" value="<?php echo $id_funcionario; ?>">
                                                     <td>
                                                         <select name="id_projeto" class="form-control">
                                                           <option value="">Selecione um Projeto</option>
@@ -303,7 +312,7 @@
                                                         <input type="date" id="Data_despesa" name="Data_despesa" class="validate" maxlength="8">
                                                     </td>
 
-                                                    <td width="20%">
+                                                    <td width="10%">
                                                          <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                                                             <select id="id_funcionario" name="id_funcionario" class="form-control input-sm">
                                                               <option value="">Selecione</option>
@@ -341,6 +350,9 @@
                                                     <td width="10%">
                                                         <input type="text" id="vl_total_qtd" readonly="true" maxlength="255">
                                                     </td>
+                                                    <td width="10%">
+                                                        <input type="text" name="observacao" id="observacao" maxlength="255">
+                                                    </td>
                                                     <td>
                                                     <input type="hidden" name="action" value="5">
                                                         Não Aprovado
@@ -370,6 +382,11 @@
                                                         <td><?php echo $row['Qtd_despesa']; ?></td>
                                                         <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                         <td>R$<?php echo $row['Vlr_total']; ?></td>
+                                                        <td>
+                                                        <?php if (!empty($row['observacao'])) { ?>
+                                                            <a onclick="ObservacaoModal('<?php echo $row['observacao'];?>')">Observação</a>
+                                                        <?php } ?>
+                                                        </td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td style="width: 5%">
                                                         <?php if ($row['Aprovado'] != 'Aprovado') { ?>
@@ -395,6 +412,18 @@
             </div>    
             <div class="modal-body">
                 <p class="motivo" id="motivo"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
+            </div>
+        </div>
+
+        <div id="ModalObservacao" class="modal" style="height: 30%">
+            <div class="modal-header">
+                <h4 class="modal-title">Observacao</h4>
+            </div>    
+            <div class="modal-body">
+                <p class="observacaotxt" id="observacaotxt"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
@@ -682,6 +711,11 @@ function Calcula_e()
 function MotivosModal(string){
   $("#motivo").html(string);
   $("#openmodal").click();
+}
+
+function ObservacaoModal(string){
+  $("#observacaotxt").html(string);
+  $("#openmodalObs").click();
 }
 
 function EditModal(id, entrada_1, saida_1, entrada_2, saida_2, Qtd_hrs_real, observacao, chamado, id_projeto, tipo_horas, data_apontamento){

@@ -47,6 +47,7 @@ $projetodespesa->lista_aprovacao();
                             <li class="col s3">Horas Pendentes à Aprovação :<b> <?php echo $apontamento->array['horastotais']; ?></b> <br /> Horas Aprovadas :<b> <?php echo $apontamento->array['horasaprovadas']; ?></b></li>
                         </ul>
                       </div>
+                     <a href="#" data-toggle="modal" style="display:none;" id="openmodalObs" data-target="#ModalObservacao"></a>
 
                       <div class="clearBoth">
                           <br/>
@@ -154,6 +155,7 @@ $projetodespesa->lista_aprovacao();
                                                 <th>Valor Unit.</th>
                                                 <th>Valor Total</th>
                                                 <th>Reembolso</th>
+                                                <th>Observação</th>
                                                 <th>Motivo</th>
                                                 <th>Aprovação</th>
                                             </tr>
@@ -171,6 +173,11 @@ $projetodespesa->lista_aprovacao();
                                                     <td>R$<?php echo $row['Vlr_unit']; ?></td>
                                                     <td>R$<?php echo $row['Vlr_total']; ?></td>
                                                     <td><?php echo $row['reembolso']; ?></td>
+                                                    <td>
+                                                    <?php if (!empty($row['observacao'])) { ?>
+                                                        <a onclick="ObservacaoModal('<?php echo $row['observacao'];?>')">Observação</a>
+                                                    <?php } ?>
+                                                    </td>
                                                     <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
                                                     <td>
                                                     <p>
@@ -195,6 +202,17 @@ $projetodespesa->lista_aprovacao();
                         </div>
                     </form>
                     <?php } ?>
+                    </div>
+                </div>
+                <div id="ModalObservacao" class="modal" style="height: 20%">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Observacao</h4>
+                    </div>    
+                    <div class="modal-body">
+                        <p class="observacaotxt" id="observacaotxt"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
                     </div>
                 </div>
 
@@ -250,10 +268,18 @@ $projetodespesa->lista_aprovacao();
             </div>
 
 
+
+
 <?php
     require_once(app::path.'view/footer.php');
 ?>
 <script>
+
+function ObservacaoModal(string){
+  $("#observacaotxt").html(string);
+  $("#openmodalObs").click();
+}
+
   $( document ).ready(function() {
     $( ".id_projeto_class" ).change(function() {
         $.ajax({
