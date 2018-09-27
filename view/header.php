@@ -370,21 +370,18 @@
                         </li>
                         <?php } ?>
 
-                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios) || in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS, $funcConst::PERFIL_FINANCEIRO))){ ?>
+                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios) || in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM))){ ?>
                         <li>
                             <a href="#" class="active-menu"><i class="fa fa-list"></i> Relatórios<span class="fa arrow"></span></a><!-- reorder -->
                             <ul class="nav nav-second-level">
                                 <?php
-                                 if (!in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_FINANCEIRO))){ ?>    
-                                <?php
-                                 if (!in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_GERENTEPROJETOS))){ ?>
+                                 if (!in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM, $funcConst::PERFIL_GERENTEPROJETOS))){ ?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hpilar.php" >Horas por pilares</a>
                                 </li>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_apontamento.php" >Apontamento</a>
                                 </li>
-                                <?php } ?>
                                 <?php } ?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>

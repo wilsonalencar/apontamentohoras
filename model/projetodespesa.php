@@ -90,6 +90,19 @@ class projetodespesa extends app
 		return true;
 	}
 
+	public function update_obs()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = sprintf(" UPDATE projetodespesas SET observacao = %s WHERE id = %d", $this->quote($this->observacao, true, true) ,$this->id);	
+
+		if (!$conn->query($query)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		
+		$this->msg = "Observação atualizada com sucesso!";
+		return true;
+	}
 
 	public function save()
 	{

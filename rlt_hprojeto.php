@@ -37,7 +37,7 @@
                                 <th>Projeto</th>
                                 <th>Recurso</th>
                                 <th>Atividade</th>
-                                <th>Data</th>
+                                <th>Data Apontamento</th>
                                 <th>Horas</th>
                                 <th>T</th>
                                 <th>Status</th>
@@ -177,9 +177,9 @@ $('#dataTables-example').dataTable({
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [90,60,20,30];
+                  doc.pageMargins = [20,60,20,30];
                   doc.defaultStyle.fontSize = 7;
-                  doc.styles.tableHeader.fontSize = 11;
+                  doc.styles.tableHeader.fontSize = 8;
                       doc['header']=(function() {
                       return {
                         columns: [

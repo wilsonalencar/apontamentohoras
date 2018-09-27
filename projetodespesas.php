@@ -6,6 +6,7 @@ define('GET', 2);
 define('DEL', 3);
 define('DEL_APONT', 4);
 define('SAVE_APONT', 5);
+define('ALTER_OBS', 6);
 
 $projetodespesa 	= new projetodespesa;
 $projetodespesa->id					= $projetodespesa->getRequest('idDesp', 0);
@@ -58,6 +59,12 @@ if ($action == DEL_APONT) {
 
 if ($action == SAVE_APONT) {
 	$success 		= $projetodespesa->save();
+	$msg     		= $projetodespesa->msg; 
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
+}
+
+if ($action == ALTER_OBS) {
+	$success 		= $projetodespesa->update_obs();
 	$msg     		= $projetodespesa->msg; 
 	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
 }

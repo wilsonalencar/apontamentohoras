@@ -37,7 +37,7 @@
                                 <th>Projeto</th>
                                 <th>Recurso</th>
                                 <th>Atividade</th>
-                                <th>Data</th>
+                                <th>Data Atividade</th>
                                 <th>Horas</th>
                                 <th>T</th>
                                 <th>Status</th>
@@ -56,7 +56,7 @@
                                         <td style="width: 30%"><?php echo $value_fim['projeto1']; ?> - <?php echo $value_fim['projeto2']; ?></td>
                                         <td><?php echo $value_fim['nomefuncionario']; ?></td>
                                         <td><?php echo $value_fim['atividade']; ?></td>
-                                        <td><?php echo $value_fim['data_apont']; ?></td>
+                                        <td style="width: 10%"><?php echo $value_fim['data_apont']; ?></td>
                                         <td><?php echo str_replace('.', ',', $value_fim['qtd_hrs']); ?></td>
                                         <td><?php echo $value_fim['tipo_horas']; ?></td>
                                         <td><?php echo $value_fim['status']; ?></td>
@@ -159,6 +159,9 @@ $('#dataTables-example').dataTable({
         dom: '<B>',
         "bSort": false,
         paging: false,
+        "columnDefs": [
+          { "width": "20%", "targets": 0 }
+        ],
         buttons: [
              {
                 extend: 'excelHtml5',
@@ -179,9 +182,9 @@ $('#dataTables-example').dataTable({
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [10,60,20,10];
-                  doc.defaultStyle.fontSize = 7;
-                  doc.styles.tableHeader.fontSize = 8;
+                  doc.pageMargins = [5,60,5,0];
+                  doc.defaultStyle.fontSize = 5;
+                  doc.styles.tableHeader.fontSize = 5;
                       doc['header']=(function() {
                       return {
                         columns: [

@@ -91,34 +91,16 @@
                                 <th>Tipo</th>
                                 <th>Escopo</th>
                                 <th>GP</th>
-                                <th>Início</th>
+                                <th>Início Proj.</th>
                                 <th>Término</th>
                                 <th>Valor Venda Total</th>
                                 <th>CM1% VD</th>
-                                <?php if ($farol == 1 || $farol == 2) { ?>
-                                  <th>CM1 Mês</th>  
-                                <?php } ?>
-
-                                <?php if ($farol == 1 || $farol == 3) { ?>
-                                    <th>CM1 YTD</th>
-                                <?php } ?>
-
-                                <?php if ($farol == 1 || $farol == 4) { ?>
-                                    <th>CM1 EAC</th>
-                                <?php } ?>
-
-                                <?php if ($farol == 1 || $farol == 2) { ?>
-                                  <th>Farol Mês</th>
-                                <?php } ?>
-
-                                <?php if ($farol == 1 || $farol == 3) { ?>
-                                  <th>Farol YTD</th>
-                                <?php } ?>
-
-                                <?php if ($farol == 1 || $farol == 4) { ?>
-                                  <th>Farol EAC</th>
-                                <?php } ?>
-
+                                <th>CM1 Mês</th>  
+                                <th>CM1 YTD</th>
+                                <th>CM1 EAC</th>
+                                <th>Farol Mês</th>
+                                <th>Farol YTD</th>
+                                <th>Farol EAC</th>
                                 <th>Detalhes</th>
                                 <th>Equipe</th>
                                 <th>Obs</th>
@@ -166,31 +148,13 @@
                                       <td><?php echo $dados['termino_previsto'] ?></td>
                                       <td>R$<?php echo $dados['valor_venda_total'] ?></td>
                                       <td><?php echo $dados['CM1%_Venda'] ?>%</td>
-
-                                      <?php if ($farol == 1 || $farol == 2) { ?>
-                                        <td><?php echo $dados['CM1_Mes'] ?>%</td>
-                                      <?php } ?>
-                                      
-                                      <?php if ($farol == 1 || $farol == 3) { ?>
-                                        <td><?php echo $dados['CM1_YTD'] ?>%</td>
-                                      <?php } ?>
-                                      
-                                      <?php if ($farol == 1 || $farol == 4) { ?>
-                                        <td><?php echo $dados['CM1_EAC'] ?>%</td>
-                                      <?php } ?>
-
-                                      <?php if ($farol == 1 || $farol == 2) { ?>
-                                        <td><div class="circulo" style="background:<?php echo $corCM;?>;"></div></td>
-                                      <?php } ?>
-                                      
-                                      <?php if ($farol == 1 || $farol == 3) { ?>
-                                        <td><div class="circulo" style="background:<?php echo $corY;?>;"></div></td>
-                                      <?php } ?>
-                                      
-                                      <?php if ($farol == 1 || $farol == 4) { ?>
-                                        <td><div class="circulo" style="background:<?php echo $corE;?>;"></div></td>
-                                      <?php } ?>
-                                      <td align="center"><a href="<?php echo app::dominio; ?>projetos.php?id=<?php echo $dados['id']?>&view=true&statusID=<?php echo $projeto->statusID?>&statusID=<?php echo $projeto->id_pilar?>&id_cliente=<?php echo $projeto->id_cliente?>&farol=<?php echo $projeto->farol?>"><i class="fa fa-expand"></i></a></td>
+                                      <td><?php echo $dados['CM1_Mes'] ?>%</td>
+                                      <td><?php echo $dados['CM1_YTD'] ?>%</td>
+                                      <td><?php echo $dados['CM1_EAC'] ?>%</td>
+                                      <td><div class="circulo" style="background:<?php echo $corCM;?>;"></div></td>
+                                      <td><div class="circulo" style="background:<?php echo $corY;?>;"></div></td>
+                                      <td><div class="circulo" style="background:<?php echo $corE;?>;"></div></td>
+                                      <td align="center"><a href="<?php echo app::dominio; ?>projetos.php?id=<?php echo $dados['id']?>&view=true&statusID=<?php echo $projeto->statusID?>&id_pilar=<?php echo $projeto->id_pilar ?>&id_cliente=<?php echo $projeto->id_cliente?>&farol=<?php echo $projeto->farol ?>"><i class="fa fa-expand"></i></a></td>
                                       <?php if (!empty($dados['equipe'])) {
                                         $dados['equipe'] = str_replace(',', '-', $dados['equipe']);
                                       }  ?>

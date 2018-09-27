@@ -77,11 +77,11 @@
                                 <th>Tipo Despesa</th>
                                 <th>Reembolso</th>
                                 <th>Nº Doc</th>
+                                <th>Observação</th>
+                                <th>Status</th>
                                 <th>Qtd.</th>
                                 <th>Valor Unitário</th>
                                 <th>Valor total</th>
-                                <th>Observação</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -234,9 +234,9 @@ $('#dataTables-example').dataTable({
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {
-                  doc.pageMargins = [30,60,20,10];
-                  doc.defaultStyle.fontSize = 5;
-                  doc.styles.tableHeader.fontSize = 6;
+                  doc.pageMargins = [20,60,10,0];
+                  doc.defaultStyle.fontSize = 8;
+                  doc.styles.tableHeader.fontSize = 8;
                       doc['header']=(function() {
                       return {
                         columns: [

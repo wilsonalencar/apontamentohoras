@@ -35,7 +35,9 @@
                            <div class="col-sm-12">
                               <ul class="tabs">
                                   <li class="tab col s3"><a href="#test1">Horas</a></li>
-                                  <li class="tab col s3" id="divDespesas"><a href="#despesa">Despesas</a></li>
+                                  <li class="tab col s3 <?php if (empty($apontamento->id_funcionario)) {
+                                      echo 'disabled';
+                                  } ?>" id="divDespesas"><a href="#despesa">Despesas</a></li>
                               </ul>
                               <br>
                                   <div class="row">
@@ -86,6 +88,7 @@
 
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodal" data-target="#ModalMotivo"></a>
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodalObs" data-target="#ModalObservacao"></a>
+                                <a href="#" data-toggle="modal" style="display:none;" id="editmodalObs" data-target="#EditModalObservacao"></a>
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodaledition" data-target="#ModalEdicao"></a>
                                 <div id="test1" class="col s12">
                                     <form class="col s12" action="apontamentos.php" method="post" name="cad_apontamentos">
@@ -384,8 +387,9 @@
                                                         <td>R$<?php echo $row['Vlr_total']; ?></td>
                                                         <td>
                                                         <?php if (!empty($row['observacao'])) { ?>
-                                                            <a onclick="ObservacaoModal('<?php echo $row['observacao'];?>')">Observação</a>
+                                                            <a onclick="ObservacaoModal('<?php echo $row['observacao'];?>')">Exibir </a> / 
                                                         <?php } ?>
+                                                        <a onclick="EditObservacaoModal('<?php echo $row['observacao'];?>','<?php echo $row['id'];?>')">Editar</a>
                                                         </td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td style="width: 5%">
@@ -428,6 +432,26 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
             </div>
+        </div>
+        
+        <div id="EditModalObservacao" class="modal" style="height: 30%">
+            <form action="projetodespesas.php" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edição</h4>
+                </div>    
+                <div class="modal-body">
+                        <input type="text" name="observacao" class="form-control" id="observacaoinput">
+                        <input type="hidden" name="idDesp" id="idobservacao">
+                        <input type="hidden" name="action" value="6">
+                        <input type="hidden" name="id_funcionario" value="<?php echo $apontamento->id_funcionario ?>">
+                        <input type="hidden" name="id_projeto" value="<?php echo $apontamento->id_projeto ?>">
+                        <input type="hidden" name="periodo_busca" value="<?php echo $periodo_busca; ?>">
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-success">            
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>            
+                </div>
+            </form>
         </div>
 
         <div id="ModalEdicao" class="modal fade" >
@@ -716,6 +740,12 @@ function MotivosModal(string){
 function ObservacaoModal(string){
   $("#observacaotxt").html(string);
   $("#openmodalObs").click();
+}
+
+function EditObservacaoModal(string, id){
+  $("#observacaoinput").val(string);
+  $("#idobservacao").val(id);
+  $("#editmodalObs").click();
 }
 
 function EditModal(id, entrada_1, saida_1, entrada_2, saida_2, Qtd_hrs_real, observacao, chamado, id_projeto, tipo_horas, data_apontamento){

@@ -475,6 +475,10 @@ class projeto extends app
 			$query .= " AND A.id_projeto = ".$this->id;
 		}
 
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_RECURSO) {
+			$query .= " WHERE A.id_funcionario = "."'".$_SESSION['id_funcionario']."'";
+		}
+
 		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
 			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}
@@ -527,18 +531,18 @@ class projeto extends app
 					liberarprojeto G on A.id = G.id_projeto
 				LEFT JOIN 
 					funcionarios H on H.id = G.id_funcionario
-						';
+				WHERE 1 = 1 ';
 
 		if (!empty($this->statusID)) {
-			$query .= " WHERE A.id_status = ".$this->statusID;
+			$query .= " AND A.id_status = ".$this->statusID;
 		}
 
 		if (!empty($this->id_cliente)) {
-			$query .= " WHERE A.id_cliente = ".$this->id_cliente;
+			$query .= " AND A.id_cliente = ".$this->id_cliente;
 		}
 		
 		if (!empty($this->id_pilar)) {
-			$query .= " WHERE A.id_pilar = ".$this->id_pilar;
+			$query .= " AND A.id_pilar = ".$this->id_pilar;
 		}
 
 		$query .= " GROUP BY A.id;";
@@ -629,7 +633,6 @@ class projeto extends app
 					$c = 3;
 					$cc = 4;
 				}
-
 				if ($this->farol == 1 && ($exibe1 && $exibe2 && $exibe3) && ($a == $b && $a == $c && $b == $c)) {
 					$this->array[$row['id']]['id'] = $row['id'];
 					$this->array[$row['id']]['status'] = $row['status'];

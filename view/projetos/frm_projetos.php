@@ -62,9 +62,9 @@
                                         </div>
                                          <div class="col s6">
                                             <label>Listar ?</label><br>
-                                            <input type="radio" id="listar_s" name="listar" value="S"/>
+                                            <input type="radio" checked id="listar_s" name="listar" value="S"/>
                                             <label for="listar_s">Sim</label>
-                                            <input type="radio" checked id="listar_n" name="listar" value="N" />
+                                            <input type="radio" id="listar_n" name="listar" value="N" />
                                             <label for="listar_n">Não</label>
                                         </div>
                                      </div>    
@@ -159,7 +159,7 @@
                                                                                 <td><?php echo $row['mes_previsao_fat']; ?></td>
                                                                                 <td>R$ <?php echo $row['Vlr_parcela_cimp']; ?></td>
                                                                                 <td>R$ <?php echo $row['Vlr_parcela_simp']; ?></td>
-                                                                                <td>
+                                                                                <td width="20%">
                                                                                 <i onclick="EditModalF('<?php echo $row['id']; ?>','<?php echo $row['Num_parcela']; ?>','<?php echo $row['mes_previsao_fat']; ?>','<?php echo $row['Vlr_parcela_cimp']; ?>','<?php echo $row['Vlr_parcela_simp']; ?>')" class="material-icons">edit</i>
 
                                                                                     <i onclick="excluiFat(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">delete</i>
