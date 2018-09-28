@@ -867,7 +867,7 @@ class projeto extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 		$query = sprintf("SELECT 
-							    A.id, B.codigo, C.nome, D.descricao, F.nome as pilar
+							    A.id, B.codigo, C.nome, D.descricao, F.nome as pilar, A.listar
 							FROM
 							    projetos A
 							        LEFT JOIN

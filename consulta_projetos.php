@@ -53,6 +53,7 @@
                                             <th>Cód. Proposta</th>
                                             <th>Cliente</th>
                                             <th>Status</th>
+                                            <th>Listar</th>
                                             <th>Alterar</th>
                                         </tr>
                                     </thead>
@@ -66,6 +67,7 @@
                                                 <td><?php echo $row['codigo']; ?></td>
                                                 <td><?php echo $row['nome']; ?></td>
                                                 <td><?php echo $row['descricao']; ?></td>
+                                                <td><?php echo $row['listar']; ?></td>
                                                 <td>
                                                     <i onclick="edita(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">mode_edit</i>
                                                     </td>
