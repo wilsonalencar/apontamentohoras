@@ -479,6 +479,10 @@ class projeto extends app
 			$query .= " WHERE A.id_funcionario = "."'".$_SESSION['id_funcionario']."'";
 		}
 
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOS || $_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOSADM ) {
+			$query .= " WHERE C.id_gerente = "."'".$_SESSION['id_funcionario']."'";
+		}
+
 		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
 			$query .= " AND A.Data_apontamento BETWEEN "."'".$this->data_busca_ini."'"." AND "."'".$this->data_busca_fim."'";
 		}

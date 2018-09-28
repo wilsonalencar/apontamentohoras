@@ -154,7 +154,7 @@
                                       <td><div class="circulo" style="background:<?php echo $corCM;?>;"></div></td>
                                       <td><div class="circulo" style="background:<?php echo $corY;?>;"></div></td>
                                       <td><div class="circulo" style="background:<?php echo $corE;?>;"></div></td>
-                                      <td align="center"><a href="<?php echo app::dominio; ?>projetos.php?id=<?php echo $dados['id']?>&view=true&statusID=<?php echo $projeto->statusID?>&id_pilar=<?php echo $projeto->id_pilar ?>&id_cliente=<?php echo $projeto->id_cliente?>&farol=<?php echo $projeto->farol ?>"><i class="fa fa-expand"></i></a></td>
+                                      <td align="center"><a href="<?php echo app::dominio; ?>projetos.php?id=<?php echo $dados['id']?>&view=true&statusID=<?php echo $projeto->statusID?>&id_pilar=<?php echo $projeto->id_pilar ?>&id_cliente=<?php echo $projeto->id_cliente?>&farol=<?php echo $projeto->farol ?>&tipofarol=<?php echo $projeto->tipofarol ?>"><i class="fa fa-expand"></i></a></td>
                                       <?php if (!empty($dados['equipe'])) {
                                         $dados['equipe'] = str_replace(',', '-', $dados['equipe']);
                                       }  ?>
@@ -365,31 +365,19 @@ $('#dataTables-example').dataTable({
              {
                 extend: 'excelHtml5',
                 exportOptions: {
-                  <?php if ($farol != 1) { ?>
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                  <?php } else { ?>
                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                  <?php } ?> 
                 }
              },
              {
                 extend: 'csvHtml5',
                 exportOptions: {
-                   <?php if ($farol != 1) { ?>
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                  <?php } else { ?>
                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                  <?php } ?>
                 }
              },
              {
                 extend: 'pdfHtml5',
                 exportOptions: {
-                   <?php if ($farol != 1) { ?>
-                   columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                  <?php } else { ?>
                    columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                  <?php } ?>
                 },
                 "autoWidth": true,
                 customize: function ( doc ) {

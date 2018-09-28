@@ -290,7 +290,7 @@
                                                 <input type="submit" name="salvar" value="salvar" id="submit" class="waves-effect waves-light btn">
                                             </div>
                                             <?php } else { ?>
-                                                <a class="waves-effect waves-light btn" href="<?php echo app::dominio; ?>acompanhamento_projetos.php?statusID=<?php echo $_GET['statusID']?>&id_pilar=<?php echo $_GET['id_pilar']?>&id_cliente=<?php echo $_GET['id_cliente']?>&farol=<?php echo $_GET['farol']?>">Voltar</a>
+                                                <a class="waves-effect waves-light btn" href="<?php echo app::dominio; ?>acompanhamento_projetos.php?statusID=<?php echo $_GET['statusID']?>&id_pilar=<?php echo $_GET['id_pilar']?>&id_cliente=<?php echo $_GET['id_cliente']?>&farol=<?php echo $_GET['farol']?>&tipofarol=<?php echo $_GET['tipofarol']?>">Voltar</a>
                                             <?php    } ?>
                                         </div>
                                     </form>

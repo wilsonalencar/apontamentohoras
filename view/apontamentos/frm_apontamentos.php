@@ -35,7 +35,7 @@
                            <div class="col-sm-12">
                               <ul class="tabs">
                                   <li class="tab col s3"><a href="#test1">Horas</a></li>
-                                  <li class="tab col s3 <?php if (empty($apontamento->id_funcionario)) {
+                                  <li class="tab col s3 <?php if (empty($apontamento->id_funcionario) && $_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) {
                                       echo 'disabled';
                                   } ?>" id="divDespesas"><a href="#despesa">Despesas</a></li>
                               </ul>
