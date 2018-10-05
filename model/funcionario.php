@@ -400,6 +400,10 @@ class funcionario extends app
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_RECURSO) {
 			$query .= " AND B.Email = '".$_SESSION['email']."'";
 		}
+
+		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOSADM) {
+			$query .= " AND C.id_gerente = "."'".$_SESSION['id_funcionario']."' OR A.id_funcionario = "."'".$_SESSION['id_funcionario']."'";
+		}
 		
 		$query .= " ORDER BY A.data_apontamento, B.id, A.id";
 

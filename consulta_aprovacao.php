@@ -81,6 +81,7 @@ $projetodespesa->lista_aprovacao();
                                             <th>Profissional</th>
                                             <th>Data</th>
                                             <th>Qtde. Horas</th>
+                                            <th>Tipo Horas</th>
                                             <th>Atividade</th>
                                             <th>Chamado</th>
                                             <th>Motivo</th>
@@ -96,6 +97,7 @@ $projetodespesa->lista_aprovacao();
                                                 <td><?php echo $row['funcionarioNome']; ?></td>
                                                 <td><?php echo $row['Data_apontamento']; ?></td>
                                                 <td><?php echo $row['Qtd_hrs']; ?></td>
+                                                <td><?php echo $row['tipo_horas']; ?></td>
                                                 <td><?php echo $row['atividade']; ?></td>
                                                 <td><?php echo $row['chamado']; ?></td>
                                                 <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
@@ -278,6 +280,11 @@ $projetodespesa->lista_aprovacao();
 function ObservacaoModal(string){
   $("#observacaotxt").html(string);
   $("#openmodalObs").click();
+}
+
+
+window.onload = function(){
+document.getElementById("sideNav").click();
 }
 
   $( document ).ready(function() {
