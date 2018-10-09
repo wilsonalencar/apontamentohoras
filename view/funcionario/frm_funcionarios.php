@@ -216,13 +216,14 @@
                     </div>
                       <div class="col s3">
                          <?php 
+                            $exibe = 0;
                             if (!empty($funcionario->id)) { 
-
                                $pasta = app::path.'files/foto_funcionario';
                                if (is_dir($pasta)) {
                                   $diretorio = dir($pasta);
                                   while($arquivo = $diretorio -> read()){
                                      if ($funcionario->id == preg_replace("/[^0-9]/", "", $arquivo)) {
+                                        $exibe = 1;
                                         echo "<img src='".app::dominio.'files/foto_funcionario/'.$arquivo."' alt='Foto' height='100%' width='100%' id='fotoremover'>";
                                         echo "<input type='hidden' name='foto' id='foto' value='".$pasta.'/'.$arquivo."'>";
                                         echo "<input type='hidden' name='excluir_foto' id='excluir_foto' value='0'>";
@@ -238,7 +239,9 @@
                             <img id="mini_foto_new" src='' height='100%' width='100%'>
                           </div>
                         <br />
+                        <?php if (!$exibe) { ?>
                         <input type="file" id="foto" name="foto" class="validate" onchange="readURL(this, 'mini_foto_new');" style="cursor:pointer; background:#FFF;" />
+                        <?php } ?>
                       </div>
                     </form>
                         
