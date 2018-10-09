@@ -471,20 +471,21 @@ class projeto extends app
 						WHERE 
 							B.status = 'A' 
 						");
+
 		if ($this->id > 0) {
 			$query .= " AND A.id_projeto = ".$this->id;
 		}
 
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_RECURSO) {
-			$query .= " WHERE A.id_funcionario = "."'".$_SESSION['id_funcionario']."'";
+			$query .= " AND A.id_funcionario = ".$_SESSION['id_funcionario']."";
 		}
 
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOS ) {
-			$query .= " WHERE C.id_gerente = "."'".$_SESSION['id_funcionario']."'";
+			$query .= " AND (C.id_gerente = "."'".$_SESSION['id_funcionario']."' OR A.id_funcionario = "."'".$_SESSION['id_funcionario']."')";;
 		}
 
 		if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::PERFIL_GERENTEPROJETOSADM) {
-			$query .= " WHERE C.id_gerente = "."'".$_SESSION['id_funcionario']."' OR A.id_funcionario = "."'".$_SESSION['id_funcionario']."'";
+			$query .= " AND (C.id_gerente = "."'".$_SESSION['id_funcionario']."' OR A.id_funcionario = "."'".$_SESSION['id_funcionario']."')";
 		}
 
 		if (!empty($this->data_busca_ini) AND !empty($this->data_busca_fim) ) {
