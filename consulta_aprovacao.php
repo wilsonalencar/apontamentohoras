@@ -65,7 +65,7 @@ $projetodespesa->lista_aprovacao();
                           <div class="col s1"></div>
                           <div class="col s1"></div>
                           <div class="col s2">
-                          <b> Aprovação das horas Em grupo </b> <br/> 
+                          <b> Aprovação de horas em grupo </b> <br/> 
                           <input class="with-gap" name="aprova_geral_horas" value="2" type="radio" id="lala2" />
                           <label for="lala2">Não </label>
 
