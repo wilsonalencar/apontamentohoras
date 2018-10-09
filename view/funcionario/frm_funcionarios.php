@@ -223,7 +223,7 @@
                                   $diretorio = dir($pasta);
                                   while($arquivo = $diretorio -> read()){
                                      if ($funcionario->id == preg_replace("/[^0-9]/", "", $arquivo)) {
-                                        echo "<img src='".app::dominio.'files/foto_funcionario/'.$arquivo."' alt='Foto' height='100%' width='100%'>";
+                                        echo "<img src='".app::dominio.'files/foto_funcionario/'.$arquivo."' alt='Foto' height='100%' width='100%' id='fotoremover'>";
                                         echo "<input type='hidden' name='foto' id='foto' value='".$pasta.'/'.$arquivo."'>";
                                         echo "<input type='hidden' name='excluir_foto' id='excluir_foto' value='0'>";
                                         echo " <br /> <br /> <a href='#' onclick='excluir_foto();'>Excluir </a>";
@@ -232,8 +232,13 @@
                                }
                             } 
                          ?><br>
+                      
                          <label for="Status">Foto do Funcionário</label>
-                        <input type="file" id="foto" name="foto" class="validate">
+                         <div id="boximage" style="display:none">
+                            <img id="mini_foto_new" src='' height='100%' width='100%'>
+                          </div>
+                        <br />
+                        <input type="file" id="foto" name="foto" class="validate" onchange="readURL(this, 'mini_foto_new');" style="cursor:pointer; background:#FFF;" />
                       </div>
                     </form>
                         
@@ -251,6 +256,19 @@
 ?>
 <script src="<?php echo app::dominio; ?>view/assets/js/funcionarios/funcionario.js"></script>
 <script type="text/javascript">
+
+function readURL(input, id) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('#'+id).attr('src', e.target.result);
+      $('#boximage').css('display', 'block');
+    }
+  reader.readAsDataURL(input.files[0]);
+  }
+}
+
+
 $(document).ready(function() {
 
   $('#id_tipocontratacao').on('change', function() {
