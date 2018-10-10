@@ -6,10 +6,6 @@ $usuario->email = $usuario->getRequest('login', '');
 $usuario->senha = md5($usuario->getRequest('senha', ''));
 $msg = '';
 
-if (!isset($_SESSION)) {
-	session_start();
-}
-
 if (!empty($_POST)) {
 	$success = $usuario->login();
 	$msg = $usuario->msg;
@@ -20,7 +16,7 @@ if (!empty($_POST)) {
 	}	
 }
 
-if (isset($_SESSION)) {
+if (isset($_SESSION) && !empty($_SESSION)) {
 	session_destroy();
 }
 
