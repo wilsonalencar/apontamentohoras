@@ -17,7 +17,7 @@ if (!empty($_POST)) {
 }
 
 if (isset($_SESSION) && !empty($_SESSION)) {
-	session_destroy();
+	@session_destroy();
 }
 
 require_once('view/frm_login.php');
