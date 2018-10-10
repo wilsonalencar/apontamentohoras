@@ -6,6 +6,8 @@ $usuario->email = $usuario->getRequest('login', '');
 $usuario->senha = md5($usuario->getRequest('senha', ''));
 $msg = '';
 
+session_start();
+
 if (!empty($_POST)) {
 	$success = $usuario->login();
 	$msg = $usuario->msg;
