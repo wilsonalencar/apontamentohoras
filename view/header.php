@@ -45,7 +45,9 @@
             </nav>
     		<!-- Dropdown Structure -->
     <ul id="dropdown1" class="dropdown-content">
-        <li><a href="<?php echo app::dominio; ?>login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        <li><a href="<?php echo app::dominio_platform; ?>login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        </li>
+        <li><a href="<?php echo app::dominio_platform; ?>"><i class="fa fa-sign-in fa-fw"></i> Plataforma</a>
         </li>
     </ul>
     <ul id="dropdown2" class="dropdown-content w250">
