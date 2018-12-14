@@ -27,6 +27,8 @@ class apontamento extends app
 	public $proposta;
 	public $msg;
 	public $array;
+	public $arrayFolga;
+	public $arrayBanco;
 
 	private function check(){	
 		if (empty($this->id_cliente)) {
@@ -406,6 +408,48 @@ class apontamento extends app
 
 		$this->msg = "Apontamentos atualizados com sucesso!";
 		return true;
+	}
+
+	public function listaFolgas($periodo=false, $id_funcionario=0)
+	{
+		$conn = $this->getDB->mysqli_connection;
+
+		if ($periodo && $id_funcionario > 0) {
+			$query = "SELECT a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.id_funcionario, 
+			CONCAT(b.id, ' - ', c.nome, ' - ', d.codigo) AS nome_projeto FROM projetohoras a INNER JOIN projetos b on a.id_projeto = b.id INNER JOIN clientes c ON b.id_cliente = c.id INNER JOIN propostas d ON b.id_proposta = d.id where b.controle_folga = 'S' AND id_funcionario = ".$id_funcionario." AND DATE_FORMAT(data_apontamento, '%m/%Y') = '".$periodo."' order by Data_apontamento desc; " ;
+
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+				return false;	
+			}
+
+			while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	    		$timestamp = strtotime($row['Data_apontamento']);
+				$row['Data_apontamento'] = date("d/m/Y", $timestamp);
+				$this->arrayFolga[] = $row;
+			}
+		}
+	}
+
+	public function listaBanco($periodo=false, $id_funcionario=0)
+	{
+		$conn = $this->getDB->mysqli_connection;
+
+		if ($periodo && $id_funcionario > 0) {
+			$query = "SELECT a.Entrada_1, a.Entrada_2, a.Saida_1, a.Saida_2, a.Data_apontamento, a.Qtd_hrs_real, a.id_funcionario, 
+			CONCAT(b.id, ' - ', c.nome, ' - ', d.codigo) AS nome_projeto FROM projetohoras a INNER JOIN projetos b on a.id_projeto = b.id INNER JOIN clientes c ON b.id_cliente = c.id INNER JOIN propostas d ON b.id_proposta = d.id where b.controle_folga = 'N' and a.tipo_horas = 'B' AND id_funcionario = ".$id_funcionario." AND DATE_FORMAT(data_apontamento, '%m/%Y') = '".$periodo."' order by Data_apontamento desc; " ;
+
+			if (!$result = $conn->query($query)) {
+				$this->msg = "Ocorreu um erro no carregamento dos projetos";	
+				return false;	
+			}
+
+			while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+	    		$timestamp = strtotime($row['Data_apontamento']);
+				$row['Data_apontamento'] = date("d/m/Y", $timestamp);
+				$this->arrayBanco[] = $row;
+			}
+		}
 	}
 
 	public function lista($periodo=false, $id_funcionario=0)

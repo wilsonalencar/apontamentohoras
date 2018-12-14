@@ -12,6 +12,7 @@ require_once('model/projetodespesa.php');
 require_once('model/tipodespesa.php');
 require_once('model/anexo.php');
 
+
 define('SAVE', 1);
 define('GET', 2);
 define('ANEXAR', 3);
@@ -38,11 +39,12 @@ $projeto->data_inicio  			= $projeto->getRequest('data_inicio', 0);
 $projeto->data_fim  			= $projeto->getRequest('data_fim', '');
 $projeto->status		  		= $projeto->getRequest('status', 1);
 $projeto->listar		  		= $projeto->getRequest('listar', 'N');
+$projeto->controle_folga		= $projeto->getRequest('controle_folga', 'N');
 $financeiro 					= $projeto->calcFinanceiro($projeto->getRequest('id'));
 $precificacao 					= $projeto->calcPrecificacao($projeto->getRequest('id'));
 
-
 $success 	= $projeto->getRequest('success', 0);
+
 $msg 		= $projeto->getRequest('msg', '');
 $action		= $projeto->getRequest('action', 0);
 $excluirAnexo = $projeto->getRequest('excluir_anexo');
@@ -50,7 +52,7 @@ $excluirAnexo = $projeto->getRequest('excluir_anexo');
 if ($action == SAVE) {
 	
 	$success = $projeto->save();
-	$msg     = $projeto->msg; 
+	$msg     = $projeto->msg;
 
 	header("LOCATION:projetos.php?id=".$projeto->id."&msg=".$msg."&success=".$success);
 }

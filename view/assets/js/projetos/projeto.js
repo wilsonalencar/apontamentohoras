@@ -32,6 +32,12 @@ function getDataProposta(id)
             } else {
                 $("#listar_n").prop('checked', 'checked');
             }
+
+            if (d.data.controle_folga == 'S') {
+                $("#controle_folg_s").prop('checked', 'checked');
+            } else {
+                $("#controle_folg_n").prop('checked', 'checked');
+            }
             
             $("#id_pilar").val(d.data.id_pilar);
             $("#data_inicio").val(d.data.Data_inicio);

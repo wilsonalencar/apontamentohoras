@@ -22,9 +22,9 @@
     <div class="col-md-12">
     <!-- Advanced Tables -->
                     <div class="card">
-                        <div class="card-action">
-                             Busca de projetos
-                        </div>
+                          <div class="card-action">
+                            Busca de projetos
+                          </div>
                         <div class="card-content">
                         <?php
                               if (!empty($msg)) { 
@@ -54,6 +54,7 @@
                                             <th>Cliente</th>
                                             <th>Status</th>
                                             <th>Listar</th>
+                                            <th>Controle de Folgas</th>
                                             <th>Alterar</th>
                                         </tr>
                                     </thead>
@@ -68,6 +69,7 @@
                                                 <td><?php echo $row['nome']; ?></td>
                                                 <td><?php echo $row['descricao']; ?></td>
                                                 <td><?php echo $row['listar']; ?></td>
+                                                <td><?php echo $row['controle_folga']; ?></td>
                                                 <td>
                                                     <i onclick="edita(this.id)" id="<?php echo $row['id']; ?>" class="material-icons">mode_edit</i>
                                                     </td>

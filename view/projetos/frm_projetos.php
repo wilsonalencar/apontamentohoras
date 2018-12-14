@@ -50,7 +50,7 @@
                                 <br/>
                             </div>
                             
-                                <div id="test1" class="col s12">
+                                <div id="test1" class="col s10">
                                     <form class="col s12" action="projetos.php" method="post" name="cad_projetos" id="cad_projetos">
                                       <div class="row">
                                         <div class="col s6">
@@ -60,12 +60,19 @@
                                               <?php $cliente->montaSelect(); ?>
                                             </select>
                                         </div>
-                                         <div class="col s6">
+                                         <div class="col s3">
                                             <label>Listar ?</label><br>
                                             <input type="radio" checked id="listar_s" name="listar" value="S"/>
                                             <label for="listar_s">Sim</label>
                                             <input type="radio" id="listar_n" name="listar" value="N" />
                                             <label for="listar_n">Não</label>
+                                        </div>
+                                        <div class="col s3">
+                                            <label>Controle de Folgas ?</label><br>
+                                            <input type="radio" id="controle_folg_s" name="controle_folga" value="S"/>
+                                            <label for="controle_folg_s">Sim</label>
+                                            <input type="radio" checked id="controle_folg_n" name="controle_folga" value="N" />
+                                            <label for="controle_folg_n">Não</label>
                                         </div>
                                      </div>    
 

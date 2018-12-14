@@ -352,7 +352,12 @@
                                     <li>
                                         <a class="active-menu" href="<?php echo app::dominio; ?>projetoapontamentos.php" >Liberar Apontamento</a>
                                     </li>
-                                <?php } }?> 
+                                <?php } }?>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::PERFIL_ADMIN)){ ?> 
+                                    <li>
+                                        <a class="active-menu" href="<?php echo app::dominio; ?>fechamentoapontamentos.php" >Fechamento Apontamento</a>
+                                    </li>
+                                <?php }?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>acompanhamento_projetos.php" >Acompanhamento</a>
                                 </li>
@@ -394,6 +399,14 @@
                                         <a class="active-menu" href="<?php echo app::dominio; ?>rlt_apontamento.php" >Apontamento</a>
                                     </li>
                                 <?php } ?>
+                                <li>
+                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_bancohorasrecurso.php" >Banco de Horas Por Recurso </a>
+                                </li>
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::PERFIL_ADMIN || $funcConst::PERFIL_GERENTEPROJETOSADM )){ ?> 
+                                    <li>
+                                        <a class="active-menu" href="<?php echo app::dominio; ?>rlt_bancohorasconsolidado.php" >Banco Horas Consolidado </a>
+                                    </li>
+                                <?php }?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_despProjRec.php" >Despesas</a>
                                 </li>
