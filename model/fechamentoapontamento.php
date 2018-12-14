@@ -192,14 +192,14 @@ class fechamentoapontamento extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 
-       	$sql = "SELECT A.* FROM projetohoras A INNER JOIN projetos B ON A.id_projeto = B.id WHERE B.controle_folga = 'S' AND DATE_FORMAT(A.Data_apontamento, '%m/%Y') = '".$this->periodo."' AND A.id_funcionario= ".$this->id_funcionario;
+       	$sql = "SELECT A.* FROM projetohoras A INNER JOIN projetos B ON A.id_projeto = B.id WHERE B.controle_folga = 'S' AND DATE_FORMAT(A.Data_apontamento, '%m/%Y') = '".$this->periodo_busca."' AND A.id_funcionario= ".$this->id_funcionario;
 
        	if (!$result = $conn->query($sql)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
 		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
-			$this->frontTimes['folgas'] = $array['Qtd_hrs_real'];
+			$this->frontTimes['folgas'] += $array['Qtd_hrs_real'];
 		}
 	}
 
