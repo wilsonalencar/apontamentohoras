@@ -40,14 +40,16 @@ class fechamentoapontamento extends app
 			return false;
 		}
 
-		foreach ($this->arrayHoras as $key => $value) {
-			
-			$query = sprintf("INSERT INTO saldobancohoras (id_funcionario, periodo, saldo_atual)
-			VALUES (%d,'%s','%s')", $key, $this->periodo, $value);	
+		if (!empty($this->arrayHoras)) {
+			foreach ($this->arrayHoras as $key => $value) {
+				
+				$query = sprintf("INSERT INTO saldobancohoras (id_funcionario, periodo, saldo_atual)
+				VALUES (%d,'%s','%s')", $key, $this->periodo, $value);	
 
-			if (!$conn->query($query)) {
-				$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-				return false;	
+				if (!$conn->query($query)) {
+					$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+					return false;	
+				}
 			}
 		}
 	
@@ -179,11 +181,13 @@ class fechamentoapontamento extends app
 			$dados[] = $array;	
 		}
 
-		foreach ($dados as $id => $registro) {
-			$arrayHorasReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
-		}
+		if (!empty($dados)) {
+			foreach ($dados as $id => $registro) {
+				$arrayHorasReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
+			}
 
-		$this->arrayHoras = $arrayHorasReturn;
+			$this->arrayHoras = $arrayHorasReturn;
+		}
 
 		$this->CalcFolga();
 	}
@@ -217,11 +221,13 @@ class fechamentoapontamento extends app
 			$dados[] = $array;	
 		}
 
-		foreach ($dados as $id => $registro) {
-			$arrayFolgaReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
-		}
+		if (!empty($dados)) {
+			foreach ($dados as $id => $registro) {
+				$arrayFolgaReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
+			}
 
-		$this->arrayFolga = $arrayFolgaReturn;
+			$this->arrayFolga = $arrayFolgaReturn;
+		}
 
 		$this->CalcSaldoAtual();
 	}
@@ -245,14 +251,16 @@ class fechamentoapontamento extends app
 		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
 			$dados[] = $array;	
 		}	
-		
-		foreach ($dados as $x => $k) {
-			$this->arrayPassado[$k['id_funcionario']] = $k['saldo_atual'];
-		}
 
-		foreach ($this->arrayHoras as $id_funcionario => $horas) {
-			$this->arrayHoras[$id_funcionario] += $this->arrayPassado[$id_funcionario];
-			$this->arrayHoras[$id_funcionario] -= $this->arrayFolga[$id_funcionario];
+		if (!empty($dados)) {
+			foreach ($dados as $x => $k) {
+				$this->arrayPassado[$k['id_funcionario']] = $k['saldo_atual'];
+			}
+
+			foreach ($this->arrayHoras as $id_funcionario => $horas) {
+				$this->arrayHoras[$id_funcionario] += $this->arrayPassado[$id_funcionario];
+				$this->arrayHoras[$id_funcionario] -= $this->arrayFolga[$id_funcionario];
+			}
 		}
 	}
 
