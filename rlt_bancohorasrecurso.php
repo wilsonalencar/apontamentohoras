@@ -69,6 +69,7 @@
                   </div>
               </div>
             </div>
+            <?php if (!empty($apontamento->arrayBanco) || !empty($apontamento->arrayFolga)) { ?>
             <div class="row">
               <div class="col-md-12">
                 <div id="test1" class="col s12">
@@ -155,6 +156,7 @@
                 </div>
               </div>
             </div>
+            <?php } ?>
           </div>
         </div>
 

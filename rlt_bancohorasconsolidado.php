@@ -29,18 +29,18 @@
                         <thead>
                             <tr>
                                 <th>Colaborador</th>
-                                <th>JAN/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>FEV/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>MAR/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>ABR/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>MAI/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>JUN/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>JUL/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>AGO/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>SET/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>OUT/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>NOV/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
-                                <th>DEZ/<?php echo substr($fechamentoapontamento->data, 2); ?></th>
+                                <th>JAN/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>FEV/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>MAR/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>ABR/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>MAI/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>JUN/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>JUL/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>AGO/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>SET/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>OUT/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>NOV/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
+                                <th>DEZ/<?php echo substr(@$fechamentoapontamento->data, 2); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,36 +53,36 @@
 
                                 <tr class="odd gradeX">
                                     <td><?php echo $dados['nomefuncionario']; ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['01']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['02']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['03']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['04']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['05']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['06']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['07']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['08']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['09']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['10']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['11']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $dados['horas']['12']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['01']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['02']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['03']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['04']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['05']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['06']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['07']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['08']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['09']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['10']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['11']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$dados['horas']['12']); ?></td>
                                 </tr>
 
                                 <?php } } ?>
 
                                   <tr> 
                                     <th>TOTAIS : </th>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['01']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['02']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['03']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['04']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['05']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['06']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['07']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['08']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['09']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['10']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['11']); ?></td>
-                                    <td><?php echo str_replace('.', ',', $fechamentoapontamento->array['totais']['12']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['01']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['02']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['03']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['04']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['05']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['06']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['07']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['08']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['09']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['10']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['11']); ?></td>
+                                    <td><?php echo str_replace('.', ',', @$fechamentoapontamento->array['totais']['12']); ?></td>
                                   </tr>
                                 <?php } ?>
                            </tbody>

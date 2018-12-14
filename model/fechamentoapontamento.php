@@ -57,14 +57,16 @@ class fechamentoapontamento extends app
 
 	public function getFrontTimes()
 	{
-		$this->frontTimes['saldo_inicial'] = '00:00';
-		$this->frontTimes['horas_banco'] = '00:00';
-		$this->frontTimes['folgas'] = '00:00';
-		$this->frontTimes['saldo_final'] = '00:00';
+		$this->frontTimes['saldo_inicial'] = '0';
+		$this->frontTimes['horas_banco'] = '0';
+		$this->frontTimes['folgas'] = '0';
+		$this->frontTimes['saldo_final'] = '0';
 
-		if (!empty($this->id_funcionario)) {
+		if (!empty($this->id_funcionario) && !empty($this->periodo_busca)) {
 			$this->CalcSaldoInicial();
 			$this->CalcHorasBanco();
+			$this->CalcFolgaFuncionario();
+			$this->CalcSaldoAtualFuncionario();
 		}
 	}
 
@@ -72,7 +74,7 @@ class fechamentoapontamento extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 
-       	$query = "SELECT A.Qtd_hrs_real FROM projetohoras A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.tipo_horas = 'B' AND B.controle_folga = 'N' AND DATE_FORMAT(A.Data_apontamento, '%m/%Y') = '".$this->periodo."'";
+       	$query = "SELECT SUM(A.Qtd_hrs_real) as horas FROM projetohoras A INNER JOIN projetos B ON A.id_projeto = B.id WHERE A.tipo_horas = 'B' AND B.controle_folga = 'N' AND DATE_FORMAT(A.Data_apontamento, '%m/%Y') = '".$this->periodo_busca."' AND A.id_funcionario= ".$this->id_funcionario;
 
        	if (!$result = $conn->query($query)) {
 			$this->msg = " Ocorreu um erro, contate o administrador do sistema!";
@@ -80,9 +82,9 @@ class fechamentoapontamento extends app
 		}
 
 		$checkn = $result->fetch_array(MYSQLI_ASSOC);
-
+		
 		if (!empty($checkn)) {
-			$this->frontTimes['horas_banco'] = $checkn['saldo_atual'];
+			$this->frontTimes['horas_banco'] += $checkn['horas'];
 		}
 	}
 
@@ -90,7 +92,12 @@ class fechamentoapontamento extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 
-		$query = "SELECT A.saldo_atual FROM saldobancohoras A WHERE left(A.periodo, 2) ='".substr($this->periodo_busca, -7, 2)."' - 1";
+		$var = '01/'.$this->periodo_busca;
+		$date = str_replace('/', '-', $var);
+		$data = date('Y-m-d', strtotime($date));
+		$timestamp = strtotime('-1 month', strtotime($data));
+		$periodo = date("m/Y",$timestamp);
+		$query = "SELECT A.saldo_atual FROM saldobancohoras A WHERE A.periodo ='".$periodo."' AND A.id_funcionario= ".$this->id_funcionario;
 
 		if (!$result = $conn->query($query)) {
 			$this->msg = " Ocorreu um erro, contate o administrador do sistema!";
@@ -181,6 +188,21 @@ class fechamentoapontamento extends app
 		$this->CalcFolga();
 	}
 
+	public function CalcFolgaFuncionario()
+	{
+		$conn = $this->getDB->mysqli_connection;
+
+       	$sql = "SELECT A.* FROM projetohoras A INNER JOIN projetos B ON A.id_projeto = B.id WHERE B.controle_folga = 'S' AND DATE_FORMAT(A.Data_apontamento, '%m/%Y') = '".$this->periodo."' AND A.id_funcionario= ".$this->id_funcionario;
+
+       	if (!$result = $conn->query($sql)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
+		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
+			$this->frontTimes['folgas'] = $array['Qtd_hrs_real'];
+		}
+	}
+
 	public function CalcFolga()
 	{
 		$conn = $this->getDB->mysqli_connection;
@@ -234,6 +256,12 @@ class fechamentoapontamento extends app
 		}
 	}
 
+
+	public function CalcSaldoAtualFuncionario()
+	{
+		$this->frontTimes['saldo_final'] = $this->frontTimes['saldo_inicial'] + $this->frontTimes['horas_banco'] - $this->frontTimes['folgas'];
+	}
+
 	public function relatorioFunc()
 	{
 		$conn = $this->getDB->mysqli_connection;
@@ -252,7 +280,7 @@ class fechamentoapontamento extends app
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
-			return false;	
+			return false;
 		}
 
 		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -261,6 +289,9 @@ class fechamentoapontamento extends app
 
 		if (!empty($dados)) {
 			foreach ($dados as $x => $k) {
+				if (empty($this->array['totais'][substr($k['data'], 0,2)])) {
+					$this->array['totais'][substr($k['data'], 0,2)] = 0;
+				}
 				$this->array[$k['id_funcionario']]['nomefuncionario'] = $k['nomefuncionario'];
 				$this->array[$k['id_funcionario']]['horas'][substr($k['data'], 0,2)] = $k['qtd_hrs'];
 				$this->array['totais'][substr($k['data'], 0,2)] += $k['qtd_hrs'];
