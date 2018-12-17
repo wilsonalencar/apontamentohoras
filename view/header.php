@@ -31,7 +31,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="index.php">
+                    <a class="navbar-brand waves-effect waves-dark" href="<?php echo app::dominio_platform; ?>">
                         <img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">
                     </a>
 
