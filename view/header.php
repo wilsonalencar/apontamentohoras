@@ -31,7 +31,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand waves-effect waves-dark" href="<?php echo app::dominio_platform; ?>">
+                    <a class="navbar-brand waves-effect waves-dark" href="/login.php">
                         <img src="<?php echo app::dominio; ?>view/assets/img/bravo-icon.png">
                     </a>
 
@@ -45,9 +45,9 @@
             </nav>
     		<!-- Dropdown Structure -->
     <ul id="dropdown1" class="dropdown-content">
-        <li><a href="<?php echo app::dominio_platform; ?>login.php"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+        <li><a href="/login.php?logout=true"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
         </li>
-        <li><a href="<?php echo app::dominio_platform; ?>"><i class="fa fa-sign-in fa-fw"></i> Plataforma</a>
+        <li><a href="/login.php"><i class="fa fa-sign-in fa-fw"></i> Plataforma</a>
         </li>
     </ul>
     <ul id="dropdown2" class="dropdown-content w250">

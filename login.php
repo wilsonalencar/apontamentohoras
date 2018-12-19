@@ -5,6 +5,7 @@ $usuario = new usuario;
 $usuario->email = $usuario->getRequest('login', '');
 $usuario->senha = md5($usuario->getRequest('senha', ''));
 $msg = '';
+$logout = $usuario->getRequest('logout', false);;
 
 if (!empty($_POST)) {
 	$success = $usuario->login();
@@ -16,8 +17,14 @@ if (!empty($_POST)) {
 	}	
 }
 
-if (isset($_SESSION) && !empty($_SESSION)) {
+if (isset($_SESSION) && !empty($_SESSION) && !$logout) {
 	@session_destroy();
+	header('LOCATION:'.app::dominio_platform);
+}
+
+if (isset($_SESSION) && !empty($_SESSION) && $logout) {
+	@session_destroy();
+	header('LOCATION:'.app::dominio_platform.'login.php');
 }
 
 require_once('view/frm_login.php');
