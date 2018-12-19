@@ -89,7 +89,7 @@ class fechamentoapontamento extends app
 			if (!isset($this->frontTimes['horas_banco'])) {
 				$this->frontTimes['horas_banco'] = 0;
 			}
-			$this->frontTimes['horas_banco'] += $checkn['horas'];
+			@$this->frontTimes['horas_banco'] += $checkn['horas'];
 		}
 	}
 
@@ -189,7 +189,7 @@ class fechamentoapontamento extends app
 				if (!isset($arrayHorasReturn[$registro['id_funcionario']])) {
 					$arrayHorasReturn[$registro['id_funcionario']] = 0;
 				}
-				$arrayHorasReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
+				@$arrayHorasReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
 			}
 
 			$this->arrayHoras = $arrayHorasReturn;
@@ -212,7 +212,7 @@ class fechamentoapontamento extends app
 			if (!isset($this->frontTimes['folgas'])) {
 				$this->frontTimes['folgas'] = 0;
 			}
-			$this->frontTimes['folgas'] += $array['Qtd_hrs_real'];
+			@$this->frontTimes['folgas'] += $array['Qtd_hrs_real'];
 		}
 	}
 
@@ -235,7 +235,7 @@ class fechamentoapontamento extends app
 				if (!isset($arrayFolgaReturn[$registro['id_funcionario']])) {
 					$arrayFolgaReturn[$registro['id_funcionario']] = 0;
 				}
-				$arrayFolgaReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
+				@$arrayFolgaReturn[$registro['id_funcionario']] += $registro['Qtd_hrs_real']; 
 			}
 
 			$this->arrayFolga = $arrayFolgaReturn;
@@ -273,8 +273,8 @@ class fechamentoapontamento extends app
 				if (!isset($this->arrayHoras[$id_funcionario])) {
 					$this->arrayHoras[$id_funcionario] = 0;
 				}
-				$this->arrayHoras[$id_funcionario] += $this->arrayPassado[$id_funcionario];
-				$this->arrayHoras[$id_funcionario] -= $this->arrayFolga[$id_funcionario];
+				@$this->arrayHoras[$id_funcionario] += $this->arrayPassado[$id_funcionario];
+				@$this->arrayHoras[$id_funcionario] -= $this->arrayFolga[$id_funcionario];
 			}
 		}
 	}
@@ -320,7 +320,7 @@ class fechamentoapontamento extends app
 				if (!isset($this->array['totais'][substr($k['data'], 0,2)])) {
 					$this->array['totais'][substr($k['data'], 0,2)] = 0;
 				}
-				$this->array['totais'][substr($k['data'], 0,2)] += $k['qtd_hrs'];
+				@$this->array['totais'][substr($k['data'], 0,2)] += $k['qtd_hrs'];
 			}
 		}
 	}	
