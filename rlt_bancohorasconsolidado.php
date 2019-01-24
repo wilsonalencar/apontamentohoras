@@ -3,6 +3,16 @@
     $fechamentoapontamento = new fechamentoapontamento;
     $fechamentoapontamento->data = $fechamentoapontamento->getRequest('data', '');
     $fechamentoapontamento->relatorioFunc();
+
+    if(count($fechamentoapontamento->array) < 1)
+    {
+      $resultados = 0;
+    }
+    else
+    {
+      $resultados = count($fechamentoapontamento->array) - 1;
+    }
+
     require_once(app::path.'view/header.php');
 ?>
 <div id="page-wrapper">
@@ -23,7 +33,20 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-content">
-            <a href="#" data-toggle="modal" data-target="#ModalPesquisa">Selecione um ano para geração do relatório</a><br><br>
+            <a href="#" data-toggle="modal" data-target="#ModalPesquisa">Selecione um ano para geração do relatório</a>
+            <br>
+            
+            <?php if(isset($_GET['data'])){ ?>
+
+              <br>
+
+              Resultados encontrados: <?=$resultados?>
+
+              <br>
+
+            <?php } ?>
+
+            <br>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover" id="dataTables-example" style="display: none">
                         <thead>

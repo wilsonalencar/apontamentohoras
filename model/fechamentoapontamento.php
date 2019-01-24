@@ -289,17 +289,16 @@ class fechamentoapontamento extends app
 	{
 		$conn = $this->getDB->mysqli_connection;
 
-		$query = "SELECT 
-					B.nome as nomefuncionario,
-					A.id_funcionario,
-					A.periodo as data,
-					A.saldo_atual as qtd_hrs
-				FROM 
-					saldobancohoras A
-				INNER JOIN 
-					funcionarios B on A.id_funcionario = B.id
-				WHERE 
-					right(A.periodo, 4) =".$this->data.' order by B.nome asc';		
+		$query = 'SELECT
+					  funcionarios.nome as nomefuncionario,
+					  saldobancohoras.id_funcionario,
+					  saldobancohoras.periodo as data,
+					  saldobancohoras.saldo_atual as qtd_hrs
+				  FROM acessobancohoras
+				  LEFT JOIN saldobancohoras ON saldobancohoras.id_funcionario = acessobancohoras.funcionario_id
+				  LEFT JOIN funcionarios ON funcionarios.id = acessobancohoras.funcionario_id
+				  WHERE right(saldobancohoras.periodo, 4) = '.$this->data.'
+				  ORDER BY funcionarios.nome DESC';
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
