@@ -27,6 +27,7 @@ class funcionalidadeConst
 	const perfil_aprovacao			 	= 12;
 	const perfil_relatorios			 	= 13;
 	const perfil_cria_apontamentos 		= 14;
+	const perfil_cria_bancodehoras		= 15;
 	const ADMIN						 	= 1;
 	const GERENTE						= 2;
 

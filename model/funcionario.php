@@ -601,6 +601,22 @@ class funcionario extends app
 		return true;	
 	}
 
+	public function verify_acesso_banco_horas()
+	{
+		$conn = $this->getDB->mysqli_connection;
+		$query = 'SELECT * FROM acessobancohoras WHERE funcionario_id = '.$_SESSION['id_funcionario'];
+		$execute = $conn->query($query);
+
+		if($_SESSION['id_perfilusuario'] != 1)
+		{
+			if(mysqli_num_rows($execute) < 1)
+			{
+				session_destroy();
+				header("LOCATION:index.php");
+			}
+		}
+	}
+
 }
 
 ?>

@@ -353,6 +353,13 @@
                                         <a class="active-menu" href="<?php echo app::dominio; ?>projetoapontamentos.php" >Liberar Apontamento</a>
                                     </li>
                                 <?php } }?>
+
+                                <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_cria_bancodehoras)){ ?>
+                                    <li>
+                                        <a class="active-menu" href="<?php echo app::dominio; ?>projetobancodehoras.php" >Liberar Banco de Horas</a>
+                                    </li>
+                                <?php } ?>
+
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::PERFIL_ADMIN)){ ?> 
                                     <li>
                                         <a class="active-menu" href="<?php echo app::dominio; ?>fechamentoapontamentos.php" >Fechamento Apontamento</a>

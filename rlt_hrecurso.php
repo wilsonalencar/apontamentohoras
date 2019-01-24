@@ -5,6 +5,7 @@
     $funcionario->data_busca_ini = $funcionario->getRequest('data_busca_ini', 0);
     $funcionario->data_busca_fim = $funcionario->getRequest('data_busca_fim', 0);
     $funcionario->relatorioFunc();
+    $funcionario->verify_acesso_banco_horas();
     require_once(app::path.'view/header.php');
 ?>
 <div id="page-wrapper">
