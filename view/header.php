@@ -384,7 +384,7 @@
                         </li>
                         <?php } ?>
 
-                        <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios) || in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM))){ ?>
+                        <?php if (($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios) || in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM))) || ($app->checkAccessRelatorio($_SESSION['id_funcionario'])) ){ ?>
                         <li>
                             <a href="#" class="active-menu"><i class="fa fa-list"></i> Relatórios<span class="fa arrow"></span></a><!-- reorder -->
                             <ul class="nav nav-second-level">
@@ -394,29 +394,37 @@
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hpilar.php" >Horas por pilares</a>
                                 </li>
                                 <?php } ?>
+                                <?php if($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios) || in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM))) { ?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hrecurso.php" >Horas por recursos</a>
                                 </li>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_hprojeto.php" >Horas por projetos</a>
                                 </li>
+                                <?php } ?>
                                 <?php
                                  if (!in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM, $funcConst::PERFIL_GERENTEPROJETOS))){ ?>
                                     <li>
                                         <a class="active-menu" href="<?php echo app::dominio; ?>rlt_apontamento.php" >Apontamento</a>
                                     </li>
                                 <?php } ?>
-                                <li>
-                                    <a class="active-menu" href="<?php echo app::dominio; ?>rlt_bancohorasrecurso.php" >Banco de Horas Por Recurso </a>
-                                </li>
+
+                                <?php if ($app->checkAccessRelatorio($_SESSION['id_funcionario'])) { ?>
+                                    <li>
+                                        <a class="active-menu" href="<?php echo app::dominio; ?>rlt_bancohorasrecurso.php" >Banco de Horas Por Recurso </a>
+                                    </li>
+                                <?php } ?>
+                                
                                 <?php if ($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::PERFIL_ADMIN || $funcConst::PERFIL_GERENTEPROJETOSADM )){ ?> 
                                     <li>
                                         <a class="active-menu" href="<?php echo app::dominio; ?>rlt_bancohorasconsolidado.php" >Banco Horas Consolidado </a>
                                     </li>
                                 <?php }?>
+                                <?php if($app->checkAccess($_SESSION['id_perfilusuario'], $funcConst::perfil_relatorios) || in_array($_SESSION['id_perfilusuario'], array($funcConst::PERFIL_RECURSO, $funcConst::PERFIL_GERENTEPROJETOS, $funcConst::PERFIL_FINANCEIRO, $funcConst::PERFIL_GERENTEPROJETOSADM))) { ?>
                                 <li>
                                     <a class="active-menu" href="<?php echo app::dominio; ?>rlt_despProjRec.php" >Despesas</a>
                                 </li>
+                                <?php }?>
                                 
                             </ul>
                         </li>

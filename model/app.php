@@ -70,6 +70,24 @@ class app extends config
 		return false;
 	}
 
+	public function checkAccessRelatorio($funcionario)
+	{	
+		$conn = $this->getDB->mysqli_connection;		
+		$query = sprintf("SELECT count(1) as acesso FROM acessobancohoras where funcionario_id = %d", $funcionario);	
+		
+		if (!$result = $conn->query($query)) {
+			$this->msg = "Ocorreu um erro durante a verificação do perfil";
+			return false;	
+		}		
+		
+		$return = $result->fetch_array(MYSQLI_ASSOC);
+		if ( (int) $return['acesso'] > 0) {
+			return true;	
+		}
+
+		return false;
+	}
+
 	public function validaCPF( $cpf = false ) 
 	{
 	    if ( ! function_exists('calc_digitos_posicoes') ) {

@@ -62,7 +62,7 @@ class ProjetoBancoDeHora extends app
 	public function funcionarios()
 	{
 		$conn = $this->getDB->mysqli_connection;
-		$query = "SELECT * FROM funcionarios";
+		$query = "SELECT * FROM funcionarios ORDER BY nome ASC";
 		$execute = $conn->query($query);
 		$array = [];
 
