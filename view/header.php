@@ -409,7 +409,7 @@
                                     </li>
                                 <?php } ?>
 
-                                <?php if ($app->checkAccessRelatorio($_SESSION['id_funcionario'])) { ?>
+                                <?php if ($app->checkAccessRelatorio($_SESSION['id_funcionario']) || $_SESSION['id_perfilusuario'] == $funcConst::PERFIL_ADMIN) { ?>
                                     <li>
                                         <a class="active-menu" href="<?php echo app::dominio; ?>rlt_bancohorasrecurso.php" >Banco de Horas Por Recurso </a>
                                     </li>
