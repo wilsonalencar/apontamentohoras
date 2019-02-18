@@ -260,9 +260,52 @@ class apontamento extends app
 		return $this->insert();
 	}
 
+	public function calcHours()
+	{
+		$tempo_1 = $this->calcPeriodo($this->Entrada_1, $this->Saida_1);
+		
+		$tempo_2 = '00:00:00';
+		if (!empty($this->Entrada_2) && !empty($this->Saida_2)) {
+			$tempo_2 = $this->calcPeriodo($this->Entrada_2, $this->Saida_2);
+		}
+
+		$explode_1 = explode(':', $tempo_1);
+		$explode_2 = explode(':', $tempo_2);
+		
+		$sum_1 = $explode_1[0] + $explode_2[0];
+		$sum_2 = $explode_1[1] + $explode_2[1];
+		
+		while ($sum_2 >= 60) {
+			$sum_2 = $sum_2 - 60;
+			$sum_1 = $sum_1 + 1;
+		}
+
+		$this->Qtd_hrs_real = $sum_1.':'.$sum_2;
+	}
+
+	private function calcPeriodo($value1, $value2)
+	{
+		$entrada = $value1.':00';
+		$saida = $value2.':00';
+		$hora1 = explode(":",$entrada);
+		$hora2 = explode(":",$saida);
+		$acumulador1 = ($hora1[0] * 3600) + ($hora1[1] * 60) + $hora1[2];
+		$acumulador2 = ($hora2[0] * 3600) + ($hora2[1] * 60) + $hora2[2];
+		$resultado = $acumulador2 - $acumulador1;
+		$hora_ponto = floor($resultado / 3600);
+		$resultado = $resultado - ($hora_ponto * 3600);
+		$min_ponto = floor($resultado / 60);
+		$resultado = $resultado - ($min_ponto * 60);
+		$secs_ponto = $resultado;
+		$tempo = $hora_ponto.":".$min_ponto.":".$secs_ponto;
+		return $tempo;
+	}
+
 	public function editApontamento()
 	{
 		$var = explode(':', $this->Qtd_hrs_real);
+
+		$this->calcHours();
 		$this->Qtd_hrs_real = '';
 		foreach ($var as $value) {
 			$this->Qtd_hrs_real .= '.'.$value;
@@ -338,7 +381,8 @@ class apontamento extends app
 	public function insert()
 	{	
 		$conn = $this->getDB->mysqli_connection;
-		
+		$this->calcHours();
+
 		$var = explode(':', $this->Qtd_hrs_real);
 		$this->Qtd_hrs_real = '';
 		foreach ($var as $value) {
