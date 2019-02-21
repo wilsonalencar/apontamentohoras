@@ -146,7 +146,7 @@ class fechamentoapontamento extends app
 		$ano = $explode[1];
 		if ($mes == 0) {
 			$ano = $ano-1;
-			$mes = 1;
+			$mes = 12;
 		}
 		$periodo_anterior = $mes.'/'.$ano;
 		if (strlen($mes) == 1) {
@@ -283,12 +283,18 @@ class fechamentoapontamento extends app
 		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
 			$dados[] = $array;	
 		}	
-
 		if (!empty($dados)) {
 			foreach ($dados as $x => $k) {
 				$this->arrayPassado[$k['id_funcionario']] = $k['saldo_atual'];
 			}
 
+			if (!empty($this->arrayPassado)) {
+				foreach ($this->arrayPassado as $funcionarioid => $past) {
+					if (!isset($this->arrayHoras[$funcionarioid])) {
+						$this->arrayHoras[$funcionarioid] = 0;
+					}
+				}
+			}
 			foreach ($this->arrayHoras as $id_funcionario => $horas) {
 				if (!isset($this->arrayHoras[$id_funcionario])) {
 					$this->arrayHoras[$id_funcionario] = 0;
