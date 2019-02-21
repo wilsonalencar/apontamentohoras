@@ -140,9 +140,29 @@ class fechamentoapontamento extends app
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
 		}
+       	
+		$explode = explode('/', $this->periodo);
+		$mes = $explode[0]-1;
+		$ano = $explode[1];
+		if ($mes == 0) {
+			$ano = $ano-1;
+			$mes = 1;
+		}
+		$periodo_anterior = $mes.'/'.$ano;
+		if (strlen($mes) == 1) {
+			$periodo_anterior = '0'.$mes.'/'.$ano;
+		}
+
+       	$query_past = "SELECT * FROM saldobancohoras WHERE periodo ='".$periodo_anterior."'";
+       	if (!$result_past = $conn->query($query_past)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;	
+		}
 
        	$checkn = $result->fetch_array(MYSQLI_ASSOC);
-		if (empty($checkn)) {
+       	$checkn_past = $result_past->fetch_array(MYSQLI_ASSOC);
+       	
+		if (empty($checkn) && empty($checkn_past)) {
 			$this->msg = "Não há horas disponíveis para cálculo!";
 			return false;
 		}
