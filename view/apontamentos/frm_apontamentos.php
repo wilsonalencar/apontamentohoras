@@ -726,7 +726,7 @@ function Calcula_e()
             hour = parseFloat(hour) + parseFloat(f[0]);
 
             diff = hour + ":" + min;
-            $("#Qtd_hrs_real_e").val(diff);
+            $("#Qtd_hrs_real_e").val(timeToDecimal(diff));
             $("#Qtd_hrs_real_exibe_e").attr('placeholder',timeToDecimal(diff));
         }
 }
