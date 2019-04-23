@@ -283,6 +283,8 @@
                                                     </th>
                                                     <th align="center">
                                                     </th>
+                                                    <th align="center">
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -297,14 +299,16 @@
                                                     <th>Vlr. Unit.</th>
                                                     <th>Vlr. Total</th>
                                                     <th>Observações</th>
+                                                    <th>Comprovante</th>
                                                     <th>Status</th>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
-                                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas">
+                                                    <form class="col s12" id="projetodespesas" action="projetodespesas.php" method="post" name="projetodespesas" enctype="multipart/form-data">
                                                     <input type="hidden" name="periodo_busca" value="<?php echo $periodo_busca; ?>">
                                                     <input type="hidden" name="funcionario" value="<?php echo $id_funcionario; ?>">
-                                                    <td>
+                                                    <input type="hidden" name="excluir_anexo" value="0">
+                                                    <td style="width: 10%">
                                                         <select name="id_projeto" class="form-control">
                                                           <option value="">Selecione um Projeto</option>
                                                             <?php $projeto->montaSelect(0, false, $apontamento->id_funcionario); ?>
@@ -334,7 +338,7 @@
                                                             <?php $tipodespesa->montaSelect(); ?>
                                                         </select> 
                                                     </td>
-                                                    <td>
+                                                    <td width="10%">
                                                         <input type="text" id="Num_doc" name="Num_doc" class="validate" maxlength="7">
                                                     </td>
                                                     <td>
@@ -344,17 +348,20 @@
                                                         <label for="reembolso_n">Não</label>
                                                     </td>
 
-                                                    <td width="5%">
+                                                    <td width="2%">
                                                         <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
                                                     </td>
-                                                    <td width="10%">
+                                                    <td width="8%">
                                                         <input type="text" onkeypress="moeda(this)" id="Vlr_unit" name="Vlr_unit" class="validate" maxlength="255">
                                                     </td>
-                                                    <td width="10%">
+                                                    <td width="8%">
                                                         <input type="text" id="vl_total_qtd" readonly="true" maxlength="255">
                                                     </td>
                                                     <td width="10%">
                                                         <input type="text" name="observacao" id="observacao" maxlength="255">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type='file' name='comprovante' id='comprovante' style="width: 10%">
                                                     </td>
                                                     <td>
                                                     <input type="hidden" name="action" value="5">
@@ -391,6 +398,20 @@
                                                         <?php } ?>
                                                         <a onclick="EditObservacaoModal('<?php echo $row['observacao'];?>','<?php echo $row['id'];?>')">Editar</a>
                                                         </td>
+                                                        <td> <?php 
+                                                      if (!empty($row['id'])) { 
+
+                                                         $pasta = app::path.'files/comprovantes';
+                                                         if (is_dir($pasta)) {
+                                                            $diretorio = dir($pasta);
+                                                            while($arquivo = $diretorio -> read()){
+                                                               if ($row['id'] == preg_replace("/[^0-9]/", "", $arquivo)) {
+                                                                  echo "<a href='".app::dominio.'files/comprovantes/'.$arquivo."' target='_blank'>Visualizar </a>";
+                                                               }
+                                                            }
+                                                         }
+                                                      } 
+                                                   ?></td>
                                                         <td><?php echo $row['Aprovado']; ?></td>
                                                         <td style="width: 5%">
                                                         <?php if ($row['Aprovado'] != 'Aprovado') { ?>

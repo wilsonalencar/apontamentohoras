@@ -13,6 +13,7 @@ class projetodespesa extends app
 	public $Num_doc;
 	public $Qtd_despesa;
 	public $Vlr_unit;
+	public $fileCP;
 	public $Vlr_total;
 	public $data_busca_ini;
 	public $reembolso;
@@ -177,6 +178,7 @@ class projetodespesa extends app
 	public function insert()
 	{
 		$conn = $this->getDB->mysqli_connection;
+		$conn->autocommit(FALSE);
 		$query = sprintf(" INSERT INTO projetodespesas (id_projeto, id_funcionario, Data_despesa, id_tipodespesa, Num_doc, Qtd_despesa, Vlr_unit, Vlr_total, reembolso, observacao, usuario)
 		VALUES (%d, %d, '%s', %d, '%s', %d, '%s', '%s', '%s', '%s', '%s')", 
 			$this->id_projeto, $this->id_funcionario, $this->Data_despesa, $this->id_tipodespesa, $this->Num_doc, $this->Qtd_despesa, $this->Vlr_unit, $this->Vlr_total, $this->reembolso, $this->observacao, $_SESSION['email']);	
@@ -184,10 +186,26 @@ class projetodespesa extends app
 		if (!$conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;	
+
 		}
+	
+		if (!empty($this->fileCP)) {
+			$an = new anexo;
+			$an->file = $this->fileCP;
+			$an->path = 'comprovantes';
+			$an->name = $conn->insert_id;
+			$an->typeFile = $an::FILE_CP;
+
+			if (!$an->insert()) {
+				$this->msg = 'Ocorreu um erro ao inserir o comprovante '. $an->msg;
+				return false;
+			}
+		}
+
 		$inmail = $this->carregaHoras($conn->insert_id);
 		$this->mailPendente($inmail['email'], $inmail['emailAprovador'], $inmail['nomeFuncionario'], $inmail['id_projeto'], $inmail['nomeCliente'], $inmail['codProposta']);
 
+		$conn->commit();
 		$this->msg = "Registros inseridos com sucesso!";
 		return true;
 	}

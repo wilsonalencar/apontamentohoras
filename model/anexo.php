@@ -13,9 +13,11 @@ class anexo extends app
 
 	private $dir = 'files/';
 	private $typesCV = array('application/pdf','text/pdf');
+	private $typesCP = array('application/pdf','text/pdf', 'doc', 'docx');
 	private $permissionSize = 1024 * 1000;
 
 	const FILE_CV = 'cv';
+	const FILE_CP = 'cp';
 	const FILE_PROJETO = 'pj';
 
 	public function insert()
@@ -43,6 +45,11 @@ class anexo extends app
 		
 		if ($this->typeFile == $this::FILE_CV && !in_array($arqType, $this->typesCV)) {
       		$this->msg = 'Tipo de arquivo inválido - Enviar PDF';
+      		return false;
+	    }
+
+		if ($this->typeFile == $this::FILE_CP && !in_array($arqType, $this->typesCP)) {
+      		$this->msg = 'Tipo de arquivo inválido - Enviar PDF ou DOC';
       		return false;
 	    }
 

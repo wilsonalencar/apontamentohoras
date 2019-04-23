@@ -1,5 +1,6 @@
 <?php
 require_once('model/projetodespesa.php');
+require_once('model/anexo.php');
 
 define('SAVE', 1);
 define('GET', 2);
@@ -22,6 +23,8 @@ $projetodespesa->observacao	  		= $projetodespesa->getRequest('observacao', '');
 $projetodespesa->Vlr_unit			= str_replace(',','.',str_replace('.','',$projetodespesa->getRequest('Vlr_unit', 0)));
 $projetodespesa->Vlr_total			= $projetodespesa->Vlr_unit * $projetodespesa->Qtd_despesa;
 
+//$excluirAnexo 						= $funcionario->getRequest('excluir_anexo');
+$excluirAnexo = 0;
 $id_funcionario = $projetodespesa->getRequest('id_funcionario_ap', 0);
 
 $msg = '';
@@ -58,8 +61,26 @@ if ($action == DEL_APONT) {
 }
 
 if ($action == SAVE_APONT) {
-	$success 		= $projetodespesa->save();
-	$msg     		= $projetodespesa->msg; 
+
+	if ((int)$excluirAnexo) {
+			
+		if (file_exists($_POST['file'])) {
+			unlink($_POST['file']);
+		}
+		
+		$msg = 'Anexo removido com sucesso';
+		$success = true;
+
+	} else {
+
+		if ($_FILES['comprovante']['size'] > 0) {
+			$projetodespesa->fileCP = $_FILES['comprovante'];
+		}
+
+		$success 		= $projetodespesa->save();
+		$msg     		= $projetodespesa->msg; 
+	}
+
 	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
 }
 
