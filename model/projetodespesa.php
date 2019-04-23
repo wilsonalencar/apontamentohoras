@@ -105,6 +105,22 @@ class projetodespesa extends app
 		return true;
 	}
 
+	public function update_anexo($id)
+	{
+		if (!empty($this->fileCP)) {
+			$an = new anexo;
+			$an->file = $this->fileCP;
+			$an->path = 'comprovantes';
+			$an->name = $id;
+			$an->typeFile = $an::FILE_CP;
+
+			if (!$an->insert()) {
+				$this->msg = 'Ocorreu um erro ao inserir o comprovante '. $an->msg;
+				return false;
+			}
+		}
+	}
+
 	public function save()
 	{
 		if (!$this->check()) {

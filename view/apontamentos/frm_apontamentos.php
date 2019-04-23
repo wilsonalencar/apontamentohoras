@@ -87,6 +87,7 @@
                             </div>
 
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodal" data-target="#ModalMotivo"></a>
+                                <a href="#" data-toggle="modal" style="display:none;" id="openmodalAnexo" data-target="#ModalEditAnexo"></a>
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodalObs" data-target="#ModalObservacao"></a>
                                 <a href="#" data-toggle="modal" style="display:none;" id="editmodalObs" data-target="#EditModalObservacao"></a>
                                 <a href="#" data-toggle="modal" style="display:none;" id="openmodaledition" data-target="#ModalEdicao"></a>
@@ -348,7 +349,7 @@
                                                         <label for="reembolso_n">Não</label>
                                                     </td>
 
-                                                    <td width="2%">
+                                                    <td width="4%">
                                                         <input type="number" id="Qtd_despesa" name="Qtd_despesa" class="validate" maxlength="7">
                                                     </td>
                                                     <td width="8%">
@@ -360,8 +361,8 @@
                                                     <td width="10%">
                                                         <input type="text" name="observacao" id="observacao" maxlength="255">
                                                     </td>
-                                                    <td width="10%">
-                                                        <input type='file' name='comprovante' id='comprovante' style="width: 10%">
+                                                    <td width="14%">
+                                                        <input type='file' name='comprovante' id='comprovante' style="width: 100%">
                                                     </td>
                                                     <td>
                                                     <input type="hidden" name="action" value="5">
@@ -406,7 +407,8 @@
                                                             $diretorio = dir($pasta);
                                                             while($arquivo = $diretorio -> read()){
                                                                if ($row['id'] == preg_replace("/[^0-9]/", "", $arquivo)) {
-                                                                  echo "<a href='".app::dominio.'files/comprovantes/'.$arquivo."' target='_blank'>Visualizar </a>";
+                                                                  echo "<a href='".app::dominio.'files/comprovantes/'.$arquivo."' target='_blank'>Visualizar </a> /";
+                                                                  echo "<a onclick='AnexoModal()'> Editar</a>";
                                                                }
                                                             }
                                                          }
@@ -430,6 +432,23 @@
                                     </div>
                                 </div>
                             </div>
+
+        <div id="ModalEditAnexo" class="modal" style="height: 30%">
+            <form action="projetodespesas.php" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title">Novo Documento</h4>
+                </div>    
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="7">
+                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                    <input type='file' name='comprovante' id='comprovante' style="width: 100%">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                    <button type="submit" class="btn btn-success">Atualizar</button>     
+                </div>
+            </form>
+        </div>
 
         <div id="ModalMotivo" class="modal" style="height: 30%">
             <div class="modal-header">
@@ -752,6 +771,10 @@ function Calcula_e()
         }
 }
 
+
+function AnexoModal(string){
+  $("#openmodalAnexo").click();
+}
 
 function MotivosModal(string){
   $("#motivo").html(string);

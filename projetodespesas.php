@@ -8,6 +8,7 @@ define('DEL', 3);
 define('DEL_APONT', 4);
 define('SAVE_APONT', 5);
 define('ALTER_OBS', 6);
+define('ALTER_ANEXO', 7);
 
 $projetodespesa 	= new projetodespesa;
 $projetodespesa->id					= $projetodespesa->getRequest('idDesp', 0);
@@ -86,6 +87,21 @@ if ($action == SAVE_APONT) {
 
 if ($action == ALTER_OBS) {
 	$success 		= $projetodespesa->update_obs();
+	$msg     		= $projetodespesa->msg; 
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
+}
+
+if ($action == ALTER_ANEXO) {
+
+	echo "<pre>";
+	print_r($_POST);
+	exit;
+
+	if ($_FILES['comprovante']['size'] > 0) {
+		$projetodespesa->fileCP = $_FILES['comprovante'];
+	}
+
+	$success 		= $projetodespesa->update_anexo($projetodespesa->id);
 	$msg     		= $projetodespesa->msg; 
 	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
 }
