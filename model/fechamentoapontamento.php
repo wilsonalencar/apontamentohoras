@@ -324,16 +324,43 @@ class fechamentoapontamento extends app
 				  LEFT JOIN saldobancohoras ON saldobancohoras.id_funcionario = acessobancohoras.funcionario_id
 				  LEFT JOIN funcionarios ON funcionarios.id = acessobancohoras.funcionario_id
 				  WHERE right(saldobancohoras.periodo, 4) = '.$this->data.'
-				  ORDER BY funcionarios.nome DESC';
+				  ORDER BY funcionarios.nome ASC';
 		
 		if (!$result = $conn->query($query)) {
 			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
 			return false;
 		}
-
+		
 		while ($array = $result->fetch_array(MYSQLI_ASSOC)) {
 			$dados[] = $array;	
+			$funcionarios[$array['id_funcionario']] = $array['id_funcionario'];
 		}	
+		$funct = implode(',', $funcionarios);
+
+		$query_q = 'SELECT
+					  funcionarios.nome as nomefuncionario,
+					  acessobancohoras.funcionario_id as id_funcionario
+				  FROM acessobancohoras
+				  LEFT JOIN funcionarios ON funcionarios.id = acessobancohoras.funcionario_id
+				  WHERE funcionarios.id NOT IN ('.$funct.')
+				  ORDER BY funcionarios.nome ASC';
+		
+		if (!$result_q = $conn->query($query_q)) {
+			$this->msg = "Ocorreu um erro, contate o administrador do sistema!";
+			return false;
+		}
+
+		while ($array_t = $result_q->fetch_array(MYSQLI_ASSOC)) {
+			$tip[] = $array_t;	
+		}	
+
+		if (!empty($tip)) {
+			foreach ($tip as $x => $tp_s) {
+				$tp_s['data'] = '01/'.$this->data;
+				$tp_s['qtd_hrs'] = '';
+				$dados[] = $tp_s;
+			}
+		}
 
 		if (!empty($dados)) {
 			foreach ($dados as $x => $k) {

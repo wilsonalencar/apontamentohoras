@@ -9,10 +9,19 @@
     
     $fechamentoapontamento->periodo_busca = $fechamentoapontamento->getRequest('periodo_busca', '');
     $fechamentoapontamento->id_funcionario = $fechamentoapontamento->getRequest('id_funcionario', 0);
-    
-    $apontamento->listaFolgas($fechamentoapontamento->periodo_busca, $fechamentoapontamento->id_funcionario);
-    $apontamento->listaBanco($fechamentoapontamento->periodo_busca, $fechamentoapontamento->id_funcionario);
-    $fechamentoapontamento->getFrontTimes();
+    $msg = '';
+    if (!empty($fechamentoapontamento->periodo_busca)) {
+
+        $a = explode('/', $fechamentoapontamento->periodo_busca);
+
+        if (($a[1] < 2019) || ($a[0] < 4 && $a[1] == 2019)) {
+          $msg = 'Não existem dados para consulta';
+        } else {
+          $apontamento->listaFolgas($fechamentoapontamento->periodo_busca, $fechamentoapontamento->id_funcionario);
+          $apontamento->listaBanco($fechamentoapontamento->periodo_busca, $fechamentoapontamento->id_funcionario);
+          $fechamentoapontamento->getFrontTimes();
+        }
+    }
 
     require_once(app::path.'view/header.php');
 ?>
@@ -35,6 +44,13 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="card-action">
+                      <?php
+                      if (!empty($msg)) { 
+                          echo "<div class='alert alert-danger'>
+                                  <strong>ERRO !</strong> $msg
+                                </div>";
+                        }
+                     ?>
                       <div class="col-md-3">
                          <?php if ($_SESSION['id_perfilusuario'] == funcionalidadeConst::ADMIN) { ?>
                           <label for="id_funcionario_busca">Funcionário: </label> 
