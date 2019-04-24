@@ -434,14 +434,32 @@
                             </div>
 
         <div id="ModalEditAnexo" class="modal" style="height: 30%">
-            <form action="projetodespesas.php" method="post">
+            <form action="projetodespesas.php" method="post" enctype="multipart/form-data">
                 <div class="modal-header">
                     <h4 class="modal-title">Novo Documento</h4>
                 </div>    
                 <div class="modal-body">
                     <input type="hidden" name="action" value="7">
-                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
-                    <input type='file' name='comprovante' id='comprovante' style="width: 100%">
+                    <input type="hidden" name="idDesp" value="<?php echo $row['id']; ?>">
+                    <input type="hidden" name="id_projeto" value="<?php echo $row['id_projeto']; ?>">
+                    <input type="hidden" name="id_funcionario" value="<?php echo $id_funcionario; ?>">
+                    <input type="hidden" name="periodo_busca" value="<?php echo $periodo_busca; ?>">
+                    <input type="hidden" name="excluir_anexo" value="1">
+                    <input type='file' name='anexo' id='anexo' style="width: 100%">
+                    <?php
+                    if (!empty($row['id'])) { 
+
+                         $pasta = app::path.'files/comprovantes';
+                         if (is_dir($pasta)) {
+                            $diretorio = dir($pasta);
+                            while($arquivo = $diretorio -> read()){
+                               if ($row['id'] == preg_replace("/[^0-9]/", "", $arquivo)) {
+                                    echo "<input type='hidden' name='file' id='file' value='".$pasta.'/'.$arquivo."'>";
+                               }
+                            }
+                         }
+                      }
+                    ?>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>

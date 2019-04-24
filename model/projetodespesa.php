@@ -119,6 +119,9 @@ class projetodespesa extends app
 				return false;
 			}
 		}
+
+		$this->msg = "Anexo atualizado com sucesso!";
+		return true;
 	}
 
 	public function save()

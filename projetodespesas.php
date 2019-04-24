@@ -24,8 +24,8 @@ $projetodespesa->observacao	  		= $projetodespesa->getRequest('observacao', '');
 $projetodespesa->Vlr_unit			= str_replace(',','.',str_replace('.','',$projetodespesa->getRequest('Vlr_unit', 0)));
 $projetodespesa->Vlr_total			= $projetodespesa->Vlr_unit * $projetodespesa->Qtd_despesa;
 
-//$excluirAnexo 						= $funcionario->getRequest('excluir_anexo');
-$excluirAnexo = 0;
+$excluirAnexo 						= $projetodespesa->getRequest('excluir_anexo', 0);
+
 $id_funcionario = $projetodespesa->getRequest('id_funcionario_ap', 0);
 
 $msg = '';
@@ -93,17 +93,22 @@ if ($action == ALTER_OBS) {
 
 if ($action == ALTER_ANEXO) {
 
-	echo "<pre>";
-	print_r($_POST);
-	exit;
+	if ((int)$excluirAnexo) {
 
-	if ($_FILES['comprovante']['size'] > 0) {
-		$projetodespesa->fileCP = $_FILES['comprovante'];
+		if (file_exists($_POST['file'])) {
+			unlink($_POST['file']);
+		}
+
+		if ($_FILES['anexo']['size'] > 0) {
+			$projetodespesa->fileCP = $_FILES['anexo'];
+		}
+		
+		$success 		= $projetodespesa->update_anexo($projetodespesa->id);
+		$msg     		= $projetodespesa->msg; 
+
 	}
 
-	$success 		= $projetodespesa->update_anexo($projetodespesa->id);
-	$msg     		= $projetodespesa->msg; 
-	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".$periodo_busca.'#despesa');
+	header("LOCATION:apontamentos.php?id_projeto_ap=".$projetodespesa->id_projeto."&id_funcionario_ap=".$projetodespesa->id_funcionario."&msg=".$msg."&success=".$success."&periodo_busca=".'#despesa');
 }
 
 require_once('view/projetos/frm_projetos.php');
