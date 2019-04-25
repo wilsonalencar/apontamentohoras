@@ -68,6 +68,24 @@ class anexo extends app
 	    if (empty($this->name)) {
 	    	$this->name = $this->renameFile(str_replace('.'.$ext, '', $this->file['name']));
 	    }
+
+	    if ($ext == 'doc') {
+
+	    	$file_comp = app::path.$this->dir.$this->path.'/'.$this->name.'.pdf';
+
+	    	if (file_exists($file_comp)) {
+				unlink($file_comp);
+			}
+	    }
+
+	    if ($ext == 'pdf') {
+
+	    	$file_comp = app::path.$this->dir.$this->path.'/'.$this->name.'.doc';
+
+	    	if (file_exists($file_comp)) {
+				unlink($file_comp);
+			}
+	    }
 	   	
 	    $name = $this->name.'.'.$ext;
 		$dir = app::path.$this->dir.$this->path;
