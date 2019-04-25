@@ -13,7 +13,7 @@ class anexo extends app
 
 	private $dir = 'files/';
 	private $typesCV = array('application/pdf','text/pdf');
-	private $typesCP = array('application/pdf','text/pdf', 'doc', 'docx');
+	private $typesCP = array('application/pdf','text/pdf', 'application/word', 'application/msword');
 	private $permissionSize = 1024 * 1000;
 
 	const FILE_CV = 'cv';

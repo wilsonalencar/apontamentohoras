@@ -408,7 +408,7 @@
                                                             while($arquivo = $diretorio -> read()){
                                                                if ($row['id'] == preg_replace("/[^0-9]/", "", $arquivo)) {
                                                                   echo "<a href='".app::dominio.'files/comprovantes/'.$arquivo."' target='_blank'>Visualizar </a> /";
-                                                                  echo "<a onclick='AnexoModal()'> Editar</a>";
+                                                                  echo "<a onclick='AnexoModal()'> Editar</a><br />"; 
                                                                }
                                                             }
                                                          }
