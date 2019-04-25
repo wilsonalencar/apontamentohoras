@@ -95,10 +95,6 @@ if ($action == ALTER_ANEXO) {
 
 	if ((int)$excluirAnexo) {
 
-		if (file_exists($_POST['file'])) {
-			unlink($_POST['file']);
-		}
-
 		if ($_FILES['anexo']['size'] > 0) {
 			$projetodespesa->fileCP = $_FILES['anexo'];
 		}
