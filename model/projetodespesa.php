@@ -61,6 +61,16 @@ class projetodespesa extends app
 			return false;	
 		}
 
+		if ($this->Vlr_unit < 0) {
+			$this->msg = "Favor informar o valor da despesa corretamente.";
+			return false;	
+		}
+
+		if ($this->id_tipodespesa != 2 && empty($_FILES['comprovante']['name'])) {
+			$this->msg = "Necessário incluir anexo.";
+			return false;	
+		}
+
 		if (!$this->checkData($this->Data_despesa)) {
 			return false;
 		}

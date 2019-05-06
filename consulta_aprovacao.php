@@ -158,6 +158,7 @@ $projetodespesa->lista_aprovacao();
                                                 <th>Valor Total</th>
                                                 <th>Reembolso</th>
                                                 <th>Observação</th>
+                                                <th>Comprovante</th>
                                                 <th>Motivo</th>
                                                 <th>Aprovação</th>
                                             </tr>
@@ -179,6 +180,28 @@ $projetodespesa->lista_aprovacao();
                                                     <?php if (!empty($row['observacao'])) { ?>
                                                         <a onclick="ObservacaoModal('<?php echo $row['observacao'];?>')">Observação</a>
                                                     <?php } ?>
+                                                    </td>
+                                                    <td>
+                                                      <?php 
+                                                        if (!empty($row['id'])) { 
+
+                                                           $pasta = app::path.'files/comprovantes';
+                                                           if (is_dir($pasta)) {
+                                                              $diretorio = dir($pasta);
+
+                                                              $arquivo = $row['id'];
+
+                                                              if (is_file('files/comprovantes/'.$arquivo.'.pdf')) {
+                                                                $arquivo .= '.pdf';
+                                                                echo "<a href='".app::dominio.'files/comprovantes/'.$arquivo."' target='_blank'>Visualizar</a>";
+                                                              }
+                                                              if (is_file('files/comprovantes/'.$arquivo.'.doc')) {
+                                                                $arquivo .= '.doc';
+                                                                echo "<a href='".app::dominio.'files/comprovantes/'.$arquivo."'>Visualizar</a>";
+                                                              }
+                                                           }
+                                                        } 
+                                                     ?>
                                                     </td>
                                                     <td><input type="text" name="Motivo[<?php echo $row['id']; ?>]"></td>
                                                     <td>

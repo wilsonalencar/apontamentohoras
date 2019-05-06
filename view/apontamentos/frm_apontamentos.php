@@ -310,7 +310,7 @@
                                                     <input type="hidden" name="funcionario" value="<?php echo $id_funcionario; ?>">
                                                     <input type="hidden" name="excluir_anexo" value="0">
                                                     <td style="width: 10%">
-                                                        <select name="id_projeto" class="form-control">
+                                                        <select id="id_projeto" name="id_projeto" class="form-control">
                                                           <option value="">Selecione um Projeto</option>
                                                             <?php $projeto->montaSelect(0, false, $apontamento->id_funcionario); ?>
                                                         </select>
@@ -868,4 +868,24 @@ function excluiApot(idApont, idFuncionario, idProjeto) {
         document.getElementById('form_apontamentohoras').submit();
     }   
 }
+
+$( document ).ready(function() {
+
+  $( "#buttonDespesas" ).click(function() {
+
+    $("#buttonDespesas").css("display", "block");
+    var id_tipodespesa = document.getElementById("id_tipodespesa").value;
+    var comprovante = document.getElementById("comprovante").value;
+    var id_projeto = document.getElementById("id_projeto").value;
+
+    if (id_projeto != '' && id_tipodespesa != 2 && comprovante == '') {
+        alert('Necessário incluir anexo');
+        $("#id_tipodespesa").focus();
+        return false;
+    }
+
+    return true;
+});
+
+});
 </script>
