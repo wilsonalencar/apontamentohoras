@@ -338,8 +338,8 @@
 		$txt .= $xml->evtRemun->ideTrabalhador->nisTrab.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->nmTrab.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->dtNascto.'|';
-		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->qtdDiasTrab.'|';
-
+		$txt .= $xml->evtRemun->ideTrabalhador->infoInterm->qtdDiasInterm.'|';
+		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->tpInscAnt.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->cnpjEmpregAnt.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->matricAnt.'|';
 		$txt .= $xml->evtRemun->ideTrabalhador->infoComplem->sucessaoVinc->dtAdm.'|';
@@ -393,6 +393,12 @@
 								$txt .= $remunPerApur->matricula.'|';
 								$txt .= $remunPerApur->indSimples.'|';
 								$txt .= $remunPerApur->infoAgNocivo->grauExp.'|';
+
+								if (!empty($remunPerApur->infoTrabInterm)) {
+									foreach ($remunPerApur->infoTrabInterm as $infoTrabInterm) {
+										$txt .= $infoTrabInterm->codConv.'|';
+									}
+								}
 							
 								if (!empty($remunPerApur->itensRemun)) {
 									foreach ($remunPerApur->itensRemun as $itensRemun) {
@@ -497,6 +503,7 @@
 		}
 
 		$txt .= $quebraLinha;
+
 		$name = str_replace('xml', 'txt', $file['name']);
 		if (file_exists($name)) {
 			unlink($name);
@@ -1337,6 +1344,7 @@
 
 		$txt .= $xml->evtAltContratual->altContratual->infoContrato->duracao->tpContr.'|';
 		$txt .= $xml->evtAltContratual->altContratual->infoContrato->duracao->dtTerm.'|';
+		$txt .= $xml->evtAltContratual->altContratual->infoContrato->duracao->objDet.'|';
 
 		$txt .= $xml->evtAltContratual->altContratual->infoContrato->horContratual->qtdHrsSem.'|';
 		$txt .= $xml->evtAltContratual->altContratual->infoContrato->horContratual->tpJornada.'|';
@@ -1418,7 +1426,6 @@
 
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
-
 		$txt .= $xml->evtTSVTermino->ideTrabSemVinculo->cpfTrab.'|';
 		$txt .= $xml->evtTSVTermino->ideTrabSemVinculo->nisTrab.'|';
 		$txt .= $xml->evtTSVTermino->ideTrabSemVinculo->codCateg.'|';
@@ -1427,6 +1434,11 @@
 		$txt .= $xml->evtTSVTermino->infoTSVTermino->mtvDesligTSV.'|';
 		$txt .= $xml->evtTSVTermino->infoTSVTermino->quarentena->dtFimQuar.'|';
 		$txt .= $xml->evtTSVTermino->infoTSVTermino->verbasResc->infoMV->indMV.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->pensAlim.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->percAliment.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->vrAlim.'|';
+		$txt .= $xml->evtTSVTermino->infoTSVTermino->mudancaCPF->novoCPF.'|';
+
 
 		if (!empty($xml->evtTSVTermino->infoTSVTermino->verbasResc->dmDev)) {
 			
@@ -1564,12 +1576,14 @@
 				$txt .= $quebraLinha;
 				$txt .= 'MOV1018_08|';
 
-				$txt .= $remunOutrEmpr->tpInsc.'|';
 				$txt .= $remunOutrEmpr->nrInsc.'|';
 				$txt .= $remunOutrEmpr->codCateg.'|';
+				$txt .= $remunOutrEmpr->vlrRemunOE.'|';
 			}
 		}
+
 		$txt .= $quebraLinha;
+
 		$name = str_replace('xml', 'txt', $file['name']);
 		if (file_exists($name)) {
 			unlink($name);
