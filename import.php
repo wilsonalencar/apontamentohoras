@@ -1613,6 +1613,9 @@
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
 
+		$txt .= $quebraLinha;
+		$txt .= 'MOV1007_02|';
+
 		$txt .= $xml->evtDeslig->ideVinculo->cpfTrab.'|'; //cpf trab
 		$txt .= $xml->evtDeslig->ideVinculo->nisTrab.'|'; //nis trab
 		$txt .= $xml->evtDeslig->ideVinculo->matricula.'|'; //matricula
@@ -1627,6 +1630,7 @@
 		$txt .= $xml->evtDeslig->infoDeslig->nrCertObito.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->nrProcTrab.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->indCumprParc.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->sucessaoVinc->tpInscSuc.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->sucessaoVinc->cnpjSucessora.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->quarentena->dtFimQuar.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->verbasResc->infoMV->indMV.'|';
@@ -1634,20 +1638,22 @@
 		$txt .= $xml->evtDeslig->infoDeslig->transfTit->dtNascto.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->qtdDiasInterm.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->verbasResc->procCS->nrProcJud.'|';
+		$txt .= $xml->evtDeslig->infoDeslig->mudancaCPF->novoCPF.'|';
 
 
 		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
 			
 			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
 				$txt .= $quebraLinha;
-				$txt .= 'MOV1007_02|';
+				$txt .= 'MOV1007_03|';
 				$txt .= $dmDev->ideDmDev.'|'; 
 
 				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
 
 					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-						$txt .= $quebraLinha;
-						$txt .= 'MOV1007_03|';
+					/*	$txt .= $quebraLinha;
+						$txt .= 'MOV1007_03|';*/
+						$txt .= $lote.'|';
 						$txt .= $lote->tpInsc.'|';
 						$txt .= $lote->nrInsc.'|';
 						$txt .= $lote->codLotacao.'|';
@@ -1657,9 +1663,9 @@
 						if (!empty($lote->detVerbas)) {
 
 							foreach($lote->detVerbas as $verbas) {
-
-								$txt .= $quebraLinha;
-								$txt .= 'MOV1007_04|';
+								/*$txt .= $quebraLinha;
+								$txt .= 'MOV1007_04|';*/
+								$txt .= $verbas.'|';
 								$txt .= $verbas->codRubr.'|';
 								$txt .= $verbas->ideTabRubr.'|';
 								$txt .= $verbas->qtdRubr.'|';
@@ -1674,7 +1680,7 @@
 							foreach($lote->infoSaudeColet->detOper as $detOper) {
 
 								$txt .= $quebraLinha;
-								$txt .= 'MOV1007_05|';
+								$txt .= 'MOV1007_04|';
 								$txt .= $detOper->cnpjOper.'|';
 								$txt .= $detOper->regANS.'|';
 								$txt .= $detOper->vrPgTit.'|';
@@ -1683,7 +1689,7 @@
 
 									foreach($detOper->detPlano as $detPlano) {
 										$txt .= $quebraLinha;
-										$txt .= 'MOV1007_06|';
+										$txt .= 'MOV1007_05|';
 										$txt .= $detPlano->tpDep.'|';
 										$txt .= $detPlano->cpfDep.'|';
 										$txt .= $detPlano->nmDep.'|';
@@ -1701,7 +1707,7 @@
 					foreach($dmDev->infoPerAnt->ideADC as $ideADC) {
 
 						$txt .= $quebraLinha;
-						$txt .= 'MOV1007_07|';
+						$txt .= 'MOV1007_06|';
 						$txt .= $ideADC->dtAcConv.'|';
 						$txt .= $ideADC->tpAcConv.'|';
 						$txt .= $ideADC->compAcConv.'|';
@@ -1713,14 +1719,14 @@
 							foreach($ideADC->idePeriodo as $idePeriodo) {
 
 								$txt .= $quebraLinha;
-								$txt .= 'MOV1007_08|';
+								$txt .= 'MOV1007_07|';
 								$txt .= $idePeriodo->perRef.'|';
 
 								if (!empty($idePeriodo->ideEstabLot)) {
 									
 									foreach ($idePeriodo->ideEstabLot as $ideEstabLot) {
 										$txt .= $quebraLinha;
-										$txt .= 'MOV1007_09|';
+										$txt .= 'MOV1007_08|';
 										$txt .= $ideEstabLot->tpInsc.'|';
 										$txt .= $ideEstabLot->nrInsc.'|';
 										$txt .= $ideEstabLot->codLotacao.'|';
@@ -1731,7 +1737,7 @@
 										
 											foreach ($ideEstabLot->detVerbas as $detVerbas) {
 												$txt .= $quebraLinha;
-												$txt .= 'MOV1007_10|';
+												$txt .= 'MOV1007_09|';
 												$txt .= $detVerbas->codRubr.'|';
 												$txt .= $detVerbas->ideTabRubr.'|';
 												$txt .= $detVerbas->qtdRubr.'|';
@@ -1751,7 +1757,7 @@
 
 					foreach($dmDev->infoTrabInterm as $infoTrabInterm) {				
 						$txt .= $quebraLinha;
-						$txt .= 'MOV1007_11|';
+						$txt .= 'MOV1007_10|';
 						$txt .= $infoTrabInterm->codConv.'|';
 
 					}
@@ -1762,8 +1768,6 @@
 		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->procJudTrab)) {
 
 			foreach($xml->evtDeslig->infoDeslig->verbasResc->procJudTrab as $procJudTrab) {
-				$txt .= $quebraLinha;
-				$txt .= 'MOV1007_12|';
 				$txt .= $procJudTrab->tpTrib.'|';
 				$txt .= $procJudTrab->nrProcJud.'|';
 				$txt .= $procJudTrab->codSusp.'|';
@@ -1774,14 +1778,32 @@
 
 			foreach($xml->evtDeslig->infoDeslig->verbasResc->infoMV->remunOutrEmpr as $remunOutrEmpr) {
 				$txt .= $quebraLinha;
-				$txt .= 'MOV1007_13|';
-				$txt .= $remunOutrEmpr->tpInsc.'|';
+				$txt .= 'MOV1007_11|';
 				$txt .= $remunOutrEmpr->nrInsc.'|';
+				$txt .= $remunOutrEmpr->codCateg.'|';
 				$txt .= $remunOutrEmpr->vlrRemunOE.'|';
 			}
 		}
 
-		$txt .= $quebraLinha;
+		if (!empty($xml->evtDeslig->infoDeslig->observacoes)) {
+
+			foreach ($xml->evtDeslig->infoDeslig->observacoes as $observacoes) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1007_12|';
+				$txt .= $observacoes->observacao.'|';
+			}
+		}
+
+		if (!empty($xml->evtDeslig->infoDeslig->consigFGTS)) {
+
+			foreach ($xml->evtDeslig->infoDeslig->consigFGTS as $consigFGTS) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1007_13|';
+				$txt .= $consigFGTS->insConsig.'|';
+				$txt .= $consigFGTS->nrContr.'|';
+			}
+		}
+
 		$name = str_replace('xml', 'txt', $file['name']);
 		if (file_exists($name)) {
 			unlink($name);
