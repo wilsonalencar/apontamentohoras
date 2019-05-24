@@ -1663,8 +1663,8 @@
 						if (!empty($lote->detVerbas)) {
 
 							foreach($lote->detVerbas as $verbas) {
-								/*$txt .= $quebraLinha;
-								$txt .= 'MOV1007_04|';*/
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1007_04|';
 								$txt .= $verbas.'|';
 								$txt .= $verbas->codRubr.'|';
 								$txt .= $verbas->ideTabRubr.'|';
@@ -1679,8 +1679,8 @@
 
 							foreach($lote->infoSaudeColet->detOper as $detOper) {
 
-								$txt .= $quebraLinha;
-								$txt .= 'MOV1007_04|';
+								// $txt .= $quebraLinha;
+								// $txt .= 'MOV1007_04|';
 								$txt .= $detOper->cnpjOper.'|';
 								$txt .= $detOper->regANS.'|';
 								$txt .= $detOper->vrPgTit.'|';
