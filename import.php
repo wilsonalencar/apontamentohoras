@@ -1651,8 +1651,8 @@
 				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
 
 					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
-					/*	$txt .= $quebraLinha;
-						$txt .= 'MOV1007_03|';*/
+						$txt .= $quebraLinha;
+						$txt .= 'MOV1007_03|';
 						$txt .= $lote.'|';
 						$txt .= $lote->tpInsc.'|';
 						$txt .= $lote->nrInsc.'|';
@@ -1664,7 +1664,7 @@
 
 							foreach($lote->detVerbas as $verbas) {
 								$txt .= $quebraLinha;
-								$txt .= 'MOV1007_04|';
+								$txt .= 'MOV1007_03|';
 								$txt .= $verbas.'|';
 								$txt .= $verbas->codRubr.'|';
 								$txt .= $verbas->ideTabRubr.'|';
@@ -1679,8 +1679,8 @@
 
 							foreach($lote->infoSaudeColet->detOper as $detOper) {
 
-								// $txt .= $quebraLinha;
-								// $txt .= 'MOV1007_04|';
+								$txt .= $quebraLinha;
+								$txt .= 'MOV1007_04|';
 								$txt .= $detOper->cnpjOper.'|';
 								$txt .= $detOper->regANS.'|';
 								$txt .= $detOper->vrPgTit.'|';
@@ -1768,6 +1768,7 @@
 		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->procJudTrab)) {
 
 			foreach($xml->evtDeslig->infoDeslig->verbasResc->procJudTrab as $procJudTrab) {
+				$txt .= $procJudTrab.'|';
 				$txt .= $procJudTrab->tpTrib.'|';
 				$txt .= $procJudTrab->nrProcJud.'|';
 				$txt .= $procJudTrab->codSusp.'|';
