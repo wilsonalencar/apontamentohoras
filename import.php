@@ -1613,9 +1613,6 @@
 		$indicadorExclusao = '|';
 		$txt .= $indicadorExclusao;
 
-		$txt .= $quebraLinha;
-		$txt .= 'MOV1007_02|';
-
 		$txt .= $xml->evtDeslig->ideVinculo->cpfTrab.'|'; //cpf trab
 		$txt .= $xml->evtDeslig->ideVinculo->nisTrab.'|'; //nis trab
 		$txt .= $xml->evtDeslig->ideVinculo->matricula.'|'; //matricula
@@ -1640,15 +1637,19 @@
 		$txt .= $xml->evtDeslig->infoDeslig->verbasResc->procCS->nrProcJud.'|';
 		$txt .= $xml->evtDeslig->infoDeslig->mudancaCPF->novoCPF.'|';
 
+		//MOV 02
+		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
+			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
+				$txt .= $quebraLinha;
+				$txt .= 'MOV1007_02|';
+				$txt .= $dmDev->ideDmDev.'|'; 
+			}
+		}
+
 		//MOV 03
 		if (!empty($xml->evtDeslig->infoDeslig->verbasResc->dmDev)) {
-			
 			foreach($xml->evtDeslig->infoDeslig->verbasResc->dmDev as $dmDev) {
-
-				$txt .= $dmDev->ideDmDev.'|'; 
-
 				if (!empty($dmDev->infoPerApur->ideEstabLot)) {
-
 					foreach($dmDev->infoPerApur->ideEstabLot as $lote) {
 						$txt .= $quebraLinha;
 						$txt .= 'MOV1007_03|';
